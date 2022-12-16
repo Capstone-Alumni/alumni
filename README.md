@@ -36,3 +36,45 @@ https://nextjs.link/with-turbopack
 ## Providing Feedback
 
 https://nextjs.link/turbopack-feedback
+
+
+## Setting up database
+
+1. Create PostgreSQL database
+* Create database with name `high_school_alumni`
+```json
+  CREATE DATABASE high_school_alumni;
+```
+* Reference: https://www.postgresql.org/docs/current/sql-createdatabase.html
+
+2. Create PostgreSQL user with password
+* Using `psql`
+```json
+  CREATE USER <<your_user_name>> WITH PASSWORD <<your_password>>;
+```
+* After create new user, add new options to the new role
+```json
+  ALTER ROLE <<your_user_name>> WITH LOGIN SUPERUSER CREATEDB CREATEROLE;
+```
+* Reference: https://www.postgresql.org/docs/8.0/sql-createuser.html
+* Reference if using pgAdmin: https://chartio.com/learn/postgresql/create-a-user-with-pgadmin/
+3. Update owner of database
+```json
+ALTER DATABASE high_school_alumni OWNER TO alumni;
+```
+* Reference: https://www.postgresql.org/docs/current/sql-alterdatabase.html
+
+## Integrating database with your development environment
+1. Install new packages:
+* Run this command
+```json
+yarn
+```
+2. Run this command to init Prisma
+```json
+yarn prisma init
+```
+* This creates the following files inside a new prisma directory:
+* Copy file `.env.dev.example` to file `.env`, replace `<<YOUR_USER_NAME/YOUR_PASSWORD>>` by your database's username and password
+
+* Reference: https://vercel.com/guides/nextjs-prisma-postgres
