@@ -1,8 +1,7 @@
-import { prisma } from "@/lib/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
-
+import { prisma } from "@/lib/prisma";
 
 export default NextAuth({
   providers: [
@@ -14,7 +13,10 @@ export default NextAuth({
   adapter: PrismaAdapter(prisma),
   callbacks: {
     async signIn({ user, account, profile }) {
-      // TODO: unknown 
+      if (account?.provider === "google") {
+        // @ts-ignore
+        return profile?.email_verified as boolean;
+      }
       return true;
     },
   }

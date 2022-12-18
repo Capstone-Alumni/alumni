@@ -1,4 +1,3 @@
-import '@/styles/dist.css';
 import React from 'react';
 import ProvidersWrapper from './ProvidersWrapper';
 
@@ -10,9 +9,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Next.js Turbopack App Directory Playground</title>
+        <title>High school alumni management platform</title>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+        />
       </head>
-      <body className="overflow-y-scroll">
+      <body>
         <ProvidersWrapper>
           {children}
         </ProvidersWrapper>

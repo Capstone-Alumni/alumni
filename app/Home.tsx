@@ -10,13 +10,13 @@ const Home = () => {
       </div>
       {
         !session && (
-          <button onClick={() => signIn("google")} style={{ backgroundColor: 'black' }}>Login by Gmail</button>
+          <button onClick={() => signIn("google")} style={{ backgroundColor: 'green' }}>Login by Gmail</button>
         )
       }
       {session && (
         <>
           <p className="text-zinc-500">Hello {session?.user?.name}</p>
-          <button onClick={() => signOut()} style={{ backgroundColor: 'black' }}>Logout</button>
+          <button onClick={() => signOut()} style={{ backgroundColor: 'red' }}>Logout</button>
         </>
       )
       }

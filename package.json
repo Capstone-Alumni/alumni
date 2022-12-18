@@ -1,14 +1,14 @@
 {
   "private": true,
+  "engines": {
+    "node": ">=16.8.0"
+  },
   "scripts": {
     "dev": "next dev",
-    "dev:tailwind": "concurrently \"next dev\" \"npm run tailwind -- --watch\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "tailwind": "tailwindcss -i styles/globals.css -o styles/dist.css",
-    "format": "prettier --write \"**/*.{js,ts,tsx,md}\"",
-    "postinstall": "npm run tailwind"
+    "format": "prettier --write \"**/*.{js,ts,tsx,md}\""
   },
   "prettier": {
     "arrowParens": "always",
@@ -17,6 +17,11 @@
     "singleQuote": true
   },
   "dependencies": {
+    "@emotion/react": "11.10.5",
+    "@emotion/styled": "11.10.5",
+    "@mui/icons-material": "5.11.0",
+    "@mui/material": "5.11.0",
+    "@mui/styled-engine-sc": "5.11.0",
     "@next-auth/prisma-adapter": "1.0.5",
     "@prisma/client": "4.7.1",
     "clsx": "1.2.1",
@@ -25,7 +30,7 @@
     "next-auth": "4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "styled-components": "6.0.0-beta.2",
+    "styled-components": "5.3.6",
     "styled-jsx": "5.1.0",
     "use-count-up": "3.0.1"
   },
