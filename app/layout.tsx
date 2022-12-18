@@ -16,11 +16,11 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
         />
       </head>
-      <body>
+      <body style={{ margin: 0, minHeight: '100vh' }}>
         <ProvidersWrapper>
           {children}
         </ProvidersWrapper>
       </body>
     </html>
   );
-}
+};
