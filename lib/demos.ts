@@ -10,6 +10,16 @@ type Item = {
 
 export const demos: Item[] = [
   {
+    name: 'Home',
+    items: [
+      {
+        name: 'Home Page',
+        slug: 'home',
+        description: 'Create top-level layouts that apply to all routes',
+      },
+    ],
+  },
+  {
     name: 'Layouts',
     items: [
       {
