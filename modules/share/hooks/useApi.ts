@@ -12,7 +12,7 @@ import { ApiCallState } from '../types';
 import formatSearchParams from '../utils/formatParams';
 
 export type ApiConfig = {
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   url: string;
   params?: any;
   headers?: any;
@@ -21,7 +21,7 @@ export type ApiConfig = {
 };
 
 export type AxiosConfig = {
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   url: string;
   headers: any;
   data?: any;
