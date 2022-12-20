@@ -1,7 +1,7 @@
-"use client"
+'use client';
 
-import SignInPage from "modules/sessions/components/SignInPage";
+import SignInPage from 'modules/sessions/components/SignInPage';
 
-export default function () {
-  return <SignInPage />
-};
+export default function SignInPageWrapper() {
+  return <SignInPage />;
+}

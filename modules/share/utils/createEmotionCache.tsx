@@ -9,7 +9,9 @@ export default function createEmotionCache() {
   let insertionPoint;
 
   if (isBrowser) {
-    const emotionInsertionPoint = document.querySelector('meta[name="emotion-insertion-point"]') as HTMLElement;
+    const emotionInsertionPoint = document.querySelector(
+      'meta[name="emotion-insertion-point"]',
+    ) as HTMLElement;
     insertionPoint = emotionInsertionPoint ?? undefined;
   }
 

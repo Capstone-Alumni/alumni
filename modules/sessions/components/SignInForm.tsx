@@ -1,17 +1,18 @@
-"use client"
+'use client';
 
-import { signIn } from "next-auth/react";
+import noop from 'lodash/fp/noop';
+
+import { signIn } from 'next-auth/react';
 
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
-import GoogleIcon from '@mui/icons-material/Google';
 import { SCHOOL_NAME } from 'constant';
-import { useForm, Controller } from 'react-hook-form';
-import { useTheme } from "@mui/system";
-import { Divider, IconButton, Link, Stack, TextField } from "@mui/material";
+import { Controller, useForm } from 'react-hook-form';
+import { useTheme } from '@mui/system';
+import { Divider, IconButton, Link, Stack, TextField } from '@mui/material';
 
 import googleFill from '@iconify/icons-eva/google-fill';
 import twitterFill from '@iconify/icons-eva/twitter-fill';
@@ -19,15 +20,12 @@ import facebookFill from '@iconify/icons-eva/facebook-fill';
 import { Icon } from '@iconify/react';
 
 const SignInForm = () => {
-  const theme = useTheme();
-  console.log(theme);
-
   const { control } = useForm({
     defaultValues: {
       usernameOrEmail: '',
       password: '',
       remember: false,
-    }
+    },
   });
 
   return (
@@ -55,24 +53,27 @@ const SignInForm = () => {
       >
         <Box
           sx={{
-            margin: 'auto'
+            margin: 'auto',
           }}
         >
-          <Typography variant="h4" mb={2}>Đăng nhập</Typography>
+          <Typography mb={2} variant="h4">
+            Đăng nhập
+          </Typography>
 
-          <Box sx={{ display: 'flex' }} mb={5}>
-            <Typography variant="body2" sx={{ mr: 1 }}>Chưa có tài khoản?</Typography>
+          <Box mb={5} sx={{ display: 'flex' }}>
+            <Typography sx={{ mr: 1 }} variant="body2">
+              Chưa có tài khoản?
+            </Typography>
             <Link variant="subtitle2">Đăng ký ngay</Link>
           </Box>
-          
 
           <Controller
             control={control}
             name="usernameOrEmail"
             render={({ field }) => (
               <TextField
-                label='Username hoặc email'
                 fullWidth
+                label="Username hoặc email"
                 {...field}
                 sx={{ mb: 3 }}
               />
@@ -83,50 +84,52 @@ const SignInForm = () => {
             control={control}
             name="password"
             render={({ field }) => (
-              <TextField
-                label='Mật khẩu'
-                fullWidth
-                {...field}
-              />
+              <TextField fullWidth label="Mật khẩu" {...field} />
             )}
           />
 
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', my: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              my: 1,
+            }}
+          >
             <Controller
               control={control}
               name="remember"
               render={({ field }) => (
-                <FormControlLabel control={<Checkbox {...field} />} label="Ghi nhớ tài khoản" />
+                <FormControlLabel
+                  control={<Checkbox {...field} />}
+                  label="Ghi nhớ tài khoản"
+                />
               )}
             />
             <Link underline="always">Quên mật khẩu</Link>
           </Box>
 
-          <Button
-            fullWidth
-            variant="contained"
-            size="large"
-          >
+          <Button fullWidth size="large" variant="contained">
             Đăng nhập
           </Button>
 
           <Divider sx={{ my: 3 }}>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            <Typography sx={{ color: 'text.secondary' }} variant="body2">
               Hoặc
             </Typography>
           </Divider>
 
-          <Stack direction="row" spacing={2} justifyContent="center">
-            <IconButton size="large" onClick={() => signIn("google")}>
-              <Icon icon={googleFill} color="#DF3E30" height={24} />
+          <Stack direction="row" justifyContent="center" spacing={2}>
+            <IconButton onClick={() => signIn('google')} size="large">
+              <Icon color="#DF3E30" height={24} icon={googleFill} />
             </IconButton>
 
-            <IconButton size="large" onClick={() => {}}>
-              <Icon icon={facebookFill} color="#1877F2" height={24} />
+            <IconButton onClick={noop} size="large">
+              <Icon color="#1877F2" height={24} icon={facebookFill} />
             </IconButton>
 
-            <IconButton size="large" onClick={() => {}}>
-              <Icon icon={twitterFill} color="#1C9CEA" height={24} />
+            <IconButton onClick={noop} size="large">
+              <Icon color="#1C9CEA" height={24} icon={twitterFill} />
             </IconButton>
           </Stack>
         </Box>

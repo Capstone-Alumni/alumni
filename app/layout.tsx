@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import React from 'react';
 import ProvidersWrapper from './ProvidersWrapper';
@@ -11,7 +11,7 @@ const clientSideEmotionCache = createEmotionCache();
 
 export default function RootLayout({
   children,
-  emotionCache = clientSideEmotionCache
+  emotionCache = clientSideEmotionCache,
 }: {
   children: React.ReactNode;
   emotionCache: EmotionCache;
@@ -20,17 +20,15 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <title>High school alumni management platform</title>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <meta content="initial-scale=1, width=device-width" name="viewport" />
       </head>
       <body style={{ margin: 0, minHeight: '100vh' }}>
         <ProvidersWrapper>
           <CacheProvider value={emotionCache}>
-            <ThemeConfig>
-              {children}
-            </ThemeConfig>
+            <ThemeConfig>{children}</ThemeConfig>
           </CacheProvider>
         </ProvidersWrapper>
       </body>
     </html>
   );
-};
+}
