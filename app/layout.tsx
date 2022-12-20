@@ -1,26 +1,34 @@
+'use client';
+
 import React from 'react';
 import ProvidersWrapper from './ProvidersWrapper';
 
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import ThemeConfig from '../lib/mui';
+import createEmotionCache from 'modules/share/utils/createEmotionCache';
+
+const clientSideEmotionCache = createEmotionCache();
+
 export default function RootLayout({
   children,
+  emotionCache = clientSideEmotionCache,
 }: {
   children: React.ReactNode;
+  emotionCache: EmotionCache;
 }) {
   return (
     <html lang="en">
       <head>
         <title>High school alumni management platform</title>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-        />
+        <meta content="initial-scale=1, width=device-width" name="viewport" />
       </head>
       <body style={{ margin: 0, minHeight: '100vh' }}>
         <ProvidersWrapper>
-          {children}
+          <CacheProvider value={emotionCache}>
+            <ThemeConfig>{children}</ThemeConfig>
+          </CacheProvider>
         </ProvidersWrapper>
       </body>
     </html>
   );
-};
+}

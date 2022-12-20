@@ -2,13 +2,14 @@ import isEqual from 'lodash/fp/isEqual';
 import axios, { CancelTokenSource } from 'axios';
 import { useEffect, useRef } from 'react';
 import {
-  RecoilState, useRecoilCallback, useRecoilValue, useResetRecoilState,
+  RecoilState,
+  useRecoilCallback,
+  useRecoilValue,
+  useResetRecoilState,
 } from 'recoil';
-import { apiCallAtomFamily, isPending } from 'share/state';
-import { ApiCallState } from 'share/types';
-import formatSearchParams from 'share/utils/formatParams';
-import { getUserInformation, logOut } from 'share/utils/cookies';
-import history from 'BrowserHistory';
+import { apiCallAtomFamily, isPending } from '../state';
+import { ApiCallState } from '../types';
+import formatSearchParams from '../utils/formatParams';
 
 export type ApiConfig = {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -45,7 +46,12 @@ const useApi = <Params, Data, Err>(
   const resetApiCallState = useResetRecoilState(apiCallAtom);
 
   const transformAxiosConfig = ({
-    method, url, params, data, headers, useToken,
+    method,
+    url,
+    params,
+    data,
+    headers,
+    useToken,
   }: ApiConfig): AxiosConfig => {
     const config: AxiosConfig = {
       method,
@@ -59,94 +65,90 @@ const useApi = <Params, Data, Err>(
       cancelToken: abortController.current?.token,
     };
 
-    if (useToken) {
-      config.headers.Authorization = getUserInformation('AuthToken');
-    }
+    // TODO: add proxy that auto inject token to headers
+    // if (useToken) {
+    //   config.headers.Authorization = getUserInformation('AuthToken');
+    // }
 
     return config;
   };
 
   const callApi = useRecoilCallback(
-    ({ snapshot, set }) => async (params: Params) => {
-      // If is calling api with the same param -> abort
-      const apiState = snapshot.getLoadable(apiCallAtom).valueMaybe();
+    ({ snapshot, set }) =>
+      async (params: Params) => {
+        // If is calling api with the same param -> abort
+        const apiState = snapshot.getLoadable(apiCallAtom).valueMaybe();
 
-      if (apiState && isPending(apiState)) {
-        if (isEqual(params, apiState.params)) {
-          const error = new Error('Deduplication');
-          error.name = 'DedupError';
-          throw error;
+        if (apiState && isPending(apiState)) {
+          if (isEqual(params, apiState.params)) {
+            const error = new Error('Deduplication');
+            error.name = 'DedupError';
+            throw error;
+          }
+
+          abortController.current?.cancel('Deduplication');
         }
 
-        abortController.current?.cancel('Deduplication');
-      }
+        // generate request config
+        abortController.current = axios.CancelToken.source();
 
-      // generate request config
-      abortController.current = axios.CancelToken.source();
+        const apiConfig = generateApiConfig(params);
+        const axiosConfig = transformAxiosConfig(apiConfig);
 
-      const apiConfig = generateApiConfig(params);
-      const axiosConfig = transformAxiosConfig(apiConfig);
-
-      // set status pending
-      set(apiCallAtom, {
-        _state: 'pending',
-        name: apiName,
-        params,
-        data: null,
-        error: null,
-      });
-
-      // call http/https request
-      try {
-        const response = await axios(axiosConfig);
-        const { data } = response;
-
-        const newApiState: ApiState = {
-          _state: 'success',
-          name: apiName,
-          params,
-          data,
-          error: null,
-        };
-
-        set(apiCallAtom, newApiState);
-        return newApiState;
-      } catch (error: any) {
-        if (!error.response) {
-          throw new Error(error.message);
-        }
-
-        const { response } = error;
-
-        if (response
-          && response.data
-          && response.data.message
-          && response.data.message.includes('Found another login')) {
-          logOut();
-          history.push('/');
-          window.location.reload();
-        }
-
-        const newApiState: ApiState = {
-          _state: 'failed',
+        // set status pending
+        set(apiCallAtom, {
+          _state: 'pending',
           name: apiName,
           params,
           data: null,
-          error: response.data.message,
-        };
-        set(apiCallAtom, newApiState);
-        return newApiState;
-      }
-    },
+          error: null,
+        });
+
+        // call http/https request
+        try {
+          const response = await axios(axiosConfig);
+          const { data } = response;
+
+          const newApiState: ApiState = {
+            _state: 'success',
+            name: apiName,
+            params,
+            data,
+            error: null,
+          };
+
+          set(apiCallAtom, newApiState);
+          return newApiState;
+        } catch (error: any) {
+          if (!error.response) {
+            throw new Error(error.message);
+          }
+
+          const { response } = error;
+
+          const newApiState: ApiState = {
+            _state: 'failed',
+            name: apiName,
+            params,
+            data: null,
+            error: response.data.message,
+          };
+          set(apiCallAtom, newApiState);
+          return newApiState;
+        }
+      },
     [],
   );
 
   // cache
-  useEffect(() => () => {
-    if (apiOptions.retainOnUnmount) {
-      resetApiCallState();
-    }
-  }, []);
+  useEffect(
+    () => () => {
+      if (apiOptions.retainOnUnmount) {
+        resetApiCallState();
+      }
+    },
+    [],
+  );
 
   return [callApi, apiCallState] as const;
 };

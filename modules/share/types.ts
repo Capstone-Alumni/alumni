@@ -4,7 +4,7 @@ export type ApiCallIdleState = {
   readonly params: null;
   readonly data: null;
   readonly error: null;
-}
+};
 
 export type ApiCallPendingState<Params> = {
   readonly _state: 'pending';
@@ -12,7 +12,7 @@ export type ApiCallPendingState<Params> = {
   readonly params: Params;
   readonly data: null;
   readonly error: null;
-}
+};
 
 export type ApiCallSuccessState<Params, Data> = {
   readonly _state: 'success';
@@ -20,7 +20,7 @@ export type ApiCallSuccessState<Params, Data> = {
   readonly params: Params;
   readonly data: Data;
   readonly error: null;
-}
+};
 
 export type ApiCallFailedState<Params, Err> = {
   readonly _state: 'failed';
@@ -28,10 +28,10 @@ export type ApiCallFailedState<Params, Err> = {
   readonly params: Params;
   readonly data: null;
   readonly error: Err;
-}
+};
 
 export type ApiCallState<Params, Data, Err> =
   | ApiCallIdleState
   | ApiCallPendingState<Params>
   | ApiCallSuccessState<Params, Data>
-  | ApiCallFailedState<Params, Err>
+  | ApiCallFailedState<Params, Err>;

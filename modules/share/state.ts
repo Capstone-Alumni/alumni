@@ -1,12 +1,19 @@
 /* eslint-disable no-underscore-dangle */
 import { atomFamily } from 'recoil';
 import {
-  ApiCallFailedState, ApiCallIdleState, ApiCallPendingState, ApiCallState, ApiCallSuccessState,
+  ApiCallFailedState,
+  ApiCallIdleState,
+  ApiCallPendingState,
+  ApiCallState,
+  ApiCallSuccessState,
 } from './types';
 
-export const apiCallAtomFamily = atomFamily<ApiCallState<any, any, any>, string>({
+export const apiCallAtomFamily = atomFamily<
+  ApiCallState<any, any, any>,
+  string
+>({
   key: 'apiCall',
-  default: (name) => ({
+  default: name => ({
     _state: 'idle',
     name,
     params: null,
