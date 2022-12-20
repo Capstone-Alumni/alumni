@@ -4,7 +4,13 @@ const nextConfig = {
   experimental: {
     // Required:
     appDir: true
-  }
+  },
+  compiler: {
+    styledComponents: true,
+  },
+  eslint: {
+    dirs: ['app', 'lib', 'modules', 'pages', 'types'],
+  },
 }
 
 module.exports = nextConfig
