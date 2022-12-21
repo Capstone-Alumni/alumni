@@ -4,15 +4,19 @@ import noop from 'lodash/fp/noop';
 
 import { signIn } from 'next-auth/react';
 
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Checkbox from '@mui/material/Checkbox';
-import Button from '@mui/material/Button';
-import { SCHOOL_NAME } from 'constant';
 import { Controller, useForm } from 'react-hook-form';
-import { useTheme } from '@mui/system';
-import { Divider, IconButton, Link, Stack, TextField } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Button,
+  Checkbox,
+  Divider,
+  FormControlLabel,
+  IconButton,
+  Link,
+  Stack,
+  TextField,
+} from '@mui/material';
 
 import googleFill from '@iconify/icons-eva/google-fill';
 import twitterFill from '@iconify/icons-eva/twitter-fill';
@@ -32,19 +36,6 @@ const SignInForm = () => {
     <Box sx={{ height: '100%' }}>
       <Box
         sx={{
-          position: 'absolute',
-          top: '1rem',
-          left: '1rem',
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
-      >
-        <Typography variant="h5">{SCHOOL_NAME}</Typography>
-      </Box>
-
-      <Box
-        sx={{
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
@@ -53,7 +44,7 @@ const SignInForm = () => {
       >
         <Box
           sx={{
-            margin: 'auto',
+            margin: '2rem 10vw',
           }}
         >
           <Typography mb={2} variant="h4">
@@ -64,7 +55,7 @@ const SignInForm = () => {
             <Typography sx={{ mr: 1 }} variant="body2">
               Chưa có tài khoản?
             </Typography>
-            <Link variant="subtitle2">Đăng ký ngay</Link>
+            <Link variant="subtitle2" href="/sign_up">Đăng ký ngay</Link>
           </Box>
 
           <Controller
