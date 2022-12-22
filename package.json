@@ -51,7 +51,8 @@
     "recoil": "0.7.6",
     "styled-components": "5.3.6",
     "styled-jsx": "5.1.0",
-    "use-count-up": "3.0.1"
+    "use-count-up": "3.0.1",
+    "yup": "0.32.11"
   },
   "devDependencies": {
     "@types/lodash": "4.14.191",
