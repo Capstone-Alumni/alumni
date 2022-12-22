@@ -75,7 +75,7 @@ const SignUpForm = () => {
 
   const resolver = useYupValidateionResolver(validationSchema);
 
-  const { control, handleSubmit, getValues } = useForm<FormValues>({
+  const { control, handleSubmit } = useForm<FormValues>({
     mode: 'onChange',
     defaultValues: {
       fullName: '',
