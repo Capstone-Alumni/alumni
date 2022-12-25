@@ -1,4 +1,8 @@
-import { createAlum, getAlumByEmail } from '@/lib/prisma/alumni';
+import {
+  checkExistedEmail,
+  checkExistedUsername,
+  createAlum,
+} from '@/lib/prisma/alumni';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { AlumCreateRequest } from 'pages/types/apiRequests';
 import { hashSync } from 'bcrypt';
@@ -11,13 +15,22 @@ const signup = async (
   try {
     const { email, username, password } =
       request.body as unknown as AlumCreateRequest;
-    const isEmailExisted = await getAlumByEmail(email);
+    const isEmailExisted = await checkExistedEmail(email);
     if (isEmailExisted) {
       return response.status(400).json({
         status: 'ERROR',
         message: 'Email is already existed',
       });
     }
+
+    const isUsernameExisted = await checkExistedUsername(username);
+    if (isUsernameExisted) {
+      return response.status(400).json({
+        status: 'ERROR',
+        message: 'Username is already existed',
+      });
+    }
+
     const passwordEncrypted = hashSync(password, 10);
 
     const newAlum = await createAlum({

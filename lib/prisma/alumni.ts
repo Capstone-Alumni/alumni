@@ -16,10 +16,25 @@ export const createAlum = async (alumCreateRequest: AlumCreateRequest) => {
   }
 };
 
-export const getAlumByEmail = async (email: string) => {
+export const checkExistedEmail = async (email: string) => {
   try {
     const alumnus = prisma.user.findUnique({
-      where: { email },
+      where: {
+        email,
+      },
+    });
+    return alumnus || null;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const checkExistedUsername = async (username: string) => {
+  try {
+    const alumnus = prisma.user.findUnique({
+      where: {
+        username,
+      },
     });
     return alumnus || null;
   } catch (error) {
@@ -30,7 +45,9 @@ export const getAlumByEmail = async (email: string) => {
 export const getAlums = async () => {
   try {
     const alumns = await prisma.user.findMany({
-      where: { archived: false },
+      where: {
+        archived: false,
+      },
     });
     return alumns;
   } catch (error) {
