@@ -1,7 +1,7 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import NextAuth from 'next-auth/next';
 import GoogleProvider from 'next-auth/providers/google';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/prisma/prisma';
 
 export default NextAuth({
   providers: [
@@ -12,7 +12,7 @@ export default NextAuth({
   ],
   adapter: PrismaAdapter(prisma),
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ account, profile }) {
       if (account?.provider === 'google') {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
