@@ -46,9 +46,33 @@ model User {
   name          String?
   email         String?   @unique
   emailVerified DateTime? @map("email_verified")
+  username      String?
+  password      String?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  roles         Role[]    @relation("users_roles")
+  archived      Boolean   @default(false)
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime? @map("updated_at")
+  accessStatus  AccessStatus  @default(PENDING) @map("access_status")
 
   @@map("users")
+}
+
+model Role {
+  id            Int       @id @default(autoincrement())
+  roleName      ERole     @default(USER)  @map("role_name")
+  users         User[]    @relation("users_roles")
+  @@map("roles")
+}
+
+enum ERole {
+  ADMIN
+  USER
+}
+
+enum AccessStatus {
+  PENDING
+  APPROVED
 }
