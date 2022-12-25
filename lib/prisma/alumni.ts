@@ -1,11 +1,13 @@
 import { prisma } from '@/lib/prisma/prisma';
 import { AlumCreateRequest } from 'pages/types/apiRequests';
+import { USER_ROLE } from 'prisma/shareData';
 
-export const createAlum = async (data: AlumCreateRequest) => {
+export const createAlum = async (alumCreateRequest: AlumCreateRequest) => {
   try {
     const alum = await prisma.user.create({
-      data: data,
+      data: alumCreateRequest,
     });
+    await prisma.$executeRaw`INSERT INTO users_roles(role_id, user_id) VALUES (${USER_ROLE.id}, ${alum.id})`;
     return {
       alum,
     };

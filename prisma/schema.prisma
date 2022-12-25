@@ -51,7 +51,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  roles         Role[]    @relation("users_roles")
+  roles         UserRole[]
   archived      Boolean   @default(false)
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime? @map("updated_at")
@@ -63,8 +63,18 @@ model User {
 model Role {
   id            Int       @id @default(autoincrement())
   roleName      ERole     @default(USER)  @map("role_name")
-  users         User[]    @relation("users_roles")
+  users         UserRole[]
   @@map("roles")
+}
+
+model UserRole {
+  @@id([userId, roleId])
+  roleId        Int       @map("role_id")
+  userId        String    @map("user_id")
+  user          User      @relation(fields: [userId], references: [id])
+  role          Role      @relation(fields: [roleId], references: [id])
+
+  @@map("users_roles")
 }
 
 enum ERole {

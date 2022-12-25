@@ -1,22 +1,14 @@
 import { PrismaClient } from '@prisma/client';
+import { ADMIN_ROLE, USER_ROLE } from './shareData';
 const prisma = new PrismaClient();
 
-async function initLoad() {
+async function initInsertRoles() {
   await prisma.role.createMany({
-    data: [
-      {
-        id: 1,
-        roleName: 'ADMIN',
-      },
-      {
-        id: 2,
-        roleName: 'USER',
-      },
-    ],
+    data: [ADMIN_ROLE, USER_ROLE],
   });
 }
 
-initLoad()
+initInsertRoles()
   .then(async () => {
     await prisma.$disconnect();
   })
