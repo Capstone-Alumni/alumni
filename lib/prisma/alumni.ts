@@ -11,7 +11,7 @@ export const createAlum = async (alumCreateRequest: AlumCreateRequest) => {
     });
     const alumResponse = exclude(newAlum, ['password']);
     return {
-      alum: alumResponse,
+      ...alumResponse,
     };
   } catch (error) {
     return { error };
