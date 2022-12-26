@@ -1,6 +1,6 @@
 import {
-  checkExistedEmail,
-  checkExistedUsername,
+  checkEmailIsExisted,
+  checkUsernameIsExisted,
   createAlum,
 } from '@/lib/prisma/alumni';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -15,7 +15,7 @@ const signup = async (
   try {
     const { email, username, password } =
       request.body as unknown as AlumCreateRequest;
-    const isEmailExisted = await checkExistedEmail(email);
+    const isEmailExisted = await checkEmailIsExisted(email);
     if (isEmailExisted) {
       return response.status(400).json({
         status: 'ERROR',
@@ -23,7 +23,7 @@ const signup = async (
       });
     }
 
-    const isUsernameExisted = await checkExistedUsername(username);
+    const isUsernameExisted = await checkUsernameIsExisted(username);
     if (isUsernameExisted) {
       return response.status(400).json({
         status: 'ERROR',

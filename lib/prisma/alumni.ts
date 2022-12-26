@@ -1,42 +1,44 @@
 import { prisma } from '@/lib/prisma/prisma';
 import { AlumCreateRequest } from 'pages/types/apiRequests';
-import { USER_ROLE } from 'prisma/shareData';
+import { isNull } from 'lodash';
+import { exclude } from './helpers';
+import { User } from '@prisma/client';
 
 export const createAlum = async (alumCreateRequest: AlumCreateRequest) => {
   try {
-    const alum = await prisma.user.create({
+    const newAlum = await prisma.user.create({
       data: alumCreateRequest,
     });
-    await prisma.$executeRaw`INSERT INTO users_roles(role_id, user_id) VALUES (${USER_ROLE.id}, ${alum.id})`;
+    const alumResponse = exclude(newAlum, ['password']);
     return {
-      alum,
+      alum: alumResponse,
     };
   } catch (error) {
     return { error };
   }
 };
 
-export const checkExistedEmail = async (email: string) => {
+export const checkEmailIsExisted = async (email: string) => {
   try {
-    const alumnus = prisma.user.findUnique({
+    const alum = await prisma.user.findUnique({
       where: {
         email,
       },
     });
-    return alumnus || null;
+    return !isNull(alum);
   } catch (error) {
     return error;
   }
 };
 
-export const checkExistedUsername = async (username: string) => {
+export const checkUsernameIsExisted = async (username: string) => {
   try {
-    const alumnus = prisma.user.findUnique({
+    const alum = await prisma.user.findUnique({
       where: {
         username,
       },
     });
-    return alumnus || null;
+    return !isNull(alum);
   } catch (error) {
     return error;
   }
@@ -49,7 +51,10 @@ export const getAlums = async () => {
         archived: false,
       },
     });
-    return alumns;
+    const alumsResponse = alumns.map((alum: User) =>
+      exclude(alum, ['password']),
+    );
+    return alumsResponse;
   } catch (error) {
     return error;
   }
