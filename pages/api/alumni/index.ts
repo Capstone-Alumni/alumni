@@ -1,0 +1,27 @@
+import { getAlums } from '@/lib/prisma/alumni';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { ApiErrorResponse, ApiSuccessResponse } from 'pages/types/apiResponses';
+
+const handler = async (
+  request: NextApiRequest,
+  response: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+) => {
+  try {
+    const alums = (await getAlums()) as unknown[];
+    return response.status(200).json({
+      status: 'OK',
+      data: {
+        items: alums,
+        totalItems: alums.length,
+        itemPage: 1,
+      },
+    });
+  } catch (error) {
+    return response.status(500).json({
+      status: 'ERROR',
+      message: error as string,
+    });
+  }
+};
+
+export default handler;

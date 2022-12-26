@@ -33,6 +33,11 @@ ALTER DATABASE high_school_alumni OWNER TO alumni;
 ```
 * Reference: https://www.postgresql.org/docs/current/sql-alterdatabase.html
 
+## Setup env
+* Copy file `.env.example` to file `.env`, replace `<<YOUR_USER_NAME/YOUR_PASSWORD>>` by your database's username and password*
+
+* Reference: https://vercel.com/guides/nextjs-prisma-postgres
+
 ## Integrating database with your development environment
 1. Install new packages:
 * Run this command
@@ -43,7 +48,10 @@ yarn
 ```bash
 yarn prisma init
 ```
-* This creates the following files inside a new prisma directory:
-* Copy file `.env.example` to file `.env`, replace `<<YOUR_USER_NAME/YOUR_PASSWORD>>` by your database's username and password
+3. Migrate database
+- After creating/updating/deleting somethings in file `schema.prisma`, should run this command:
+```bash
+yarn prisma migrate dev --name <your_title>
+```
+- After running this command, prisma will auto generate a `*.sql` file for tracking changes in your database.
 
-* Reference: https://vercel.com/guides/nextjs-prisma-postgres
