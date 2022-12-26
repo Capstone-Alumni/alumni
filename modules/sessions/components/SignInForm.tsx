@@ -4,15 +4,19 @@ import noop from 'lodash/fp/noop';
 
 import { signIn } from 'next-auth/react';
 
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Checkbox from '@mui/material/Checkbox';
-import Button from '@mui/material/Button';
-import { SCHOOL_NAME } from 'constant';
 import { Controller, useForm } from 'react-hook-form';
-import { useTheme } from '@mui/system';
-import { Divider, IconButton, Link, Stack, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  Checkbox,
+  Divider,
+  FormControlLabel,
+  IconButton,
+  Link,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 import googleFill from '@iconify/icons-eva/google-fill';
 import twitterFill from '@iconify/icons-eva/twitter-fill';
@@ -20,7 +24,7 @@ import facebookFill from '@iconify/icons-eva/facebook-fill';
 import { Icon } from '@iconify/react';
 
 const SignInForm = () => {
-  const { control } = useForm({
+  const { control, handleSubmit } = useForm({
     defaultValues: {
       usernameOrEmail: '',
       password: '',
@@ -28,21 +32,10 @@ const SignInForm = () => {
     },
   });
 
+  const onSubmit = noop;
+
   return (
     <Box sx={{ height: '100%' }}>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '1rem',
-          left: '1rem',
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
-      >
-        <Typography variant="h5">{SCHOOL_NAME}</Typography>
-      </Box>
-
       <Box
         sx={{
           display: 'flex',
@@ -53,7 +46,7 @@ const SignInForm = () => {
       >
         <Box
           sx={{
-            margin: 'auto',
+            margin: '2rem 10vw',
           }}
         >
           <Typography mb={2} variant="h4">
@@ -64,7 +57,9 @@ const SignInForm = () => {
             <Typography sx={{ mr: 1 }} variant="body2">
               Chưa có tài khoản?
             </Typography>
-            <Link variant="subtitle2">Đăng ký ngay</Link>
+            <Link variant="subtitle2" href="/sign_up">
+              Đăng ký ngay
+            </Link>
           </Box>
 
           <Controller
@@ -109,7 +104,12 @@ const SignInForm = () => {
             <Link underline="always">Quên mật khẩu</Link>
           </Box>
 
-          <Button fullWidth size="large" variant="contained">
+          <Button
+            fullWidth
+            size="large"
+            variant="contained"
+            onClick={handleSubmit(onSubmit)}
+          >
             Đăng nhập
           </Button>
 
