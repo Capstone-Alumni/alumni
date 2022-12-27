@@ -1,6 +1,5 @@
 // FE
 export type SignUpFormValues = {
-  // fullName: string;
   username: string;
   email: string;
   password: string;

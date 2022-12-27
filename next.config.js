@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true, // Recommended for the `pages` directory, default in `app`.
   experimental: {
     // Required:
-    appDir: true
+    appDir: true,
   },
   compiler: {
     styledComponents: true,
@@ -11,6 +11,6 @@ const nextConfig = {
   eslint: {
     dirs: ['app', 'lib', 'modules', 'pages', 'types'],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

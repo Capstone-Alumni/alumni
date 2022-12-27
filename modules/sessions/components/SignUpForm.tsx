@@ -6,6 +6,7 @@ import * as yup from 'yup';
 
 import { signIn } from 'next-auth/react';
 import { Controller, useForm } from 'react-hook-form';
+
 import {
   Box,
   Button,
@@ -22,6 +23,12 @@ import twitterFill from '@iconify/icons-eva/twitter-fill';
 import facebookFill from '@iconify/icons-eva/facebook-fill';
 import { Icon } from '@iconify/react';
 
+import {
+  requiredConfirmPasswordValidator,
+  requiredEmailValidator,
+  requiredPasswordValidator,
+  requiredUsernameValidator,
+} from '@share/utils/validators';
 import useYupValidateionResolver from '@share/utils/useYupValidationResolver';
 
 import { SignUpFormValues } from '../types';
@@ -29,38 +36,10 @@ import useSignUp from '../hooks/useSignUp';
 
 const validationSchema = yup
   .object({
-    // Considering put full name in sign-up or in verification page
-    // fullName: yup
-    //   .string()
-    //   .matches(
-    //     /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/,
-    //     'Tên của bạn không hợp lệ',
-    //   )
-    //   .max(40, 'Tối đa 40 ký tự')
-    //   .required('Bắt buộc'),
-    username: yup
-      .string()
-      .matches(
-        /^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._@]+(?<![_.])$/, // Không bắt đàu bằng . hoặc _, không chứa ._ _. __ .. ở giữa, không kêt thúc bằng _ hoặc ., chỉ chứa a-zA-Z0-9._@
-        'Tên tài khoản không hợp lệ',
-      )
-      .min(6, 'Tổi thiểu 6 ký tự')
-      .max(40, 'Tối đa 40 ký tự')
-      .required('Bắt buộc'),
-    email: yup.string().email('Email không hợp lệ').required('Bắt buộc'),
-    password: yup
-      .string()
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        'Mật khẩu phải chứa ít nhất 8 ký tự, trong đó có phải có 1 chữ in thường, 1 chữ in hoa, 1 chữ số, và 1 ký tự đặt biệt',
-      )
-      .min(8, 'Tối thiểu 8 ký tự')
-      .max(40, 'Tối đa 40 ký tự')
-      .required('Bắt buộc'),
-    confirmPassword: yup
-      .string()
-      .oneOf([yup.ref('password'), null], 'Mật khẩu không khớp')
-      .required('Bắt buộc'),
+    username: requiredUsernameValidator,
+    email: requiredEmailValidator,
+    password: requiredPasswordValidator,
+    confirmPassword: requiredConfirmPasswordValidator,
   })
   .required();
 
@@ -72,7 +51,6 @@ const SignUpForm = () => {
   const { control, handleSubmit } = useForm<SignUpFormValues>({
     mode: 'onChange',
     defaultValues: {
-      // fullName: '',
       username: '',
       email: '',
       password: '',
@@ -111,21 +89,6 @@ const SignUpForm = () => {
             Đăng nhập tại đây
           </Link>
         </Box>
-
-        {/* <Controller
-          control={control}
-          name="fullName"
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              fullWidth
-              label="Họ và tên *"
-              {...field}
-              error={Boolean(error?.message)}
-              helperText={error?.message}
-              sx={{ mb: 3 }}
-            />
-          )}
-        /> */}
 
         <Controller
           control={control}

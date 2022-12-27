@@ -2,7 +2,7 @@ import {
   checkEmailIsExisted,
   checkUsernameIsExisted,
   createAlum,
-} from '@/lib/prisma/alumni';
+} from '@lib/prisma/alumni';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { AlumCreateRequest } from 'pages/types/apiRequests';
 import { hashSync } from 'bcrypt';
@@ -12,6 +12,13 @@ const signup = async (
   request: NextApiRequest,
   response: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
 ) => {
+  if (request.method !== 'POST') {
+    response
+      .status(405)
+      .send({ status: 'ERROR', message: 'Only POST requests allowed' });
+    return;
+  }
+
   try {
     const { email, username, password } =
       request.body as unknown as AlumCreateRequest;
