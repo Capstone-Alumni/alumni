@@ -1,11 +1,9 @@
 'use client';
 
 import noop from 'lodash/fp/noop';
-import omit from 'lodash/fp/omit';
 
 import * as yup from 'yup';
 
-import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { Controller, useForm } from 'react-hook-form';
 import {
@@ -24,26 +22,22 @@ import twitterFill from '@iconify/icons-eva/twitter-fill';
 import facebookFill from '@iconify/icons-eva/facebook-fill';
 import { Icon } from '@iconify/react';
 
-import useYupValidateionResolver from 'modules/share/utils/useYupValidationResolver';
+import useYupValidateionResolver from '@share/utils/useYupValidationResolver';
 
-type FormValues = {
-  fullName: string;
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
+import { SignUpFormValues } from '../types';
+import useSignUp from '../hooks/useSignUp';
 
 const validationSchema = yup
   .object({
-    fullName: yup
-      .string()
-      .matches(
-        /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/,
-        'Tên của bạn không hợp lệ',
-      )
-      .max(40, 'Tối đa 40 ký tự')
-      .required('Bắt buộc'),
+    // Considering put full name in sign-up or in verification page
+    // fullName: yup
+    //   .string()
+    //   .matches(
+    //     /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/,
+    //     'Tên của bạn không hợp lệ',
+    //   )
+    //   .max(40, 'Tối đa 40 ký tự')
+    //   .required('Bắt buộc'),
     username: yup
       .string()
       .matches(
@@ -71,14 +65,14 @@ const validationSchema = yup
   .required();
 
 const SignUpForm = () => {
-  const router = useRouter();
+  const { signUp, isLoading } = useSignUp();
 
   const resolver = useYupValidateionResolver(validationSchema);
 
-  const { control, handleSubmit } = useForm<FormValues>({
+  const { control, handleSubmit } = useForm<SignUpFormValues>({
     mode: 'onChange',
     defaultValues: {
-      fullName: '',
+      // fullName: '',
       username: '',
       email: '',
       password: '',
@@ -87,9 +81,8 @@ const SignUpForm = () => {
     resolver,
   });
 
-  const onSubmit = (values: FormValues) => {
-    const payload = omit(['comfirmPassword'])(values);
-    router.push('/verify-account');
+  const onSubmit = async (values: SignUpFormValues) => {
+    await signUp(values);
   };
 
   return (
@@ -119,7 +112,7 @@ const SignUpForm = () => {
           </Link>
         </Box>
 
-        <Controller
+        {/* <Controller
           control={control}
           name="fullName"
           render={({ field, fieldState: { error } }) => (
@@ -132,7 +125,7 @@ const SignUpForm = () => {
               sx={{ mb: 3 }}
             />
           )}
-        />
+        /> */}
 
         <Controller
           control={control}
@@ -201,6 +194,7 @@ const SignUpForm = () => {
           size="large"
           variant="contained"
           onClick={handleSubmit(onSubmit)}
+          disabled={isLoading}
         >
           Đăng ký
         </Button>
