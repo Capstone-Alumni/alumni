@@ -9,7 +9,9 @@ import { compareSync } from 'bcrypt';
 import { randomBytes, randomUUID } from 'crypto';
 import jwt from 'jsonwebtoken';
 import { exclude } from '@/lib/prisma/helpers';
-export default NextAuth({
+import { AuthOptions } from 'next-auth';
+
+export const nextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || '',
@@ -108,4 +110,5 @@ export default NextAuth({
       return decodedJwt;
     },
   },
-});
+} as AuthOptions;
+export default NextAuth(nextAuthOptions);
