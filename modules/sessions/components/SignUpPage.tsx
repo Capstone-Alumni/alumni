@@ -1,6 +1,9 @@
 'use client';
 
 import { Box, Grid } from '@mui/material';
+import { ResetPasswordForm } from 'modules/share/components/authentication/reset-password';
+import BadgeStatus from 'modules/share/components/BadgeStatus';
+import MyAvatar from 'modules/share/components/MyAvatar';
 import { BrowserView, MobileView } from 'react-device-detect';
 import SignUpForm from './SignUpForm';
 
