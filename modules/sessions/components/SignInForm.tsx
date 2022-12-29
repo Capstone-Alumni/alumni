@@ -32,7 +32,12 @@ const SignInForm = () => {
     },
   });
 
-  const onSubmit = noop;
+  const onSubmit = async (value: any) => {
+    await signIn('credentials', {
+      usernameOrEmail: value.usernameOrEmail,
+      password: value.password,
+    });
+  };
 
   return (
     <Box sx={{ height: '100%' }}>
