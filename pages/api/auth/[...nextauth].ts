@@ -7,8 +7,8 @@ import { findUserByEmail, findUserByUsername } from '@/lib/prisma/alumni';
 import { User } from '@prisma/client';
 import { compareSync } from 'bcrypt';
 import { randomBytes, randomUUID } from 'crypto';
-import { User as UserAuth } from 'next-auth';
-
+import jwt from 'jsonwebtoken';
+import { exclude } from '@/lib/prisma/helpers';
 export default NextAuth({
   providers: [
     GoogleProvider({
@@ -44,12 +44,8 @@ export default NextAuth({
           passwordEncrypted &&
           compareSync(password, passwordEncrypted)
         ) {
-          return {
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            image: user.image,
-          } as UserAuth;
+          const userWithoutSensitiveInfo = exclude(user, ['password']);
+          return userWithoutSensitiveInfo;
         }
         return null;
       },
@@ -76,15 +72,17 @@ export default NextAuth({
       return token;
     },
     session({ session, token }) {
-      if (token) {
-        session.id = token.id;
-        session.user = token.user;
-      }
+      const secret = process.env.NEXTAUTH_SECRET || '';
+      const encodedToken = jwt.sign(token, secret, {
+        algorithm: 'HS256',
+      });
+      session.id = token.id;
+      session.accessToken = encodedToken;
       return session;
     },
   },
   session: {
-    strategy: 'database',
+    strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
 
     updateAge: 24 * 60 * 60, // 24 hours
@@ -94,5 +92,20 @@ export default NextAuth({
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-  jwt: {},
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET,
+    encode: async ({ secret, token }) => {
+      // Do other stuff
+      const jwtToken = jwt.sign(token as any, secret, {
+        algorithm: 'HS256',
+      });
+      return jwtToken;
+    },
+    decode: async ({ secret, token }) => {
+      const decodedJwt = jwt.verify(token as string, secret, {
+        algorithms: ['HS256'],
+      }) as any;
+      return decodedJwt;
+    },
+  },
 });
