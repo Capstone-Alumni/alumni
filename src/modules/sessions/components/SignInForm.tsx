@@ -23,6 +23,11 @@ import twitterFill from '@iconify/icons-eva/twitter-fill';
 import facebookFill from '@iconify/icons-eva/facebook-fill';
 import { Icon } from '@iconify/react';
 
+type SignInFormValues = {
+  usernameOrEmail: string;
+  password: string;
+};
+
 const SignInForm = () => {
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -32,11 +37,32 @@ const SignInForm = () => {
     },
   });
 
-  const onSubmit = async (value: any) => {
+  const onSubmit = async (value: SignInFormValues) => {
+    // const response = await fetch('/api/signIn', {
+    //   method: 'POST',
+    //   body: JSON.stringify({
+    //     usernameOrEmail: value.usernameOrEmail,
+    //     password: value.password,
+    //   }),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // });
     await signIn('credentials', {
       usernameOrEmail: value.usernameOrEmail,
       password: value.password,
-    });
+      redirect: false,
+    })
+      .then(res => {
+        if (res?.error) {
+          // handle error
+        } else {
+          // redirect
+        }
+      })
+      .catch(err => {
+        // handle error
+      });
   };
 
   return (
