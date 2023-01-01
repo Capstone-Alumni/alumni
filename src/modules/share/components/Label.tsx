@@ -2,7 +2,7 @@
 import { alpha, styled, Theme, useTheme } from '@mui/material';
 import { BoxProps } from '@mui/material';
 // @types
-import { ColorSchema } from 'lib/@types/theme';
+import { ColorSchema } from 'src/lib/@types/theme';
 
 // ----------------------------------------------------------------------
 

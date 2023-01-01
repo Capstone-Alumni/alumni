@@ -5,7 +5,7 @@ import ProvidersWrapper from './ProvidersWrapper';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import ThemeConfig from '../lib/mui';
-import createEmotionCache from 'modules/share/utils/createEmotionCache';
+import createEmotionCache from 'src/modules/share/utils/createEmotionCache';
 
 const clientSideEmotionCache = createEmotionCache();
 

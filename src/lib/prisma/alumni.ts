@@ -1,5 +1,5 @@
-import { prisma } from '@lib/prisma/prisma';
-import { AlumCreateRequest } from 'pages/types/apiRequests';
+import { prisma } from 'src/lib/prisma/prisma';
+import { AlumCreateRequest } from 'src/pages/types/apiRequests';
 import { exclude } from './helpers';
 import { User } from '@prisma/client';
 

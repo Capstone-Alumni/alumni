@@ -2,11 +2,11 @@ import {
   createAlum,
   findUserByEmail,
   findUserByUsername,
-} from '@lib/prisma/alumni';
+} from 'src/lib/prisma/alumni';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { AlumCreateRequest } from 'pages/types/apiRequests';
+import { AlumCreateRequest } from 'src/pages/types/apiRequests';
 import { hashSync } from 'bcrypt';
-import { ApiErrorResponse, ApiSuccessResponse } from 'pages/types/apiResponses';
+import { ApiErrorResponse, ApiSuccessResponse } from 'src/pages/types/apiResponses';
 
 const signup = async (
   request: NextApiRequest,

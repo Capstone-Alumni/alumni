@@ -16,8 +16,8 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@lib/*": ["lib/*"],
-      "@share/*": ["modules/share/*"],
+      "@lib/*": ["src/lib/*"],
+      "@share/*": ["src/modules/share/*"],
     },
     "plugins": [
       {

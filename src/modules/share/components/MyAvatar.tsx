@@ -1,7 +1,7 @@
 //
 import { MAvatar } from './@material-extend';
 import { MAvatarProps } from './@material-extend/MAvatar';
-import createAvatar from 'modules/share/utils/createAvatar';
+import createAvatar from 'src/modules/share/utils/createAvatar';
 
 // ----------------------------------------------------------------------
 

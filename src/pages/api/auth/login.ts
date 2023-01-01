@@ -3,7 +3,7 @@ import { compareSync } from 'bcrypt';
 import { NextApiResponse } from 'next';
 import { NextApiRequest } from 'next';
 import { User } from '@prisma/client';
-import { ApiErrorResponse, ApiSuccessResponse } from 'pages/types/apiResponses';
+import { ApiErrorResponse, ApiSuccessResponse } from 'src/pages/types/apiResponses';
 import { omit } from 'lodash';
 
 const login = async (

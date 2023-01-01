@@ -28,8 +28,8 @@ import {
   requiredEmailValidator,
   requiredPasswordValidator,
   requiredUsernameValidator,
-} from '@share/utils/validators';
-import useYupValidateionResolver from '@share/utils/useYupValidationResolver';
+} from 'src/modules/share/utils/validators';
+import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 
 import { SignUpFormValues } from '../types';
 import useSignUp from '../hooks/useSignUp';

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 
-import useApi from 'modules/share/hooks/useApi';
+import useApi from 'src/modules/share/hooks/useApi';
 
 import { SignUpFormPayload, SignUpFormValues } from '../types';
 
