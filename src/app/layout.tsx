@@ -1,11 +1,12 @@
 'use client';
 
 import React from 'react';
-import ProvidersWrapper from './ProvidersWrapper';
+import { SessionProvider } from 'next-auth/react';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import ThemeConfig from '../lib/mui';
-import createEmotionCache from 'src/modules/share/utils/createEmotionCache';
+
+import ThemeConfig from '@lib/mui';
+import createEmotionCache from '@share/utils/createEmotionCache';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -23,11 +24,11 @@ export default function RootLayout({
         <meta content="initial-scale=1, width=device-width" name="viewport" />
       </head>
       <body style={{ margin: 0, minHeight: '100vh' }}>
-        <ProvidersWrapper>
+        <SessionProvider>
           <CacheProvider value={emotionCache}>
             <ThemeConfig>{children}</ThemeConfig>
           </CacheProvider>
-        </ProvidersWrapper>
+        </SessionProvider>
       </body>
     </html>
   );
