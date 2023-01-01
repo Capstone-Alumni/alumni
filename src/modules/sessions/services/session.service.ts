@@ -1,7 +1,7 @@
-import { hashSync } from 'bcrypt';
+import { compareSync, hashSync } from 'bcrypt';
 import { omit } from 'lodash';
 import { prisma } from '@lib/prisma/prisma';
-import { SignUpRequestBody } from '../types';
+import { SignInRequestBody, SignUpRequestBody } from '../types';
 
 export default class SessionService {
   static signUp = async ({ email, username, password }: SignUpRequestBody) => {
@@ -26,5 +26,29 @@ export default class SessionService {
     });
 
     return omit(newUser, 'password');
+  };
+
+  static signIn = async ({
+    usernameOrEmail,
+    password: passwordInputted,
+  }: SignInRequestBody) => {
+    const existedUsers = await prisma.user.findMany({
+      where: {
+        OR: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
+      },
+    });
+
+    if (existedUsers.length !== 1) {
+      throw new Error('sign-in failed');
+    }
+
+    const user = existedUsers[0];
+    const { password } = user;
+
+    if (password && compareSync(passwordInputted, password)) {
+      return omit(user, 'password');
+    }
+
+    throw new Error('sign-in failed');
   };
 }

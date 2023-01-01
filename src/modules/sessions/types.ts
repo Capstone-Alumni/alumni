@@ -18,3 +18,8 @@ export type SignUpRequestBody = {
   email: string;
   password: string;
 };
+
+export type SignInRequestBody = {
+  usernameOrEmail: string;
+  password: string;
+};
