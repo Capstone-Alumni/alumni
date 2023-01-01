@@ -1,60 +1,23 @@
-import {
-  createAlum,
-  findUserByEmail,
-  findUserByUsername,
-} from 'src/lib/prisma/alumni';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { AlumCreateRequest } from 'src/pages/types/apiRequests';
-import { hashSync } from 'bcrypt';
-import { ApiErrorResponse, ApiSuccessResponse } from 'src/pages/types/apiResponses';
+import SessionController from 'src/modules/sessions/controller/session.controller';
 
-const signup = async (
-  request: NextApiRequest,
-  response: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
-) => {
-  if (request.method !== 'POST') {
-    response
-      .status(405)
-      .send({ status: 'ERROR', message: 'Only POST requests allowed' });
-    return;
-  }
-
-  try {
-    const { email, username, password } =
-      request.body as unknown as AlumCreateRequest;
-    const isEmailExisted = await findUserByEmail(email);
-    if (isEmailExisted) {
-      return response.status(400).json({
-        status: 'ERROR',
-        message: 'Email is already existed',
-      });
-    }
-
-    const isUsernameExisted = await findUserByUsername(username);
-    if (isUsernameExisted) {
-      return response.status(400).json({
-        status: 'ERROR',
-        message: 'Username is already existed',
-      });
-    }
-
-    const passwordEncrypted = hashSync(password, 10);
-
-    const newAlum = await createAlum({
-      username,
-      email,
-      password: passwordEncrypted,
-    });
-    return response.status(201).json({
-      status: 'OK',
-      data: newAlum,
-    });
-  } catch (error) {
-    return response.status(500).json({
-      status: 'ERROR',
-      message: error as string,
-    });
-  }
+export type SignUpRequest = {
+  username: string;
+  email: string;
+  password: string;
 };
 
-export default signup;
+export default function signUpHandler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  const { method } = req;
+
+  switch (method) {
+    case 'POST':
+      return SessionController.signUp(req, res);
+    default:
+      res.setHeader('Allow', ['POST']);
+      res.status(405).end(`Method ${method} Not Allowed`);
+  }
+}

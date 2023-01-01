@@ -1,10 +1,11 @@
+// BE
 export type ApiSuccessResponse = {
-  status: string;
+  status: true;
   data: unknown | ItemsResponse;
 };
 
 export type ApiErrorResponse = {
-  status: string;
+  status: false;
   message: string;
 };
 
