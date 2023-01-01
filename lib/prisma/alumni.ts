@@ -1,6 +1,5 @@
 import { prisma } from '@lib/prisma/prisma';
 import { AlumCreateRequest } from 'pages/types/apiRequests';
-import { isNull } from 'lodash';
 import { exclude } from './helpers';
 import { User } from '@prisma/client';
 
@@ -18,27 +17,27 @@ export const createAlum = async (alumCreateRequest: AlumCreateRequest) => {
   }
 };
 
-export const checkEmailIsExisted = async (email: string) => {
+export const findUserByEmail = async (email: string) => {
   try {
     const alum = await prisma.user.findUnique({
       where: {
         email,
       },
     });
-    return !isNull(alum);
+    return alum || null;
   } catch (error) {
     return error;
   }
 };
 
-export const checkUsernameIsExisted = async (username: string) => {
+export const findUserByUsername = async (username: string) => {
   try {
     const alum = await prisma.user.findUnique({
       where: {
         username,
       },
     });
-    return !isNull(alum);
+    return alum || null;
   } catch (error) {
     return error;
   }
