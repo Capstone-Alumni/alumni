@@ -40,16 +40,16 @@ export const nextAuthOptions = {
           ? ((await findUserByEmail(usernameOrEmail)) as User)
           : ((await findUserByUsername(usernameOrEmail)) as User);
 
-        const { password: passwordEncrypted } = user;
-        if (
-          user &&
-          passwordEncrypted &&
-          compareSync(password, passwordEncrypted)
-        ) {
-          const userWithoutSensitiveInfo = exclude(user, ['password']);
-          return userWithoutSensitiveInfo;
+        if (user) {
+          const { password: passwordEncrypted } = user;
+
+          if (passwordEncrypted && compareSync(password, passwordEncrypted)) {
+            const userWithoutSensitiveInfo = exclude(user, ['password']);
+            return userWithoutSensitiveInfo;
+          }
+          throw new Error('Wrong password');
         }
-        return null;
+        throw new Error('User not found');
       },
     }),
   ],

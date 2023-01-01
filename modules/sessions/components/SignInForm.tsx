@@ -33,10 +33,18 @@ const SignInForm = () => {
   });
 
   const onSubmit = async (value: any) => {
-    await signIn('credentials', {
+    const signInReponses = await signIn('credentials', {
       usernameOrEmail: value.usernameOrEmail,
       password: value.password,
+      redirect: false,
     });
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const { error } = signInReponses!; // Best practice is: const { ok, error } = signInReponses!;
+    if (error) {
+      console.log('Error: ', error);
+    } else {
+      window.location.replace('/');
+    }
   };
 
   return (
