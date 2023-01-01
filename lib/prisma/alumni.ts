@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma/prisma';
+import { prisma } from '@lib/prisma/prisma';
 import { AlumCreateRequest } from 'pages/types/apiRequests';
 import { isNull } from 'lodash';
 import { exclude } from './helpers';

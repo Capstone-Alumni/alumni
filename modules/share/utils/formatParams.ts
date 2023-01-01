@@ -3,7 +3,7 @@
  * @param {*} params
  */
 
-const formatSearchParams = (params: any) => {
+const formatSearchParams = (params: object) => {
   let paramsString = '';
   Object.entries(params).forEach(([key, value]) => {
     if (value !== '' && value !== null && value !== undefined) {

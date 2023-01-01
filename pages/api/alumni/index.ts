@@ -1,4 +1,4 @@
-import { getAlums } from '@/lib/prisma/alumni';
+import { getAlums } from '@lib/prisma/alumni';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ApiErrorResponse, ApiSuccessResponse } from 'pages/types/apiResponses';
 

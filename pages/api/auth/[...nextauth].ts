@@ -1,7 +1,7 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import NextAuth from 'next-auth/next';
 import GoogleProvider from 'next-auth/providers/google';
-import { prisma } from '@/lib/prisma/prisma';
+import { prisma } from '@lib/prisma/prisma';
 
 export default NextAuth({
   providers: [
@@ -20,7 +20,7 @@ export default NextAuth({
       }
       return true;
     },
-    async redirect({ url, baseUrl }) {
+    async redirect({ baseUrl }) {
       return baseUrl;
     },
   },

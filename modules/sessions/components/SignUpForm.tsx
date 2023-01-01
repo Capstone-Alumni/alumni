@@ -1,13 +1,12 @@
 'use client';
 
 import noop from 'lodash/fp/noop';
-import omit from 'lodash/fp/omit';
 
 import * as yup from 'yup';
 
-import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { Controller, useForm } from 'react-hook-form';
+
 import {
   Box,
   Button,
@@ -24,61 +23,34 @@ import twitterFill from '@iconify/icons-eva/twitter-fill';
 import facebookFill from '@iconify/icons-eva/facebook-fill';
 import { Icon } from '@iconify/react';
 
-import useYupValidateionResolver from 'modules/share/utils/useYupValidationResolver';
+import {
+  requiredConfirmPasswordValidator,
+  requiredEmailValidator,
+  requiredPasswordValidator,
+  requiredUsernameValidator,
+} from '@share/utils/validators';
+import useYupValidateionResolver from '@share/utils/useYupValidationResolver';
 
-type FormValues = {
-  fullName: string;
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
+import { SignUpFormValues } from '../types';
+import useSignUp from '../hooks/useSignUp';
 
 const validationSchema = yup
   .object({
-    fullName: yup
-      .string()
-      .matches(
-        /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s\W|_]+$/,
-        'Tên của bạn không hợp lệ',
-      )
-      .max(40, 'Tối đa 40 ký tự')
-      .required('Bắt buộc'),
-    username: yup
-      .string()
-      .matches(
-        /^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._@]+(?<![_.])$/, // Không bắt đàu bằng . hoặc _, không chứa ._ _. __ .. ở giữa, không kêt thúc bằng _ hoặc ., chỉ chứa a-zA-Z0-9._@
-        'Tên tài khoản không hợp lệ',
-      )
-      .min(6, 'Tổi thiểu 6 ký tự')
-      .max(40, 'Tối đa 40 ký tự')
-      .required('Bắt buộc'),
-    email: yup.string().email('Email không hợp lệ').required('Bắt buộc'),
-    password: yup
-      .string()
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        'Mật khẩu phải chứa ít nhất 8 ký tự, trong đó có phải có 1 chữ in thường, 1 chữ in hoa, 1 chữ số, và 1 ký tự đặt biệt',
-      )
-      .min(8, 'Tối thiểu 8 ký tự')
-      .max(40, 'Tối đa 40 ký tự')
-      .required('Bắt buộc'),
-    confirmPassword: yup
-      .string()
-      .oneOf([yup.ref('password'), null], 'Mật khẩu không khớp')
-      .required('Bắt buộc'),
+    username: requiredUsernameValidator,
+    email: requiredEmailValidator,
+    password: requiredPasswordValidator,
+    confirmPassword: requiredConfirmPasswordValidator,
   })
   .required();
 
 const SignUpForm = () => {
-  const router = useRouter();
+  const { signUp, isLoading } = useSignUp();
 
   const resolver = useYupValidateionResolver(validationSchema);
 
-  const { control, handleSubmit } = useForm<FormValues>({
+  const { control, handleSubmit } = useForm<SignUpFormValues>({
     mode: 'onChange',
     defaultValues: {
-      fullName: '',
       username: '',
       email: '',
       password: '',
@@ -87,9 +59,8 @@ const SignUpForm = () => {
     resolver,
   });
 
-  const onSubmit = (values: FormValues) => {
-    const payload = omit(['comfirmPassword'])(values);
-    router.push('/verify-account');
+  const onSubmit = async (values: SignUpFormValues) => {
+    await signUp(values);
   };
 
   return (
@@ -118,21 +89,6 @@ const SignUpForm = () => {
             Đăng nhập tại đây
           </Link>
         </Box>
-
-        <Controller
-          control={control}
-          name="fullName"
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              fullWidth
-              label="Họ và tên *"
-              {...field}
-              error={Boolean(error?.message)}
-              helperText={error?.message}
-              sx={{ mb: 3 }}
-            />
-          )}
-        />
 
         <Controller
           control={control}
@@ -201,6 +157,7 @@ const SignUpForm = () => {
           size="large"
           variant="contained"
           onClick={handleSubmit(onSubmit)}
+          disabled={isLoading}
         >
           Đăng ký
         </Button>

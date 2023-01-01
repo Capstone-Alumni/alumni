@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback } from 'react';
 
 const useYupValidationResolver = <T>(validationSchema: any) =>
@@ -12,11 +13,11 @@ const useYupValidationResolver = <T>(validationSchema: any) =>
           values,
           errors: {},
         };
-      } catch (errors) {
+      } catch (errors: any) {
         return {
           values: {},
           errors: errors.inner.reduce(
-            (allErrors, currentError) => ({
+            (allErrors: any, currentError: any) => ({
               ...allErrors,
               [currentError.path]: {
                 type: currentError.type ?? 'validation',

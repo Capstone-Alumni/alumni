@@ -4178,6 +4178,13 @@ svg-arc-to-cubic-bezier@^3.0.0, svg-arc-to-cubic-bezier@^3.2.0:
   resolved "https://registry.yarnpkg.com/svg-arc-to-cubic-bezier/-/svg-arc-to-cubic-bezier-3.2.0.tgz#390c450035ae1c4a0104d90650304c3bc814abe6"
   integrity sha512-djbJ/vZKZO+gPoSDThGNpKDO+o+bAeA4XQKovvkNCqnIS2t+S4qnLAGQhyyrulhCFRl1WWzAp0wUDV8PpTVU3g==
 
+swr@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/swr/-/swr-2.0.0.tgz#91d999359e2be92de1a41f6b6711d72be20ffdbd"
+  integrity sha512-IhUx5yPkX+Fut3h0SqZycnaNLXLXsb2ECFq0Y29cxnK7d8r7auY2JWNbCW3IX+EqXUg3rwNJFlhrw5Ye/b6k7w==
+  dependencies:
+    use-sync-external-store "^1.2.0"
+
 synckit@^0.8.4:
   version "0.8.4"
   resolved "https://registry.yarnpkg.com/synckit/-/synckit-0.8.4.tgz#0e6b392b73fafdafcde56692e3352500261d64ec"
@@ -4429,7 +4436,7 @@ use-elapsed-time@3.0.2:
   resolved "https://registry.yarnpkg.com/use-elapsed-time/-/use-elapsed-time-3.0.2.tgz#ef22bf520e60f9873fd102925a2d5cbc5d4faaf5"
   integrity sha512-2EY9lJ5DWbAvT8wWiEp6Ztnl46DjXz2j78uhWbXaz/bg3OfpbgVucCAlcN8Bih6hTJfFTdVYX9L6ySMn5py/wQ==
 
-use-sync-external-store@1.2.0:
+use-sync-external-store@1.2.0, use-sync-external-store@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
   integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
