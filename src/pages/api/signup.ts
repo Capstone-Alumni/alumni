@@ -1,12 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import SessionController from 'src/modules/sessions/controller/session.controller';
 
-export type SignUpRequest = {
-  username: string;
-  email: string;
-  password: string;
-};
-
 export default function signUpHandler(
   req: NextApiRequest,
   res: NextApiResponse,
