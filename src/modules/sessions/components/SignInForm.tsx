@@ -2,8 +2,6 @@
 
 import noop from 'lodash/fp/noop';
 
-import { signIn } from 'next-auth/react';
-
 import { Controller, useForm } from 'react-hook-form';
 import {
   Box,
@@ -23,12 +21,16 @@ import twitterFill from '@iconify/icons-eva/twitter-fill';
 import facebookFill from '@iconify/icons-eva/facebook-fill';
 import { Icon } from '@iconify/react';
 
-type SignInFormValues = {
+import useSignIn from '../hooks/useSignIn';
+
+export type SignInFormValues = {
   usernameOrEmail: string;
   password: string;
 };
 
 const SignInForm = () => {
+  const { signIn } = useSignIn();
+
   const { control, handleSubmit } = useForm({
     defaultValues: {
       usernameOrEmail: '',
@@ -37,32 +39,8 @@ const SignInForm = () => {
     },
   });
 
-  const onSubmit = async (value: SignInFormValues) => {
-    // const response = await fetch('/api/signIn', {
-    //   method: 'POST',
-    //   body: JSON.stringify({
-    //     usernameOrEmail: value.usernameOrEmail,
-    //     password: value.password,
-    //   }),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // });
-    await signIn('credentials', {
-      usernameOrEmail: value.usernameOrEmail,
-      password: value.password,
-      redirect: false,
-    })
-      .then(res => {
-        if (res?.error) {
-          // handle error
-        } else {
-          // redirect
-        }
-      })
-      .catch(err => {
-        // handle error
-      });
+  const onSubmit = async (values: SignInFormValues) => {
+    await signIn('credentials', values);
   };
 
   return (
@@ -99,7 +77,7 @@ const SignInForm = () => {
             render={({ field }) => (
               <TextField
                 fullWidth
-                label="Username hoặc email"
+                label="Tên tài khoản hoặc email"
                 {...field}
                 sx={{ mb: 3 }}
               />
@@ -110,7 +88,12 @@ const SignInForm = () => {
             control={control}
             name="password"
             render={({ field }) => (
-              <TextField fullWidth label="Mật khẩu" {...field} />
+              <TextField
+                fullWidth
+                type="password"
+                label="Mật khẩu"
+                {...field}
+              />
             )}
           />
 
