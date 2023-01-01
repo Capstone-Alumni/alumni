@@ -1,4 +1,4 @@
-import { getAlums } from '@/lib/prisma/alumni';
+import { getAlums } from '@lib/prisma/alumni';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { unstable_getServerSession } from 'next-auth';
 import { ApiErrorResponse, ApiSuccessResponse } from 'pages/types/apiResponses';

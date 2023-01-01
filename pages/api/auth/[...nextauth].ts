@@ -2,13 +2,13 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
-import { prisma } from '@/lib/prisma/prisma';
-import { findUserByEmail, findUserByUsername } from '@/lib/prisma/alumni';
+import { prisma } from '@lib/prisma/prisma';
+import { findUserByEmail, findUserByUsername } from '@lib/prisma/alumni';
 import { User } from '@prisma/client';
 import { compareSync } from 'bcrypt';
 import { randomBytes, randomUUID } from 'crypto';
 import jwt from 'jsonwebtoken';
-import { exclude } from '@/lib/prisma/helpers';
+import { exclude } from '@lib/prisma/helpers';
 import { AuthOptions } from 'next-auth';
 
 export const nextAuthOptions = {
