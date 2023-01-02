@@ -1,7 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
+import { NextApiRequest } from 'next';
 import SessionController from 'src/modules/sessions/controller/session.controller';
 
-export default function signUpHandler(
+export default function signInHandler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
@@ -9,7 +10,7 @@ export default function signUpHandler(
 
   switch (method) {
     case 'POST':
-      return SessionController.signUp(req, res);
+      return SessionController.signIn(req, res);
     default:
       res.setHeader('Allow', ['POST']);
       res.status(405).end(`Method ${method} Not Allowed`);

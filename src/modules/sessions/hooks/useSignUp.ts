@@ -17,9 +17,8 @@ const useSignUp = () => {
     {
       revalidate: false,
       rollbackOnError: false,
-      // TODO: sign-in before redirect
       // TODO: add notification onError
-      onSuccess: () => router.push('/verify-account'),
+      onSuccess: () => router.push('/sign_in'),
     },
   );
 

@@ -9,7 +9,7 @@ const nextConfig = {
     styledComponents: true,
   },
   eslint: {
-    dirs: ['app', 'lib', 'modules', 'pages', 'types'],
+    dirs: ['src'],
   },
 };
 

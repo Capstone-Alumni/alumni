@@ -3,7 +3,6 @@ import { signOut, useSession } from 'next-auth/react';
 
 const Home = () => {
   const { data: session } = useSession();
-  console.log('🚀 ~ file: Home.tsx:6 ~ Home ~ session', session);
 
   return (
     <div className="space-y-4">
