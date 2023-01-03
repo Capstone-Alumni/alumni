@@ -33,6 +33,9 @@ model Account {
 
 model User {
   id            String    @id @default(cuid())
+  archived      Boolean   @default(false)
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime? @map("updated_at")
   name          String?
   email         String?   @unique
   emailVerified DateTime? @map("email_verified")
@@ -40,38 +43,26 @@ model User {
   password      String?
   image         String?
   accounts      Account[]
-  roles         UserRole[]
-  archived      Boolean   @default(false)
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime? @map("updated_at")
+  accessLevel   AccessLevel @map("access_level") @default(ALUMNI)
   accessStatus  AccessStatus  @default(PENDING) @map("access_status")
+  accessMode    AccessMode  @default(FULL_ACCESS) @map("access_mode")
 
   @@map("users")
 }
 
-model Role {
-  id            Int       @id @default(autoincrement())
-  roleName      ERole     @default(USER)  @map("role_name")
-  users         UserRole[]
-  @@map("roles")
-}
-
-model UserRole {
-  @@id([userId, roleId])
-  roleId        Int       @map("role_id")
-  userId        String    @map("user_id")
-  user          User      @relation(fields: [userId], references: [id])
-  role          Role      @relation(fields: [roleId], references: [id])
-
-  @@map("users_roles")
-}
-
-enum ERole {
-  ADMIN
-  USER
+enum AccessLevel {
+  SCHOOL_ADMIN
+  ALUMNI
+  CLASS_MOD
+  YEAR_MOD
 }
 
 enum AccessStatus {
   PENDING
   APPROVED
+}
+
+enum AccessMode {
+  FULL_ACCESS
+  READ_ONLY
 }
