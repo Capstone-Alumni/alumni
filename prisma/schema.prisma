@@ -54,7 +54,7 @@ enum AccessLevel {
   SCHOOL_ADMIN
   ALUMNI
   CLASS_MOD
-  YEAR_MOD
+  GRADE_MOD
 }
 
 enum AccessStatus {
