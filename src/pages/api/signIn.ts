@@ -2,6 +2,27 @@ import { NextApiResponse } from 'next';
 import { NextApiRequest } from 'next';
 import SessionController from 'src/modules/sessions/controller/session.controller';
 
+
+/**
+ * @swagger
+ * /api/signIn:
+ *   post:
+ *     description: Returns the hello world
+ *     parameters: 
+ *       - in: query
+ *         name: username
+ *         schema:
+ *         type: long
+ *         required: true
+ *       - in: query
+ *         name: password
+ *         schema:
+ *         type: long
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: 
+ */
 export default function signInHandler(
   req: NextApiRequest,
   res: NextApiResponse,
