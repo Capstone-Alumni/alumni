@@ -7,7 +7,9 @@ import SessionController from 'src/modules/sessions/controller/session.controlle
  * @swagger
  * /api/signIn:
  *   post:
- *     description: Returns the hello world
+ *     tags: 
+ *     -  Authentication
+ *     description: Sign In 
  *     parameters: 
  *       - in: query
  *         name: username
@@ -21,7 +23,7 @@ import SessionController from 'src/modules/sessions/controller/session.controlle
  *         required: true
  *     responses:
  *       200:
- *         description: 
+ *         description: successfully
  */
 export default function signInHandler(
   req: NextApiRequest,

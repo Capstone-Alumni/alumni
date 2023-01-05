@@ -6,7 +6,7 @@ export const getApiDocs = async () => {
     definition: {
       openapi: '3.0.0',
       info: {
-        title: 'Next Swagger API Example',
+        title: 'High school Alumni',
         version: '1.0',
       },
     },
