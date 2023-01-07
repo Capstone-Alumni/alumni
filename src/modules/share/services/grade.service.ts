@@ -73,7 +73,7 @@ export default class GradeService {
     return grade;
   };
 
-  static updateGradeInfoById = async (
+  static updateInfoById = async (
     id: string,
     data: UpdateGradeInfoByIdServiceProps,
   ) => {
@@ -87,7 +87,7 @@ export default class GradeService {
     return grade;
   };
 
-  static deleteGradeById = async (id: string) => {
+  static deleteById = async (id: string) => {
     const grade = await prisma.grade.delete({
       where: {
         id: id,

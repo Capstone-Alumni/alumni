@@ -1,15 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import SessionController from 'src/modules/sessions/controllers/session.controller';
 
-
 /**
  * @swagger
  * /api/signUp:
  *   post:
- *     tags: 
+ *     tags:
  *     -  Authentication
  *     description: Sign up
- *     parameters: 
+ *     parameters:
  *       - in: query
  *         name: username
  *         schema:

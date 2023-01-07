@@ -58,7 +58,7 @@ export default class GradeController {
     }
   };
 
-  static getGradeById = async (
+  static getById = async (
     req: NextApiRequest,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
@@ -78,16 +78,13 @@ export default class GradeController {
     }
   };
 
-  static updateGradeInfoById = async (
+  static updateInfoById = async (
     req: NextApiRequest,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
       const { id } = req.query;
-      const grade = await GradeService.updateGradeInfoById(
-        id as string,
-        req.body,
-      );
+      const grade = await GradeService.updateInfoById(id as string, req.body);
 
       return res.status(200).json({
         status: true,
@@ -101,13 +98,13 @@ export default class GradeController {
     }
   };
 
-  static deleteGradeById = async (
+  static deleteById = async (
     req: NextApiRequest,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
       const { id } = req.query;
-      const grade = await GradeService.deleteGradeById(id as string);
+      const grade = await GradeService.deleteById(id as string);
 
       return res.status(200).json({
         status: true,

@@ -10,11 +10,11 @@ export default function gradeHandler(
 
   switch (method) {
     case 'GET':
-      return GradeController.getGradeById(req, res);
+      return GradeController.getById(req, res);
     case 'PUT':
-      return GradeController.updateGradeInfoById(req, res);
+      return GradeController.updateInfoById(req, res);
     case 'DELETE':
-      return GradeController.deleteGradeById(req, res);
+      return GradeController.deleteById(req, res);
     default:
       res.setHeader('Allow', ['GET', 'PUT', 'DELETE']);
       res.status(405).end(`Method ${method} Not Allowed`);
