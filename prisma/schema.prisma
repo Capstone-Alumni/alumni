@@ -10,20 +10,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// =========== ENUM =================
+
+enum AccessLevel {
+  ALUMNI
+  CLASS_MOD
+  GRADE_MOD
+  SCHOOL_ADMIN
+}
+
+enum AccessStatus {
+  PENDING
+  APPROVED
+}
+
+enum AccessMode {
+  FULL_ACCESS
+  READ_ONLY
+}
+
+// ============== MODEL =======================
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String  @map("user_id")
-  type               String
-  provider           String
-  providerAccountId  String  @map("provider_account_id")
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.Text
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -32,46 +52,20 @@ model Account {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String       @id @default(cuid())
+  archived      Boolean      @default(false)
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
   name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
-  username      String?   @unique
+  email         String?      @unique
+  emailVerified DateTime?    @map("email_verified")
+  username      String?      @unique
   password      String?
   image         String?
   accounts      Account[]
-  roles         UserRole[]
-  archived      Boolean   @default(false)
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime? @map("updated_at")
-  accessStatus  AccessStatus  @default(PENDING) @map("access_status")
+  accessLevel   AccessLevel  @default(ALUMNI) @map("access_level")
+  accessStatus  AccessStatus @default(PENDING) @map("access_status")
+  accessMode    AccessMode   @default(FULL_ACCESS) @map("access_mode")
 
   @@map("users")
-}
-
-model Role {
-  id            Int       @id @default(autoincrement())
-  roleName      ERole     @default(USER)  @map("role_name")
-  users         UserRole[]
-  @@map("roles")
-}
-
-model UserRole {
-  @@id([userId, roleId])
-  roleId        Int       @map("role_id")
-  userId        String    @map("user_id")
-  user          User      @relation(fields: [userId], references: [id])
-  role          Role      @relation(fields: [roleId], references: [id])
-
-  @@map("users_roles")
-}
-
-enum ERole {
-  ADMIN
-  USER
-}
-
-enum AccessStatus {
-  PENDING
-  APPROVED
 }
