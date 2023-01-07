@@ -18,3 +18,8 @@ export type UpdateGradeInfoByIdServiceProps = {
   name?: string;
   code?: string;
 };
+
+export type CreateClassServiceProps = {
+  name: string;
+  gradeId: string;
+};
