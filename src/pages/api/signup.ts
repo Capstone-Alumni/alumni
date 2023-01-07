@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import SessionController from 'src/modules/sessions/controller/session.controller';
+import SessionController from 'src/modules/sessions/controllers/session.controller';
 
 export default function signUpHandler(
   req: NextApiRequest,

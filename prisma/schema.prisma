@@ -10,7 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Account {
   id                 String  @id @default(cuid())
   userId             String  @map("user_id")
@@ -58,11 +57,6 @@ model Role {
 
 model UserRole {
   @@id([userId, roleId])
-  roleId        Int       @map("role_id")
-  userId        String    @map("user_id")
-  user          User      @relation(fields: [userId], references: [id])
-  role          Role      @relation(fields: [roleId], references: [id])
-
   @@map("users_roles")
 }
 
@@ -74,4 +68,14 @@ enum ERole {
 enum AccessStatus {
   PENDING
   APPROVED
+}
+
+model Grade {
+  id      Int     @id @default(autoincrement())
+  name    String  @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("grades")
 }

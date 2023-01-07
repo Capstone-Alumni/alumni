@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { NextApiRequest } from 'next';
-import SessionController from 'src/modules/sessions/controller/session.controller';
+import SessionController from 'src/modules/sessions/controllers/session.controller';
 
 export default function signInHandler(
   req: NextApiRequest,
