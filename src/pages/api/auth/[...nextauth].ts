@@ -4,6 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { AuthOptions } from 'next-auth';
 import { prisma } from '@lib/prisma/prisma';
+import FacebookProvider from "next-auth/providers/facebook";
 
 export const nextAuthOptions = {
   providers: [
@@ -45,7 +46,12 @@ export const nextAuthOptions = {
         }
       },
     }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_CLIENT_ID || '',
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET || '',
+    })
   ],
+  
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt',
