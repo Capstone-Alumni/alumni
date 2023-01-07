@@ -16,7 +16,7 @@ export default function gradeHandler(
     case 'DELETE':
       return GradeController.deleteGradeById(req, res);
     default:
-      res.setHeader('Allow', ['GET', 'PUT']);
+      res.setHeader('Allow', ['GET', 'PUT', 'DELETE']);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }
