@@ -9,7 +9,6 @@ export default class ClassController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
-      console.log(req.query);
       const { id: gradeId } = req.query;
       const { name } = req.body;
       const newClass = await ClassService.create({
@@ -36,6 +35,34 @@ export default class ClassController {
         });
       }
 
+      return res.status(500).json({
+        status: false,
+        message: error as string,
+      });
+    }
+  };
+
+  static getList = async (
+    req: NextApiRequest,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const { id: gradeId } = req.query;
+      const { page, limit, name } = req.query;
+      const classListData = await ClassService.getList({
+        gradeId: gradeId as string,
+        params: {
+          page: page ? parseInt(page as string, 10) : 1,
+          limit: limit ? parseInt(limit as string, 10) : 20,
+          name: name ? (name as string) : '',
+        },
+      });
+
+      return res.status(200).json({
+        status: true,
+        data: classListData,
+      });
+    } catch (error: any) {
       return res.status(500).json({
         status: false,
         message: error as string,

@@ -9,10 +9,12 @@ export default function classHandler(
   const { method } = req;
 
   switch (method) {
+    case 'GET':
+      return ClassController.getList(req, res);
     case 'POST':
       return ClassController.create(req, res);
     default:
-      res.setHeader('Allow', ['POST']);
+      res.setHeader('Allow', ['GET', 'POST']);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }

@@ -2,9 +2,17 @@ import { prisma } from '@lib/prisma/prisma';
 
 import {
   CreateClassServiceProps,
-  GetGradeListServiceProps,
+  GetClassListServiceProps,
   UpdateGradeInfoByIdServiceProps,
 } from '@share/types';
+
+const isGradeExisted = async (id: string) => {
+  const grade = await prisma.grade.findUnique({
+    where: { id: id },
+  });
+
+  return grade;
+};
 
 export default class GradeService {
   static create = async ({ name, gradeId }: CreateClassServiceProps) => {
@@ -12,11 +20,7 @@ export default class GradeService {
       throw new Error('invalid class name');
     }
 
-    const grade = await prisma.grade.findUnique({
-      where: { id: gradeId },
-    });
-
-    if (!grade) {
+    if (!isGradeExisted(gradeId)) {
       throw new Error('grade not exist');
     }
 
@@ -34,49 +38,37 @@ export default class GradeService {
     return newClass;
   };
 
-  static getPublicList = async ({ params }: GetGradeListServiceProps) => {
-    const { name, code, page, limit } = params;
+  static getList = async ({ params, gradeId }: GetClassListServiceProps) => {
+    if (!isGradeExisted(gradeId)) {
+      throw new Error('grade not exist');
+    }
 
-    const [totalGradeItem, gradeItems] = await prisma.$transaction([
-      prisma.grade.count({
-        where: {
-          archived: false,
-        },
+    const { name, page, limit } = params;
+
+    const whereFilter = {
+      AND: [
+        { gradeId: gradeId },
+        { name: { contains: name } },
+        { archived: false },
+      ],
+    };
+
+    const [totalClassItem, classItems] = await prisma.$transaction([
+      prisma.class.count({
+        where: whereFilter,
       }),
-      prisma.grade.findMany({
+      prisma.class.findMany({
         skip: (page - 1) * limit,
         take: limit,
-        where: {
-          AND: [
-            {
-              code: { contains: code },
-            },
-            {
-              name: { contains: name },
-            },
-            {
-              archived: false,
-            },
-          ],
-        },
+        where: whereFilter,
       }),
     ]);
 
     return {
-      totalItems: totalGradeItem,
-      items: gradeItems,
+      totalItems: totalClassItem,
+      items: classItems,
       itemPerPage: limit,
     };
-  };
-
-  static getById = async (id: string) => {
-    const grade = await prisma.grade.findUnique({
-      where: {
-        id: id,
-      },
-    });
-
-    return grade;
   };
 
   static updateInfoById = async (

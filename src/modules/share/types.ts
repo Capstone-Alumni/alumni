@@ -1,3 +1,4 @@
+// grades
 export type GetGradeListServiceParams = {
   page: number;
   limit: number;
@@ -19,7 +20,19 @@ export type UpdateGradeInfoByIdServiceProps = {
   code?: string;
 };
 
+// classes
 export type CreateClassServiceProps = {
   name: string;
   gradeId: string;
+};
+
+export type GetClassListServiceParams = {
+  page: number;
+  limit: number;
+  name: string;
+};
+
+export type GetClassListServiceProps = {
+  gradeId: string;
+  params: GetClassListServiceParams;
 };
