@@ -9,12 +9,12 @@ export default function gradeHandler(
   const { method } = req;
 
   switch (method) {
-    // case 'GET':
-    //   return GradeController.getPublicList(req, res);
+    case 'GET':
+      return GradeController.getPublicList(req, res);
     case 'POST':
       return GradeController.create(req, res);
     default:
-      res.setHeader('Allow', ['POST']);
+      res.setHeader('Allow', ['GET', 'POST']);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }
