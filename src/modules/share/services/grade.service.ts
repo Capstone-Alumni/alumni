@@ -86,4 +86,14 @@ export default class GradeService {
 
     return grade;
   };
+
+  static deleteGradeById = async (id: string) => {
+    const grade = await prisma.grade.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    return grade;
+  };
 }

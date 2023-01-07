@@ -100,4 +100,24 @@ export default class GradeController {
       });
     }
   };
+
+  static deleteGradeById = async (
+    req: NextApiRequest,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const { id } = req.query;
+      const grade = await GradeService.deleteGradeById(id as string);
+
+      return res.status(200).json({
+        status: true,
+        data: grade,
+      });
+    } catch (error: any) {
+      return res.status(500).json({
+        status: false,
+        message: error as string,
+      });
+    }
+  };
 }

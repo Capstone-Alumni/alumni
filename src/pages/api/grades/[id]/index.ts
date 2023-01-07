@@ -13,8 +13,8 @@ export default function gradeHandler(
       return GradeController.getGradeById(req, res);
     case 'PUT':
       return GradeController.updateGradeInfoById(req, res);
-    // case 'DELETE':
-    //   return GradeController.create(req, res);
+    case 'DELETE':
+      return GradeController.deleteGradeById(req, res);
     default:
       res.setHeader('Allow', ['GET', 'PUT']);
       res.status(405).end(`Method ${method} Not Allowed`);
