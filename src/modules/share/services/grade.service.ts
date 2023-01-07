@@ -31,28 +31,22 @@ export default class GradeService {
   static getPublicList = async ({ params }: GetGradeListServiceProps) => {
     const { name, code, page, limit } = params;
 
+    const whereFilter = {
+      AND: [
+        { code: { contains: code } },
+        { name: { contains: name } },
+        { archived: false },
+      ],
+    };
+
     const [totalGradeItem, gradeItems] = await prisma.$transaction([
       prisma.grade.count({
-        where: {
-          archived: false,
-        },
+        where: whereFilter,
       }),
       prisma.grade.findMany({
         skip: (page - 1) * limit,
         take: limit,
-        where: {
-          AND: [
-            {
-              code: { contains: code },
-            },
-            {
-              name: { contains: name },
-            },
-            {
-              archived: false,
-            },
-          ],
-        },
+        where: whereFilter,
       }),
     ]);
 

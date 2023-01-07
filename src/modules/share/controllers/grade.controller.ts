@@ -44,7 +44,7 @@ export default class GradeController {
         data: newGrade,
       });
     } catch (error: any) {
-      if (error.message.contains('existed')) {
+      if (error.message?.includes('existed')) {
         return res.status(400).json({
           status: false,
           message: "Grade's code is existed",
