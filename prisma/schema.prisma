@@ -13,10 +13,10 @@ datasource db {
 // =========== ENUM =================
 
 enum AccessLevel {
-  SCHOOL_ADMIN
   ALUMNI
   CLASS_MOD
   GRADE_MOD
+  SCHOOL_ADMIN
 }
 
 enum AccessStatus {
