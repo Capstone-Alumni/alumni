@@ -3,6 +3,7 @@ import { prisma } from '@lib/prisma/prisma';
 import {
   CreateGradeServiceProps,
   GetGradeListServiceProps,
+  UpdateGradeInfoByIdServiceProps,
 } from '@share/types';
 
 export default class GradeService {
@@ -23,7 +24,7 @@ export default class GradeService {
         code: code,
       },
     });
-    console.log(newGrade);
+
     return newGrade;
   };
 
@@ -60,5 +61,29 @@ export default class GradeService {
       items: gradeItems,
       itemPerPage: limit,
     };
+  };
+
+  static getById = async (id: string) => {
+    const grade = await prisma.grade.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    return grade;
+  };
+
+  static updateGradeInfoById = async (
+    id: string,
+    data: UpdateGradeInfoByIdServiceProps,
+  ) => {
+    const grade = await prisma.grade.update({
+      where: {
+        id: id,
+      },
+      data: data,
+    });
+
+    return grade;
   };
 }
