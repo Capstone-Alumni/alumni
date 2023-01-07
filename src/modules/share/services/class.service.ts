@@ -3,15 +3,21 @@ import { prisma } from '@lib/prisma/prisma';
 import {
   CreateClassServiceProps,
   GetClassListServiceProps,
-  UpdateGradeInfoByIdServiceProps,
+  UpdateClassInfoByIdServiceProps,
 } from '@share/types';
 
 const isGradeExisted = async (id: string) => {
+  if (!id) {
+    throw new Error('grade not exist');
+  }
+
   const grade = await prisma.grade.findUnique({
     where: { id: id },
   });
 
-  return grade;
+  if (!grade) {
+    throw new Error('grade not exist');
+  }
 };
 
 export default class GradeService {
@@ -20,9 +26,7 @@ export default class GradeService {
       throw new Error('invalid class name');
     }
 
-    if (!isGradeExisted(gradeId)) {
-      throw new Error('grade not exist');
-    }
+    await isGradeExisted(gradeId);
 
     const newClass = await prisma.class.create({
       data: {
@@ -39,9 +43,7 @@ export default class GradeService {
   };
 
   static getList = async ({ params, gradeId }: GetClassListServiceProps) => {
-    if (!isGradeExisted(gradeId)) {
-      throw new Error('grade not exist');
-    }
+    await isGradeExisted(gradeId);
 
     const { name, page, limit } = params;
 
@@ -71,27 +73,37 @@ export default class GradeService {
     };
   };
 
+  static getById = async (id: string) => {
+    const grade = await prisma.class.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    return grade;
+  };
+
   static updateInfoById = async (
     id: string,
-    data: UpdateGradeInfoByIdServiceProps,
+    data: UpdateClassInfoByIdServiceProps,
   ) => {
-    const grade = await prisma.grade.update({
+    const classUpdated = await prisma.class.update({
       where: {
         id: id,
       },
       data: data,
     });
 
-    return grade;
+    return classUpdated;
   };
 
   static deleteById = async (id: string) => {
-    const grade = await prisma.grade.delete({
+    const classDeleted = await prisma.class.delete({
       where: {
         id: id,
       },
     });
 
-    return grade;
+    return classDeleted;
   };
 }

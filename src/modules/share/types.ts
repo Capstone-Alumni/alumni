@@ -36,3 +36,8 @@ export type GetClassListServiceProps = {
   gradeId: string;
   params: GetClassListServiceParams;
 };
+
+export type UpdateClassInfoByIdServiceProps = {
+  name?: string;
+  description?: string;
+};
