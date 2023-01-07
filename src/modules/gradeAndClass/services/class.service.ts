@@ -4,7 +4,7 @@ import {
   CreateClassServiceProps,
   GetClassListServiceProps,
   UpdateClassInfoByIdServiceProps,
-} from '@share/types';
+} from '../types';
 
 const isGradeExisted = async (id: string) => {
   if (!id) {
