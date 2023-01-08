@@ -11,7 +11,9 @@ export default function useSignIn() {
   ) => {
     switch (provider) {
       case 'google':
-        return nextSignIn('google');
+        return nextSignIn('google', {
+          callbackUrl: '/verify_account',
+        });
       case 'credentials':
         return nextSignIn('credentials', {
           usernameOrEmail: value?.usernameOrEmail,
@@ -21,7 +23,7 @@ export default function useSignIn() {
           if (res?.error) {
             // TODO: handle error
           } else {
-            router.replace('/verify-account');
+            router.replace('/verify_account');
           }
         });
       default:
