@@ -12,5 +12,5 @@ export type ApiErrorResponse = {
 export type ItemsResponse = {
   items: unknown[];
   totalItems: number;
-  itemPage: number;
+  itemPerPage: number;
 };

@@ -55,7 +55,7 @@ model User {
   id            String       @id @default(cuid())
   archived      Boolean      @default(false)
   createdAt     DateTime     @default(now()) @map("created_at")
-  updatedAt     DateTime     @updatedAt @map("updated_at")
+  updatedAt     DateTime     @default(now()) @updatedAt @map("updated_at")
   name          String?
   email         String?      @unique
   emailVerified DateTime?    @map("email_verified")
@@ -68,4 +68,15 @@ model User {
   accessMode    AccessMode   @default(FULL_ACCESS) @map("access_mode")
 
   @@map("users")
+}
+
+model Grade {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  code      String   @unique
+  name      String
+
+  @@map("grades")
 }
