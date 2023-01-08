@@ -4,12 +4,17 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { AuthOptions } from 'next-auth';
 import { prisma } from '@lib/prisma/prisma';
+import FacebookProvider from "next-auth/providers/facebook";
 
 export const nextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+    }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_CLIENT_ID || '',
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET || '',
     }),
     CredentialsProvider({
       id: 'credentials',

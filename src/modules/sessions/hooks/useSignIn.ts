@@ -6,12 +6,14 @@ export default function useSignIn() {
   const router = useRouter();
 
   const signIn = (
-    provider: 'credentials' | 'google',
+    provider: 'credentials' | 'google' | 'facebook',
     value?: SignInFormValues,
   ) => {
     switch (provider) {
       case 'google':
         return nextSignIn('google');
+      case 'facebook':
+        return nextSignIn('facebook');
       case 'credentials':
         return nextSignIn('credentials', {
           usernameOrEmail: value?.usernameOrEmail,
