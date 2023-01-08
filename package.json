@@ -10,9 +10,6 @@
     "lint": "next lint",
     "format": "prettier --write \"**/*.{js,ts,tsx,md}\""
   },
-  "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
-  },
   "prettier": {
     "arrowParens": "always",
     "semi": true,
