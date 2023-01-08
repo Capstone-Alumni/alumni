@@ -138,7 +138,7 @@ const SignInForm = () => {
               <Icon color="#DF3E30" height={24} icon={googleFill} />
             </IconButton>
 
-            <IconButton onClick={noop} size="large">
+            <IconButton onClick={() => signIn('facebook')} size="large">
               <Icon color="#1877F2" height={24} icon={facebookFill} />
             </IconButton>
 
