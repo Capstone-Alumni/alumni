@@ -4,7 +4,7 @@ import {
   CreateGradeServiceProps,
   GetGradeListServiceProps,
   UpdateGradeInfoByIdServiceProps,
-} from '@share/types';
+} from '../types';
 
 export default class GradeService {
   static create = async ({ name, code }: CreateGradeServiceProps) => {
