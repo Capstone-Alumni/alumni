@@ -73,9 +73,11 @@ export const nextAuthOptions = {
       return token;
     },
     session({ session, token }) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       session.user.id = token.user_id;
+      session.user.accessLevel = token.user.accessLevel;
+      session.user.accessStatus = token.user.accessStatus;
+      session.user.accessMode = token.user.accessMode;
+
       return session;
     },
   },

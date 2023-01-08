@@ -9,6 +9,12 @@ declare module 'next-auth' {
   interface Session {
     id?: string;
     accessToken?: string;
+    user: {
+      id: string;
+      accessLevel?: string;
+      accessStatus?: string;
+      accessMode?: string;
+    };
   }
 }
 
@@ -18,6 +24,11 @@ declare module 'next-auth/jwt' {
     /** OpenID ID Token */
     id?: string;
     accessToken?: string;
-    user: User;
+    user_id: string;
+    user: User & {
+      accessLevel?: string;
+      accessStatus?: string;
+      accessMode?: string;
+    };
   }
 }
