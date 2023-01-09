@@ -1,9 +1,9 @@
 import { unstable_getServerSession } from 'next-auth';
 import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
-import Header from '@share/components/layout/Header';
-import Body from '@share/components/layout/Body';
-import Footer from '@share/components/layout/Footer';
 import { redirect } from 'next/navigation';
+import AdminNav from '@share/components/layout/AdminNav';
+import AdminLayoutWrapper from '@share/components/layout/AdminLayoutWrapper';
+import AdminBodyWrapper from '@share/components/layout/AdminBodyWrapper';
 
 const ALLOWED_LEVELS = ['CLASS_MOD', 'GRADE_MOD', 'SCHOOL_ADMIN'];
 
@@ -26,10 +26,9 @@ export default async function AuthorizedLayout({
   }
 
   return (
-    <>
-      <Header user={session.user} />
-      <Body>{children}</Body>
-      <Footer />
-    </>
+    <AdminLayoutWrapper>
+      <AdminNav user={session.user} />
+      <AdminBodyWrapper>{children}</AdminBodyWrapper>
+    </AdminLayoutWrapper>
   );
 }
