@@ -75,21 +75,21 @@ model User {
   accessStatus  AccessStatus @default(PENDING) @map("access_status")
   accessMode    AccessMode   @default(FULL_ACCESS) @map("access_mode")
 
-  class       Class?        @relation(fields: [classId], references: [id], onDelete: SetNull)
-  information Information[]
+  class       Class?       @relation(fields: [classId], references: [id], onDelete: SetNull)
+  information Information?
 
+  @@unique([id, email])
   @@map("users")
 }
 
 model Grade {
-  id          String        @id @default(cuid())
-  archived    Boolean       @default(false)
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @default(now()) @updatedAt @map("updated_at")
-  code        String        @unique
-  name        String
-  classes     Class[]
-  information Information[]
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  code      String   @unique
+  name      String
+  classes   Class[]
 
   @@map("grades")
 }
@@ -104,8 +104,7 @@ model Class {
   description String?
   users       User[]
 
-  grade       Grade         @relation(fields: [gradeId], references: [id])
-  information Information[]
+  grade Grade @relation(fields: [gradeId], references: [id])
 
   @@map("classes")
 }
@@ -113,9 +112,9 @@ model Class {
 model Information {
   id                   String         @id @default(cuid())
   bio                  String
-  userFullName         String         @map("user_full_name")
+  name                 String
   avatarUrl            String         @map("avatar_url")
-  userEmail            String         @map("user_email")
+  userEmail            String         @unique @map("user_email")
   emailPublicity       ScopePublicity @default(PRIVATE) @map("email_publicity")
   phone                String
   phonePublicity       ScopePublicity @default(PRIVATE) @map("phone_publicity")
@@ -123,16 +122,13 @@ model Information {
   facebookPublicity    ScopePublicity @default(PRIVATE) @map("facebook_publicity")
   dateOfBirth          DateTime       @map("date_of_birth")
   dateOfBirthPublicity ScopePublicity @default(PRIVATE) @map("date_of_birth_publicity")
-  gradeId              String         @map("grade_id")
   gradeCode            String         @map("grade_code")
   gradeName            String         @map("grade_name")
-  classId              String         @map("class_id")
   className            String         @map("class_name")
   userId               String         @unique
 
-  user  User  @relation(fields: [userId], references: [id])
-  grade Grade @relation(fields: [gradeId], references: [id])
-  class Class @relation(fields: [classId], references: [id])
+  user User @relation(fields: [userId, userEmail], references: [id, email])
 
+  @@unique([userId, userEmail])
   @@map("informations")
 }
