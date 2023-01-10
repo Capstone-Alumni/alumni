@@ -38,3 +38,8 @@ export const requiredFullNameValidator = yup
   )
   .max(40, 'Tối đa 40 ký tự')
   .required('Bắt buộc');
+
+  export const requiredNumberValidator = yup
+  .number()
+  .required('Bắt buộc');
+
