@@ -113,9 +113,9 @@ model Class {
 model Information {
   id                   String         @id @default(cuid())
   bio                  String
-  name                 String
+  userFullName         String         @map("user_full_name")
   avatarUrl            String         @map("avatar_url")
-  email                String
+  userEmail            String         @map("user_email")
   emailPublicity       ScopePublicity @default(PRIVATE) @map("email_publicity")
   phone                String
   phonePublicity       ScopePublicity @default(PRIVATE) @map("phone_publicity")
@@ -123,9 +123,12 @@ model Information {
   facebookPublicity    ScopePublicity @default(PRIVATE) @map("facebook_publicity")
   dateOfBirth          DateTime       @map("date_of_birth")
   dateOfBirthPublicity ScopePublicity @default(PRIVATE) @map("date_of_birth_publicity")
-  gradeId              String
-  classId              String
-  userId               String @unique
+  gradeId              String         @map("grade_id")
+  gradeCode            String         @map("grade_code")
+  gradeName            String         @map("grade_name")
+  classId              String         @map("class_id")
+  className            String         @map("class_name")
+  userId               String         @unique
 
   user  User  @relation(fields: [userId], references: [id])
   grade Grade @relation(fields: [gradeId], references: [id])
