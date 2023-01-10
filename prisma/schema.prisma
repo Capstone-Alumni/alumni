@@ -112,8 +112,8 @@ model Class {
 model Information {
   id                   String         @id @default(cuid())
   bio                  String
-  name                 String
   avatarUrl            String         @map("avatar_url")
+  coverImageUrl        String         @map("cover_image_url")
   userEmail            String         @unique @map("user_email")
   emailPublicity       ScopePublicity @default(PRIVATE) @map("email_publicity")
   phone                String
