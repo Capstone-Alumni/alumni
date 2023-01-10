@@ -29,6 +29,13 @@ enum AccessMode {
   READ_ONLY
 }
 
+enum ScopePublicity {
+  PRIVATE
+  CLASS
+  GRADE
+  SCHOOL
+}
+
 // ============== MODEL =======================
 
 model Account {
@@ -68,8 +75,10 @@ model User {
   accessStatus  AccessStatus @default(PENDING) @map("access_status")
   accessMode    AccessMode   @default(FULL_ACCESS) @map("access_mode")
 
-  class Class? @relation(fields: [classId], references: [id], onDelete: SetNull)
+  class       Class?       @relation(fields: [classId], references: [id], onDelete: SetNull)
+  information Information?
 
+  @@unique([id, email])
   @@map("users")
 }
 
@@ -98,4 +107,28 @@ model Class {
   grade Grade @relation(fields: [gradeId], references: [id])
 
   @@map("classes")
+}
+
+model Information {
+  id                   String         @id @default(cuid())
+  bio                  String
+  avatarUrl            String         @map("avatar_url")
+  coverImageUrl        String         @map("cover_image_url")
+  userEmail            String         @unique @map("user_email")
+  emailPublicity       ScopePublicity @default(PRIVATE) @map("email_publicity")
+  phone                String
+  phonePublicity       ScopePublicity @default(PRIVATE) @map("phone_publicity")
+  facebookUrl          String         @map("facebook_url")
+  facebookPublicity    ScopePublicity @default(PRIVATE) @map("facebook_publicity")
+  dateOfBirth          DateTime       @map("date_of_birth")
+  dateOfBirthPublicity ScopePublicity @default(PRIVATE) @map("date_of_birth_publicity")
+  gradeCode            String         @map("grade_code")
+  gradeName            String         @map("grade_name")
+  className            String         @map("class_name")
+  userId               String         @unique
+
+  user User @relation(fields: [userId, userEmail], references: [id, email])
+
+  @@unique([userId, userEmail])
+  @@map("informations")
 }
