@@ -8,12 +8,10 @@ export default function accountHandler(
 ) {
   const { method } = req;
   switch (method) {
-    case 'GET':
-      break;
     case 'PUT':
       return AccountController.update(req, res);
     default:
-      res.setHeader('Allow', ['GET', 'PUT']);
+      res.setHeader('Allow', ['PUT']);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }

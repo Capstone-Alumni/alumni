@@ -41,7 +41,7 @@ export default class AccountService {
     const { password: passwordEncrypted } = user;
     if (body.oldPassword) {
       if (
-        !user.password ||
+        !passwordEncrypted ||
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         !compareSync(body.oldPassword, passwordEncrypted!)
       ) {
