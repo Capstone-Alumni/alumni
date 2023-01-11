@@ -1,3 +1,13 @@
+/** ========================== FE ================================= */
+export type Grade = {
+  id: string;
+  code: string;
+  name?: string;
+  createdAt: string;
+};
+
+/** ========================== BE ================================= */
+
 // grades
 export type GetGradeListServiceParams = {
   page: number;

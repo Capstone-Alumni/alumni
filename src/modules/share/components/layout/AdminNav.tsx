@@ -19,7 +19,7 @@ const NAV_ITEMS = [
     id: 'grade_class',
     title: 'Khoá và Lớp',
     icon: 'material-symbols:meeting-room-outline-rounded',
-    link: '/admin',
+    link: '/admin/grade',
   },
   {
     id: 'grade_class_1',
@@ -115,6 +115,7 @@ const StyledFooter = styled(Box)(({ theme }) => ({
 }));
 
 const StyledAccountWrapper = styled(Box)(({ theme }) => ({
+  position: 'relative',
   width: '100%',
   display: 'flex',
   flexDirection: 'row',
@@ -205,8 +206,8 @@ const AdminNav = ({ user }: { user?: any }) => {
             <IconButton
               sx={{
                 position: 'absolute',
-                right: theme.spacing(2),
-                bottom: theme.spacing(4),
+                right: 0,
+                top: theme.spacing(3),
               }}
             >
               <Icon

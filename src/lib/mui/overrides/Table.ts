@@ -4,6 +4,15 @@ import { Theme } from '@mui/material';
 
 export default function Table(theme: Theme) {
   return {
+    MuiTableContainer: {
+      styleOverrides: {
+        root: {
+          borderWidth: '2px',
+          borderStyle: 'solid',
+          borderColor: theme.palette.divider,
+        },
+      },
+    },
     MuiTableRow: {
       styleOverrides: {
         root: {
@@ -19,35 +28,23 @@ export default function Table(theme: Theme) {
     MuiTableCell: {
       styleOverrides: {
         root: {
-          borderBottom: 'none',
+          borderBottomWidth: '2px',
+          paddingTop: theme.spacing(1.5),
+          paddingBottom: theme.spacing(1.5),
         },
         head: {
           color: theme.palette.text.secondary,
-          backgroundColor: theme.palette.background.default,
+          backgroundColor: theme.palette.background.neutral,
           '&:first-of-type': {
-            paddingLeft: theme.spacing(3),
             borderTopLeftRadius: theme.shape.borderRadius,
-            borderBottomLeftRadius: theme.shape.borderRadius,
-            boxShadow: `inset 8px 0 0 ${theme.palette.background.paper}`,
           },
           '&:last-of-type': {
-            paddingRight: theme.spacing(3),
             borderTopRightRadius: theme.shape.borderRadius,
-            borderBottomRightRadius: theme.shape.borderRadius,
-            boxShadow: `inset -8px 0 0 ${theme.palette.background.paper}`,
           },
         },
         stickyHeader: {
           backgroundColor: theme.palette.background.paper,
           backgroundImage: `linear-gradient(to bottom, ${theme.palette.background.default} 0%, ${theme.palette.background.default} 100%)`,
-        },
-        body: {
-          '&:first-of-type': {
-            paddingLeft: theme.spacing(3),
-          },
-          '&:last-of-type': {
-            paddingRight: theme.spacing(3),
-          },
         },
       },
     },
