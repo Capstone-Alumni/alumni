@@ -143,6 +143,4 @@ model Career {
 
   user User @relation(fields: [userId], references: [id])
   @@map("careers")
-
-
 }
