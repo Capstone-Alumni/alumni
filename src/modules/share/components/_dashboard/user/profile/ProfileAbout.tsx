@@ -1,12 +1,16 @@
 import { Icon } from '@iconify/react';
 import pinFill from '@iconify/icons-eva/pin-fill';
+import infoFill from '@iconify/icons-eva/info-fill';
 import emailFill from '@iconify/icons-eva/email-fill';
+import phoneFill from '@iconify/icons-eva/phone-fill';
+import calendarFill from '@iconify/icons-eva/calendar-fill';
 import roundBusinessCenter from '@iconify/icons-ic/round-business-center';
 // material
-import { styled } from '@mui/material';
-import { Link, Card, Typography, CardHeader, Stack } from '@mui/material';
+import { Box, styled } from '@mui/material';
+import { Link, Card, Typography, CardHeader, Stack, Button } from '@mui/material';
 // @types
 import { Profile } from '../../../../type';
+import FormDialogs from '@share/components/material-ui/dialog/FormDialogs';
 
 // ----------------------------------------------------------------------
 
@@ -25,11 +29,32 @@ export default function ProfileAbout({ profile }: { profile: Profile }) {
 
   return (
     <Card>
-      <CardHeader title="About" />
+      <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center" }}>
+        <CardHeader title="About" />
+        <Box sx={{ paddingRight: 3, marginTop: "1rem" }}>
+          <FormDialogs buttonContent='Edit'/>
+        </Box>
+      </Stack>
 
       <Stack spacing={2} sx={{ p: 3 }}>
         <Typography variant="body2">{quote}</Typography>
 
+        <Stack direction="row">
+          <IconStyle icon={infoFill} />
+          <Typography variant="body2">
+            Class &nbsp;
+            <Link component="span" variant="subtitle2" color="text.primary">
+              12A4
+            </Link>
+          </Typography>
+          &nbsp;-&nbsp;
+          <Typography variant="body2">
+            Grade &nbsp;
+            <Link component="span" variant="subtitle2" color="text.primary">
+              K15
+            </Link>
+          </Typography>
+        </Stack>
         <Stack direction="row">
           <IconStyle icon={pinFill} />
           <Typography variant="body2">
@@ -45,6 +70,25 @@ export default function ProfileAbout({ profile }: { profile: Profile }) {
           <Typography variant="body2">{email}</Typography>
         </Stack>
 
+        <Stack direction="row">
+          <IconStyle icon={phoneFill} />
+          <Typography variant="body2">
+            Phone &nbsp;
+            <Link component="span" variant="subtitle2" color="text.primary">
+              0912344834
+            </Link>
+          </Typography>
+        </Stack>
+
+        <Stack direction="row">
+          <IconStyle icon={calendarFill} />
+          <Typography variant="body2">
+            Birth &nbsp;
+            <Link component="span" variant="subtitle2" color="text.primary">
+              23-13-2099
+            </Link>
+          </Typography>
+        </Stack>
         <Stack direction="row">
           <IconStyle icon={roundBusinessCenter} />
           <Typography variant="body2">

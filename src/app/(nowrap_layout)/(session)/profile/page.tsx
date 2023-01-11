@@ -672,22 +672,6 @@ export default function UserProfile() {
       component: <Profile myProfile={myProfile} posts={posts} />
     },
     {
-      value: 'followers',
-      icon: <Icon icon={heartFill} width={20} height={20} />,
-      component: <ProfileFollowers followers={followers} onToggleFollow={handleToggleFollow} />
-    },
-    {
-      value: 'friends',
-      icon: <Icon icon={peopleFill} width={20} height={20} />,
-      component: (
-        <ProfileFriends
-          friends={friends}
-          findFriends={findFriends}
-          onFindFriends={handleFindFriends}
-        />
-      )
-    },
-    {
       value: 'gallery',
       icon: <Icon icon={roundPermMedia} width={20} height={20} />,
       component: <ProfileGallery gallery={gallery} />
