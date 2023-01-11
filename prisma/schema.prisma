@@ -77,7 +77,7 @@ model User {
 
   class       Class?       @relation(fields: [classId], references: [id], onDelete: SetNull)
   information Information?
-
+  career      Career?
   @@unique([id, email])
   @@map("users")
 }
@@ -131,4 +131,18 @@ model Information {
 
   @@unique([userId, userEmail])
   @@map("informations")
+}
+
+model Career {
+  id        String   @id @default(cuid())
+  jobTitle  String
+  company   String
+  startDate DateTime 
+  endDate   DateTime 
+  userId    String   @unique
+
+  user User @relation(fields: [userId], references: [id])
+  @@map("careers")
+
+
 }
