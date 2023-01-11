@@ -12,7 +12,7 @@ import {
 
 import {
   requiredFullNameValidator,
-  requiredNumberValidator
+  requiredGradeNClassValidator
 } from 'src/modules/share/utils/validators';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 
@@ -22,8 +22,8 @@ import useSignUp from '../hooks/useSignUp';
 const validationSchema = yup
   .object({
     fullname: requiredFullNameValidator,
-    year: requiredNumberValidator,
-    class: requiredNumberValidator,
+    year: requiredGradeNClassValidator,
+    class: requiredGradeNClassValidator,
   })
   .required();
 

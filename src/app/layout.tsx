@@ -4,7 +4,7 @@ import React from 'react';
 import { SessionProvider } from 'next-auth/react';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import ThemeConfig from './../lib/mui/index';
+import ThemeConfig from '@lib/mui';
 import createEmotionCache from '@share/utils/createEmotionCache';
 
 const clientSideEmotionCache = createEmotionCache();

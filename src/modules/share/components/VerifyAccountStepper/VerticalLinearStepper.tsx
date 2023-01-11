@@ -4,9 +4,10 @@ import { Box, Step, Paper, Button, Stepper, StepLabel, Typography, Grid } from '
 import VerifyForm from 'src/modules/sessions/components/VerifyForm';
 // ----------------------------------------------------------------------
 
-const steps = ['Your information', 'Secret question', 'Status'];
-
-export default function HorizontalLinearStepper() {
+interface VerifyAccountPageProps {
+  steps: string[]
+}
+const VeriticalLinearStepper = ({steps}: VerifyAccountPageProps) => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
 
@@ -128,3 +129,5 @@ export default function HorizontalLinearStepper() {
     </Grid>
   );
 }
+
+export default VeriticalLinearStepper;
