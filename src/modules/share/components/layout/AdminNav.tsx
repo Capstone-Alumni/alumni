@@ -11,39 +11,38 @@ import {
   useTheme,
 } from '@mui/material';
 import Image from 'next/image';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
 const NAV_ITEMS = [
   {
+    id: 'request_access',
+    title: 'Kiểm duyệt thành viên',
+    icon: 'material-symbols:meeting-room-outline-rounded',
+    link: '/admin/access_request',
+  },
+  {
     id: 'grade_class',
-    title: 'Khoá và Lớp',
+    title: 'Niên khoá và Lớp',
     icon: 'material-symbols:meeting-room-outline-rounded',
     link: '/admin/grade',
   },
   {
-    id: 'grade_class_1',
-    title: 'Khoá và Lớp',
+    id: 'user',
+    title: 'Người dùng',
     icon: 'material-symbols:meeting-room-outline-rounded',
-    link: '/admin1',
+    link: '/admin/user',
   },
   {
-    id: 'grade_class_2',
-    title: 'Khoá và Lớp',
+    id: 'event',
+    title: 'Sự kiện',
     icon: 'material-symbols:meeting-room-outline-rounded',
-    link: '/admin2',
-  },
-  {
-    id: 'grade_class_3',
-    title: 'Khoá và Lớp',
-    icon: 'material-symbols:meeting-room-outline-rounded',
-    link: '/admin3',
+    link: '/admin/event',
   },
   {
     id: 'grade_class_4',
-    title: 'Khoá và Lớp',
+    title: 'Quỹ',
     icon: 'material-symbols:meeting-room-outline-rounded',
-    link: '/admin4',
+    link: '/admin/fund',
   },
 ];
 

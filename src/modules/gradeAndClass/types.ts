@@ -6,6 +6,13 @@ export type Grade = {
   createdAt: string;
 };
 
+export type Class = {
+  id: string;
+  name?: string;
+  description?: string;
+  createdAt: string;
+};
+
 /** ========================== BE ================================= */
 
 // grades
