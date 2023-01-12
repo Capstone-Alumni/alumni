@@ -139,7 +139,7 @@ model Career {
   company   String
   startDate DateTime 
   endDate   DateTime 
-  userId    String   @unique
+  userId    String   
 
   user User @relation(fields: [userId], references: [id])
 
