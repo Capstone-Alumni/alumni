@@ -10,12 +10,12 @@ import { Class } from '../types';
 
 export type ClassFormValues = {
   name: string;
-  description: string;
+  // description: string;
 };
 
 const validationSchema = yup.object({
   name: yup.string(),
-  description: yup.string(),
+  // description: yup.string(),
 });
 
 const ClassForm = ({
@@ -35,7 +35,7 @@ const ClassForm = ({
   const { control, handleSubmit } = useForm({
     defaultValues: {
       name: initialData?.name ?? '',
-      description: initialData?.name ?? '',
+      // description: initialData?.name ?? '',
     },
     resolver,
   });
@@ -63,24 +63,24 @@ const ClassForm = ({
       }}
     >
       <Box sx={{ width: '100%' }}>
-        <Typography variant="h6">Thêm niên khoá mới</Typography>
+        <Typography variant="h6">Thêm lớp mới</Typography>
       </Box>
-
-      <Controller
-        control={control}
-        name="code"
-        render={({ field }) => (
-          <TextField fullWidth label="Mã khoá" {...field} />
-        )}
-      />
 
       <Controller
         control={control}
         name="name"
         render={({ field }) => (
-          <TextField fullWidth label="Tên khoá" {...field} />
+          <TextField fullWidth label="Tên lớp" {...field} />
         )}
       />
+
+      {/* <Controller
+        control={control}
+        name="description"
+        render={({ field }) => (
+          <TextField fullWidth multiline label="Mô tả" {...field} />
+        )}
+      /> */}
 
       <Box
         sx={{

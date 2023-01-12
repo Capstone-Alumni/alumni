@@ -5,12 +5,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Grade } from '../types';
-import { GradeFormValues } from './GradeForm';
-import AdminGradeListItem from './AdminGradeListItem';
+import { Class } from '../types';
+import { ClassFormValues } from './ClassForm';
+import AdminClassListItem from './AdminClassListItem';
 import DataTablePagination from '@share/components/DataTablePagination';
 
-const AdminGradeListTable = ({
+const AdminClassListTable = ({
   data,
   onEdit,
   onDelete,
@@ -18,11 +18,11 @@ const AdminGradeListTable = ({
   onChangePage,
 }: {
   data: {
-    items: Grade[];
+    items: Class[];
     totalItems: number;
     itemPerPage: number;
   };
-  onEdit: (id: string, data: GradeFormValues) => void;
+  onEdit: (id: string, data: ClassFormValues) => void;
   onDelete: (id: string) => void;
   page: number;
   onChangePage: (nextPage: number) => void;
@@ -30,22 +30,18 @@ const AdminGradeListTable = ({
   return (
     <>
       <TableContainer component={Paper}>
-        <Table aria-label="grade table">
+        <Table aria-label="Class table">
           <TableHead>
             <TableRow>
-              <TableCell align="left">Mã khoá</TableCell>
-              <TableCell align="left">Tên niên khoá</TableCell>
+              <TableCell align="left">Tên lớp</TableCell>
               <TableCell align="left">Ngày được tạo</TableCell>
-              <TableCell align="center" sx={{ maxWidth: '3rem' }}>
-                Lớp
-              </TableCell>
               <TableCell sx={{ maxWidth: '3rem' }} />
               <TableCell sx={{ maxWidth: '3rem' }} />
             </TableRow>
           </TableHead>
           <TableBody>
             {data.items.map(row => (
-              <AdminGradeListItem
+              <AdminClassListItem
                 key={row.id}
                 data={row}
                 onDelete={onDelete}
@@ -55,7 +51,7 @@ const AdminGradeListTable = ({
           </TableBody>
 
           <DataTablePagination
-            colSpan={5}
+            colSpan={4}
             currentPage={page}
             totalPage={Math.ceil(data.totalItems / data.itemPerPage)}
             onChangePage={onChangePage}
@@ -66,4 +62,4 @@ const AdminGradeListTable = ({
   );
 };
 
-export default AdminGradeListTable;
+export default AdminClassListTable;

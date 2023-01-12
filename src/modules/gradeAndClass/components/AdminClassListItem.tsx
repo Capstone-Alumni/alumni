@@ -8,18 +8,17 @@ import {
   Typography,
 } from '@mui/material';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
-import Link from 'next/link';
 import { useState } from 'react';
-import { Grade } from '../types';
-import GradeForm, { GradeFormValues } from './GradeForm';
+import { Class } from '../types';
+import ClassForm, { ClassFormValues } from './ClassForm';
 
-const AdminGradeListItem = ({
+const AdminClassListItem = ({
   data,
   onDelete,
   onEdit,
 }: {
-  data: Grade;
-  onEdit: (id: string, data: GradeFormValues) => void;
+  data: Class;
+  onEdit: (id: string, data: ClassFormValues) => void;
   onDelete: (id: string) => void;
 }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -29,23 +28,10 @@ const AdminGradeListItem = ({
     <>
       <TableRow>
         <TableCell align="left">
-          <Typography>{data.code}</Typography>
-        </TableCell>
-        <TableCell align="left">
           <Typography>{data.name}</Typography>
         </TableCell>
         <TableCell align="left">
           <Typography>{new Date(data.createdAt).toDateString()}</Typography>
-        </TableCell>
-        <TableCell align="center" sx={{ maxWidth: '3rem' }}>
-          <IconButton>
-            <Link href={`/admin/grade/${data.id}/class`}>
-              <Icon
-                height={24}
-                icon="material-symbols:meeting-room-outline-rounded"
-              />
-            </Link>
-          </IconButton>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <IconButton onClick={() => setOpenEditModal(true)}>
@@ -69,9 +55,9 @@ const AdminGradeListItem = ({
             minWidth: '50rem',
           }}
         >
-          <GradeForm
+          <ClassForm
             initialData={data}
-            onSubmit={(values: GradeFormValues) => onEdit(data.id, values)}
+            onSubmit={(values: ClassFormValues) => onEdit(data.id, values)}
             onClose={() => setOpenEditModal(false)}
           />
         </Box>
@@ -79,7 +65,7 @@ const AdminGradeListItem = ({
 
       <ConfirmDeleteModal
         open={openDeleteModal}
-        title="Bạn muốn xoá niên khoá này?"
+        title="Bạn muốn xoá lớp này?"
         onClose={() => setOpenDeleteModal(false)}
         onDelete={() => onDelete(data.id)}
       />
@@ -87,4 +73,4 @@ const AdminGradeListItem = ({
   );
 };
 
-export default AdminGradeListItem;
+export default AdminClassListItem;
