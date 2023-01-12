@@ -5,12 +5,13 @@ import emailFill from '@iconify/icons-eva/email-fill';
 import phoneFill from '@iconify/icons-eva/phone-fill';
 import calendarFill from '@iconify/icons-eva/calendar-fill';
 import roundBusinessCenter from '@iconify/icons-ic/round-business-center';
+
 // material
 import { Box, styled } from '@mui/material';
 import { Link, Card, Typography, CardHeader, Stack, Button } from '@mui/material';
 // @types
+
 import { Profile } from '../../../../type';
-import FormDialogs from '@share/components/material-ui/dialog/FormDialogs';
 
 // ----------------------------------------------------------------------
 
@@ -32,7 +33,9 @@ export default function ProfileAbout({ profile }: { profile: Profile }) {
       <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center" }}>
         <CardHeader title="About" />
         <Box sx={{ paddingRight: 3, marginTop: "1rem" }}>
-          <FormDialogs buttonContent='Edit'/>
+          <a href='/profile/edit'>
+          <Button variant="contained">Edit</Button>
+          </a>
         </Box>
       </Stack>
 
