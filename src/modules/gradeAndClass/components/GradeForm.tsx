@@ -63,7 +63,9 @@ const GradeForm = ({
       }}
     >
       <Box sx={{ width: '100%' }}>
-        <Typography variant="h6">Thêm niên khoá mới</Typography>
+        <Typography variant="h6">
+          {initialData ? 'Chỉnh sửa thông tin niên khoá' : 'Thêm niên khoá mới'}
+        </Typography>
       </Box>
 
       <Controller

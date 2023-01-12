@@ -13,38 +13,36 @@ import {
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 
-const NAV_ITEMS = [
-  {
-    id: 'request_access',
-    title: 'Kiểm duyệt thành viên',
-    icon: 'material-symbols:meeting-room-outline-rounded',
-    link: '/admin/access_request',
-  },
-  {
-    id: 'grade_class',
-    title: 'Niên khoá và Lớp',
-    icon: 'material-symbols:meeting-room-outline-rounded',
-    link: '/admin/grade',
-  },
-  {
-    id: 'user',
-    title: 'Người dùng',
-    icon: 'material-symbols:meeting-room-outline-rounded',
-    link: '/admin/user',
-  },
-  {
-    id: 'event',
-    title: 'Sự kiện',
-    icon: 'material-symbols:meeting-room-outline-rounded',
-    link: '/admin/event',
-  },
-  {
-    id: 'grade_class_4',
-    title: 'Quỹ',
-    icon: 'material-symbols:meeting-room-outline-rounded',
-    link: '/admin/fund',
-  },
-];
+const ACCESS_NAV_ITEM = {
+  id: 'request_access',
+  title: 'Kiểm duyệt thành viên',
+  icon: 'material-symbols:meeting-room-outline-rounded',
+  link: '/admin/access_request',
+};
+const GRADE_NAV_ITEM = {
+  id: 'grade_class',
+  title: 'Niên khoá và Lớp',
+  icon: 'material-symbols:meeting-room-outline-rounded',
+  link: '/admin/grade',
+};
+const USER_NAV_ITEM = {
+  id: 'user',
+  title: 'Người dùng',
+  icon: 'material-symbols:meeting-room-outline-rounded',
+  link: '/admin/user',
+};
+const NEWS_NAV_ITEM = {
+  id: 'news',
+  title: 'Tin tức',
+  icon: 'material-symbols:meeting-room-outline-rounded',
+  link: '/admin/event',
+};
+const FUND_NAV_ITEM = {
+  id: 'grade_class_4',
+  title: 'Quỹ',
+  icon: 'material-symbols:meeting-room-outline-rounded',
+  link: '/admin/fund',
+};
 
 const StyledSidebar = styled(Box)(() => ({
   height: '100vh',
@@ -129,6 +127,27 @@ const StyledAccountWrapper = styled(Box)(({ theme }) => ({
   borderTopColor: theme.palette.primary.contrastText,
 }));
 
+const generateNavItems = (
+  role: 'ALUMNI' | 'CLASS_MOD' | 'GRADE_MOD' | 'SCHOOL_ADMIN',
+) => {
+  switch (role) {
+    case 'ALUMNI':
+      return [];
+    case 'CLASS_MOD':
+      return [ACCESS_NAV_ITEM, NEWS_NAV_ITEM];
+    case 'GRADE_MOD':
+      return [ACCESS_NAV_ITEM, NEWS_NAV_ITEM, USER_NAV_ITEM];
+    case 'SCHOOL_ADMIN':
+      return [
+        ACCESS_NAV_ITEM,
+        NEWS_NAV_ITEM,
+        FUND_NAV_ITEM,
+        GRADE_NAV_ITEM,
+        USER_NAV_ITEM,
+      ];
+  }
+};
+
 const AdminNav = ({ user }: { user?: any }) => {
   const theme = useTheme();
   const pathname = usePathname();
@@ -153,7 +172,7 @@ const AdminNav = ({ user }: { user?: any }) => {
           </StyledHeader>
 
           <StyledNav>
-            {NAV_ITEMS.map(item => {
+            {generateNavItems(user.accessLevel).map(item => {
               const isActive = item.link && pathname?.startsWith(item.link);
               return (
                 <StyledNavItem

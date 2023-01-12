@@ -63,7 +63,9 @@ const ClassForm = ({
       }}
     >
       <Box sx={{ width: '100%' }}>
-        <Typography variant="h6">Thêm lớp mới</Typography>
+        <Typography variant="h6">
+          {initialData ? 'Chỉnh sửa thông tin lớp' : 'Thêm lớp mới'}
+        </Typography>
       </Box>
 
       <Controller
