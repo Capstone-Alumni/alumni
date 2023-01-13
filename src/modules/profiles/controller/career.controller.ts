@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ApiErrorResponse, ApiSuccessResponse } from 'src/types';
-import CareerService from '../services/career.serivce';
+import CareerService from '../service/career.serivce';
 
 export default class CareerController {
   static createCareer = async (
@@ -8,30 +8,17 @@ export default class CareerController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
-      const { userId } = req.query;
-      const { jobTitle, company, startDate, endDate } = req.body;
-      const newCareer = await CareerService.create(userId as string, {
-        jobTitle,
-        company,
-        startDate,
-        endDate,
-      });
+      const { id } = req.query;
+      const newCareer = await CareerService.create(id as string, req.body);
 
       return res.status(201).json({
         status: true,
         data: newCareer,
       });
     } catch (error: any) {
-      if (error.message?.includes('user')) {
-        return res.status(400).json({
-          status: false,
-          message: 'user is not exist',
-        });
-      }
-
-      return res.status(500).json({
+      return res.status(400).json({
         status: false,
-        message: error as string,
+        message: error.message,
       });
     }
   };
@@ -41,8 +28,9 @@ export default class CareerController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
-      const { userId, page, limit } = req.query;
+      const { userId, jobTitle, page, limit } = req.query;
       const careerList = await CareerService.getListByUserId(userId as string, {
+        jobTitle: jobTitle ? (jobTitle as string) : '',
         page: page ? parseInt(page as string, 10) : 1,
         limit: limit ? parseInt(limit as string, 10) : 20,
       });

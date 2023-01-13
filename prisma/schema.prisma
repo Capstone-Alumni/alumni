@@ -136,8 +136,8 @@ model Career {
   id        String   @id @default(cuid())
   jobTitle  String   @map("job_title")
   company   String   
-  startDate DateTime @map("start_date")
-  endDate   DateTime @map("end_date")
+  startDate DateTime? @map("start_date")
+  endDate   DateTime? @map("end_date")
   userId    String   @map("user_id")
 
   user User @relation(fields: [userId], references: [id])

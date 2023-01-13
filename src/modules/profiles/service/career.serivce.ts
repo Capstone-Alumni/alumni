@@ -5,31 +5,27 @@ import {
   UpdateCareerInfoByIdServiceProps,
 } from '../types';
 
-const isUserExisted = async (id: string) => {
-  if (!id) {
-    throw new Error('user is not existed');
-  }
-
-  const user = await prisma.career.findUnique({
-    where: { id: id },
-  });
-
-  if (!user) {
-    throw new Error('user is not existed');
-  }
-};
 export default class CareerService {
-  static create = async (userId: string, body: CreateCareerServiceProps) => {
-    isUserExisted(userId);
+  static create = async (
+    id: string,
+    { jobTitle, company, startDate, endDate }: CreateCareerServiceProps,
+  ) => {
+    const user = await prisma.user.findFirst({
+      where: { id },
+    });
+    if (!user) {
+      throw new Error('User not found');
+    }
+
     const newCareer = await prisma.career.create({
       data: {
-        jobTitle: body.jobTitle,
-        company: body.company,
-        startDate: body.startDate,
-        endDate: body.endDate,
+        jobTitle: jobTitle,
+        company: company,
+        startDate: startDate,
+        endDate: endDate,
         user: {
           connect: {
-            id: userId,
+            id: id,
           },
         },
       },
@@ -38,15 +34,20 @@ export default class CareerService {
   };
 
   static getListByUserId = async (
-    userId: string,
+    id: string,
     params: GetCareerListServiceParams,
   ) => {
-    await isUserExisted(userId);
+    const user = await prisma.user.findFirst({
+      where: { id },
+    });
+    if (!user) {
+      throw new Error('User not found');
+    }
 
-    const { page, limit } = params;
+    const { jobTitle, page, limit } = params;
 
     const whereFilter = {
-      AND: [{ userId: userId }, { archived: false }],
+      AND: [{ jobTitle: { contains: jobTitle } }, { archived: false }],
     };
 
     const [totalCareerItem, careerItems] = await prisma.$transaction([
