@@ -149,9 +149,9 @@ model Career {
 
 model Education {
   id        String    @id @default(cuid())
-  degree    String
+  degree    String?
   school    String
-  startDate DateTime @map("start_date")
+  startDate DateTime? @map("start_date")
   endDate   DateTime? @map("end_date") // in case  not graduated
   userId    String    @map("user_id")
 
