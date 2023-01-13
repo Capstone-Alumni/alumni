@@ -10,18 +10,11 @@ export type CreateCareerServiceProps = {
   company: string;
   startDate: string;
   endDate: string;
-  userId: string;
 };
 
 export type GetCareerListServiceParams = {
   page: number;
   limit: number;
-  name: string;
-};
-
-export type GetCareerListServiceProps = {
-  userId: string;
-  params: GetCareerListServiceParams;
 };
 
 export type UpdateCareerInfoByIdServiceProps = {

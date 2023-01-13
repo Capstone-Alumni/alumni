@@ -1,0 +1,128 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+import { ApiErrorResponse, ApiSuccessResponse } from 'src/types';
+import CareerService from '../services/career.serivce';
+
+export default class CareerController {
+  static createCareer = async (
+    req: NextApiRequest,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const { userId } = req.query;
+      const { jobTitle, company, startDate, endDate } = req.body;
+      const newCareer = await CareerService.create(userId as string, {
+        jobTitle,
+        company,
+        startDate,
+        endDate,
+      });
+
+      return res.status(201).json({
+        status: true,
+        data: newCareer,
+      });
+    } catch (error: any) {
+      if (error.message?.includes('user')) {
+        return res.status(400).json({
+          status: false,
+          message: 'user is not exist',
+        });
+      }
+
+      return res.status(500).json({
+        status: false,
+        message: error as string,
+      });
+    }
+  };
+
+  static getListByUserId = async (
+    req: NextApiRequest,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const { userId, page, limit } = req.query;
+      const careerList = await CareerService.getListByUserId(userId as string, {
+        page: page ? parseInt(page as string, 10) : 1,
+        limit: limit ? parseInt(limit as string, 10) : 20,
+      });
+
+      return res.status(200).json({
+        status: true,
+        data: careerList,
+      });
+    } catch (error: any) {
+      if (error.message?.includes('user')) {
+        return res.status(400).json({
+          status: false,
+          message: 'User is not exist',
+        });
+      }
+      return res.status(500).json({
+        status: false,
+        message: error as string,
+      });
+    }
+  };
+
+  static getById = async (
+    req: NextApiRequest,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const { id } = req.query;
+      const career = await CareerService.getById(id as string);
+      return res.status(200).json({
+        status: true,
+        data: career,
+      });
+    } catch (error: any) {
+      return res.status(500).json({
+        status: false,
+        message: error as string,
+      });
+    }
+  };
+
+  static updateCareerById = async (
+    req: NextApiRequest,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const { id } = req.query;
+      const careerUpdated = await CareerService.updateCareerById(
+        id as string,
+        req.body,
+      );
+      return res.status(200).json({
+        status: true,
+        data: careerUpdated,
+      });
+    } catch (error: any) {
+      return res.status(500).json({
+        status: false,
+        message: error as string,
+      });
+    }
+  };
+
+  static deleteById = async (
+    req: NextApiRequest,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const { id } = req.query;
+      const careerDeleted = await CareerService.deleteById(id as string);
+
+      return res.status(200).json({
+        status: true,
+        data: careerDeleted,
+      });
+    } catch (error: any) {
+      return res.status(500).json({
+        status: false,
+        message: error as string,
+      });
+    }
+  };
+}
