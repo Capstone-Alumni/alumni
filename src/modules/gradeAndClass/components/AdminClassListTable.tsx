@@ -8,14 +8,12 @@ import Paper from '@mui/material/Paper';
 import { Class } from '../types';
 import { ClassFormValues } from './ClassForm';
 import AdminClassListItem from './AdminClassListItem';
-import DataTablePagination from '@share/components/DataTablePagination';
+import { Typography } from '@mui/material';
 
 const AdminClassListTable = ({
   data,
   onEdit,
   onDelete,
-  page,
-  onChangePage,
 }: {
   data: {
     items: Class[];
@@ -24,9 +22,15 @@ const AdminClassListTable = ({
   };
   onEdit: (id: string, data: ClassFormValues) => void;
   onDelete: (id: string) => void;
-  page: number;
-  onChangePage: (nextPage: number) => void;
 }) => {
+  if (data.totalItems === 0) {
+    return (
+      <Typography textAlign="center" variant="h6">
+        Chưa tạo lớp
+      </Typography>
+    );
+  }
+
   return (
     <>
       <TableContainer component={Paper}>
@@ -49,13 +53,6 @@ const AdminClassListTable = ({
               />
             ))}
           </TableBody>
-
-          <DataTablePagination
-            colSpan={4}
-            currentPage={page}
-            totalPage={Math.ceil(data.totalItems / data.itemPerPage)}
-            onChangePage={onChangePage}
-          />
         </Table>
       </TableContainer>
     </>
