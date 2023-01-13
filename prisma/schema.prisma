@@ -111,25 +111,24 @@ model Class {
 
 model Information {
   id                   String         @id @default(cuid())
-  bio                  String
-  avatarUrl            String         @map("avatar_url")
-  coverImageUrl        String         @map("cover_image_url")
-  userEmail            String         @unique @map("user_email")
+  bio                  String?
+  avatarUrl            String?        @map("avatar_url")
+  coverImageUrl        String?        @map("cover_image_url")
+  userEmail            String?        @map("user_email") // email contact, no related to email user
   emailPublicity       ScopePublicity @default(PRIVATE) @map("email_publicity")
-  phone                String
+  phone                String?
   phonePublicity       ScopePublicity @default(PRIVATE) @map("phone_publicity")
-  facebookUrl          String         @map("facebook_url")
+  facebookUrl          String?        @map("facebook_url")
   facebookPublicity    ScopePublicity @default(PRIVATE) @map("facebook_publicity")
-  dateOfBirth          DateTime       @map("date_of_birth")
+  dateOfBirth          DateTime?      @map("date_of_birth")
   dateOfBirthPublicity ScopePublicity @default(PRIVATE) @map("date_of_birth_publicity")
-  gradeCode            String         @map("grade_code")
-  gradeName            String         @map("grade_name")
-  className            String         @map("class_name")
+  gradeCode            String?        @map("grade_code")
+  gradeName            String?        @map("grade_name")
+  className            String?        @map("class_name")
   userId               String         @unique
 
-  user User @relation(fields: [userId, userEmail], references: [id, email])
+  user User @relation(fields: [userId], references: [id])
 
-  @@unique([userId, userEmail])
   @@map("informations")
 }
 
