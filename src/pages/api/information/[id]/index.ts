@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import InformationController from 'src/modules/information/controller/information.controller';
+import InformationController from 'src/modules/profiles/controller/information.controller';
 
 export default function informationHandler(
   req: NextApiRequest,

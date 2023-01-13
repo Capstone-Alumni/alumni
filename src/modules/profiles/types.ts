@@ -4,6 +4,7 @@ export type UpdateInformationProps = {
   bio?: string;
   avatarUrl?: string;
   coverImageUrl?: string;
+  userEmail?: string;
   emailPublicity?: ScopePublicity;
   phone?: string;
   phonePublicity?: ScopePublicity;
@@ -11,7 +12,4 @@ export type UpdateInformationProps = {
   facebookPublicity?: ScopePublicity;
   dateOfBirth?: Date | string;
   dateOfBirthPublicity?: ScopePublicity;
-  gradeCode?: string;
-  gradeName?: string;
-  className?: string;
 };
