@@ -13,3 +13,24 @@ export type UpdateInformationProps = {
   dateOfBirth?: Date | string;
   dateOfBirthPublicity?: ScopePublicity;
 };
+
+//carrers
+export type CreateCareerServiceProps = {
+  jobTitle: string;
+  company: string;
+  startDate: string;
+  endDate: string;
+};
+
+export type GetCareerListServiceParams = {
+  jobTitle: string;
+  page: number;
+  limit: number;
+};
+
+export type UpdateCareerInfoByIdServiceProps = {
+  jobTitle?: string;
+  company?: string;
+  startDate?: string;
+  endDate?: string;
+};
