@@ -28,9 +28,10 @@ export default class CareerController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
-      const { userId, jobTitle, page, limit } = req.query;
-      const careerList = await CareerService.getListByUserId(userId as string, {
+      const { id, jobTitle, company, page, limit } = req.query;
+      const careerList = await CareerService.getListByUserId(id as string, {
         jobTitle: jobTitle ? (jobTitle as string) : '',
+        company: company ? (company as string) : '',
         page: page ? parseInt(page as string, 10) : 1,
         limit: limit ? parseInt(limit as string, 10) : 20,
       });
@@ -40,13 +41,7 @@ export default class CareerController {
         data: careerList,
       });
     } catch (error: any) {
-      if (error.message?.includes('user')) {
-        return res.status(400).json({
-          status: false,
-          message: error.message as string,
-        });
-      }
-      return res.status(500).json({
+      return res.status(400).json({
         status: false,
         message: error.message as string,
       });
@@ -77,9 +72,9 @@ export default class CareerController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
-      const { id } = req.query;
+      const { career_id } = req.query;
       const careerUpdated = await CareerService.updateCareerById(
-        id as string,
+        career_id as string,
         req.body,
       );
       return res.status(200).json({

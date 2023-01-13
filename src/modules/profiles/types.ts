@@ -24,6 +24,7 @@ export type CreateCareerServiceProps = {
 
 export type GetCareerListServiceParams = {
   jobTitle: string;
+  company: string;
   page: number;
   limit: number;
 };

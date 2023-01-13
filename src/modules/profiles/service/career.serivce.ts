@@ -43,10 +43,14 @@ export default class CareerService {
   ) => {
     isUserExisted(userId);
 
-    const { jobTitle, page, limit } = params;
+    const { jobTitle, company, page, limit } = params;
 
     const whereFilter = {
-      AND: [{ jobTitle: { contains: jobTitle } }, { archived: false }],
+      AND: [
+        { userId: userId },
+        { jobTitle: { contains: jobTitle } },
+        { company: { contains: company } },
+      ],
     };
 
     const [totalCareerItem, careerItems] = await prisma.$transaction([

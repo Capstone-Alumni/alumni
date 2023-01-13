@@ -11,12 +11,10 @@ export default function careerHandler(
   switch (method) {
     case 'GET':
       return CareerController.getListByUserId(req, res);
-    case 'PUT':
-      return CareerController.updateCareerById(req, res);
     case 'POST':
       return CareerController.createCareer(req, res);
     default:
-      res.setHeader('Allow', ['GET', 'PUT', 'POST']);
+      res.setHeader('Allow', ['GET', 'POST']);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }
