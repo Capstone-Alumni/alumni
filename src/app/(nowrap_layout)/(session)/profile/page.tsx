@@ -22,6 +22,7 @@ import {
   ProfileFollowers
 } from '../../../../modules/share/components/_dashboard/user/profile';
 import { UserPost } from '@share/type';
+import UserCreate from '@share/components/_dashboard/user/profile/UserCreate';
 
 // ----------------------------------------------------------------------
 
@@ -672,9 +673,9 @@ export default function UserProfile() {
       component: <Profile myProfile={myProfile} posts={posts} />
     },
     {
-      value: 'gallery',
+      value: 'edit',
       icon: <Icon icon={roundPermMedia} width={20} height={20} />,
-      component: <ProfileGallery gallery={gallery} />
+      component: <UserCreate isEdit={true}/>
     }
   ];
 

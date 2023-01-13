@@ -13,10 +13,10 @@ export default function UserCreate({ isEdit }: UserCreateProps) {
 
   return (
     <Container maxWidth={'lg'}>
-      <HeaderBreadcrumbs
+      {/* <HeaderBreadcrumbs
         heading={!isEdit ? 'Create a new user' : 'Edit user'}
-      />
-      <UserNewForm isEdit={false} />
+      /> */}
+      <UserNewForm isEdit={true} />
     </Container>
   );
 }

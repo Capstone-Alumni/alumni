@@ -32,11 +32,6 @@ export default function ProfileAbout({ profile }: { profile: Profile }) {
     <Card>
       <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center" }}>
         <CardHeader title="About" />
-        <Box sx={{ paddingRight: 3, marginTop: "1rem" }}>
-          <a href='/profile/edit'>
-          <Button variant="contained">Edit</Button>
-          </a>
-        </Box>
       </Stack>
 
       <Stack spacing={2} sx={{ p: 3 }}>
