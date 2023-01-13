@@ -4,14 +4,45 @@ import { Box, Button, Typography, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import AdminGradeListTable from './AdminGradeListTable';
 import { useState } from 'react';
-import GradeForm from './GradeForm';
+import GradeForm, { GradeFormValues } from './GradeForm';
 
-import mockData from '../__mockData__/getGradeList';
-import { noop } from 'lodash/fp';
+import useCreateGrade from '../hooks/useCreateGrade';
+import useGetGradeList from '../hooks/useGetGradeList';
+import LoadingIndicator from '@share/components/LoadingIndicator';
+import useDeleteGradeById from '../hooks/useDeleteGradeById';
+import useUpdateGradeById from '../hooks/useUpdateGradeById';
+import { useRecoilState } from 'recoil';
+import { getGradeListParamsAtom } from '../state';
 
 const AdminGradeListPage = () => {
   const theme = useTheme();
   const [openForm, setOpenForm] = useState(false);
+
+  const [params, setParams] = useRecoilState(getGradeListParamsAtom);
+
+  const { createGrade } = useCreateGrade();
+  const { deleteGradeById } = useDeleteGradeById();
+  const { updateGradeById } = useUpdateGradeById();
+  const {
+    reload,
+    data: gradeListData,
+    isLoading: isGettingGrade,
+  } = useGetGradeList();
+
+  const onAddGrade = async (values: GradeFormValues) => {
+    await createGrade(values);
+    reload();
+  };
+
+  const onDelete = async (gradeId: string) => {
+    await deleteGradeById({ gradeId });
+    reload();
+  };
+
+  const onUpdate = async (gradeId: string, { code, name }: GradeFormValues) => {
+    await updateGradeById({ gradeId, code, name });
+    reload();
+  };
 
   return (
     <Box
@@ -43,7 +74,7 @@ const AdminGradeListPage = () => {
       </Box>
 
       {openForm ? (
-        <GradeForm onSubmit={noop} onClose={() => setOpenForm(false)} />
+        <GradeForm onSubmit={onAddGrade} onClose={() => setOpenForm(false)} />
       ) : null}
 
       <Box
@@ -51,13 +82,19 @@ const AdminGradeListPage = () => {
           width: '100%',
         }}
       >
-        <AdminGradeListTable
-          data={mockData.data}
-          onDelete={noop}
-          onEdit={noop}
-          page={1}
-          onChangePage={noop}
-        />
+        {isGettingGrade ? <LoadingIndicator /> : null}
+
+        {gradeListData?.data ? (
+          <AdminGradeListTable
+            data={gradeListData?.data}
+            onDelete={onDelete}
+            onEdit={onUpdate}
+            page={params.page || 1}
+            onChangePage={nextPage => {
+              setParams(prevParams => ({ ...prevParams, page: nextPage }));
+            }}
+          />
+        ) : null}
       </Box>
     </Box>
   );

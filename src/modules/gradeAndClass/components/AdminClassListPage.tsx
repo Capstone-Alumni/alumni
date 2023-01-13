@@ -4,15 +4,51 @@ import { Box, Button, Typography, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import AdminClassListTable from './AdminClassListTable';
 import { useState } from 'react';
-import ClassForm from './ClassForm';
+import ClassForm, { ClassFormValues } from './ClassForm';
 
-import mockData from '../__mockData__/getClassList';
-import { noop } from 'lodash/fp';
 import Link from 'next/link';
+// import { useRecoilState } from 'recoil';
+// import { getClassListParamsAtom } from '../state';
+import useCreateClass from '../hooks/useCreateClass';
+import useDeleteClassById from '../hooks/useDeleteClassById';
+import useUpdateClassById from '../hooks/useUpdateClassById';
+import useGetClassList from '../hooks/useGetClassList';
+import { usePathname } from 'next/navigation';
+import LoadingIndicator from '@share/components/LoadingIndicator';
 
 const AdminClassListPage = () => {
   const theme = useTheme();
   const [openForm, setOpenForm] = useState(false);
+
+  const pathname = usePathname();
+
+  const gradeId = pathname?.split('/')[3] || '';
+
+  // const [params, setParams] = useRecoilState(getClassListParamsAtom);
+
+  const { createClass } = useCreateClass();
+  const { deleteClassById } = useDeleteClassById();
+  const { updateClassById } = useUpdateClassById();
+  const {
+    reload,
+    data: classListData,
+    isLoading: isGettingClass,
+  } = useGetClassList(gradeId);
+
+  const onAddClass = async (values: ClassFormValues) => {
+    await createClass({ ...values, gradeId });
+    reload();
+  };
+
+  const onDelete = async (classId: string) => {
+    await deleteClassById({ classId });
+    reload();
+  };
+
+  const onUpdate = async (classId: string, { name }: ClassFormValues) => {
+    await updateClassById({ classId, name });
+    reload();
+  };
 
   return (
     <Box
@@ -46,7 +82,7 @@ const AdminClassListPage = () => {
       </Box>
 
       {openForm ? (
-        <ClassForm onSubmit={noop} onClose={() => setOpenForm(false)} />
+        <ClassForm onSubmit={onAddClass} onClose={() => setOpenForm(false)} />
       ) : null}
 
       <Box
@@ -54,13 +90,15 @@ const AdminClassListPage = () => {
           width: '100%',
         }}
       >
-        <AdminClassListTable
-          data={mockData.data}
-          onDelete={noop}
-          onEdit={noop}
-          page={1}
-          onChangePage={noop}
-        />
+        {isGettingClass ? <LoadingIndicator /> : null}
+
+        {classListData?.data ? (
+          <AdminClassListTable
+            data={classListData?.data}
+            onDelete={onDelete}
+            onEdit={onUpdate}
+          />
+        ) : null}
       </Box>
     </Box>
   );

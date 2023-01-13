@@ -33,6 +33,7 @@ const DataTablePagination = ({
             <Button
               variant="outlined"
               color="inherit"
+              disabled={currentPage === 1}
               onClick={() => onChangePage(currentPage - 1)}
             >
               Trang trước
@@ -41,6 +42,7 @@ const DataTablePagination = ({
             <Button
               variant="outlined"
               color="inherit"
+              disabled={currentPage === totalPage}
               onClick={() => onChangePage(currentPage + 1)}
             >
               Trang sau

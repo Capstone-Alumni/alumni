@@ -5,7 +5,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Grade } from '../types';
+import { GetGradeListData } from '../types';
 import { GradeFormValues } from './GradeForm';
 import AdminGradeListItem from './AdminGradeListItem';
 import DataTablePagination from '@share/components/DataTablePagination';
@@ -17,11 +17,7 @@ const AdminGradeListTable = ({
   page,
   onChangePage,
 }: {
-  data: {
-    items: Grade[];
-    totalItems: number;
-    itemPerPage: number;
-  };
+  data: GetGradeListData;
   onEdit: (id: string, data: GradeFormValues) => void;
   onDelete: (id: string) => void;
   page: number;

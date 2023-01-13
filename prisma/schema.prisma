@@ -77,7 +77,9 @@ model User {
 
   class       Class?       @relation(fields: [classId], references: [id], onDelete: SetNull)
   information Information?
-  careers      Career[]
+  careers     Career[]
+  Education   Education[]
+
   @@unique([id, email])
   @@map("users")
 }
@@ -146,4 +148,16 @@ model Career {
 
   @@map("careers")
 }
- 
+
+model Education {
+  id        String    @id @default(cuid())
+  degree    String?
+  school    String
+  startDate DateTime? @map("start_date")
+  endDate   DateTime? @map("end_date") // in case  not graduated
+  userId    String    @map("user_id")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("educations")
+}
