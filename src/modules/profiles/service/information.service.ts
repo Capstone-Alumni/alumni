@@ -1,4 +1,5 @@
 import { prisma } from '@lib/prisma/prisma';
+import { omit } from 'lodash';
 import { UpdateInformationProps } from '../types';
 
 export default class InformationService {
@@ -35,6 +36,6 @@ export default class InformationService {
       },
     });
 
-    return userInformation;
+    return omit(userInformation, ['password']);
   };
 }
