@@ -60,7 +60,7 @@ export default class CareerController {
         data: career,
       });
     } catch (error: any) {
-      return res.status(500).json({
+      return res.status(400).json({
         status: false,
         message: error as string,
       });
@@ -82,7 +82,7 @@ export default class CareerController {
         data: careerUpdated,
       });
     } catch (error: any) {
-      return res.status(500).json({
+      return res.status(400).json({
         status: false,
         message: error as string,
       });
@@ -102,7 +102,7 @@ export default class CareerController {
         data: careerDeleted,
       });
     } catch (error: any) {
-      return res.status(500).json({
+      return res.status(400).json({
         status: false,
         message: error as string,
       });
