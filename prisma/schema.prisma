@@ -142,6 +142,8 @@ model Career {
 
   user User @relation(fields: [userId], references: [id])
 
+  @unique[id, userId]
+
   @@map("careers")
 }
  

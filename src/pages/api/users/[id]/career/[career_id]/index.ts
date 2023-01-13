@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { NextApiRequest } from 'next';
-import CareerController from '../../../../../modules/profiles/controller/career.controller';
+import CareerController from '../../../../../../modules/profiles/controller/career.controller';
 
 export default function careerHandler(
   req: NextApiRequest,
@@ -10,13 +10,13 @@ export default function careerHandler(
 
   switch (method) {
     case 'GET':
-      return CareerController.getListByUserId(req, res);
+      return CareerController.getById(req, res);
     case 'PUT':
       return CareerController.updateCareerById(req, res);
-    case 'POST':
-      return CareerController.createCareer(req, res);
+    case 'DELETE':
+      return CareerController.deleteById(req, res);
     default:
-      res.setHeader('Allow', ['GET', 'PUT', 'POST']);
+      res.setHeader('Allow', ['GET', 'PUT', 'DELETE']);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }

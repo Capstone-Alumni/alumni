@@ -18,7 +18,7 @@ export default class CareerController {
     } catch (error: any) {
       return res.status(400).json({
         status: false,
-        message: error.message,
+        message: error.message as string,
       });
     }
   };
@@ -43,12 +43,12 @@ export default class CareerController {
       if (error.message?.includes('user')) {
         return res.status(400).json({
           status: false,
-          message: 'User is not exist',
+          message: error.message as string,
         });
       }
       return res.status(500).json({
         status: false,
-        message: error as string,
+        message: error.message as string,
       });
     }
   };
@@ -58,8 +58,8 @@ export default class CareerController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
-      const { id } = req.query;
-      const career = await CareerService.getById(id as string);
+      const { career_id } = req.query;
+      const career = await CareerService.getById(career_id as string);
       return res.status(200).json({
         status: true,
         data: career,
@@ -99,8 +99,8 @@ export default class CareerController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
-      const { id } = req.query;
-      const careerDeleted = await CareerService.deleteById(id as string);
+      const { career_id } = req.query;
+      const careerDeleted = await CareerService.deleteById(career_id as string);
 
       return res.status(200).json({
         status: true,

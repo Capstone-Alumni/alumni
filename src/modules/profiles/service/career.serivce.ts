@@ -1,22 +1,26 @@
 import { prisma } from '@lib/prisma/prisma';
+import { Session } from 'inspector';
 import {
   CreateCareerServiceProps,
   GetCareerListServiceParams,
   UpdateCareerInfoByIdServiceProps,
 } from '../types';
 
+const isUserExisted = async (id: string) => {
+  const user = await prisma.user.findFirst({
+    where: { id: id },
+  });
+
+  if (!user) {
+    throw new Error('user not exist');
+  }
+};
 export default class CareerService {
   static create = async (
-    id: string,
+    userId: string,
     { jobTitle, company, startDate, endDate }: CreateCareerServiceProps,
   ) => {
-    const user = await prisma.user.findFirst({
-      where: { id },
-    });
-    if (!user) {
-      throw new Error('User not found');
-    }
-
+    isUserExisted(userId);
     const newCareer = await prisma.career.create({
       data: {
         jobTitle: jobTitle,
@@ -25,7 +29,7 @@ export default class CareerService {
         endDate: endDate,
         user: {
           connect: {
-            id: id,
+            id: userId,
           },
         },
       },
@@ -34,15 +38,10 @@ export default class CareerService {
   };
 
   static getListByUserId = async (
-    id: string,
+    userId: string,
     params: GetCareerListServiceParams,
   ) => {
-    const user = await prisma.user.findFirst({
-      where: { id },
-    });
-    if (!user) {
-      throw new Error('User not found');
-    }
+    isUserExisted(userId);
 
     const { jobTitle, page, limit } = params;
 
@@ -65,14 +64,14 @@ export default class CareerService {
     };
   };
 
-  static getById = async (id: string) => {
-    const grade = await prisma.career.findUnique({
+  static getById = async (careerId: string) => {
+    const career = await prisma.career.findUnique({
       where: {
-        id: id,
+        id: careerId,
       },
     });
 
-    return grade;
+    return career;
   };
 
   static updateCareerById = async (
@@ -88,10 +87,10 @@ export default class CareerService {
     return careerUpdated;
   };
 
-  static deleteById = async (id: string) => {
+  static deleteById = async (careerId: string) => {
     const careerDeleted = await prisma.career.delete({
       where: {
-        id: id,
+        id: careerId,
       },
     });
 
