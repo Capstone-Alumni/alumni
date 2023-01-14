@@ -13,3 +13,19 @@ export type UpdateInformationProps = {
   dateOfBirth?: Date | string;
   dateOfBirthPublicity?: ScopePublicity;
 };
+
+export type CreateOrUpdateEducationServiceProps = {
+  school: string;
+  degree?: string;
+  startDate?: Date;
+  endDate?: Date;
+};
+
+export type QueryParamGetEducationByUserId = {
+  school: string;
+  degree?: string;
+  startDate?: Date;
+  endDate?: Date;
+  page?: string;
+  limit?: string;
+};
