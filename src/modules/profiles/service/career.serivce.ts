@@ -1,4 +1,5 @@
 import { prisma } from '@lib/prisma/prisma';
+import archiveFill from '@iconify/icons-eva/archive-fill';
 import {
   CreateCareerServiceProps,
   GetCareerListServiceParams,
@@ -47,6 +48,8 @@ export default class CareerService {
     const whereFilter = {
       AND: [
         { userId: userId },
+        // career is deleted -> not show on list
+        { archived: false },
         { jobTitle: { contains: jobTitle } },
         { company: { contains: company } },
       ],
@@ -73,7 +76,6 @@ export default class CareerService {
         id: careerId,
       },
     });
-
     return career;
   };
 
@@ -90,13 +92,16 @@ export default class CareerService {
     return careerUpdated;
   };
 
-  static deleteById = async (careerId: string) => {
-    const careerDeleted = await prisma.career.delete({
+  static deleteById = async (id: string) => {
+    const career = await prisma.career.update({
       where: {
-        id: careerId,
+        id: id,
+      },
+      data: {
+        archived: true,
       },
     });
 
-    return careerDeleted;
+    return career;
   };
 }
