@@ -1,5 +1,4 @@
 import { prisma } from '@lib/prisma/prisma';
-import { Session } from 'inspector';
 import {
   CreateCareerServiceProps,
   GetCareerListServiceParams,

@@ -53,8 +53,8 @@ export default class CareerController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
-      const { career_id } = req.query;
-      const career = await CareerService.getById(career_id as string);
+      const { careerId } = req.query;
+      const career = await CareerService.getById(careerId as string);
       return res.status(200).json({
         status: true,
         data: career,
@@ -72,9 +72,9 @@ export default class CareerController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
-      const { career_id } = req.query;
+      const { careerId } = req.query;
       const careerUpdated = await CareerService.updateCareerById(
-        career_id as string,
+        careerId as string,
         req.body,
       );
       return res.status(200).json({
@@ -94,8 +94,8 @@ export default class CareerController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
-      const { career_id } = req.query;
-      const careerDeleted = await CareerService.deleteById(career_id as string);
+      const { careerId } = req.query;
+      const careerDeleted = await CareerService.deleteById(careerId as string);
 
       return res.status(200).json({
         status: true,
