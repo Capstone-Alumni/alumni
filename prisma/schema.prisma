@@ -153,6 +153,7 @@ model Education {
   school    String
   startDate DateTime? @map("start_date")
   endDate   DateTime? @map("end_date") // in case  not graduated
+  archived  Boolean   @default(false)
   userId    String    @map("user_id")
 
   user User @relation(fields: [userId], references: [id])
