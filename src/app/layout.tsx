@@ -8,6 +8,8 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import ThemeConfig from '@lib/mui';
 import createEmotionCache from '@share/utils/createEmotionCache';
 
+import { Providers } from '../redux/providers';
+
 const clientSideEmotionCache = createEmotionCache();
 
 export default function RootLayout({
@@ -26,7 +28,9 @@ export default function RootLayout({
       <body style={{ margin: 0, minHeight: '100vh' }}>
         <SessionProvider>
           <CacheProvider value={emotionCache}>
-            <ThemeConfig>{children}</ThemeConfig>
+            <Providers>
+              <ThemeConfig>{children}</ThemeConfig>
+            </Providers>
           </CacheProvider>
         </SessionProvider>
       </body>
