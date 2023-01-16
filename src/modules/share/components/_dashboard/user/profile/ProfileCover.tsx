@@ -5,6 +5,7 @@ import { Box, Typography } from '@mui/material';
 import MyAvatar from '../../../MyAvatar';
 // @types
 import { Profile } from '../../../../type';
+import { UploadAvatar } from '@share/components/upload';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -53,6 +54,11 @@ type ProfileCoverProps = {
 export default function ProfileCover({ myProfile }: ProfileCoverProps) {
   const { position, cover } = myProfile;
 
+  // const handleDrop = (acceptedFiles: any) => {
+  //   const file = acceptedFiles[0];
+  //   console.log(file);
+  // }
+
   return (
     <RootStyle>
       <InfoStyle>
@@ -66,6 +72,11 @@ export default function ProfileCover({ myProfile }: ProfileCoverProps) {
             height: { xs: 80, md: 128 }
           }}
         />
+        {/* <UploadAvatar
+          file={null}
+          maxSize={3145728}
+          onDrop={handleDrop}
+        /> */}
         <Box
           sx={{
             ml: { md: 3 },
