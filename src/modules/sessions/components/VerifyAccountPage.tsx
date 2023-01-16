@@ -3,9 +3,7 @@
 import VerifyAccountStepper from '@share/components/VerifyAccountStepper';
 
 const VerifyAccountPage = () => {
-  return (
-    <VerifyAccountStepper/>
-  );
+  return <VerifyAccountStepper />;
 };
 
 export default VerifyAccountPage;

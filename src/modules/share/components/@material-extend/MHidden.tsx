@@ -21,10 +21,10 @@ type MHiddenProps = {
 
 export default function MHidden({ width, children }: MHiddenProps) {
   const breakpoint = width.substring(0, 2) as Breakpoint;
-  const hiddenUp = useMediaQuery<Theme>((theme) =>
+  const hiddenUp = useMediaQuery<Theme>(theme =>
     theme.breakpoints.up(breakpoint),
   );
-  const hiddenDown = useMediaQuery<Theme>((theme) =>
+  const hiddenDown = useMediaQuery<Theme>(theme =>
     theme.breakpoints.down(breakpoint),
   );
 

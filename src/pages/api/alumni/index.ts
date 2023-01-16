@@ -1,7 +1,10 @@
 import { getAlums } from 'src/lib/prisma/alumni';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { unstable_getServerSession } from 'next-auth';
-import { ApiErrorResponse, ApiSuccessResponse } from 'src/pages/types/apiResponses';
+import {
+  ApiErrorResponse,
+  ApiSuccessResponse,
+} from 'src/pages/types/apiResponses';
 import { nextAuthOptions } from '../auth/[...nextauth]';
 
 const handler = async (

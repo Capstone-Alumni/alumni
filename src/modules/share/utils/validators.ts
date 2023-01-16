@@ -39,7 +39,4 @@ export const requiredFullNameValidator = yup
   .max(40, 'Tối đa 40 ký tự')
   .required('Bắt buộc');
 
-export const requiredGradeNClassValidator = yup
-  .string()
-  .required('Bắt buộc');
-
+export const requiredGradeNClassValidator = yup.string().required('Bắt buộc');

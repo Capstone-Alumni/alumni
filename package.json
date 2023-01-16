@@ -45,6 +45,7 @@
     "bcrypt": "5.1.0",
     "clsx": "1.2.1",
     "concurrently": "7.5.0",
+    "encoding": "0.1.13",
     "formik": "2.2.9",
     "framer-motion": "8.0.2",
     "jsonwebtoken": "9.0.0",
