@@ -1,6 +1,3 @@
-// import { tenantDataAtomFamily } from '@share/state';
-// import { useSetRecoilState } from 'recoil';
-
 import { getTenantData } from '@share/utils/getTenantData';
 
 export default async function TenantLayout({

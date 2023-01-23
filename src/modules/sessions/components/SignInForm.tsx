@@ -52,15 +52,6 @@ const SignInForm = () => {
             Đăng nhập
           </Typography>
 
-          <Box mb={5} sx={{ display: 'flex' }}>
-            <Typography sx={{ mr: 1 }} variant="body2">
-              Chưa có tài khoản?
-            </Typography>
-            <Link variant="subtitle2" href="/sign_up">
-              Đăng ký ngay
-            </Link>
-          </Box>
-
           <Controller
             control={control}
             name="email"
