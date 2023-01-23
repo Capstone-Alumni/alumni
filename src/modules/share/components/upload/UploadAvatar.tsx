@@ -6,7 +6,7 @@ import roundAddAPhoto from '@iconify/icons-ic/round-add-a-photo';
 // material
 import { alpha, styled, Theme } from '@mui/material';
 import { Box, Paper, Typography } from '@mui/material';
-import { SxProps } from '@material-ui/system';
+import { SxProps } from '@mui/material';
 // utils
 import { fData } from '../../utils/formatNumber';
 
