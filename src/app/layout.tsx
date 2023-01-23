@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
+import { RecoilRoot } from 'recoil';
 import { SessionProvider } from 'next-auth/react';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
-
 import ThemeConfig from '@lib/mui';
 import createEmotionCache from '@share/utils/createEmotionCache';
 
@@ -26,7 +26,9 @@ export default function RootLayout({
       <body style={{ margin: 0, minHeight: '100vh' }}>
         <SessionProvider>
           <CacheProvider value={emotionCache}>
-            <ThemeConfig>{children}</ThemeConfig>
+            <RecoilRoot>
+              <ThemeConfig>{children}</ThemeConfig>
+            </RecoilRoot>
           </CacheProvider>
         </SessionProvider>
       </body>

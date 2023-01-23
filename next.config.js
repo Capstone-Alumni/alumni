@@ -4,6 +4,7 @@ const nextConfig = {
   experimental: {
     // Required:
     appDir: true,
+    esmExternals: false,
   },
   compiler: {
     styledComponents: true,

@@ -98,9 +98,12 @@ export default class GradeService {
   };
 
   static deleteById = async (id: string) => {
-    const classDeleted = await prisma.class.delete({
+    const classDeleted = await prisma.class.update({
       where: {
         id: id,
+      },
+      data: {
+        archived: true,
       },
     });
 

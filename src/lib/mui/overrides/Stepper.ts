@@ -13,3 +13,17 @@ export default function Stepper(theme: Theme) {
     },
   };
 }
+
+export function StepLabel(theme: Theme) {
+  return {
+    MuiStepLabel: {
+      styleOverrides: {
+        root: {
+
+        }
+      },
+    },
+  };
+}
+
+

@@ -6,6 +6,12 @@ export type SignUpFormValues = {
   confirmPassword: string;
 };
 
+export type VerifyFormValues = {
+  fullname: string;
+  year: string;
+  class: string;
+};
+
 export type SignUpFormPayload = {
   username: string;
   email: string;

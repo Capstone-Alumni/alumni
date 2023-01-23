@@ -25,7 +25,7 @@ import Select from './Select';
 import SvgIcon from './SvgIcon';
 import Tooltip from './Tooltip';
 import Popover from './Popover';
-import Stepper from './Stepper';
+import Stepper, {StepLabel} from './Stepper';
 import Pickers from './Pickers';
 import DataGrid from './DataGrid';
 import Skeleton from './Skeleton';
@@ -97,5 +97,6 @@ export default function ComponentsOverrides(theme: Theme) {
     ControlLabel(theme),
     ToggleButton(theme),
     LoadingButton(theme),
+    StepLabel(theme),
   );
 }

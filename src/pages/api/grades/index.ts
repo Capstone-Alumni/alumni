@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { NextApiRequest } from 'next';
-import GradeController from '@share/controllers/grade.controller';
+import GradeController from 'src/modules/gradeAndClass/controllers/grade.controller';
 
 export default function gradeHandler(
   req: NextApiRequest,

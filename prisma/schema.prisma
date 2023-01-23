@@ -29,6 +29,13 @@ enum AccessMode {
   READ_ONLY
 }
 
+enum ScopePublicity {
+  PRIVATE
+  CLASS
+  GRADE
+  SCHOOL
+}
+
 // ============== MODEL =======================
 
 model Account {
@@ -68,8 +75,12 @@ model User {
   accessStatus  AccessStatus @default(PENDING) @map("access_status")
   accessMode    AccessMode   @default(FULL_ACCESS) @map("access_mode")
 
-  class Class? @relation(fields: [classId], references: [id], onDelete: SetNull)
+  class       Class?       @relation(fields: [classId], references: [id], onDelete: SetNull)
+  information Information?
+  careers     Career[]
+  Education   Education[]
 
+  @@unique([id, email])
   @@map("users")
 }
 
@@ -98,4 +109,55 @@ model Class {
   grade Grade @relation(fields: [gradeId], references: [id])
 
   @@map("classes")
+}
+
+model Information {
+  id                   String         @id @default(cuid())
+  bio                  String?
+  avatarUrl            String?        @map("avatar_url")
+  coverImageUrl        String?        @map("cover_image_url")
+  userEmail            String?        @map("user_email") // email contact, no related to email user
+  emailPublicity       ScopePublicity @default(PRIVATE) @map("email_publicity")
+  phone                String?
+  phonePublicity       ScopePublicity @default(PRIVATE) @map("phone_publicity")
+  facebookUrl          String?        @map("facebook_url")
+  facebookPublicity    ScopePublicity @default(PRIVATE) @map("facebook_publicity")
+  dateOfBirth          DateTime?      @map("date_of_birth")
+  dateOfBirthPublicity ScopePublicity @default(PRIVATE) @map("date_of_birth_publicity")
+  gradeCode            String?        @map("grade_code")
+  gradeName            String?        @map("grade_name")
+  className            String?        @map("class_name")
+  userId               String         @unique
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("informations")
+}
+
+model Career {
+  id        String    @id @default(cuid())
+  jobTitle  String    @map("job_title")
+  company   String
+  startDate DateTime? @map("start_date")
+  endDate   DateTime? @map("end_date")
+  userId    String    @map("user_id")
+  archived  Boolean   @default(false)
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("careers")
+}
+
+model Education {
+  id        String    @id @default(cuid())
+  degree    String?
+  school    String
+  startDate DateTime? @map("start_date")
+  endDate   DateTime? @map("end_date") // in case  not graduated
+  archived  Boolean   @default(false)
+  userId    String    @map("user_id")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("educations")
 }
