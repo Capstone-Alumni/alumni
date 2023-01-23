@@ -1,4 +1,4 @@
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo, forwardRef } from 'react';
 // material
 import {
   createTheme,
@@ -7,9 +7,6 @@ import {
   ThemeOptions,
   ThemeProvider,
 } from '@mui/material';
-// hooks
-// import useSettings from '../hooks/useSettings';
-//
 import shape from './shape';
 import palette from './palette';
 import typography from './typography';

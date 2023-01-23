@@ -4,9 +4,7 @@ import { Icon } from '@iconify/react';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import roundAddAPhoto from '@iconify/icons-ic/round-add-a-photo';
 // material
-import { alpha, Theme, styled } from '@mui/material';
-import { Box, Typography, Paper } from '@mui/material';
-import { SxProps } from '@material-ui/system';
+import { Box, Typography, Paper, SxProps, alpha, Theme, styled } from '@mui/material';
 // utils
 import { fData } from '../../utils/formatNumber';
 
@@ -18,7 +16,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   margin: 'auto',
   borderRadius: '50%',
   padding: theme.spacing(1),
-  border: `1px dashed ${theme.palette.grey[500_32]}`,
+  border: `1px dashed ${theme.palette.grey[500_32]}`
 }));
 
 const DropZoneStyle = styled('div')({
@@ -36,9 +34,9 @@ const DropZoneStyle = styled('div')({
   '&:hover': {
     cursor: 'pointer',
     '& .placeholder': {
-      zIndex: 9,
-    },
-  },
+      zIndex: 9
+    }
+  }
 });
 
 const PlaceholderStyle = styled('div')(({ theme }) => ({
@@ -51,9 +49,9 @@ const PlaceholderStyle = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.neutral,
   transition: theme.transitions.create('opacity', {
     easing: theme.transitions.easing.easeInOut,
-    duration: theme.transitions.duration.shorter,
+    duration: theme.transitions.duration.shorter
   }),
-  '&:hover': { opacity: 0.72 },
+  '&:hover': { opacity: 0.72 }
 }));
 
 // ----------------------------------------------------------------------
@@ -70,22 +68,13 @@ interface UploadAvatarProps extends DropzoneOptions {
   sx?: SxProps<Theme>;
 }
 
-export default function UploadAvatar({
-  error,
-  file,
-  caption,
-  sx,
-  ...other
-}: UploadAvatarProps) {
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragReject,
-    fileRejections,
-  } = useDropzone({
+export default function UploadAvatar({error, file, caption, sx, ...other }: UploadAvatarProps) {
+  const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     multiple: false,
-    ...other,
+    accept: {
+      'image/jpeg': ['.jpeg', '.png']
+    },
+    ...other
   });
 
   const ShowRejectionItems = () => (
@@ -96,7 +85,7 @@ export default function UploadAvatar({
         px: 2,
         my: 2,
         borderColor: 'error.light',
-        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08),
+        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08)
       }}
     >
       {fileRejections.map(({ file, errors }) => {
@@ -127,8 +116,8 @@ export default function UploadAvatar({
             ...((isDragReject || error) && {
               color: 'error.main',
               borderColor: 'error.light',
-              bgcolor: 'error.lighter',
-            }),
+              bgcolor: 'error.lighter'
+            })
           }}
         >
           <input {...getInputProps()} />
@@ -149,18 +138,12 @@ export default function UploadAvatar({
                 opacity: 0,
                 color: 'common.white',
                 bgcolor: 'grey.900',
-                '&:hover': { opacity: 0.72 },
-              }),
+                '&:hover': { opacity: 0.72 }
+              })
             }}
           >
-            <Box
-              component={Icon}
-              icon={roundAddAPhoto}
-              sx={{ width: 24, height: 24, mb: 1 }}
-            />
-            <Typography variant="caption">
-              {file ? 'Update photo' : 'Upload photo'}
-            </Typography>
+            <Box component={Icon} icon={roundAddAPhoto} sx={{ width: 24, height: 24, mb: 1 }} />
+            <Typography variant="caption">{file ? 'Update photo' : 'Upload photo'}</Typography>
           </PlaceholderStyle>
         </DropZoneStyle>
       </RootStyle>
