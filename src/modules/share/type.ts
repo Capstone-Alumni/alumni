@@ -60,10 +60,14 @@ export type Profile = {
 
 export type UserManager = {
   id: string;
+  bio: string;
   avatarUrl: string;
   name: string;
   email: string;
   phoneNumber: string;
+  dateOfBirth: string;
+  class: string;
+  grade: string;
   address: string;
   country: string;
   state: string;

@@ -47,6 +47,9 @@ export default class GradeService {
         skip: (page - 1) * limit,
         take: limit,
         where: whereFilter,
+        orderBy: {
+          createdAt: 'desc',
+        },
       }),
     ]);
 
@@ -82,9 +85,12 @@ export default class GradeService {
   };
 
   static deleteById = async (id: string) => {
-    const grade = await prisma.grade.delete({
+    const grade = await prisma.grade.update({
       where: {
         id: id,
+      },
+      data: {
+        archived: true,
       },
     });
 
