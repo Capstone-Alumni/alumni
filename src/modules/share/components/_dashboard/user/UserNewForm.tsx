@@ -112,7 +112,7 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
   }
 
   const handleDeleteEducation = (id: string) => {
-    setCareers(educations.filter(education => education.id !== id))
+    setEducations(educations.filter(education => education.id !== id))
   }
 
   const handleAddNewJob = () => {
