@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import attach2Fill from '@iconify/icons-eva/attach-2-fill';
 import roundAddPhotoAlternate from '@iconify/icons-ic/round-add-photo-alternate';
 // material
-import { Box, Card, Button, TextField, IconButton } from '@mui/material';
+import { Box, Button, Card, IconButton, TextField } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -23,9 +23,9 @@ export default function ProfilePostInput() {
         placeholder="Share what you are thinking here..."
         sx={{
           '& fieldset': {
-            borderWidth: `1px !important`,
-            borderColor: (theme) => `${theme.palette.grey[500_32]} !important`
-          }
+            borderWidth: '1px !important',
+            borderColor: theme => `${theme.palette.grey[500_32]} !important`,
+          },
         }}
       />
 
@@ -34,7 +34,7 @@ export default function ProfilePostInput() {
           mt: 3,
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between'
+          justifyContent: 'space-between',
         }}
       >
         <Box sx={{ display: 'flex' }}>

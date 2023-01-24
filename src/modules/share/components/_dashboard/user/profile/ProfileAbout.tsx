@@ -8,7 +8,14 @@ import roundBusinessCenter from '@iconify/icons-ic/round-business-center';
 
 // material
 import { Box, styled } from '@mui/material';
-import { Link, Card, Typography, CardHeader, Stack, Button } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardHeader,
+  Link,
+  Stack,
+  Typography,
+} from '@mui/material';
 // @types
 
 import { Profile } from '../../../../type';
@@ -20,7 +27,7 @@ const IconStyle = styled(Icon)(({ theme }) => ({
   height: 20,
   marginTop: 1,
   flexShrink: 0,
-  marginRight: theme.spacing(2)
+  marginRight: theme.spacing(2),
 }));
 
 // ----------------------------------------------------------------------
@@ -30,7 +37,10 @@ export default function ProfileAbout({ profile }: { profile: Profile }) {
 
   return (
     <Card>
-      <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center" }}>
+      <Stack
+        direction="row"
+        sx={{ justifyContent: 'space-between', alignItems: 'center' }}
+      >
         <CardHeader title="About" />
       </Stack>
 

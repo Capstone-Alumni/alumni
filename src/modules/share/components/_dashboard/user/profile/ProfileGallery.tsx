@@ -4,7 +4,14 @@ import { useState } from 'react';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 // material
 import { alpha, styled } from '@mui/material';
-import { Box, Grid, Card, IconButton, Typography, CardContent } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  IconButton,
+  Typography,
+} from '@mui/material';
 // utils
 import { fDate } from '../../../../utils/formatTime';
 import LightboxModal from '../../../LightboxModal';
@@ -24,7 +31,7 @@ const CaptionStyle = styled(CardContent)(({ theme }) => ({
   color: theme.palette.common.white,
   backgroundColor: alpha(theme.palette.grey[900], 0.72),
   borderBottomLeftRadius: theme.shape.borderRadiusMd,
-  borderBottomRightRadius: theme.shape.borderRadiusMd
+  borderBottomRightRadius: theme.shape.borderRadiusMd,
 }));
 
 const GalleryImgStyle = styled('img')({
@@ -32,7 +39,7 @@ const GalleryImgStyle = styled('img')({
   width: '100%',
   height: '100%',
   objectFit: 'cover',
-  position: 'absolute'
+  position: 'absolute',
 });
 
 // ----------------------------------------------------------------------
@@ -74,10 +81,10 @@ type ProfileGalleryProps = {
 export default function ProfileGallery({ gallery }: ProfileGalleryProps) {
   const [openLightbox, setOpenLightbox] = useState(false);
   const [selectedImage, setSelectedImage] = useState<number>(0);
-  const imagesLightbox = gallery.map((img) => img.imageUrl);
+  const imagesLightbox = gallery.map(img => img.imageUrl);
 
   const handleOpenLightbox = (url: string) => {
-    const selectedImage = findIndex(imagesLightbox, (index) => index === url);
+    const selectedImage = findIndex(imagesLightbox, index => index === url);
     setOpenLightbox(true);
     setSelectedImage(selectedImage);
   };
@@ -89,7 +96,7 @@ export default function ProfileGallery({ gallery }: ProfileGalleryProps) {
 
       <Card sx={{ p: 3 }}>
         <Grid container spacing={3}>
-          {gallery.map((image) => (
+          {gallery.map(image => (
             <Grid key={image.id} item xs={12} sm={6} md={4}>
               <GalleryItem image={image} onOpenLightbox={handleOpenLightbox} />
             </Grid>

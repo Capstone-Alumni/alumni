@@ -16,6 +16,6 @@ export function fDateTimeSuffix(date: string | number | Date) {
 
 export function fToNow(date: string | number | Date) {
   return formatDistanceToNow(new Date(date), {
-    addSuffix: true
+    addSuffix: true,
   });
 }
