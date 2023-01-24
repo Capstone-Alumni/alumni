@@ -1,13 +1,22 @@
 import { useState } from 'react';
 // material
-import { Box, Step, Paper, Button, Stepper, StepLabel, Typography, Grid } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  Paper,
+  Step,
+  StepLabel,
+  Stepper,
+  Typography,
+} from '@mui/material';
 import VerifyForm from 'src/modules/sessions/components/VerifyForm';
 // ----------------------------------------------------------------------
 
 interface VerifyAccountPageProps {
-  steps: string[]
+  steps: string[];
 }
-const VeriticalLinearStepper = ({steps}: VerifyAccountPageProps) => {
+const VeriticalLinearStepper = ({ steps }: VerifyAccountPageProps) => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
 
@@ -22,12 +31,12 @@ const VeriticalLinearStepper = ({steps}: VerifyAccountPageProps) => {
       newSkipped.delete(activeStep);
     }
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep(prevActiveStep => prevActiveStep + 1);
     setSkipped(newSkipped);
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
   const handleSkip = () => {
@@ -37,8 +46,8 @@ const VeriticalLinearStepper = ({steps}: VerifyAccountPageProps) => {
       throw new Error("You can't skip a step that isn't optional.");
     }
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped((prevSkipped) => {
+    setActiveStep(prevActiveStep => prevActiveStep + 1);
+    setSkipped(prevSkipped => {
       const newSkipped = new Set(prevSkipped.values());
       newSkipped.add(activeStep);
       return newSkipped;
@@ -52,13 +61,15 @@ const VeriticalLinearStepper = ({steps}: VerifyAccountPageProps) => {
   return (
     <Grid container sx={{ minHeight: '100vh' }}>
       <Grid item xs={4}>
-        <Paper sx={{
-          px: 8,
-          py: 4,
-          width: '100%',
-          bgcolor: 'grey.50012',
-          height: '100vh'
-        }}>
+        <Paper
+          sx={{
+            px: 8,
+            py: 4,
+            width: '100%',
+            bgcolor: 'grey.50012',
+            height: '100vh',
+          }}
+        >
           <h1>Alumni</h1>
           <br />
           <br />
@@ -69,14 +80,18 @@ const VeriticalLinearStepper = ({steps}: VerifyAccountPageProps) => {
                 optional?: React.ReactNode;
               } = {};
               if (isStepOptional(index)) {
-                labelProps.optional = <Typography variant="caption">Optional</Typography>;
+                labelProps.optional = (
+                  <Typography variant="caption">Optional</Typography>
+                );
               }
               if (isStepSkipped(index)) {
                 stepProps.completed = false;
               }
               return (
                 <Step key={label} {...stepProps}>
-                  <StepLabel sx={{fontWeight: 700}}{...labelProps}>{label}</StepLabel>
+                  <StepLabel sx={{ fontWeight: 700 }} {...labelProps}>
+                    {label}
+                  </StepLabel>
                 </Step>
               );
             })}
@@ -84,16 +99,22 @@ const VeriticalLinearStepper = ({steps}: VerifyAccountPageProps) => {
         </Paper>
       </Grid>
       <Grid item xs={8}>
-        <Paper sx={{
-          px: 8,
-          py: 4,
-          width: '100%',
-          height: '100vh'
-        }}>
+        <Paper
+          sx={{
+            px: 8,
+            py: 4,
+            width: '100%',
+            height: '100vh',
+          }}
+        >
           {activeStep === steps.length ? (
             <>
-              <Paper sx={{ p: 3, my: 3, minHeight: 120, bgcolor: 'grey.50012' }}>
-                <Typography sx={{ my: 1 }}>All steps completed - you&apos;re finished</Typography>
+              <Paper
+                sx={{ p: 3, my: 3, minHeight: 120, bgcolor: 'grey.50012' }}
+              >
+                <Typography sx={{ my: 1 }}>
+                  All steps completed - you&apos;re finished
+                </Typography>
               </Paper>
 
               <Box sx={{ display: 'flex' }}>
@@ -104,12 +125,21 @@ const VeriticalLinearStepper = ({steps}: VerifyAccountPageProps) => {
           ) : (
             <>
               <Paper sx={{ p: 3, my: 3, minHeight: 120 }}>
-                {activeStep === 0 && <VerifyForm/>}
-                {activeStep === 1 && <Typography sx={{ my: 1 }}> Secret question</Typography>}
-                {activeStep === 2 && <Typography sx={{ my: 1 }}>Status: TBU</Typography>}
+                {activeStep === 0 && <VerifyForm />}
+                {activeStep === 1 && (
+                  <Typography sx={{ my: 1 }}> Secret question</Typography>
+                )}
+                {activeStep === 2 && (
+                  <Typography sx={{ my: 1 }}>Status: TBU</Typography>
+                )}
               </Paper>
               <Box sx={{ display: 'flex' }}>
-                <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
+                <Button
+                  color="inherit"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                >
                   Back
                 </Button>
                 <Box sx={{ flexGrow: 1 }} />
@@ -128,6 +158,6 @@ const VeriticalLinearStepper = ({steps}: VerifyAccountPageProps) => {
       </Grid>
     </Grid>
   );
-}
+};
 
 export default VeriticalLinearStepper;

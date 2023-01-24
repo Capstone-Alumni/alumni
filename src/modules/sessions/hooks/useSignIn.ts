@@ -5,29 +5,18 @@ import { SignInFormValues } from '../components/SignInForm';
 export default function useSignIn() {
   const router = useRouter();
 
-  const signIn = (
-    provider: 'credentials' | 'google' | 'facebook',
-    value?: SignInFormValues,
-  ) => {
+  const signIn = (provider: 'credentials', value?: SignInFormValues) => {
     switch (provider) {
-      case 'google':
-        return nextSignIn('google', {
-          callbackUrl: '/verify_account',
-        });
-      case 'facebook':
-        return nextSignIn('facebook', {
-          callbackUrl: '/verify_account',
-        });
       case 'credentials':
         return nextSignIn('credentials', {
-          usernameOrEmail: value?.usernameOrEmail,
+          email: value?.email,
           password: value?.password,
           redirect: false,
         }).then(res => {
           if (res?.error) {
             // TODO: handle error
           } else {
-            router.replace('/verify_account');
+            router.replace('/home');
           }
         });
       default:
