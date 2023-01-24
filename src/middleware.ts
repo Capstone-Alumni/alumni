@@ -28,10 +28,12 @@ export default withAuth(
         ? hostname.replace('.vercel.app', '')
         : hostname.replace('.localhost:3005', '');
 
-    // rewrite everything else to `/_sites/[site] dynamic route
-    return NextResponse.rewrite(
-      new URL(`/_tenant/${currentHost}${path}`, request.url),
-    );
+    const response = NextResponse.next();
+    // .rewrite(
+    //   new URL(`/_tenant/${currentHost}${path}`, request.url),
+    // );
+    response.cookies.set('tenant-subdomain', currentHost);
+    return response;
   },
   {
     callbacks: {

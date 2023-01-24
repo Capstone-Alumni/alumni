@@ -1,14 +1,22 @@
 import React from 'react';
 
+import { cookies } from 'next/headers';
+
 import CSRProvider from './CSRProvider';
 
 import { Providers } from '../redux/providers';
+import SetCurrentTenant from './SetCurrentTenant';
+import { getTenantData } from '@share/utils/getTenantData';
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const tenant = cookies().get('tenant-subdomain');
+
+  const { data } = await getTenantData(tenant?.value || '');
+
   return (
     <html lang="en">
       <head>
@@ -17,7 +25,10 @@ export default function RootLayout({
       </head>
       <body style={{ margin: 0, minHeight: '100vh' }}>
         <CSRProvider>
-          <Providers>{children}</Providers>
+          <Providers>
+            {children}
+            <SetCurrentTenant tenantData={data} />
+          </Providers>
         </CSRProvider>
       </body>
     </html>
