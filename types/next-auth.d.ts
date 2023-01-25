@@ -2,19 +2,6 @@ import 'next-auth';
 import { User as NextUser } from 'next-auth';
 import 'next-auth/jwt';
 
-type Member = {
-  id: string;
-  userId: string;
-  tenantId: string;
-  accessLevel?: string;
-  accessStatus?: string;
-  accessMode?: string;
-  tenant: {
-    tenantId: string;
-    subdomain: string;
-  };
-};
-
 declare module 'next-auth' {
   /**
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
@@ -30,8 +17,15 @@ declare module 'next-auth' {
   }
 
   interface User extends NextUser {
+    id: string;
     email: string;
-    members: Array<Member>;
+    tenant: {
+      tenantId: string;
+      subdomain: string;
+    };
+    accessLevel: string;
+    accessStatus: string;
+    accessMode: string;
   }
 }
 

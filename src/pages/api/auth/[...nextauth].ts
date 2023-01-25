@@ -57,7 +57,7 @@ export const nextAuthOptions = {
     jwt({ token, user }) {
       if (user) {
         token.user = user;
-        token.currentTenant = user.members?.[0]?.tenant || null;
+        token.currentTenant = user.tenant || null;
       }
       return token;
     },

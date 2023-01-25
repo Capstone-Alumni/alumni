@@ -14,7 +14,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const tenant = cookies().get('tenant-subdomain');
-
   const { data } = await getTenantData(tenant?.value || '');
 
   return (

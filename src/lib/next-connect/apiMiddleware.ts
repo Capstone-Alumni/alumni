@@ -1,20 +1,21 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { unstable_getServerSession } from 'next-auth';
 import { NextHandler } from 'next-connect';
+import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
 
-export const authMiddleware = async (
+export const verifySchoolAdmin = async (
   req: NextApiRequest,
   res: NextApiResponse,
   next: NextHandler,
 ) => {
-  const hostname = req.headers.host || '';
+  const session = await unstable_getServerSession(req, res, nextAuthOptions);
 
-  const currentHost =
-    process.env.NODE_ENV === 'production' && process.env.VERCEL === '1'
-      ? hostname.replace('.vercel.app', '')
-      : hostname.replace('.localhost:3005', '');
+  if (!session) {
+    throw new Error('unauthorized');
+  }
 
-  if (currentHost == 'app') {
-    next();
+  if (session.user.accessLevel !== 'SCHOOL_ADMIN') {
+    throw new Error('denied');
   }
 
   next();

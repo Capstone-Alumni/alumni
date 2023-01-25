@@ -1,3 +1,4 @@
+import { getTenantData } from '@share/utils/getTenantData';
 import { NextRequestWithAuth, withAuth } from 'next-auth/middleware';
 import { NextResponse } from 'next/server';
 
@@ -15,7 +16,7 @@ export const config = {
 };
 
 export default withAuth(
-  function middleware(request: NextRequestWithAuth) {
+  async function middleware(request: NextRequestWithAuth) {
     // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
     const hostname = request.headers.get('host') || 'demo.vercel.app';
 
@@ -25,10 +26,14 @@ export default withAuth(
         : hostname.replace('.localhost:3005', '');
 
     const response = NextResponse.next();
-    // .rewrite(
-    //   new URL(`/_tenant/${currentHost}${path}`, request.url),
-    // );
-    response.cookies.set('tenant-subdomain', currentHost);
+    const currentTenant = response.cookies.get('tenant-subdomain')?.value;
+    const currentTenantId = response.cookies.get('tenant-id')?.value;
+    if (currentTenant !== currentHost || !currentTenantId) {
+      response.cookies.set('tenant-subdomain', currentHost);
+      await getTenantData(currentHost).then(({ data }) =>
+        response.cookies.set('tenant-id', data.tenantId),
+      );
+    }
     return response;
   },
   {
