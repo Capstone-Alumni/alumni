@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react';
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 import roundSend from '@iconify/icons-ic/round-send';
 import heartFill from '@iconify/icons-eva/heart-fill';
 import shareFill from '@iconify/icons-eva/share-fill';
@@ -8,21 +8,21 @@ import messageSquareFill from '@iconify/icons-eva/message-square-fill';
 import roundAddPhotoAlternate from '@iconify/icons-ic/round-add-photo-alternate';
 // material
 import {
-  Box,
-  Link,
-  Card,
-  Stack,
-  Paper,
   Avatar,
-  Checkbox,
-  TextField,
-  CardProps,
-  Typography,
-  CardHeader,
-  IconButton,
   AvatarGroup,
+  Box,
+  Card,
+  CardHeader,
+  CardProps,
+  Checkbox,
+  FormControlLabel,
+  IconButton,
   InputAdornment,
-  FormControlLabel
+  Link,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
 } from '@mui/material';
 // @types
 import { UserPost } from '../../../../type';
@@ -48,12 +48,12 @@ export default function ProfilePostCard({ post }: ProfilePostCardProps) {
 
   const handleLike = () => {
     setLiked(true);
-    setLikes((prevLikes) => prevLikes + 1);
+    setLikes(prevLikes => prevLikes + 1);
   };
 
   const handleUnlike = () => {
     setLiked(false);
-    setLikes((prevLikes) => prevLikes - 1);
+    setLikes(prevLikes => prevLikes - 1);
   };
 
   const handleChangeMessage = (value: string) => {
@@ -74,12 +74,15 @@ export default function ProfilePostCard({ post }: ProfilePostCardProps) {
         disableTypography
         avatar={<MyAvatar />}
         title={
-          <Link variant="subtitle2" color="text.primary" component={"a"}>
-          Gia An
+          <Link variant="subtitle2" color="text.primary" component={'a'}>
+            Gia An
           </Link>
         }
         subheader={
-          <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary' }}>
+          <Typography
+            variant="caption"
+            sx={{ display: 'block', color: 'text.secondary' }}
+          >
             {fDate(post.createdAt)}
           </Typography>
         }
@@ -103,7 +106,7 @@ export default function ProfilePostCard({ post }: ProfilePostCardProps) {
               height: 1,
               borderRadius: 1,
               objectFit: 'cover',
-              position: 'absolute'
+              position: 'absolute',
             }}
           />
         </Box>
@@ -123,9 +126,16 @@ export default function ProfilePostCard({ post }: ProfilePostCardProps) {
             label={fShortenNumber(likes)}
             sx={{ minWidth: 72, mr: 0 }}
           />
-          <AvatarGroup max={4} sx={{ '& .MuiAvatar-root': { width: 32, height: 32 } }}>
-            {post.personLikes.map((person) => (
-              <Avatar key={person.name} alt={person.name} src={person.avatarUrl} />
+          <AvatarGroup
+            max={4}
+            sx={{ '& .MuiAvatar-root': { width: 32, height: 32 } }}
+          >
+            {post.personLikes.map(person => (
+              <Avatar
+                key={person.name}
+                alt={person.name}
+                src={person.avatarUrl}
+              />
             ))}
           </AvatarGroup>
           <Box sx={{ flexGrow: 1 }} />
@@ -139,18 +149,28 @@ export default function ProfilePostCard({ post }: ProfilePostCardProps) {
 
         {hasComments && (
           <Stack spacing={1.5}>
-            {post.comments.map((comment) => (
+            {post.comments.map(comment => (
               <Stack key={comment.id} direction="row" spacing={2}>
-                <Avatar alt={comment.author.name} src={comment.author.avatarUrl} />
-                <Paper sx={{ p: 1.5, flexGrow: 1, bgcolor: 'background.neutral' }}>
+                <Avatar
+                  alt={comment.author.name}
+                  src={comment.author.avatarUrl}
+                />
+                <Paper
+                  sx={{ p: 1.5, flexGrow: 1, bgcolor: 'background.neutral' }}
+                >
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
                     alignItems={{ sm: 'center' }}
                     justifyContent="space-between"
                     sx={{ mb: 0.5 }}
                   >
-                    <Typography variant="subtitle2">{comment.author.name}</Typography>
-                    <Typography variant="caption" sx={{ color: 'text.disabled' }}>
+                    <Typography variant="subtitle2">
+                      {comment.author.name}
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      sx={{ color: 'text.disabled' }}
+                    >
                       {fDate(comment.createdAt)}
                     </Typography>
                   </Stack>
@@ -171,24 +191,29 @@ export default function ProfilePostCard({ post }: ProfilePostCardProps) {
             value={message}
             inputRef={commentInputRef}
             placeholder="Write a comment…"
-            onChange={(event) => handleChangeMessage(event.target.value)}
+            onChange={event => handleChangeMessage(event.target.value)}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton size="small" onClick={handleClickAttach}>
-                    <Icon icon={roundAddPhotoAlternate} width={24} height={24} />
+                    <Icon
+                      icon={roundAddPhotoAlternate}
+                      width={24}
+                      height={24}
+                    />
                   </IconButton>
                   {/* <EmojiPicker alignRight value={message} setValue={setMessage} /> */}
                 </InputAdornment>
-              )
+              ),
             }}
             sx={{
               ml: 2,
               mr: 1,
               '& fieldset': {
-                borderWidth: `1px !important`,
-                borderColor: (theme) => `${theme.palette.grey[500_32]} !important`
-              }
+                borderWidth: '1px !important',
+                borderColor: theme =>
+                  `${theme.palette.grey[500_32]} !important`,
+              },
             }}
           />
           <IconButton>

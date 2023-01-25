@@ -10,7 +10,6 @@ interface UserCreateProps {
   isEdit: boolean;
 }
 export default function UserCreate({ isEdit }: UserCreateProps) {
-
   return (
     <Container maxWidth={'lg'}>
       <UserNewForm isEdit={true} />

@@ -9,16 +9,16 @@ import instagramFilled from '@iconify/icons-ant-design/instagram-filled';
 // material
 import { styled } from '@mui/material';
 import {
-  Box,
-  Grid,
-  Card,
-  Link,
   Avatar,
-  Tooltip,
+  Box,
+  Card,
+  Grid,
   IconButton,
-  Typography,
+  InputAdornment,
+  Link,
   OutlinedInput,
-  InputAdornment
+  Tooltip,
+  Typography,
 } from '@mui/material';
 // @types
 import { Friend } from '../../../../type';
@@ -30,20 +30,22 @@ import SearchNotFound from '../../../SearchNotFound';
 const SOCIALS = [
   {
     name: 'Facebook',
-    icon: <Icon icon={facebookFill} width={20} height={20} color="#1877F2" />
+    icon: <Icon icon={facebookFill} width={20} height={20} color="#1877F2" />,
   },
   {
     name: 'Instagram',
-    icon: <Icon icon={instagramFilled} width={20} height={20} color="#D7336D" />
+    icon: (
+      <Icon icon={instagramFilled} width={20} height={20} color="#D7336D" />
+    ),
   },
   {
     name: 'Linkedin',
-    icon: <Icon icon={linkedinFill} width={20} height={20} color="#006097" />
+    icon: <Icon icon={linkedinFill} width={20} height={20} color="#006097" />,
   },
   {
     name: 'Twitter',
-    icon: <Icon icon={twitterFill} width={20} height={20} color="#1C9CEA" />
-  }
+    icon: <Icon icon={twitterFill} width={20} height={20} color="#1C9CEA" />,
+  },
 ];
 
 const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
@@ -51,16 +53,16 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
   marginBottom: theme.spacing(5),
   transition: theme.transitions.create(['box-shadow', 'width'], {
     easing: theme.transitions.easing.easeInOut,
-    duration: theme.transitions.duration.shorter
+    duration: theme.transitions.duration.shorter,
   }),
   '&.Mui-focused': {
     width: 320,
-    boxShadow: theme.customShadows.z8
+    boxShadow: theme.customShadows.z8,
   },
   '& fieldset': {
-    borderWidth: `1px !important`,
-    borderColor: `${theme.palette.grey[500_32]} !important`
-  }
+    borderWidth: '1px !important',
+    borderColor: `${theme.palette.grey[500_32]} !important`,
+  },
 }));
 
 // ----------------------------------------------------------------------
@@ -70,7 +72,7 @@ function applyFilter(array: Friend[], query: string) {
   if (query) {
     arr = filter(
       array,
-      (_friend) => _friend.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      _friend => _friend.name.toLowerCase().indexOf(query.toLowerCase()) !== -1,
     );
   }
   return arr;
@@ -86,18 +88,22 @@ function FriendCard({ friend }: { friend: Friend }) {
         display: 'flex',
         position: 'relative',
         alignItems: 'center',
-        flexDirection: 'column'
+        flexDirection: 'column',
       }}
     >
-      <Avatar alt={name} src={avatarUrl} sx={{ width: 64, height: 64, mb: 3 }} />
-      <Link variant="subtitle1" color="text.primary" component={"a"}>
+      <Avatar
+        alt={name}
+        src={avatarUrl}
+        sx={{ width: 64, height: 64, mb: 3 }}
+      />
+      <Link variant="subtitle1" color="text.primary" component={'a'}>
         {name}
       </Link>
       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
         {role}
       </Typography>
       <Box sx={{ display: 'flex', mt: 1 }}>
-        {SOCIALS.map((social) => (
+        {SOCIALS.map(social => (
           <Tooltip key={social.name} title={social.name}>
             <IconButton>{social.icon}</IconButton>
           </Tooltip>
@@ -107,7 +113,7 @@ function FriendCard({ friend }: { friend: Friend }) {
         sx={{
           top: 8,
           right: 8,
-          position: 'absolute'
+          position: 'absolute',
         }}
       >
         <Icon icon={moreVerticalFill} width={20} height={20} />
@@ -125,7 +131,7 @@ type ProfileFriendsProps = {
 export default function ProfileFriends({
   friends,
   findFriends,
-  onFindFriends
+  onFindFriends,
 }: ProfileFriendsProps) {
   const friendFiltered = applyFilter(friends, findFriends);
   const isNotFound = friendFiltered.length === 0;
@@ -138,17 +144,21 @@ export default function ProfileFriends({
 
       <SearchStyle
         value={findFriends}
-        onChange={(e) => onFindFriends(e.target.value)}
+        onChange={e => onFindFriends(e.target.value)}
         placeholder="Find friends..."
         startAdornment={
           <InputAdornment position="start">
-            <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />
+            <Box
+              component={Icon}
+              icon={searchFill}
+              sx={{ color: 'text.disabled' }}
+            />
           </InputAdornment>
         }
       />
 
       <Grid container spacing={3}>
-        {friendFiltered.map((friend) => (
+        {friendFiltered.map(friend => (
           <Grid key={friend.id} item xs={12} md={4}>
             <FriendCard friend={friend} />
           </Grid>

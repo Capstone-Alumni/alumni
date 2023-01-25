@@ -2,7 +2,7 @@ import { Icon } from '@iconify/react';
 import pinFill from '@iconify/icons-eva/pin-fill';
 import checkmarkFill from '@iconify/icons-eva/checkmark-fill';
 // material
-import { Box, Grid, Card, Button, Avatar, Typography } from '@mui/material'; // @types
+import { Avatar, Box, Button, Card, Grid, Typography } from '@mui/material'; // @types
 // @types
 import { Follower } from '../../../../type';
 // ----------------------------------------------------------------------
@@ -51,7 +51,10 @@ type ProfileFollowersProps = {
   onToggleFollow: (id: string) => void;
 };
 
-export default function ProfileFollowers({ followers, onToggleFollow }: ProfileFollowersProps) {
+export default function ProfileFollowers({
+  followers,
+  onToggleFollow,
+}: ProfileFollowersProps) {
   return (
     <Box sx={{ mt: 5 }}>
       <Typography variant="h4" sx={{ mb: 3 }}>
@@ -59,9 +62,12 @@ export default function ProfileFollowers({ followers, onToggleFollow }: ProfileF
       </Typography>
 
       <Grid container spacing={3}>
-        {followers.map((follower) => (
+        {followers.map(follower => (
           <Grid key={follower.id} item xs={12} md={4}>
-            <FollowerCard follower={follower} onToggle={() => onToggleFollow(follower.id)} />
+            <FollowerCard
+              follower={follower}
+              onToggle={() => onToggleFollow(follower.id)}
+            />
           </Grid>
         ))}
       </Grid>

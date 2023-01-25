@@ -1,22 +1,25 @@
 import { isString } from 'lodash';
 import { Icon } from '@iconify/react';
-import { useDropzone, DropzoneOptions } from 'react-dropzone';
+import { DropzoneOptions, useDropzone } from 'react-dropzone';
 import fileFill from '@iconify/icons-eva/file-fill';
 import closeFill from '@iconify/icons-eva/close-fill';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 // material
 import {
-  alpha, Theme, styled, Box,
-  List,
-  Stack,
-  Paper,
+  alpha,
+  Box,
   Button,
+  List,
   ListItem,
-  Typography,
   ListItemIcon,
-  ListItemText,
   ListItemSecondaryAction,
-  SxProps
+  ListItemText,
+  Paper,
+  Stack,
+  styled,
+  SxProps,
+  Theme,
+  Typography,
 } from '@mui/material';
 // utils
 import { fData } from '../../utils/formatNumber';
@@ -39,7 +42,7 @@ const DropZoneStyle = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.neutral,
   border: `1px dashed ${theme.palette.grey[500_32]}`,
   '&:hover': { opacity: 0.72, cursor: 'pointer' },
-  [theme.breakpoints.up('md')]: { textAlign: 'left', flexDirection: 'row' }
+  [theme.breakpoints.up('md')]: { textAlign: 'left', flexDirection: 'row' },
 }));
 
 // ----------------------------------------------------------------------
@@ -61,14 +64,14 @@ interface UploadMultiFileProps extends DropzoneOptions {
 const getFileData = (file: CustomFile | string) => {
   if (typeof file === 'string') {
     return {
-      key: file
+      key: file,
     };
   }
   return {
     key: file.name,
     name: file.name,
     size: file.size,
-    preview: file.preview
+    preview: file.preview,
   };
 };
 export default function UploadMultiFile({
@@ -82,8 +85,14 @@ export default function UploadMultiFile({
 }: UploadMultiFileProps) {
   const hasFile = files.length > 0;
 
-  const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
-    ...other
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragReject,
+    fileRejections,
+  } = useDropzone({
+    ...other,
   });
 
   const ShowRejectionItems = () => (
@@ -94,7 +103,7 @@ export default function UploadMultiFile({
         px: 2,
         mt: 3,
         borderColor: 'error.light',
-        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08)
+        bgcolor: theme => alpha(theme.palette.error.main, 0.08),
       }}
     >
       {fileRejections.map(({ file, errors }) => {
@@ -104,7 +113,7 @@ export default function UploadMultiFile({
             <Typography variant="subtitle2" noWrap>
               {path} - {fData(size)}
             </Typography>
-            {errors.map((e) => (
+            {errors.map(e => (
               <Typography key={e.code} variant="caption" component="p">
                 - {e.message}
               </Typography>
@@ -124,8 +133,8 @@ export default function UploadMultiFile({
           ...((isDragReject || error) && {
             color: 'error.main',
             borderColor: 'error.light',
-            bgcolor: 'error.lighter'
-          })
+            bgcolor: 'error.lighter',
+          }),
         }}
       >
         <input {...getInputProps()} />
@@ -155,8 +164,10 @@ export default function UploadMultiFile({
 
       <List disablePadding sx={{ ...(hasFile && { my: 3 }) }}>
         <AnimatePresence>
-          {files.map((file) => {
-            const { key, name, size, preview } = getFileData(file as CustomFile);
+          {files.map(file => {
+            const { key, name, size, preview } = getFileData(
+              file as CustomFile,
+            );
 
             if (showPreview) {
               return (
@@ -172,14 +183,19 @@ export default function UploadMultiFile({
                     borderRadius: 1.5,
                     overflow: 'hidden',
                     position: 'relative',
-                    display: 'inline-flex'
+                    display: 'inline-flex',
                   }}
                 >
                   <Paper
                     variant="outlined"
                     component="img"
                     src={isString(file) ? file : preview}
-                    sx={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute' }}
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      position: 'absolute',
+                    }}
                   />
                   <Box sx={{ top: 6, right: 6, position: 'absolute' }}>
                     <MIconButton
@@ -188,10 +204,11 @@ export default function UploadMultiFile({
                       sx={{
                         p: '2px',
                         color: 'common.white',
-                        bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
+                        bgcolor: theme => alpha(theme.palette.grey[900], 0.72),
                         '&:hover': {
-                          bgcolor: (theme) => alpha(theme.palette.grey[900], 0.48)
-                        }
+                          bgcolor: theme =>
+                            alpha(theme.palette.grey[900], 0.48),
+                        },
                       }}
                     >
                       <Icon icon={closeFill} />
@@ -211,8 +228,8 @@ export default function UploadMultiFile({
                   py: 0.75,
                   px: 2,
                   borderRadius: 1,
-                  border: (theme) => `solid 1px ${theme.palette.divider}`,
-                  bgcolor: 'background.paper'
+                  border: theme => `solid 1px ${theme.palette.divider}`,
+                  bgcolor: 'background.paper',
                 }}
               >
                 <ListItemIcon>
@@ -225,7 +242,11 @@ export default function UploadMultiFile({
                   secondaryTypographyProps={{ variant: 'caption' }}
                 />
                 <ListItemSecondaryAction>
-                  <MIconButton edge="end" size="small" onClick={() => onRemove(file)}>
+                  <MIconButton
+                    edge="end"
+                    size="small"
+                    onClick={() => onRemove(file)}
+                  >
                     <Icon icon={closeFill} />
                   </MIconButton>
                 </ListItemSecondaryAction>
