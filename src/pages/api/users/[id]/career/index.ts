@@ -1,20 +1,8 @@
-import { NextApiResponse } from 'next';
-import { NextApiRequest } from 'next';
+import appNextConnect from '@lib/next-connect';
 import CareerController from '../../../../../modules/profiles/controller/career.controller';
 
-export default function careerHandler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
-  const { method } = req;
+const handler = appNextConnect
+  .get(CareerController.getListByUserId)
+  .post(CareerController.createCareer);
 
-  switch (method) {
-    case 'GET':
-      return CareerController.getListByUserId(req, res);
-    case 'POST':
-      return CareerController.createCareer(req, res);
-    default:
-      res.setHeader('Allow', ['GET', 'POST']);
-      res.status(405).end(`Method ${method} Not Allowed`);
-  }
-}
+export default handler;

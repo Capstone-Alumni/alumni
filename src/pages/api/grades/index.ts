@@ -1,20 +1,8 @@
-import { NextApiResponse } from 'next';
-import { NextApiRequest } from 'next';
+import appNextConnect from '@lib/next-connect';
 import GradeController from 'src/modules/gradeAndClass/controllers/grade.controller';
 
-export default function gradeHandler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
-  const { method } = req;
+const handler = appNextConnect
+  .get(GradeController.getPublicList)
+  .post(GradeController.create);
 
-  switch (method) {
-    case 'GET':
-      return GradeController.getPublicList(req, res);
-    case 'POST':
-      return GradeController.create(req, res);
-    default:
-      res.setHeader('Allow', ['GET', 'POST']);
-      res.status(405).end(`Method ${method} Not Allowed`);
-  }
-}
+export default handler;

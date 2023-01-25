@@ -7,21 +7,14 @@ export default class UserController {
     req: NextApiRequest,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
-    try {
-      const { id } = req.query;
-      const accountUpdated = await UserService.updateInfoById(
-        id as string,
-        req.body,
-      );
-      return res.status(200).json({
-        status: true,
-        data: accountUpdated,
-      });
-    } catch (error: any) {
-      return res.status(500).json({
-        status: false,
-        message: error as string,
-      });
-    }
+    const { id } = req.query;
+    const accountUpdated = await UserService.updateInfoById(
+      id as string,
+      req.body,
+    );
+    return res.status(200).json({
+      status: true,
+      data: accountUpdated,
+    });
   };
 }
