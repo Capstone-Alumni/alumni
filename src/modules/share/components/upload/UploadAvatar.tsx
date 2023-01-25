@@ -8,7 +8,7 @@ import { alpha, styled, Theme } from '@mui/material';
 import { Box, Paper, Typography } from '@mui/material';
 import { SxProps } from '@mui/material';
 // utils
-import { fData } from '../../utils/formatNumber';
+import { fData } from '@share/utils/formatNumber';
 
 // ----------------------------------------------------------------------
 
@@ -85,6 +85,9 @@ export default function UploadAvatar({
     fileRejections,
   } = useDropzone({
     multiple: false,
+    accept: {
+      'image/jpeg': ['.jpeg', '.png'],
+    },
     ...other,
   });
 
