@@ -6,6 +6,9 @@ type Member = {
   id: string;
   userId: string;
   tenantId: string;
+  accessLevel?: string;
+  accessStatus?: string;
+  accessMode?: string;
   tenant: {
     tenantId: string;
     subdomain: string;
@@ -28,9 +31,6 @@ declare module 'next-auth' {
 
   interface User extends NextUser {
     email: string;
-    accessLevel?: string;
-    accessStatus?: string;
-    accessMode?: string;
     members: Array<Member>;
   }
 }
