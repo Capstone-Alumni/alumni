@@ -5,15 +5,15 @@ import dayjs, { Dayjs } from 'dayjs';
 
 // material
 import {
+  Autocomplete,
   Box,
+  Button,
   Card,
   Grid,
   Stack,
   Switch,
   TextField,
   Typography,
-  Autocomplete,
-  Button
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -48,9 +48,16 @@ type UserNewFormProps = {
 };
 
 export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
-
-  const [careers, setCareers] = useState<Array<{ id: string }>>([{ id: '1' }, { id: '2' }, { id: '3' }]);
-  const [educations, setEducations] = useState<Array<{ id: string }>>([{ id: '1' }, { id: '2' }, { id: '3' }]);
+  const [careers, setCareers] = useState<Array<{ id: string }>>([
+    { id: '1' },
+    { id: '2' },
+    { id: '3' },
+  ]);
+  const [educations, setEducations] = useState<Array<{ id: string }>>([
+    { id: '1' },
+    { id: '2' },
+    { id: '3' },
+  ]);
 
   const NewUserSchema = Yup.object().shape({
     bio: Yup.string().required('Bio is required'),
@@ -59,7 +66,7 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
     class: Yup.string().required('Class is required'),
     grade: Yup.string().required('Grade is required'),
     phoneNumber: Yup.string().required('Phone number is required'),
-    dateOfBirth: Yup.date().required("Date is required"),
+    dateOfBirth: Yup.date().required('Date is required'),
     address: Yup.string().required('Address is required'),
   });
 
@@ -78,7 +85,7 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
     validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        // TODO: Call API to submit the form 
+        // TODO: Call API to submit the form
         // await fakeRequest(500);
         resetForm();
         setSubmitting(false);
@@ -88,11 +95,18 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
         setSubmitting(false);
         setErrors(error);
       }
-    }
+    },
   });
 
-  const { errors, values, touched, handleSubmit, isSubmitting, setFieldValue, getFieldProps } =
-    formik;
+  const {
+    errors,
+    values,
+    touched,
+    handleSubmit,
+    isSubmitting,
+    setFieldValue,
+    getFieldProps,
+  } = formik;
 
   const handleDrop = useCallback(
     (acceptedFiles: any) => {
@@ -100,37 +114,51 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
       if (file) {
         setFieldValue('avatarUrl', {
           ...file,
-          preview: URL.createObjectURL(file)
+          preview: URL.createObjectURL(file),
         });
       }
     },
-    [setFieldValue]
+    [setFieldValue],
   );
 
   const handleDeleteJob = (id: string) => {
-    setCareers(careers.filter(career => career.id !== id))
-  }
+    setCareers(careers.filter(career => career.id !== id));
+  };
 
   const handleDeleteEducation = (id: string) => {
-    setEducations(educations.filter(education => education.id !== id))
-  }
+    setEducations(educations.filter(education => education.id !== id));
+  };
 
   const handleAddNewJob = () => {
-    setCareers([...careers, { id: String(careers.length + 1) }])
-  }
+    setCareers([...careers, { id: String(careers.length + 1) }]);
+  };
 
   const handleAddNewEducation = () => {
-    setEducations([...educations, { id: String(careers.length + 1) }])
-  }
+    setEducations([...educations, { id: String(careers.length + 1) }]);
+  };
 
   const handleRenderCareers = (careers: Array<{ id: string }>) => {
     return careers.map((career: any) => {
       return (
         <Stack spacing={2} key={career.id}>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Typography variant='body1' sx={{ fontSize: '13px', color: 'red', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => handleDeleteJob(career.id) as any}>Delete</Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                fontSize: '13px',
+                color: 'red',
+                textDecoration: 'underline',
+                cursor: 'pointer',
+              }}
+              onClick={() => handleDeleteJob(career.id) as any}
+            >
+              Delete
+            </Typography>
           </div>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={{ xs: 3, sm: 2 }}
+          >
             <TextField
               fullWidth
               label="Company Name"
@@ -144,7 +172,10 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
               helperText={touched.email && errors.email}
             />
           </Stack>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={{ xs: 3, sm: 2 }}
+          >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 disableFuture
@@ -152,8 +183,7 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                 openTo="year"
                 views={['year', 'month', 'day']}
                 {...getFieldProps('dateOfBirth')}
-
-                renderInput={(params) => <TextField fullWidth {...params} />}
+                renderInput={params => <TextField fullWidth {...params} />}
               />
               <DatePicker
                 disableFuture
@@ -161,25 +191,38 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                 openTo="year"
                 views={['year', 'month', 'day']}
                 {...getFieldProps('dateOfBirth')}
-
-                renderInput={(params) => <TextField fullWidth {...params} />}
+                renderInput={params => <TextField fullWidth {...params} />}
               />
             </LocalizationProvider>
           </Stack>
           <hr />
         </Stack>
-      )
-    })
-  }
+      );
+    });
+  };
 
   const handleRenderEducation = (careers: Array<{ id: string }>) => {
     return educations.map((education: any) => {
       return (
         <Stack spacing={2} key={education.id}>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Typography variant='body1' sx={{ fontSize: '13px', color: 'red', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => handleDeleteEducation(education.id) as any}>Delete</Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                fontSize: '13px',
+                color: 'red',
+                textDecoration: 'underline',
+                cursor: 'pointer',
+              }}
+              onClick={() => handleDeleteEducation(education.id) as any}
+            >
+              Delete
+            </Typography>
           </div>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={{ xs: 3, sm: 2 }}
+          >
             <TextField
               fullWidth
               label="School Name"
@@ -193,7 +236,10 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
               helperText={touched.email && errors.email}
             />
           </Stack>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={{ xs: 3, sm: 2 }}
+          >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 disableFuture
@@ -201,8 +247,7 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                 openTo="year"
                 views={['year', 'month', 'day']}
                 {...getFieldProps('dateOfBirth')}
-
-                renderInput={(params) => <TextField fullWidth {...params} />}
+                renderInput={params => <TextField fullWidth {...params} />}
               />
               <DatePicker
                 disableFuture
@@ -210,16 +255,15 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                 openTo="year"
                 views={['year', 'month', 'day']}
                 {...getFieldProps('dateOfBirth')}
-
-                renderInput={(params) => <TextField fullWidth {...params} />}
+                renderInput={params => <TextField fullWidth {...params} />}
               />
             </LocalizationProvider>
           </Stack>
           <hr />
         </Stack>
-      )
-    })
-  }
+      );
+    });
+  };
 
   return (
     <FormikProvider value={formik}>
@@ -228,10 +272,13 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
           <Grid item xs={12} md={12}>
             <Card sx={{ p: 3 }}>
               <Stack sx={{ marginBottom: '1.5rem' }}>
-                <Typography variant='h5'>Your infomation(s)</Typography>
+                <Typography variant="h5">Your infomation(s)</Typography>
               </Stack>
               <Stack spacing={3}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  spacing={{ xs: 3, sm: 2 }}
+                >
                   <TextField
                     multiline
                     maxRows={4}
@@ -243,7 +290,10 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                     helperText={touched.bio && errors.bio}
                   />
                 </Stack>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  spacing={{ xs: 3, sm: 2 }}
+                >
                   <TextField
                     fullWidth
                     label="Full Name"
@@ -260,24 +310,34 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                   />
                 </Stack>
 
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  spacing={{ xs: 3, sm: 2 }}
+                >
                   <Autocomplete
                     disablePortal
                     fullWidth
                     id="combo-box-demo"
                     options={classesMock}
-                    renderInput={(params) => <TextField {...params} label="Class" />}
+                    renderInput={params => (
+                      <TextField {...params} label="Class" />
+                    )}
                   />
                   <Autocomplete
                     disablePortal
                     fullWidth
                     id="combo-box-demo"
                     options={gradesMock}
-                    renderInput={(params) => <TextField {...params} label="Grade" />}
+                    renderInput={params => (
+                      <TextField {...params} label="Grade" />
+                    )}
                   />
                 </Stack>
 
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  spacing={{ xs: 3, sm: 2 }}
+                >
                   <TextField
                     fullWidth
                     label="Phone Number"
@@ -292,13 +352,17 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                       openTo="year"
                       views={['year', 'month', 'day']}
                       {...getFieldProps('dateOfBirth')}
-
-                      renderInput={(params) => <TextField fullWidth {...params} />}
+                      renderInput={params => (
+                        <TextField fullWidth {...params} />
+                      )}
                     />
                   </LocalizationProvider>
                 </Stack>
 
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  spacing={{ xs: 3, sm: 2 }}
+                >
                   <TextField
                     fullWidth
                     label="Address"
@@ -307,29 +371,48 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                     helperText={touched.address && errors.address}
                   />
                 </Stack>
-
               </Stack>
               <br />
               <br />
               <Stack sx={{ margin: '1rem 0 0.5rem 0' }}>
-                <Typography variant='h5'>Your career(s)</Typography>
+                <Typography variant="h5">Your career(s)</Typography>
               </Stack>
               <Stack spacing={3}>
                 {handleRenderCareers(careers)}
-                <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-start' }}>
-                  <Button variant="contained" onClick={() => handleAddNewJob() as any}>Add new job</Button>
+                <Box
+                  sx={{ mt: 3, display: 'flex', justifyContent: 'flex-start' }}
+                >
+                  <Button
+                    variant="contained"
+                    onClick={() => handleAddNewJob() as any}
+                  >
+                    Add new job
+                  </Button>
                 </Box>
               </Stack>
               <Stack sx={{ margin: '2rem 0 0.5rem 0' }}>
-                <Typography variant='h5'>Your education(s)</Typography>
+                <Typography variant="h5">Your education(s)</Typography>
               </Stack>
               <Stack spacing={3}>
                 {handleRenderEducation(educations)}
-                <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-start' }}>
-                  <Button variant="contained" onClick={() => handleAddNewEducation() as any}>Add new education</Button>
+                <Box
+                  sx={{ mt: 3, display: 'flex', justifyContent: 'flex-start' }}
+                >
+                  <Button
+                    variant="contained"
+                    onClick={() => handleAddNewEducation() as any}
+                  >
+                    Add new education
+                  </Button>
                 </Box>
-                <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                  <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                <Box
+                  sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}
+                >
+                  <LoadingButton
+                    type="submit"
+                    variant="contained"
+                    loading={isSubmitting}
+                  >
                     {!isEdit ? 'Create User' : 'Save Changes'}
                   </LoadingButton>
                 </Box>

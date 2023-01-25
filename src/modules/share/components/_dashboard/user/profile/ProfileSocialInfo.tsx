@@ -5,7 +5,7 @@ import linkedinFill from '@iconify/icons-eva/linkedin-fill';
 import instagramFilled from '@iconify/icons-ant-design/instagram-filled';
 // material
 import { styled } from '@mui/material';
-import { Link, Card, CardHeader, Stack } from '@mui/material'; // @types
+import { Card, CardHeader, Link, Stack } from '@mui/material'; // @types
 // @types
 import { Profile } from '../../../../type';
 // ----------------------------------------------------------------------
@@ -15,7 +15,7 @@ const IconStyle = styled(Icon)(({ theme }) => ({
   height: 20,
   marginTop: 1,
   flexShrink: 0,
-  marginRight: theme.spacing(2)
+  marginRight: theme.spacing(2),
 }));
 
 // ----------------------------------------------------------------------
@@ -27,30 +27,30 @@ export default function ProfileSocialInfo({ profile }: { profile: Profile }) {
     {
       name: 'Linkedin',
       icon: <IconStyle icon={linkedinFill} color="#006097" />,
-      href: linkedinLink
+      href: linkedinLink,
     },
     {
       name: 'Twitter',
       icon: <IconStyle icon={twitterFill} color="#1C9CEA" />,
-      href: twitterLink
+      href: twitterLink,
     },
     {
       name: 'Instagram',
       icon: <IconStyle icon={instagramFilled} color="#D7336D" />,
-      href: instagramLink
+      href: instagramLink,
     },
     {
       name: 'Facebook',
       icon: <IconStyle icon={facebookFill} color="#1877F2" />,
-      href: facebookLink
-    }
+      href: facebookLink,
+    },
   ];
 
   return (
     <Card>
       <CardHeader title="Social" />
       <Stack spacing={2} sx={{ p: 3 }}>
-        {SOCIALS.map((link) => (
+        {SOCIALS.map(link => (
           <Stack key={link.name} direction="row" alignItems="center">
             {link.icon}
             <Link component="span" variant="body2" color="text.primary" noWrap>

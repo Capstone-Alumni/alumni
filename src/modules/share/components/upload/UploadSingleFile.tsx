@@ -1,7 +1,15 @@
 import { isString } from 'lodash';
-import { useDropzone, DropzoneOptions } from 'react-dropzone';
+import { DropzoneOptions, useDropzone } from 'react-dropzone';
 // material
-import { alpha, styled, Box, Theme, Typography, Paper, SxProps } from '@mui/material';
+import {
+  alpha,
+  Box,
+  Paper,
+  styled,
+  SxProps,
+  Theme,
+  Typography,
+} from '@mui/material';
 // utils
 import { fData } from '../../utils/formatNumber';
 //
@@ -25,9 +33,9 @@ const DropZoneStyle = styled('div')(({ theme }) => ({
   border: `1px dashed ${theme.palette.grey[500_32]}`,
   '&:hover': {
     opacity: 0.72,
-    cursor: 'pointer'
+    cursor: 'pointer',
   },
-  [theme.breakpoints.up('md')]: { textAlign: 'left', flexDirection: 'row' }
+  [theme.breakpoints.up('md')]: { textAlign: 'left', flexDirection: 'row' },
 }));
 
 // ----------------------------------------------------------------------
@@ -49,9 +57,15 @@ export default function UploadSingleFile({
   sx,
   ...other
 }: UploadSingleFileProps) {
-  const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragReject,
+    fileRejections,
+  } = useDropzone({
     multiple: false,
-    ...other
+    ...other,
   });
 
   const ShowRejectionItems = () => (
@@ -62,7 +76,7 @@ export default function UploadSingleFile({
         px: 2,
         mt: 3,
         borderColor: 'error.light',
-        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08)
+        bgcolor: theme => alpha(theme.palette.error.main, 0.08),
       }}
     >
       {fileRejections.map(({ file, errors }) => {
@@ -72,7 +86,7 @@ export default function UploadSingleFile({
             <Typography variant="subtitle2" noWrap>
               {path} - {fData(size)}
             </Typography>
-            {errors.map((e) => (
+            {errors.map(e => (
               <Typography key={e.code} variant="caption" component="p">
                 - {e.message}
               </Typography>
@@ -92,9 +106,9 @@ export default function UploadSingleFile({
           ...((isDragReject || error) && {
             color: 'error.main',
             borderColor: 'error.light',
-            bgcolor: 'error.lighter'
+            bgcolor: 'error.lighter',
           }),
-          ...(file && { padding: '12% 0' })
+          ...(file && { padding: '12% 0' }),
         }}
       >
         <input {...getInputProps()} />
@@ -130,7 +144,7 @@ export default function UploadSingleFile({
               objectFit: 'cover',
               position: 'absolute',
               width: 'calc(100% - 16px)',
-              height: 'calc(100% - 16px)'
+              height: 'calc(100% - 16px)',
             }}
           />
         )}

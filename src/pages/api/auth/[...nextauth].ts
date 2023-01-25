@@ -9,11 +9,13 @@ export const nextAuthOptions = {
       name: 'credentials',
       type: 'credentials',
       credentials: {
+        subdomain: { type: 'text' },
         email: { type: 'text' },
         password: { type: 'password' },
       },
       async authorize(credentials) {
         const payload = {
+          subdomain: credentials?.subdomain,
           email: credentials?.email,
           password: credentials?.password,
         };

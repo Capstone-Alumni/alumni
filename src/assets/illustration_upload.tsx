@@ -11,13 +11,30 @@ export default function UploadIllustration({ ...other }: BoxProps) {
 
   return (
     <Box {...other}>
-      <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 480 360">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="100%"
+        height="100%"
+        viewBox="0 0 480 360"
+      >
         <defs>
-          <linearGradient id="BG" x1="19.496%" x2="77.479%" y1="71.822%" y2="16.69%">
+          <linearGradient
+            id="BG"
+            x1="19.496%"
+            x2="77.479%"
+            y1="71.822%"
+            y2="16.69%"
+          >
             <stop offset="0%" stopColor={PRIMARY_MAIN} />
             <stop offset="100%" stopColor={PRIMARY_MAIN} stopOpacity="0" />
           </linearGradient>
-          <linearGradient id="linearGradient-2" x1="30.113%" x2="30.113%" y1="0%" y2="100%">
+          <linearGradient
+            id="linearGradient-2"
+            x1="30.113%"
+            x2="30.113%"
+            y1="0%"
+            y2="100%"
+          >
             <stop offset="0%" stopOpacity="0" />
             <stop offset="100%" />
           </linearGradient>

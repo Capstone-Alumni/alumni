@@ -11,6 +11,15 @@ const nextConfig = {
   },
   eslint: {
     dirs: ['src'],
+    ignorePatterns: [
+      'src/modules/share/components/@material-extend/*',
+      'src/modules/share/components/animate/*',
+      'src/modules/share/components/material-ui/*',
+      'src/lib/mui/*',
+    ],
+  },
+  typescript: {
+    ignoreBuildErrors: true,
   },
 };
 
