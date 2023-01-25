@@ -16,10 +16,6 @@ export const config = {
 
 export default withAuth(
   function middleware(request: NextRequestWithAuth) {
-    const url = request.nextUrl;
-    // Get the pathname of the request (e.g. /, /about, /blog/first-post)
-    const path = url.pathname;
-
     // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
     const hostname = request.headers.get('host') || 'demo.vercel.app';
 

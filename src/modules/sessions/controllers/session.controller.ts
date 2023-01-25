@@ -13,17 +13,15 @@ export default class SessionController {
         status: true,
         data: newAlum,
       });
-    } catch (error: any) {
+    } catch (error) {
       if (error.message === 'existed') {
         return res.status(400).json({
           status: false,
           message: 'Username or Email is already existed',
         });
       }
-      return res.status(500).json({
-        status: false,
-        message: error as string,
-      });
+
+      throw error;
     }
   };
 
@@ -37,17 +35,15 @@ export default class SessionController {
         status: true,
         data: user,
       });
-    } catch (error: any) {
+    } catch (error) {
       if (error.message === 'sign-in failed') {
         return res.status(400).json({
           status: false,
           message: 'Wrong username or password',
         });
       }
-      return res.status(500).json({
-        status: false,
-        message: error as string,
-      });
+
+      throw error;
     }
   };
 }

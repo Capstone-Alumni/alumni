@@ -7,45 +7,31 @@ export default class InformationController {
     req: NextApiRequest,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
-    try {
-      const { id } = req.query;
-      // TODO: handle authorization, wait for middleware on BE
-      const informationUpdated =
-        await InformationService.updateInformationByUserId(
-          id as string,
-          req.body,
-        );
-      return res.status(200).json({
-        status: true,
-        data: informationUpdated,
-      });
-    } catch (error: any) {
-      return res.status(400).json({
-        status: false,
-        message: error.message,
-      });
-    }
+    const { id } = req.query;
+    // TODO: handle authorization, wait for middleware on BE
+    const informationUpdated =
+      await InformationService.updateInformationByUserId(
+        id as string,
+        req.body,
+      );
+    return res.status(200).json({
+      status: true,
+      data: informationUpdated,
+    });
   };
 
   static getInformationByUserId = async (
     req: NextApiRequest,
     res: NextApiResponse,
   ) => {
-    try {
-      const { id } = req.query;
-      // TODO: handle authorization, wait for middleware on BE
-      const information = await InformationService.getInformationByUserId(
-        id as string,
-      );
-      return res.status(200).json({
-        status: true,
-        data: information,
-      });
-    } catch (error: any) {
-      return res.status(400).json({
-        status: false,
-        message: error.message,
-      });
-    }
+    const { id } = req.query;
+    // TODO: handle authorization, wait for middleware on BE
+    const information = await InformationService.getInformationByUserId(
+      id as string,
+    );
+    return res.status(200).json({
+      status: true,
+      data: information,
+    });
   };
 }
