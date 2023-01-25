@@ -17,6 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
   emotionCache: EmotionCache;
 }) {
+
   return (
     <html lang="en">
       <head>

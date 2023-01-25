@@ -1,6 +1,24 @@
 import { ScopePublicity } from '@prisma/client';
 
-export type UpdateInformationProps = {
+export type GetInformationParams = {
+  id: string;
+};
+
+export type GetInformationProps = {
+  bio?: string;
+  avatarUrl?: string;
+  coverImageUrl?: string;
+  userEmail?: string;
+  emailPublicity?: ScopePublicity;
+  phone?: string;
+  phonePublicity?: ScopePublicity;
+  facebookUrl?: string;
+  facebookPublicity?: ScopePublicity;
+  dateOfBirth?: Date | string;
+  dateOfBirthPublicity?: ScopePublicity;
+};
+
+export type QueryInformationProps = {
   bio?: string;
   avatarUrl?: string;
   coverImageUrl?: string;
