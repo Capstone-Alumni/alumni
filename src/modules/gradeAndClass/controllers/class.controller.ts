@@ -19,7 +19,7 @@ export default class ClassController {
         status: true,
         data: newClass,
       });
-    } catch (error: any) {
+    } catch (error) {
       if (error.message?.includes('invalid')) {
         return res.status(400).json({
           status: false,
@@ -34,10 +34,7 @@ export default class ClassController {
         });
       }
 
-      return res.status(500).json({
-        status: false,
-        message: error as string,
-      });
+      throw error;
     }
   };
 
@@ -60,7 +57,7 @@ export default class ClassController {
         status: true,
         data: classListData,
       });
-    } catch (error: any) {
+    } catch (error) {
       if (error.message?.includes('grade')) {
         return res.status(400).json({
           status: false,
@@ -68,10 +65,7 @@ export default class ClassController {
         });
       }
 
-      return res.status(500).json({
-        status: false,
-        message: error as string,
-      });
+      throw error;
     }
   };
 
@@ -79,62 +73,41 @@ export default class ClassController {
     req: NextApiRequest,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
-    try {
-      const { id } = req.query;
-      const classGotten = await ClassService.getById(id as string);
+    const { id } = req.query;
+    const classGotten = await ClassService.getById(id as string);
 
-      return res.status(200).json({
-        status: true,
-        data: classGotten,
-      });
-    } catch (error: any) {
-      return res.status(500).json({
-        status: false,
-        message: error as string,
-      });
-    }
+    return res.status(200).json({
+      status: true,
+      data: classGotten,
+    });
   };
 
   static updateInfoById = async (
     req: NextApiRequest,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
-    try {
-      const { id } = req.query;
-      const classUpdated = await ClassService.updateInfoById(
-        id as string,
-        req.body,
-      );
+    const { id } = req.query;
+    const classUpdated = await ClassService.updateInfoById(
+      id as string,
+      req.body,
+    );
 
-      return res.status(200).json({
-        status: true,
-        data: classUpdated,
-      });
-    } catch (error: any) {
-      return res.status(500).json({
-        status: false,
-        message: error as string,
-      });
-    }
+    return res.status(200).json({
+      status: true,
+      data: classUpdated,
+    });
   };
 
   static deleteById = async (
     req: NextApiRequest,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
-    try {
-      const { id } = req.query;
-      const classDeleted = await ClassService.deleteById(id as string);
+    const { id } = req.query;
+    const classDeleted = await ClassService.deleteById(id as string);
 
-      return res.status(200).json({
-        status: true,
-        data: classDeleted,
-      });
-    } catch (error: any) {
-      return res.status(500).json({
-        status: false,
-        message: error as string,
-      });
-    }
+    return res.status(200).json({
+      status: true,
+      data: classDeleted,
+    });
   };
 }
