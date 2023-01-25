@@ -1,3 +1,5 @@
+import { NextApiRequestWithTenant } from '@lib/next-connect';
+import getPrismaClient from '@lib/prisma/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ApiErrorResponse, ApiSuccessResponse } from 'src/types';
 
@@ -5,11 +7,12 @@ import GradeService from '../services/grade.service';
 
 export default class GradeController {
   static getPublicList = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
+    const prisma = await getPrismaClient(req.tenantId);
     const { page, limit, code, name } = req.query;
-    const gradeListData = await GradeService.getPublicList({
+    const gradeListData = await GradeService.getPublicList(prisma, {
       params: {
         page: page ? parseInt(page as string, 10) : 1,
         limit: limit ? parseInt(limit as string, 10) : 20,
@@ -25,12 +28,13 @@ export default class GradeController {
   };
 
   static create = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
       const { name, code } = req.body;
-      const newGrade = await GradeService.create({ name, code });
+      const prisma = await getPrismaClient(req.tenantId);
+      const newGrade = await GradeService.create(prisma, { name, code });
 
       return res.status(201).json({
         status: true,

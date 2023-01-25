@@ -20,7 +20,7 @@ import {
   ProfileFollowers,
   ProfileFriends,
   ProfileGallery,
-} from '../../../../modules/share/components/_dashboard/user/profile';
+} from '../../../modules/share/components/_dashboard/user/profile';
 import { UserPost } from '@share/type';
 import UserCreate from '@share/components/_dashboard/user/profile/UserCreate';
 
