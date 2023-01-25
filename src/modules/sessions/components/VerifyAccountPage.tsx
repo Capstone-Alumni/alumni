@@ -4,13 +4,7 @@ import { signOut } from "next-auth/react"
 import VerifyAccountStepper from '@share/components/VerifyAccountStepper';
 
 const VerifyAccountPage = () => {
-  return (
-    <>
-    <button onClick={() => signOut()}>Sign out</button>
-    <VerifyAccountStepper/>
-
-    </>
-  );
+  return <VerifyAccountStepper />;
 };
 
 export default VerifyAccountPage;

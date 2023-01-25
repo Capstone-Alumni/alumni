@@ -4,15 +4,11 @@ import * as yup from 'yup';
 
 import { Controller, useForm } from 'react-hook-form';
 
-import {
-  Box,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, TextField, Typography } from '@mui/material';
 
 import {
   requiredFullNameValidator,
-  requiredGradeNClassValidator
+  requiredGradeNClassValidator,
 } from 'src/modules/share/utils/validators';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 
@@ -64,8 +60,7 @@ const VerifyForm = () => {
           Thông tin cá nhân
         </Typography>
 
-        <Box mb={5}>
-        </Box>
+        <Box mb={5}></Box>
 
         <Controller
           control={control}

@@ -1,5 +1,5 @@
 import 'next-auth';
-import { User } from 'next-auth';
+import { User as NextUser } from 'next-auth';
 import 'next-auth/jwt';
 
 declare module 'next-auth' {
@@ -9,12 +9,23 @@ declare module 'next-auth' {
   interface Session {
     id?: string;
     accessToken?: string;
-    user: {
-      id: string;
-      accessLevel?: string;
-      accessStatus?: string;
-      accessMode?: string;
+    user: User;
+    currentTenant?: {
+      tenantId: string;
+      subdomain: string;
     };
+  }
+
+  interface User extends NextUser {
+    id: string;
+    email: string;
+    tenant: {
+      tenantId: string;
+      subdomain: string;
+    };
+    accessLevel: string;
+    accessStatus: string;
+    accessMode: string;
   }
 }
 
@@ -24,11 +35,10 @@ declare module 'next-auth/jwt' {
     /** OpenID ID Token */
     id?: string;
     accessToken?: string;
-    user_id: string;
-    user: User & {
-      accessLevel?: string;
-      accessStatus?: string;
-      accessMode?: string;
+    user: User;
+    currentTenant?: {
+      tenantId: string;
+      subdomain: string;
     };
   }
 }

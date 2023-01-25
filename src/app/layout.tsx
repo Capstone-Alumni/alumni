@@ -1,22 +1,20 @@
-'use client';
-
 import React from 'react';
-import { RecoilRoot } from 'recoil';
-import { SessionProvider } from 'next-auth/react';
 
-import { CacheProvider, EmotionCache } from '@emotion/react';
-import ThemeConfig from '@lib/mui';
-import createEmotionCache from '@share/utils/createEmotionCache';
+import { cookies } from 'next/headers';
 
-const clientSideEmotionCache = createEmotionCache();
+import CSRProvider from './CSRProvider';
 
-export default function RootLayout({
+import { Providers } from '../redux/providers';
+import SetCurrentTenant from './SetCurrentTenant';
+import { getTenantData } from '@share/utils/getTenantData';
+
+export default async function RootLayout({
   children,
-  emotionCache = clientSideEmotionCache,
 }: {
   children: React.ReactNode;
-  emotionCache: EmotionCache;
 }) {
+  const tenant = cookies().get('tenant-subdomain');
+  const { data } = await getTenantData(tenant?.value || '');
 
   return (
     <html lang="en">
@@ -25,13 +23,12 @@ export default function RootLayout({
         <meta content="initial-scale=1, width=device-width" name="viewport" />
       </head>
       <body style={{ margin: 0, minHeight: '100vh' }}>
-        <SessionProvider>
-          <CacheProvider value={emotionCache}>
-            <RecoilRoot>
-              <ThemeConfig>{children}</ThemeConfig>
-            </RecoilRoot>
-          </CacheProvider>
-        </SessionProvider>
+        <CSRProvider>
+          <Providers>
+            {children}
+            <SetCurrentTenant tenantData={data} />
+          </Providers>
+        </CSRProvider>
       </body>
     </html>
   );

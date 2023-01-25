@@ -1,31 +1,40 @@
-import { withAuth } from 'next-auth/middleware';
+import { getTenantData } from '@share/utils/getTenantData';
+import { NextRequestWithAuth, withAuth } from 'next-auth/middleware';
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+
+export const config = {
+  matcher: [
+    /*
+     * Match all paths except for:
+     * 1. /api routes
+     * 2. /_next (Next.js internals)
+     * 3. /fonts (inside /public)
+     * 4. all root files inside /public (e.g. /favicon.ico)
+     */
+    '/((?!api|_next|[\\w-]+\\.\\w+).*)',
+  ],
+};
 
 export default withAuth(
-  function middleware(request: NextRequest) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const { token } = request.nextauth;
+  async function middleware(request: NextRequestWithAuth) {
+    // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
+    const hostname = request.headers.get('host') || 'demo.vercel.app';
 
-    if (
-      request.nextUrl.pathname.startsWith('/sign_in') ||
-      request.nextUrl.pathname.startsWith('/sign_up')
-    ) {
-      if (token) {
-        return NextResponse.redirect(new URL('/', request.url));
-      }
-    } else if (request.nextUrl.pathname.startsWith('/verify_account')) {
-      if (!token) {
-        return NextResponse.redirect(new URL('/sign_in', request.url));
-      }
+    const currentHost =
+      process.env.NODE_ENV === 'production' && process.env.VERCEL === '1'
+        ? hostname.replace('.vercel.app', '')
+        : hostname.replace('.localhost:3005', '');
 
-      if (token && token.user.accessStatus !== 'PENDING') {
-        return NextResponse.redirect(new URL('/', request.url));
-      }
-    } else if (token && token.user.accessStatus === 'PENDING') {
-      return NextResponse.redirect(new URL('/verify_account', request.url));
+    const response = NextResponse.next();
+    const currentTenant = response.cookies.get('tenant-subdomain')?.value;
+    const currentTenantId = response.cookies.get('tenant-id')?.value;
+    if (currentTenant !== currentHost || !currentTenantId) {
+      response.cookies.set('tenant-subdomain', currentHost);
+      await getTenantData(currentHost).then(({ data }) =>
+        response.cookies.set('tenant-id', data.tenantId),
+      );
     }
+    return response;
   },
   {
     callbacks: {
