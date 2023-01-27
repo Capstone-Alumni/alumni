@@ -6,6 +6,9 @@ import MyAvatar from '../../../MyAvatar';
 // @types
 import { Profile } from '../../../../type';
 import { UploadAvatar } from '@share/components/upload';
+import { setStorage } from 'src/firebase/methods/setStorage';
+import { generateUniqSerial } from 'src/utils';
+import { useState } from 'react';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -53,30 +56,22 @@ type ProfileCoverProps = {
 
 export default function ProfileCover({ myProfile }: ProfileCoverProps) {
   const { position, cover } = myProfile;
-
-  // const handleDrop = (acceptedFiles: any) => {
-  //   const file = acceptedFiles[0];
-  //   console.log(file);
-  // }
+  const [avatar, setAvatar] = useState<string>("");
+  const handleDrop = async (acceptedFiles: any) => {
+    const file = acceptedFiles[0];
+    const { uploadAvatar } = setStorage();
+    const url = await uploadAvatar(generateUniqSerial(), file);
+    setAvatar(url);
+  }
 
   return (
     <RootStyle>
       <InfoStyle>
-        <MyAvatar
-          sx={{
-            mx: 'auto',
-            borderWidth: 2,
-            borderStyle: 'solid',
-            borderColor: 'common.white',
-            width: { xs: 80, md: 128 },
-            height: { xs: 80, md: 128 },
-          }}
-        />
-        {/* <UploadAvatar
-          file={null}
+        <UploadAvatar
+          file={avatar}
           maxSize={3145728}
           onDrop={handleDrop}
-        /> */}
+        />
         <Box
           sx={{
             ml: { md: 3 },

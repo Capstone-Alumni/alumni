@@ -10,16 +10,16 @@ export default class InformationService {
     const user = await prisma.user.findUnique({
       where: { id },
     });
-    if (!user) {
-      throw new Error('User not found');
-    }
+    // if (!user) {
+    //   throw new Error('User not found');
+    // }
     const informationUpdated = await prisma.information.upsert({
       where: { userId: id },
       update: body,
       create: {
         ...body,
         user: {
-          connect: {
+          create: {
             id: id,
           },
         },

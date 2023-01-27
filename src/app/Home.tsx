@@ -7,11 +7,6 @@ const Home = () => {
   const { data: session } = useSession();
   const router = useRouter();
 
-  const {
-    data,
-    isLoading,
-  } = useGetUserInformationById("cld94ggjf0000zn1sncthmknq");
-
   return (
     <div className="space-y-4">
       <div className="text-xl font-medium text-zinc-500">

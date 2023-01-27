@@ -17,15 +17,12 @@ const queryGetUserInformationById = (id?: string) => {
     GetInformationDataError
   >('getUserInformation', () => ({
     method: 'GET',
-    url: `/api/users/information`,
-    params: {
-      id
-    }
+    url: `/api/users/${id}/information`
   }));
 
   useEffect(() => {
     if (!id) return;
-    fetchApi({ id });
+    fetchApi();
   }, [id]);
 
   const reload = (id: string) => {

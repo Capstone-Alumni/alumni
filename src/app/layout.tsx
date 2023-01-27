@@ -7,6 +7,7 @@ import CSRProvider from './CSRProvider';
 import { Providers } from '../redux/providers';
 import SetCurrentTenant from './SetCurrentTenant';
 import { getTenantData } from '@share/utils/getTenantData';
+import GetInitialUserInformation from './GetInitialUserInformation';
 
 export default async function RootLayout({
   children,
@@ -27,6 +28,7 @@ export default async function RootLayout({
           <Providers>
             {children}
             <SetCurrentTenant tenantData={data} />
+            <GetInitialUserInformation />
           </Providers>
         </CSRProvider>
       </body>
