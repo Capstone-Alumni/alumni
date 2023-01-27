@@ -7,6 +7,7 @@ export const getTenantData = cache(async (subdomain: string) => {
       { cache: 'force-cache' },
     );
     const tenantData = await res.json();
+    console.log(tenantData);
 
     return tenantData;
   } catch {
