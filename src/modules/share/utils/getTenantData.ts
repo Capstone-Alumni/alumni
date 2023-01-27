@@ -1,6 +1,4 @@
-import { cache } from 'react';
-
-export const getTenantData = cache(async (subdomain: string) => {
+export const getTenantData = async (subdomain: string) => {
   try {
     const res = await fetch(
       `${process.env.PLATFORM_HOST}/api/tenants/subdomain/${subdomain}`,
@@ -13,4 +11,4 @@ export const getTenantData = cache(async (subdomain: string) => {
     console.log('get tenant error', error);
     return null;
   }
-});
+};
