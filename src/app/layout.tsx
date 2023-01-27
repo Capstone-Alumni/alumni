@@ -14,7 +14,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const tenant = cookies().get('tenant-subdomain');
-  const { data } = await getTenantData(tenant?.value || '');
+  const res = await getTenantData(tenant?.value || '');
+  const { data } = res;
 
   return (
     <html lang="en">
@@ -23,7 +24,7 @@ export default async function RootLayout({
         <meta content="initial-scale=1, width=device-width" name="viewport" />
       </head>
       <body style={{ margin: 0, minHeight: '100vh' }}>
-        <CSRProvider>
+        <CSRProvider theme={data.theme}>
           <Providers>
             {children}
             <SetCurrentTenant tenantData={data} />
