@@ -2,7 +2,6 @@ export const getTenantData = async (subdomain: string) => {
   try {
     const res = await fetch(
       `${process.env.PLATFORM_HOST}/api/tenants/subdomain/${subdomain}`,
-      { cache: 'force-cache' },
     ).then(res => res.json());
     console.log(res);
 
