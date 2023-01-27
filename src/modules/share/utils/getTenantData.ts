@@ -5,12 +5,12 @@ export const getTenantData = cache(async (subdomain: string) => {
     const res = await fetch(
       `${process.env.PLATFORM_HOST}/api/tenants/subdomain/${subdomain}`,
       { cache: 'force-cache' },
-    );
-    const tenantData = await res.json();
-    console.log(tenantData);
+    ).then(res => res.json());
+    console.log(res);
 
-    return tenantData;
-  } catch {
+    return res;
+  } catch (error) {
+    console.log('get tenant error', error);
     return null;
   }
 });
