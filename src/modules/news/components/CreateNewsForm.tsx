@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Box, Button, TextField, Typography, useTheme } from '@mui/material';
-import QuillEditor from '@share/components/quill/QuillEditor';
+import Editor from '@share/components/editor';
+import 'quill/dist/quill.snow.css';
 
 const CreateNewsForm = ({
   initialData,
@@ -58,7 +59,13 @@ const CreateNewsForm = ({
           <TextField fullWidth label="Tiêu đề" {...field} />
         )}
       />
-      <QuillEditor placeholder="Nội dung" />
+      <Controller
+        control={control}
+        name="content"
+        render={({ field }) => (
+          <Editor id="content" placeholder={'Nội dung'} {...field} />
+        )}
+      />
 
       <Box
         sx={{
