@@ -2,7 +2,7 @@
 import { Paper, Stack } from '@mui/material';
 
 import VerticalLinearStepper from './VerticalLinearStepper';
-import { steps } from "./constants";
+import { steps } from './constants';
 
 // ----------------------------------------------------------------------
 
@@ -12,10 +12,10 @@ export default function StepperComponent() {
       <Paper
         sx={{
           width: '100%',
-          boxShadow: (theme) => theme.customShadows.z8
+          boxShadow: theme => theme.customShadows.z8,
         }}
       >
-        <VerticalLinearStepper steps={steps}/>
+        <VerticalLinearStepper steps={steps} />
       </Paper>
     </Stack>
   );

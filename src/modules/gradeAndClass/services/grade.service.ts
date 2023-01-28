@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { prisma } from '@lib/prisma/prisma';
 
 import {
@@ -7,8 +8,11 @@ import {
 } from '../types';
 
 export default class GradeService {
-  static create = async ({ name, code }: CreateGradeServiceProps) => {
-    const existingGrade = await prisma.grade.findUnique({
+  static create = async (
+    tenantPrisma: PrismaClient,
+    { name, code }: CreateGradeServiceProps,
+  ) => {
+    const existingGrade = await tenantPrisma.grade.findUnique({
       where: {
         code: code,
       },
@@ -18,7 +22,7 @@ export default class GradeService {
       throw new Error('existed');
     }
 
-    const newGrade = await prisma.grade.create({
+    const newGrade = await tenantPrisma.grade.create({
       data: {
         name: name,
         code: code,
@@ -28,7 +32,10 @@ export default class GradeService {
     return newGrade;
   };
 
-  static getPublicList = async ({ params }: GetGradeListServiceProps) => {
+  static getPublicList = async (
+    tenantPrisma: PrismaClient,
+    { params }: GetGradeListServiceProps,
+  ) => {
     const { name, code, page, limit } = params;
 
     const whereFilter = {
@@ -39,11 +46,11 @@ export default class GradeService {
       ],
     };
 
-    const [totalGradeItem, gradeItems] = await prisma.$transaction([
-      prisma.grade.count({
+    const [totalGradeItem, gradeItems] = await tenantPrisma.$transaction([
+      tenantPrisma.grade.count({
         where: whereFilter,
       }),
-      prisma.grade.findMany({
+      tenantPrisma.grade.findMany({
         skip: (page - 1) * limit,
         take: limit,
         where: whereFilter,

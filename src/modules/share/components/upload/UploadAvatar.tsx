@@ -1,14 +1,14 @@
 import { isString } from 'lodash';
 import { ReactNode } from 'react';
 import { Icon } from '@iconify/react';
-import { useDropzone, DropzoneOptions } from 'react-dropzone';
+import { DropzoneOptions, useDropzone } from 'react-dropzone';
 import roundAddAPhoto from '@iconify/icons-ic/round-add-a-photo';
 // material
-import { alpha, Theme, styled } from '@mui/material';
-import { Box, Typography, Paper } from '@mui/material';
-import { SxProps } from '@material-ui/system';
+import { alpha, styled, Theme } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
+import { SxProps } from '@mui/material';
 // utils
-import { fData } from '../../utils/formatNumber';
+import { fData } from '@share/utils/formatNumber';
 
 // ----------------------------------------------------------------------
 
@@ -85,6 +85,9 @@ export default function UploadAvatar({
     fileRejections,
   } = useDropzone({
     multiple: false,
+    accept: {
+      'image/jpeg': ['.jpeg', '.png'],
+    },
     ...other,
   });
 
@@ -96,7 +99,7 @@ export default function UploadAvatar({
         px: 2,
         my: 2,
         borderColor: 'error.light',
-        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08),
+        bgcolor: theme => alpha(theme.palette.error.main, 0.08),
       }}
     >
       {fileRejections.map(({ file, errors }) => {
@@ -106,7 +109,7 @@ export default function UploadAvatar({
             <Typography variant="subtitle2" noWrap>
               {path} - {fData(size)}
             </Typography>
-            {errors.map((e) => (
+            {errors.map(e => (
               <Typography key={e.code} variant="caption" component="p">
                 - {e.message}
               </Typography>

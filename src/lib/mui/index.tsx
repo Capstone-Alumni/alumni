@@ -1,4 +1,4 @@
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo, forwardRef } from 'react';
 // material
 import {
   createTheme,
@@ -7,28 +7,31 @@ import {
   ThemeOptions,
   ThemeProvider,
 } from '@mui/material';
-// hooks
-// import useSettings from '../hooks/useSettings';
-//
 import shape from './shape';
-import palette from './palette';
+import { getPalette } from './palette';
 import typography from './typography';
 import breakpoints from './breakpoints';
 import GlobalStyles from './globalStyles';
 import componentsOverride from './overrides';
-import shadows, { customShadows } from './shadows';
+import { getShadows, getCustomShadows } from './shadows';
 
 // ----------------------------------------------------------------------
 
 type ThemeConfigProps = {
+  paletteName?: string;
   children: ReactNode;
 };
 
-export default function ThemeConfig({ children }: ThemeConfigProps) {
+export default function ThemeConfig({ paletteName, children }: ThemeConfigProps) {
   // const { themeMode, themeDirection } = useSettings();
   const themeMode = 'light';
   const themeDirection = 'ltf';
   const isLight = themeMode === 'light';
+  const palette = useMemo(() => {
+    return getPalette(paletteName || 'purple');
+  }, [paletteName]);
+  const shadows = getShadows(palette);
+  const customShadows = getCustomShadows(palette);
 
   const themeOptions: any = useMemo(
     () => ({
