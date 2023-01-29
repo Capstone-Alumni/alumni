@@ -161,3 +161,15 @@ model Education {
 
   @@map("educations")
 }
+
+model News {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  title     String
+  content   String
+  authorId  String   @map("author_id")
+
+  @@map("news")
+}
