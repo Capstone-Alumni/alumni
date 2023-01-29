@@ -72,10 +72,6 @@ export default class NewsService {
     const { page, limit } = getPageAndLimitFromParams(params);
 
     const { title, content } = params;
-    console.log(
-      '🚀 ~ file: news.service.ts:75 ~ NewsService ~ getListNews= ~ title',
-      title,
-    );
     const whereFilter = {
       AND: [
         { title: { contains: title } },
