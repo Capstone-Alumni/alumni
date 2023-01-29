@@ -1,15 +1,23 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequestWithTenant } from '@lib/next-connect';
+import getPrismaClient from '@lib/prisma/prisma';
+import { NextApiResponse } from 'next';
 import { ApiErrorResponse, ApiSuccessResponse } from 'src/types';
 import NewsService from '../services/news.service';
 
 export default class NewsController {
   static createNews = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
+      const prisma = await getPrismaClient(req.tenantId);
+
       const authorId = req.user.id;
-      const newsCreated = await NewsService.createNews(authorId, req.body);
+      const newsCreated = await NewsService.createNews(
+        prisma,
+        authorId,
+        req.body,
+      );
       return res.status(201).json({
         status: true,
         data: newsCreated,
@@ -23,11 +31,12 @@ export default class NewsController {
   };
 
   static getListNews = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
-      const listNews = await NewsService.getListNews(req.query);
+      const prisma = await getPrismaClient(req.tenantId);
+      const listNews = await NewsService.getListNews(prisma, req.query);
       return res.status(200).json({
         status: true,
         data: listNews,
@@ -41,12 +50,17 @@ export default class NewsController {
   };
 
   static updateNews = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
       const { id } = req.query;
-      const newsUpdated = await NewsService.updateNews(id as string, req.body);
+      const prisma = await getPrismaClient(req.tenantId);
+      const newsUpdated = await NewsService.updateNews(
+        prisma,
+        id as string,
+        req.body,
+      );
       return res.status(200).json({
         status: true,
         data: newsUpdated,
@@ -60,12 +74,13 @@ export default class NewsController {
   };
 
   static deleteNews = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
       const { id } = req.query;
-      const newsDeleted = await NewsService.deleteNews(id as string);
+      const prisma = await getPrismaClient(req.tenantId);
+      const newsDeleted = await NewsService.deleteNews(prisma, id as string);
       return res.status(200).json({
         status: true,
         data: newsDeleted,
@@ -79,12 +94,13 @@ export default class NewsController {
   };
 
   static getNewsById = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
       const { id } = req.query;
-      const news = await NewsService.getNewsByNewsId(id as string);
+      const prisma = await getPrismaClient(req.tenantId);
+      const news = await NewsService.getNewsByNewsId(prisma, id as string);
       return res.status(200).json({
         status: true,
         data: news,
