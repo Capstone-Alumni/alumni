@@ -3,6 +3,7 @@ import getPrismaClient from '@lib/prisma/prisma';
 import { NextApiResponse } from 'next';
 import { ApiErrorResponse, ApiSuccessResponse } from 'src/types';
 import NewsService from '../services/news.service';
+import { GetListNewParams } from '../types';
 
 export default class NewsController {
   static createNews = async (
@@ -36,7 +37,10 @@ export default class NewsController {
   ) => {
     try {
       const prisma = await getPrismaClient(req.tenantId);
-      const listNews = await NewsService.getListNews(prisma, req.query);
+      const listNews = await NewsService.getListNews(
+        prisma,
+        req.query as unknown as GetListNewParams,
+      );
       return res.status(200).json({
         status: true,
         data: listNews,
