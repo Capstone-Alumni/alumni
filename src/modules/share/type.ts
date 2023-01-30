@@ -58,16 +58,18 @@ export type Profile = {
   twitterLink: string;
 };
 
-export type UserManager = {
+export type UserInformation = {
   id: string;
+  userId: string;
   bio: string;
   avatarUrl: string;
+  coverImageUrl: string;
   name: string;
-  email: string;
-  phoneNumber: string;
-  dateOfBirth: string;
-  class: string;
-  grade: string;
+  userEmail: string;
+  phone: string;
+  dateOfBirth: Date | null;
+  className: string | null;
+  gradeName: string | null;
   address: string;
   country: string;
   state: string;
@@ -77,6 +79,22 @@ export type UserManager = {
   isVerified: boolean;
   status: string;
   role: string;
+};
+
+export type Career = {
+  id: string,
+  jobTitle?: string,
+  company?: string,
+  startDate?: Date | null,
+  endDate?: Date | null,
+  userId?: string,
+  archived?: Boolean
+}
+
+export type UserCareers = {
+  totalItems: number;
+  items: Career[];
+  itemPerPage: number;
 };
 
 export type UserData = {

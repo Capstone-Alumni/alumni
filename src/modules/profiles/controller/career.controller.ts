@@ -61,6 +61,21 @@ export default class CareerController {
     });
   };
 
+  static updateCareers = async (
+    req: NextApiRequest,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    const { careerId } = req.query;
+    const careerUpdated = await CareerService.createMany(
+      careerId as string,
+      req.body,
+    );
+    return res.status(200).json({
+      status: true,
+      data: careerUpdated,
+    });
+  };
+
   static deleteById = async (
     req: NextApiRequest,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,

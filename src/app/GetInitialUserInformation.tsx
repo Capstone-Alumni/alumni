@@ -1,13 +1,19 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { useGetUserInformationQuery } from 'src/redux/slices/currentUserSlice';
+import { useEffect } from 'react';
+import { getCurrentUserInfo } from 'src/redux/slices/currentUserSlice';
 
 const GetInitialUserInformation = () => {
   const { data: session } = useSession();
-  useGetUserInformationQuery(session?.user.id, {
-    skip: !Boolean(session?.user.id)
-  });
+  useEffect(() => {
+    if (!session?.user.id) return;
+    getCurrentUser(session?.user.id);
+  }, [session])
+
+  const getCurrentUser = async (id: string) => {
+    await getCurrentUserInfo(id);
+  }
 
   return null;
 };

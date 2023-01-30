@@ -26,7 +26,7 @@ import UserCreate from '@share/components/_dashboard/user/profile/UserCreate';
 import { currentTenantSubdomainSelector } from 'src/redux/slices/currentTenantSlice';
 import { useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
-import {  currentUserState } from 'src/redux/slices/currentUserSlice';
+import { useSession } from 'next-auth/react';
 
 // ----------------------------------------------------------------------
 
@@ -51,7 +51,6 @@ const TabsWrapperStyle = styled('div')(({ theme }) => ({
 export default function UserProfile() {
     const [currentTab, setCurrentTab] = useState('profile');
     const [findFriends, setFindFriends] = useState('');
-    const currentUser = useAppSelector((state: RootState) => state.currentUser);
 
     const myProfile = {
         "id": "fc68bad5-d430-4033-b8f8-4bc069dc0ba0-1",
@@ -684,9 +683,6 @@ export default function UserProfile() {
             component: <UserCreate isEdit={true} />
         }
     ];
-    const subdomain = useAppSelector(currentTenantSubdomainSelector);
-
-    console.log(subdomain);
 
     return (
         <Container maxWidth={'lg'}>

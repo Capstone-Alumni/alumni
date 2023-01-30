@@ -3,6 +3,7 @@ import CareerController from '../../../../../modules/profiles/controller/career.
 
 const handler = appNextConnect
   .get(CareerController.getListByUserId)
-  .post(CareerController.createCareer);
+  .post(CareerController.createCareer)
+  .put(CareerController.updateCareers);
 
 export default handler;

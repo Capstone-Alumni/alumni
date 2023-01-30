@@ -1,11 +1,10 @@
 'use client';
 import { signOut, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import useGetUserInformationById from 'src/modules/profiles/hooks/useGetUserInformationById';
 
 const Home = () => {
   const { data: session } = useSession();
-  const router = useRouter();
 
   return (
     <div className="space-y-4">
@@ -13,9 +12,15 @@ const Home = () => {
         Init login by Gmail
       </div>
       {session && (
+
         <>
-          <button onClick={() => router.push(`/profile/${session?.user?.id}`)
-          }>Profile</button>
+          <Link
+            href={{
+              pathname: `/profile/${session?.user?.id}`
+            }}
+          >
+            Profile
+          </Link>
         </>
       )}
     </div>
