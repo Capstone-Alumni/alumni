@@ -5,6 +5,7 @@ const nextConfig = {
     // Required:
     appDir: true,
     esmExternals: false,
+    swcMinify: false,
   },
   compiler: {
     styledComponents: true,

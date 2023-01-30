@@ -8,14 +8,16 @@ import ThemeConfig from '@lib/mui';
 
 export default function CSRProvider({
   children,
+  theme,
 }: {
   children: React.ReactNode;
+  theme: string;
 }) {
   return (
     <SessionProvider>
       <RecoilRoot>
         <NextAppDirEmotionCacheProvider options={{ key: 'css' }}>
-          <ThemeConfig>{children}</ThemeConfig>
+          <ThemeConfig paletteName={theme}>{children}</ThemeConfig>
         </NextAppDirEmotionCacheProvider>
       </RecoilRoot>
     </SessionProvider>

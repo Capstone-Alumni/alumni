@@ -35,7 +35,7 @@ const NEWS_NAV_ITEM = {
   id: 'news',
   title: 'Tin tức',
   icon: 'material-symbols:meeting-room-outline-rounded',
-  link: '/admin/event',
+  link: '/admin/news',
 };
 const FUND_NAV_ITEM = {
   id: 'grade_class_4',
