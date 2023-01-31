@@ -34,7 +34,7 @@ const AdminNewsCardItem = ({ item }: { item: any }) => {
             }}
             href={`/admin/news/${item.id}`}
           >
-            Xem chi tiet
+            Xem chi tiết
           </Link>
         </Box>
         <Typography
@@ -75,7 +75,7 @@ const AdminNewsCardItem = ({ item }: { item: any }) => {
             }}
             variant="body2"
           >
-            Ngay dang: {new Date(item.createdAt).toDateString()}
+            Ngày đăng: {new Date(item.createdAt).toDateString()}
           </Typography>
         </div>
       </CardContent>
