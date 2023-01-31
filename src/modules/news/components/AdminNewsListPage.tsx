@@ -3,6 +3,9 @@
 import { Box, Button, Typography, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useRouter } from 'next/navigation';
+import AdminNewsCards from './AdminNewsCards';
+import data from '../__mockData__/getNewsListForSchoolAdmin';
+import { noop } from 'lodash';
 
 const AdminNewsListPage = () => {
   const theme = useTheme();
@@ -39,6 +42,20 @@ const AdminNewsListPage = () => {
         >
           Thêm tin tức
         </Button>
+      </Box>
+      <Box
+        sx={{
+          width: '100%',
+        }}
+      >
+        {data.status ? (
+          <AdminNewsCards
+            data={data.data}
+            onEdit={noop}
+            onChangePage={noop}
+            onDelete={noop}
+          />
+        ) : null}
       </Box>
     </Box>
   );

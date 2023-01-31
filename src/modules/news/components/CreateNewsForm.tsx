@@ -62,8 +62,13 @@ const CreateNewsForm = ({
       <Controller
         control={control}
         name="content"
-        render={({ field }) => (
-          <Editor id="content" placeholder={'Nội dung'} {...field} />
+        render={({ field: { value, onChange } }) => (
+          <Editor
+            id="content"
+            placeholder={'Nội dung'}
+            value={value}
+            onChange={onChange}
+          />
         )}
       />
 
