@@ -1,3 +1,4 @@
+import { User } from '@prisma/client';
 import 'next-auth';
 import { User as NextUser } from 'next-auth';
 import 'next-auth/jwt';
@@ -40,5 +41,11 @@ declare module 'next-auth/jwt' {
       tenantId: string;
       subdomain: string;
     };
+  }
+}
+
+declare module 'next' {
+  interface NextApiRequest {
+    user?: User | any;
   }
 }

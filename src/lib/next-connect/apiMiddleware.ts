@@ -20,3 +20,19 @@ export const verifySchoolAdmin = async (
 
   next();
 };
+
+export const isAuthenticatedUser = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  next: NextHandler,
+) => {
+  const session = await unstable_getServerSession(req, res, nextAuthOptions);
+
+  if (!session) {
+    throw new Error('unauthorized');
+  }
+
+  req.user = session?.user;
+
+  next();
+};
