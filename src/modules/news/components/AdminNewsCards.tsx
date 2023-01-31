@@ -1,6 +1,7 @@
 'use client';
 
-import { Box } from '@mui/material';
+import { Box, Pagination } from '@mui/material';
+import { noop } from 'lodash';
 import AdminNewsCardItem from './AdminNewsCardItem';
 
 const AdminNewsCards = ({
@@ -12,10 +13,23 @@ const AdminNewsCards = ({
   onChangePage: (nextPage: number) => void;
 }) => {
   return (
-    <Box>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       {data.items.map((item: any) => (
         <AdminNewsCardItem item={item} key={item.id} />
       ))}
+      <Pagination
+        sx={{
+          margin: 'auto',
+        }}
+        count={Math.ceil(data.totalItems / data.itemPerPage)}
+        page={1}
+        onChange={noop}
+      />
     </Box>
   );
 };

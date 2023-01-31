@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Card, CardContent, Typography } from '@mui/material';
+import { Box, Card, CardContent, Link, Typography } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import ReactHtmlParser from 'html-react-parser';
 
@@ -12,20 +12,45 @@ const AdminNewsCardItem = ({ item }: { item: any }) => {
         display: 'flex',
         height: '200px',
         gap: '24px',
-        mb: 4,
+        mb: 2,
       }}
     >
-      <CardContent>
-        <Typography variant="h4" component="div">
-          {item.title}
+      <CardContent
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+          }}
+        >
+          <Typography variant="h5">{item.title}</Typography>
+          <Link
+            sx={{
+              marginLeft: 'auto',
+            }}
+            href={`/admin/news/${item.id}`}
+          >
+            Xem chi tiet
+          </Link>
+        </Box>
+        <Typography
+          color="text.secondary"
+          sx={{
+            fontSize: '12px',
+          }}
+        >
+          Author
         </Typography>
-        <Typography color="text.secondary">Author</Typography>
         <Box
           sx={{
             overflow: 'hidden',
-            pt: 2,
+            pt: 0.5,
             width: '100%',
-            height: '60px',
+            height: '120px',
             textOverflow: 'ellipsis',
             fontSize: '14px',
           }}
