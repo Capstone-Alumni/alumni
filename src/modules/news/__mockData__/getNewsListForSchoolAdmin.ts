@@ -10,6 +10,7 @@ const data = {
         createdAt: '2023-01-07T16:08:36.804Z',
         updatedAt: '2023-01-07T16:08:36.804Z',
         title: 'Testing title 01',
+        newsCategories: ['Tin nham', 'Tin Khong nham'],
         content:
           '<h3>testing content</h3>' +
           'milliseconds since January 1, 1970, 00:00:00 UTC milliseconds since January 1, 1970, 00:00:00 UTC milliseconds since January 1, 1970, 00:00:00 UTC  NaN if the string is unrecognized or, in some' +
@@ -22,6 +23,7 @@ const data = {
         createdAt: '2023-01-07T16:08:44.696Z',
         updatedAt: '2023-01-07T16:08:44.696Z',
         title: 'Testing title 02',
+        newsCategories: [],
         content: '<p>testing content</p>',
       },
       {
@@ -31,6 +33,7 @@ const data = {
         createdAt: '2023-01-07T16:08:48.519Z',
         updatedAt: '2023-01-07T16:08:48.519Z',
         title: 'Testing title 03',
+        newsCategories: [],
         content: '<p>testing content</p>',
       },
     ],

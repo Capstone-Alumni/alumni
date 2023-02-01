@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Card, CardContent, Link, Typography } from '@mui/material';
+import { Box, Card, CardContent, Chip, Link, Typography } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import ReactHtmlParser from 'html-react-parser';
 
@@ -28,6 +28,16 @@ const AdminNewsCardItem = ({ item }: { item: any }) => {
           }}
         >
           <Typography variant="h5">{item.title}</Typography>
+          {item.newsCategories.map((category: any) => (
+            <Chip
+              key={item.id}
+              sx={{
+                ml: 1,
+              }}
+              label={category}
+            />
+          ))}
+
           <Link
             sx={{
               marginLeft: 'auto',
