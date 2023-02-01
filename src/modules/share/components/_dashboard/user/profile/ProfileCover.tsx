@@ -91,7 +91,7 @@ export default function ProfileCover({ myProfile }: ProfileCoverProps) {
       {data && <>
         <InfoStyle>
           <UploadAvatar
-            file={data?.data.information.avatarUrl}
+            file={data?.data?.information.avatarUrl}
             maxSize={3145728}
             onDrop={(e) => handleDrop(e, 'avatar')}
           />
@@ -111,7 +111,7 @@ export default function ProfileCover({ myProfile }: ProfileCoverProps) {
       }
       <label htmlFor="uploadWallpaper">
         <div>
-          <CoverImgStyle alt="profile cover" src={data?.data.information.coverImageUrl} />
+          <CoverImgStyle alt="profile cover" src={data?.data?.information.coverImageUrl} />
         </div>
         <RootStyle>
           <input

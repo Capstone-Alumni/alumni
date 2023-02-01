@@ -45,16 +45,15 @@ export default class CareerService {
 
     await prisma.career.deleteMany({});
     
-  
+  console.log("careers", careers)
     const newCareers = await prisma.career.createMany({
-      data: careers.map(career => ({
+      data: careers ? careers.map(career => ({
         jobTitle: career.jobTitle,
         company: career.company,
         startDate: career.startDate,
         endDate: career.endDate,
         userId
-      })),
-      skipDuplicates: true
+      })): [],
     });
     return newCareers;
   };

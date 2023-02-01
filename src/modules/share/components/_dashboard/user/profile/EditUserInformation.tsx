@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 import dayjs, { Dayjs } from 'dayjs';
 
@@ -24,23 +24,22 @@ import { LoadingButton } from '@mui/lab';
 // @types
 import { UserInformation } from '../../../../type';
 import { useUpdateUserInformationMutation } from 'src/redux/slices/userProfileSlice';
+import axiosInstance from 'src/utils/axios';
 
 // ----------------------------------------------------------------------
 
 const classesMock = [
-  { label: '12A3', class: '12A3' },
-  { label: '12A4', class: '12A4' },
-  { label: '12A7', class: '12A7' },
-  { label: '12A8', class: '12A8' },
-  { label: '12A2', class: '12A2' },
+  { className: '12A3' },
+  { className: '12A4' },
+  { className: '12A7' },
+  { className: '12A8' },
+  { className: '12A2' },
 ];
 
 const gradesMock = [
-  { label: '2015', class: '2015' },
-  { label: '2016', class: '2016' },
-  { label: '2017', class: '2017' },
-  { label: '2018', class: '2018' },
-  { label: '2019', class: '2019' },
+  { gradeCode: 'cldkmwwba0000znqpfse54wfp', gradeName: '10' },
+  { gradeCode: 'cldknd6lf0004znqp7o3uet1m', gradeName: '11' },
+  { gradeCode: 'cldl9rf640001zn7v52plsvt9', gradeName: '12' },
 ];
 
 type UserNewFormProps = {
@@ -48,15 +47,25 @@ type UserNewFormProps = {
 };
 
 export default function EditUserInformation({ currentUser }: UserNewFormProps) {
-  const [updateUserInformation, result] = useUpdateUserInformationMutation();
+  const [updateUserInformation] = useUpdateUserInformationMutation();
+
+  const [classes, setClasses] = useState([]);
+  const [grades, setGrades] = useState([]);
+
+  console.log("classes", classes);
+  console.log("grades", grades);
 
   const NewUserSchema = Yup.object().shape({
     bio: Yup.string(),
     userEmail: Yup.string(),
-    className: Yup.string().nullable(),
-    gradeName: Yup.string().nullable(),
+    class: Yup.object().shape({
+      className: Yup.string().nullable(),
+    }).nullable(),
+    grade: Yup.object().shape({
+      gradeName: Yup.string().nullable(),
+      gradeCode: Yup.string().nullable(),
+    }).nullable(),
     phoneNumber: Yup.string(),
-    // dateOfBirth: Yup.date().required('Date is required'),
   });
 
   const formik = useFormik({
@@ -65,8 +74,13 @@ export default function EditUserInformation({ currentUser }: UserNewFormProps) {
       userId: currentUser?.userId || '',
       bio: currentUser?.bio || '',
       userEmail: currentUser?.userEmail || '',
-      className: currentUser?.className || null,
-      gradeName: currentUser?.gradeName || null,
+      class: {
+        className: currentUser?.className || null
+      },
+      grade: {
+        gradeName: currentUser?.gradeName || null,
+        gradeCode: currentUser?.gradeCode || null,
+      },
       phone: currentUser?.phone || '',
       dateOfBirth: currentUser?.dateOfBirth || null
     },
@@ -74,7 +88,8 @@ export default function EditUserInformation({ currentUser }: UserNewFormProps) {
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         console.log(values);
-        await updateUserInformation(values);
+        const data = { ...values, ...values.grade, ...values.class };
+        // await updateUserInformation(data);
         // TODO: Call API to submit the form
         // await fakeRequest(500);
         setSubmitting(false);
@@ -98,7 +113,47 @@ export default function EditUserInformation({ currentUser }: UserNewFormProps) {
     getFieldProps,
   } = formik;
 
-  console.log(errors);
+  useEffect(() => {
+
+    if (!Boolean(grades.length > 0)) {
+      handleGetGrades();
+      return;
+    };
+
+    if (values?.grade?.gradeCode) {
+      handleGetClasses(values.grade.gradeCode);
+      return;
+    } else {
+      setClasses([]);
+    }
+
+  }, [values.grade])
+
+
+  const handleGetClasses = async (gradeId: string | null) => {
+    const res = await axiosInstance({
+      url: `/api/classes`,
+      method: 'GET',
+      params: {
+        grade_id: gradeId
+      }
+    })
+    if (!res) return;
+    const filteredClasses = res.data?.items.map((classRes: any) => ({ className: classRes.name }));
+
+    setClasses(filteredClasses)
+  }
+
+  const handleGetGrades = async () => {
+    const res = await axiosInstance({
+      url: `/api/grades`,
+      method: 'GET',
+    })
+    if (!res) return;
+    const filteredClasses = res.data?.items.map((gradeRes: any) => ({ gradeCode: gradeRes.id, gradeName: gradeRes.name }));
+
+    setGrades(filteredClasses);
+  }
 
   return (
     <FormikProvider value={formik}>
@@ -138,29 +193,51 @@ export default function EditUserInformation({ currentUser }: UserNewFormProps) {
                   />
                 </Stack>
 
-                <Stack
+                {grades && <> <Stack
                   direction={{ xs: 'column', sm: 'row' }}
                   spacing={{ xs: 3, sm: 2 }}
                 >
                   <Autocomplete
-                    disablePortal
                     fullWidth
                     id="combo-box-demo"
-                    options={classesMock}
-                    renderInput={params => (
-                      <TextField {...params} label="Class" />
-                    )}
-                  />
-                  <Autocomplete
-                    disablePortal
-                    fullWidth
-                    id="combo-box-demo"
+                    {...getFieldProps('gradeName')}
                     options={gradesMock}
+                    getOptionLabel={option => option.gradeName || ""}
+                    onChange={(_, value) => {
+                      if (!value) {
+                        setFieldValue("grade", { gradeName: null, gradeCode: null })
+                        setFieldValue("class", { className: null });
+                        return;
+                      }
+                      setFieldValue("grade", value)
+                    }}
+                    defaultValue={values.grade}
                     renderInput={params => (
-                      <TextField {...params} label="Grade" />
+                      <TextField {...params} label="Grade" name="gradeName" />
                     )}
                   />
-                </Stack>
+                 {values.grade?.gradeCode &&  <Autocomplete
+                    disabled={!Boolean(values.grade?.gradeCode)}
+                    fullWidth
+                    id="combo-box-demo"
+                    {...getFieldProps('className')}
+                    options={classesMock}
+                    getOptionLabel={option => option.className || ""}
+                    onChange={(_, value) => {
+                      console.log(value);
+                      if (!value) {
+                        setFieldValue("class", { className: null });
+                        return;
+                      }
+                      setFieldValue("class", value)
+                    }}
+                    defaultValue={values.class}
+                    renderInput={params => (
+                      <TextField {...params} label="Class" name="className" />
+                    )}
+                  />}
+                </Stack></>
+                }
 
                 <Stack
                   direction={{ xs: 'column', sm: 'row' }}

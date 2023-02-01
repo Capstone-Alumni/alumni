@@ -24,20 +24,22 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LoadingButton } from '@mui/lab';
 // @types
 import { Career, UserCareers } from '../../../../type';
+import { useUpdateUserCareersMutation } from 'src/redux/slices/userProfileSlice';
 
 // ----------------------------------------------------------------------
 
 
 type EditUserCareersProps = {
   userCareers?: UserCareers;
+  userProfileId?: string;
 };
 
-export default function EditUserCareers({ userCareers }: EditUserCareersProps) {
+export default function EditUserCareers({ userCareers, userProfileId }: EditUserCareersProps) {
   const [careers, setCareers] = useState<Array<Career>>(userCareers?.items || []);
-
+  const [updateUserCareers] = useUpdateUserCareersMutation();
   const { register, formState: { errors }, handleSubmit, control } = useForm();
 
-  const onSubmit: SubmitHandler<any> = data => {
+  const onSubmit: SubmitHandler<any> = async data => {
     let careersTransformed = [];
     for (let i = 0; i < careers.length; i++) {
       let career = {};
@@ -51,6 +53,7 @@ export default function EditUserCareers({ userCareers }: EditUserCareersProps) {
       career = {};
     }
     console.log(careersTransformed);
+    await updateUserCareers({ userId: userProfileId, ...careersTransformed });
   };
 
 
@@ -62,7 +65,7 @@ export default function EditUserCareers({ userCareers }: EditUserCareersProps) {
     setCareers([...careers, { id: String(careers.length + 1) }]);
   };
 
-  const handleRenderCareers = (careers: Array<{ id: string }>) => {
+  const handleRenderCareers = (careers: Array<Career>) => {
     return careers.map((career: any, i: any) => {
       return (
         <Stack spacing={2} key={career.id}>

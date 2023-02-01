@@ -21,6 +21,7 @@ export default class CareerController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id, jobTitle, company, page, limit } = req.query;
+    console.log(id);
     const careerList = await CareerService.getListByUserId(id as string, {
       jobTitle: jobTitle ? (jobTitle as string) : '',
       company: company ? (company as string) : '',
@@ -65,9 +66,9 @@ export default class CareerController {
     req: NextApiRequest,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
-    const { careerId } = req.query;
+    const { id } = req.query;
     const careerUpdated = await CareerService.createMany(
-      careerId as string,
+      id as string,
       req.body,
     );
     return res.status(200).json({

@@ -68,8 +68,9 @@ export type UserInformation = {
   userEmail: string;
   phone: string;
   dateOfBirth: Date | null;
-  className: string | null;
   gradeName: string | null;
+  gradeCode: string | null;
+  className: string | null;
   address: string;
   country: string;
   state: string;

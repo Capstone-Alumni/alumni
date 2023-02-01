@@ -5,6 +5,7 @@ import { useGetUserInformationQuery, useGetUserCareersQuery, useGetUserEducation
 
 import EditUserInformation from './EditUserInformation';
 import EditUserCareers from './EditUserCareers';
+import EditUserCareers1 from './EditUserCareers1';
 import EditUserEducation from './EditUserEducation';
 
 // ----------------------------------------------------------------------
@@ -26,9 +27,9 @@ export default function UserCreate({ isEdit }: UserCreateProps) {
       {/* <UserNewForm isEdit={true} /> */}
       {!errorInformation && !isLoadingInformation && <EditUserInformation currentUser={information.data.information} />}
       <br/>
-      {!errorCareers && !isLoadingCareers && <EditUserCareers userCareers={careers.data} />}
+      {!errorCareers && !isLoadingCareers && <EditUserCareers1 editable={true} userCareers={careers.data.items}/>}
       <br/>
-      {!errorEducation && !isLoadingEducation && <EditUserEducation currentUser={information} />}
+      {!errorEducation && !isLoadingEducation && <EditUserEducation editable={true} userEducations={education.data.items} />}
     </Container>
   );
 }
