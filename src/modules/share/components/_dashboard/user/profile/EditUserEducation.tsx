@@ -11,6 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect } from 'react';
 import { F } from 'lodash/fp';
+import { useUpdateUserEducationsMutation } from 'src/redux/slices/userProfileSlice';
 
 const mockData = [
   {
@@ -31,12 +32,12 @@ const mockData = [
   }
 ]
 
-const WorkSection = ({ editable, userEducations }: any) => {
+const WorkSection = ({ editable, userEducations, userProfileId }: any) => {
   const theme = useTheme();
 
   const [openAddForm, setOpenAddForm] = useState(false);
   const [selectedEditId, setSelectedEditId] = useState(null);
-
+  const [updateUserEducations] = useUpdateUserEducationsMutation();
   const educationData = mockData;
 
   console.log(educationData);
@@ -44,36 +45,36 @@ const WorkSection = ({ editable, userEducations }: any) => {
   const onAddWork = async (values: any) => {
     console.log("add", values);
 
+    const data = [...educationData, values];
+
+    await updateUserEducations({userId: userProfileId, ...data});
+
     setOpenAddForm(false);
   }
 
   const onDeleteWork = async (id: string) => {
     const currentData = [...educationData];
+
     const deleteIndex = currentData.findIndex((item) => item.id === id);
+
     currentData.splice(deleteIndex, 1);
-    // await fetchData({
-    //   method: 'put',
-    //   url: '/api/workExperience',
-    //   body: {
-    //     work_experience: currentData,
-    //   }
-    // });
+
+    await updateUserEducations({userId: userProfileId, ...currentData});
+
     console.log("delete", currentData);
   }
 
   const onUpdateWork = async (id: any, values: any) => {
     const currentData = [...educationData];
+    
     const updateIndex = currentData.findIndex((item) => item.id === id);
+
     currentData[updateIndex] = values;
-    // await fetchData({
-    //   method: 'put',
-    //   url: '/api/workExperience',
-    //   body: {
-    //     work_experience: currentData,
-    //   }
-    // });
+
+    await updateUserEducations({userId: userProfileId, ...currentData});
 
     console.log("update", currentData);
+
     setSelectedEditId(null);
   }
 
@@ -82,7 +83,7 @@ const WorkSection = ({ editable, userEducations }: any) => {
       <Grid item xs={12} md={12}>
         <Card sx={{ p: 3 }}>
           <Stack sx={{ margin: '1rem 0 0.5rem 0' }}>
-          <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: theme.spacing(2) }}>
+            <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: theme.spacing(2) }}>
               <Typography variant="h5" style={{ display: 'flex', fontWeight: 'bold', alignItems: 'center' }}>
                 <WorkIcon fontSize="large" style={{ color: orange[900], marginRight: theme.spacing(1) }} />
                 Học vấn
@@ -99,13 +100,13 @@ const WorkSection = ({ editable, userEducations }: any) => {
             </Box>
           </Stack>
           <div
-            
+
           >
-           
+
             {
               openAddForm
                 ? (
-                  <EducationForm defaultValues={{startDate: null, endDate: null}} onSave={(values: any) => onAddWork(values)} />
+                  <EducationForm defaultValues={{ startDate: null, endDate: null }} onSave={(values: any) => onAddWork(values)} />
                 )
                 : null
             }
@@ -126,8 +127,8 @@ const WorkSection = ({ editable, userEducations }: any) => {
                                 <Box style={{ flex: 1 }}>
                                   <ProfileInfoRow title="Tên trường" content={item.school} />
                                   <ProfileInfoRow title="Cấp" content={item.degree} />
-                                  <ProfileInfoRow title="Thời gian bắt đầu" content={item.startDate ? `${item.startDate && new Date(item.startDate).toLocaleDateString('en-GB')}`: null} />
-                                  <ProfileInfoRow title="Thời gian kết thúc" content={item.endDate ? `${new Date(item.endDate).toLocaleDateString('en-GB')}`: null} />
+                                  <ProfileInfoRow title="Thời gian bắt đầu" content={item.startDate ? `${item.startDate && new Date(item.startDate).toLocaleDateString('en-GB')}` : null} />
+                                  <ProfileInfoRow title="Thời gian kết thúc" content={item.endDate ? `${new Date(item.endDate).toLocaleDateString('en-GB')}` : null} />
                                 </Box>
 
                                 {

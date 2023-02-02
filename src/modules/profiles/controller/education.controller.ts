@@ -20,6 +20,21 @@ export default class EducationController {
     });
   }
 
+  static async createManyRecords(
+    req: NextApiRequest,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) {
+    const { id: userId } = req.query;
+    const educationCreated = await EducationServices.bulkCreate(
+      userId as string,
+      req.body,
+    );
+    return res.status(201).json({
+      status: true,
+      data: educationCreated,
+    });
+  }
+
   static updateEducation = async (
     req: NextApiRequest,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,

@@ -82,6 +82,23 @@ export type UserInformation = {
   role: string;
 };
 
+export type Education = {
+  id: string,
+  degree?: string,
+  school?: string,
+  startDate?: Date | null,
+  endDate?: Date | null,
+  userId?: string,
+  archived?: Boolean
+}
+
+export type UserEducations = {
+  totalItems: number;
+  items: Education[];
+  itemPerPage: number;
+};
+
+
 export type Career = {
   id: string,
   jobTitle?: string,

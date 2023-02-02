@@ -3,6 +3,7 @@ import EducationController from 'src/modules/profiles/controller/education.contr
 
 const handler = appNextConnect
   .get(EducationController.getEducationsByUserId)
-  .post(EducationController.create);
+  .post(EducationController.create)
+  .put(EducationController.createManyRecords);
 
 export default handler;

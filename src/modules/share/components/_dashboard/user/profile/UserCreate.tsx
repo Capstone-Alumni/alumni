@@ -1,11 +1,10 @@
 // material
 import { Container } from '@mui/material';
 import { usePathname } from 'next/navigation';
-import { useGetUserInformationQuery, useGetUserCareersQuery, useGetUserEducationQuery } from 'src/redux/slices/userProfileSlice';
+import { useGetUserInformationQuery, useGetUserCareersQuery, useGetUserEducationsQuery } from 'src/redux/slices/userProfileSlice';
 
 import EditUserInformation from './EditUserInformation';
 import EditUserCareers from './EditUserCareers';
-import EditUserCareers1 from './EditUserCareers1';
 import EditUserEducation from './EditUserEducation';
 
 // ----------------------------------------------------------------------
@@ -20,16 +19,15 @@ export default function UserCreate({ isEdit }: UserCreateProps) {
 
   const { data: information, error: errorInformation, isLoading: isLoadingInformation } = useGetUserInformationQuery(userProfileId);
   const { data: careers, error: errorCareers, isLoading: isLoadingCareers } = useGetUserCareersQuery(userProfileId);
-  const { data: education, error: errorEducation, isLoading: isLoadingEducation } = useGetUserEducationQuery(userProfileId);
+  const { data: education, error: errorEducation, isLoading: isLoadingEducation } = useGetUserEducationsQuery(userProfileId);
 
   return (
     <Container maxWidth={'lg'}>
-      {/* <UserNewForm isEdit={true} /> */}
       {!errorInformation && !isLoadingInformation && <EditUserInformation currentUser={information.data.information} />}
       <br/>
-      {!errorCareers && !isLoadingCareers && <EditUserCareers1 editable={true} userCareers={careers.data.items}/>}
+      {!errorCareers && !isLoadingCareers && <EditUserCareers editable={true} userCareers={careers.data.items} userProfileId={userProfileId}/>}
       <br/>
-      {!errorEducation && !isLoadingEducation && <EditUserEducation editable={true} userEducations={education.data.items} />}
+      {!errorEducation && !isLoadingEducation && <EditUserEducation editable={true} userEducations={education.data.items} userProfileId={userProfileId}/>}
     </Container>
   );
 }

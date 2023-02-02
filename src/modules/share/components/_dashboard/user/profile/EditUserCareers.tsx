@@ -1,205 +1,163 @@
-import * as Yup from 'yup';
-import { useCallback, useState } from 'react';
-import { Form, FormikProvider, useFormik } from 'formik';
-import dayjs, { Dayjs } from 'dayjs';
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { Box, Divider, IconButton, Typography, Grid, Card, Stack, useTheme } from '@mui/material';
+import React, { useState } from 'react';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ProfileInfoRow from './InfoRow';
+import orange from '@mui/material/colors/orange';
 
-// material
-import {
-  Autocomplete,
-  Box,
-  Button,
-  Card,
-  Grid,
-  Stack,
-  Switch,
-  TextField,
-  Typography,
-} from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
-import { LoadingButton } from '@mui/lab';
-// @types
-import { Career, UserCareers } from '../../../../type';
+import WorkIcon from '@mui/icons-material/Work';
+import WorkForm from './WorkForm';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useUpdateUserCareersMutation } from 'src/redux/slices/userProfileSlice';
 
-// ----------------------------------------------------------------------
+const mockData = [
+  {
+    id: "1",
+    jobTitle: "Fresher",
+    company: "FPT Sofware",
+    startDate: '2023-01-27T18:04:07.397Z',
+    endDate: '2023-01-27T18:04:07.397Z',
+    archived: false
+  },
+  {
+    id: "2",
+    jobTitle: "Junior",
+    company: "National Australia Bank",
+    startDate: '2023-01-27T18:04:07.397Z',
+    endDate: null,
+    archived: false
+  }
+]
 
+const WorkSection = ({ editable, userCareers, userProfileId }: any) => {
+  const theme = useTheme();
 
-type EditUserCareersProps = {
-  userCareers?: UserCareers;
-  userProfileId?: string;
-};
-
-export default function EditUserCareers({ userCareers, userProfileId }: EditUserCareersProps) {
-  const [careers, setCareers] = useState<Array<Career>>(userCareers?.items || []);
+  const [openAddForm, setOpenAddForm] = useState(false);
+  const [selectedEditId, setSelectedEditId] = useState(null);
   const [updateUserCareers] = useUpdateUserCareersMutation();
-  const { register, formState: { errors }, handleSubmit, control } = useForm();
 
-  const onSubmit: SubmitHandler<any> = async data => {
-    let careersTransformed = [];
-    for (let i = 0; i < careers.length; i++) {
-      let career = {};
-      Object.keys(data).forEach(function (key) {
-        let jobNumber = key.charAt(key.length - 1);
-        if (jobNumber === i.toString()) {
-          career = { ...career, [key.slice(0, key.length - 1)]: data[key] }
-        }
-      });
-      careersTransformed.push(career);
-      career = {};
-    }
-    console.log(careersTransformed);
-    await updateUserCareers({ userId: userProfileId, ...careersTransformed });
-  };
+  const workData = mockData;
 
+  const onAddWork = async (values: any) => {
+    console.log("add", values);
 
-  const handleDeleteJob = (id: string) => {
-    setCareers(careers.filter(career => career.id !== id));
-  };
+    const data = [...workData, values];
 
-  const handleAddNewJob = () => {
-    setCareers([...careers, { id: String(careers.length + 1) }]);
-  };
+    await updateUserCareers({userId: userProfileId, ...data});
 
-  const handleRenderCareers = (careers: Array<Career>) => {
-    return careers.map((career: any, i: any) => {
-      return (
-        <Stack spacing={2} key={career.id}>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Typography
-              variant="body1"
-              sx={{
-                fontSize: '13px',
-                color: 'red',
-                textDecoration: 'underline',
-                cursor: 'pointer',
-              }}
-              onClick={() => handleDeleteJob(career.id) as any}
-            >
-              Delete
-            </Typography>
-          </div>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            spacing={{ xs: 3, sm: 2 }}
-          >
-            <TextField
-              fullWidth
-              label="Company Name"
-              defaultValue={career.company}
-              {...register(`company${i}`, { required: true })}
-              error={Boolean(errors[`company${i}`]?.type === 'required')}
-              helperText={errors[`company${i}`] && "Company Name is required"}
-            />
-            <Controller
-              name={`startDate${i}`}
-              control={control}
-              render={({ field: { onChange, value = career.startDate }, fieldState: { error } }) => (
+    setOpenAddForm(false);
+  }
 
-                <LocalizationProvider dateAdapter={AdapterDayjs} >
-                  <DatePicker
-                    label="Start Date"
-                    inputFormat="DD-MM-YYYY"
-                    value={value}
-                    onChange={(event: any) => { onChange(event) }}
-                    renderInput={(params) => (
-                      <TextField
-                        margin="normal"
-                        {...register(`startDate${i}`, { required: false })}
-                        fullWidth
-                        {...params}
-                        error={undefined}
-                      />
-                    )}
-                  />
-                </LocalizationProvider>
+  const onDeleteWork = async (id: string) => {
+    const currentData = [...workData];
 
-              )} />
-          </Stack>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            spacing={{ xs: 3, sm: 2 }}
-          >
-            <TextField
-              fullWidth
-              label="Your title"
-              defaultValue={career.jobTitle}
-              {...register(`jobTitle${i}`, { required: true })}
-              error={Boolean(errors[`jobTitle${i}`]?.type === 'required')}
-              helperText={errors[`jobTitle${i}`] && "Job title is required"}
-            />
-            <Controller
-              name={`endDate${i}`}
-              control={control}
-              render={({ field: { onChange, value = career.endDate }, fieldState: { error } }) => (
-                <LocalizationProvider dateAdapter={AdapterDayjs} >
-                  <DatePicker
-                    label="End Date"
-                    inputFormat="DD-MM-YYYY"
-                    value={value}
-                    onChange={(event: any) => { onChange(event) }}
-                    renderInput={(params) => (
-                      <TextField
-                        label="End Date"
-                        margin="normal"
-                        {...register(`endDate${i}`, { required: false })}
-                        fullWidth
-                        {...params}
-                        error={undefined}
-                      />
-                    )}
-                  />
-                </LocalizationProvider>
+    const deleteIndex = currentData.findIndex((item) => item.id === id);
+    currentData.splice(deleteIndex, 1);
 
-              )} />
-          </Stack>
-          <hr />
-        </Stack>
-      );
-    });
-  };
+    await updateUserCareers({userId: userProfileId, ...currentData});
+
+    console.log("delete", currentData);
+  }
+
+  const onUpdateWork = async (id: any, values: any) => {
+    const currentData = [...workData];
+
+    const updateIndex = currentData.findIndex((item) => item.id === id);
+    
+    currentData[updateIndex] = values;
+
+    await updateUserCareers({userId: userProfileId, ...currentData});
+
+    console.log("update", currentData);
+    setSelectedEditId(null);
+  }
 
   return (
-    // <Form noValidate autoComplete="off">
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={12}>
-          <Card sx={{ p: 3 }}>
-            <Stack sx={{ margin: '1rem 0 0.5rem 0' }}>
-              <Typography variant="h5">Your career(s)</Typography>
-            </Stack>
-            <Stack spacing={3}>
-              {handleRenderCareers(careers)}
-              <Box
-                sx={{ mt: 3, display: 'flex', justifyContent: 'flex-start' }}
-              >
-                <Button
-                  variant="contained"
-                  onClick={() => handleAddNewJob() as any}
-                >
-                  Add new job
-                </Button>
-              </Box>
-            </Stack>
-            <Stack spacing={3}>
-              <Box
-                sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}
-              >
-                <LoadingButton
-                  type="submit"
-                  variant="contained"
-                >
-                  Save Changes
-                </LoadingButton>
-              </Box>
-            </Stack>
-          </Card>
-        </Grid>
+    <Grid container spacing={3}>
+      <Grid item xs={12} md={12}>
+        <Card sx={{ p: 3 }}>
+          <Stack sx={{ margin: '1rem 0 0.5rem 0' }}>
+          <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: theme.spacing(2) }}>
+              <Typography variant="h5" style={{ display: 'flex', fontWeight: 'bold', alignItems: 'center' }}>
+                <WorkIcon fontSize="large" style={{ color: orange[900], marginRight: theme.spacing(1) }} />
+                Công việc
+              </Typography>
+              {
+                editable
+                  ? (
+                    <IconButton aria-label="edit-personla-info" onClick={() => setOpenAddForm(true)}>
+                      <AddCircleIcon />
+                    </IconButton>
+                  )
+                  : null
+              }
+            </Box>
+          </Stack>
+          <div
+            
+          >
+           
+            {
+              openAddForm
+                ? (
+                  <WorkForm defaultValues={{startDate: null, endDate: null}} onSave={(values: any) => onAddWork(values)} />
+                )
+                : null
+            }
+
+            <Box style={{ paddingLeft: theme.spacing(2) }}>
+              {
+                workData && workData.length > 0
+                  ? (
+                    workData?.map((item: any, index: number) => (
+                      <>
+                        {
+                          selectedEditId === item.id
+                            ? (
+                              <WorkForm defaultValues={item} onSave={(values: any) => onUpdateWork(item.id, values)} />
+                            )
+                            : (
+                              <Box style={{ display: 'flex' }}>
+                                <Box style={{ flex: 1 }}>
+                                  <ProfileInfoRow title="Nơi công tác/Công ty" content={item.company} />
+                                  <ProfileInfoRow title="Chức vụ" content={item.jobTitle} />
+                                  <ProfileInfoRow title="Thời gian bắt đầu" content={item.startDate ? `${item.startDate && new Date(item.startDate).toLocaleDateString('en-GB')}`: null} />
+                                  <ProfileInfoRow title="Thời gian kết thúc" content={item.endDate ? `${new Date(item.endDate).toLocaleDateString('en-GB')}`: null} />
+                                </Box>
+
+                                {
+                                  editable
+                                    ? (
+                                      <Box>
+                                        <IconButton onClick={() => setSelectedEditId(item.id)}><EditIcon /></IconButton>
+                                        <IconButton onClick={() => onDeleteWork(item.id)}><DeleteIcon color="error" /></IconButton>
+                                      </Box>
+                                    )
+                                    : null
+                                }
+                              </Box>
+                            )
+                        }
+
+                        {
+                          index + 1 < workData.length
+                            ? <Divider style={{ marginTop: theme.spacing(2), marginBottom: theme.spacing(2) }} />
+                            : null
+                        }
+                      </>
+                    ))
+                  )
+                  : (
+                    <Typography>Không có công việc</Typography>
+                  )
+              }
+
+            </Box>
+          </div>
+        </Card>
       </Grid>
-    </form>
+    </Grid>
   );
 }
+
+export default WorkSection;

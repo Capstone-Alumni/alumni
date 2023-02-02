@@ -43,9 +43,12 @@ export default class CareerService {
   ) => {
     isUserExisted(userId);
 
-    await prisma.career.deleteMany({});
+    await prisma.career.deleteMany({
+      where: {
+        userId
+      },
+    });
     
-  console.log("careers", careers)
     const newCareers = await prisma.career.createMany({
       data: careers ? careers.map(career => ({
         jobTitle: career.jobTitle,
