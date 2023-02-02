@@ -55,6 +55,7 @@
     "formik": "2.2.9",
     "framer-motion": "8.0.2",
     "highlight.js": "11.7.0",
+    "html-react-parser": "3.0.8",
     "jsonwebtoken": "9.0.0",
     "lodash": "4.17.21",
     "next": "latest",

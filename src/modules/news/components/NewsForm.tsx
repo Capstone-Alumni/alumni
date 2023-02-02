@@ -61,7 +61,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
       <Controller
         control={control}
         name="content"
-        render={({ field }) => (
+        render={({ field: { value, onChange } }) => (
           <Editor
             id="content"
             sx={{
@@ -69,7 +69,8 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
               overflow: 'auto',
             }}
             placeholder={'Nội dung'}
-            {...field}
+            value={value}
+            onChange={onChange}
           />
         )}
       />
