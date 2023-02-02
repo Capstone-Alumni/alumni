@@ -4,16 +4,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { Box, Button, TextField, Typography, useTheme } from '@mui/material';
 import Editor from '@share/components/editor';
 import 'quill/dist/quill.snow.css';
+import useCreateNews from '../hooks/useCreateNews';
 
-const CreateNewsForm = ({
-  initialData,
-  onSubmit,
-  onClose,
-}: {
-  initialData?: any;
-  onClose?: () => void;
-  onSubmit: (values: any) => void;
-}) => {
+const CreateNewsForm = ({ initialData }: { initialData?: any }) => {
   const theme = useTheme();
   const [submitting, setSubmitting] = useState(false);
 
@@ -24,11 +17,16 @@ const CreateNewsForm = ({
     },
   });
 
+  const { createNews } = useCreateNews();
+
+  const onAddNews = async (values: any) => {
+    await createNews(values);
+  };
+
   const onSubmitHandler = async (values: any) => {
     setSubmitting(true);
-    await onSubmit(values);
+    await onAddNews(values);
     setSubmitting(false);
-    onClose?.();
   };
 
   return (
@@ -75,11 +73,6 @@ const CreateNewsForm = ({
           gap: theme.spacing(2),
         }}
       >
-        {onClose ? (
-          <Button variant="outlined" disabled={submitting} onClick={onClose}>
-            Huỷ
-          </Button>
-        ) : null}
         <Button
           variant="contained"
           disabled={submitting}
