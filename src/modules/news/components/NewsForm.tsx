@@ -62,7 +62,15 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
         control={control}
         name="content"
         render={({ field }) => (
-          <Editor id="content" placeholder={'Nội dung'} {...field} />
+          <Editor
+            id="content"
+            sx={{
+              height: 500,
+              overflow: 'auto',
+            }}
+            placeholder={'Nội dung'}
+            {...field}
+          />
         )}
       />
 
