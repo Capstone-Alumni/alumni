@@ -91,6 +91,8 @@ export default class EducationController {
       userId as string,
       params as unknown as QueryParamGetEducationByUserId,
     );
+
+    res.setHeader('Cache-Control', 'no-store')
     return res.status(200).json({
       status: true,
       data: userEducations,

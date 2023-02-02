@@ -1,6 +1,7 @@
 import { Information, ScopePublicity } from "@prisma/client";
 
-export const isAllowToViewValue = (currentUserInfomation: Information, profileInfomation: Information, permissionToSee: ScopePublicity): Boolean => {
+export const isAllowToViewValue = (currentUserInfomation: Information, profileInfomation: Information, permissionToSee?: ScopePublicity): Boolean => {
+    if (!permissionToSee) return false;
     if (permissionToSee === "PRIVATE") return false;
     if (permissionToSee === "SCHOOL") return true;
 

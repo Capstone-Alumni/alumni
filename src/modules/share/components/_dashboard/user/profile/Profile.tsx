@@ -29,7 +29,7 @@ export default function Profile({ userInformation, userCareers, userEducations }
           <ProfileAbout userInformation={userInformationData} />
         </Stack>
       </Grid>}
-      {currentUser.data.information && userInformationData && <>
+      {currentUser?.data?.information && userInformationData && <>
         {userCareers?.error ? <Typography>Có lỗi xảy ra! Vui lòng thử lại sau ít phút</Typography> : <Grid item xs={12} md={12}>
           {isAllowToViewValue(currentUser.data.information, userInformationData, userInformationData.careerPublicity) && <Stack spacing={3}>
             <UserCareers editable={false} userCareers={userCareers?.data?.data?.items} />

@@ -10,24 +10,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useUpdateUserCareersMutation } from 'src/redux/slices/userProfileSlice';
 
-const mockData = [
-  {
-    id: "1",
-    jobTitle: "Fresher",
-    company: "FPT Sofware",
-    startDate: '2023-01-27T18:04:07.397Z',
-    endDate: '2023-01-27T18:04:07.397Z',
-    archived: false
-  },
-  {
-    id: "2",
-    jobTitle: "Junior",
-    company: "National Australia Bank",
-    startDate: '2023-01-27T18:04:07.397Z',
-    endDate: null,
-    archived: false
-  }
-]
 
 const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
   const theme = useTheme();
@@ -36,14 +18,13 @@ const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
   const [selectedEditId, setSelectedEditId] = useState(null);
   const [updateUserCareers] = useUpdateUserCareersMutation();
 
-  const workData = mockData;
+  const workData = userCareers;
 
   const onAddWork = async (values: any) => {
-    console.log("add", values);
 
     const data = [...workData, values];
 
-    await updateUserCareers({userId: userProfileId, ...data});
+    await updateUserCareers({userId: userProfileId, data});
 
     setOpenAddForm(false);
   }
@@ -54,9 +35,8 @@ const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
     const deleteIndex = currentData.findIndex((item) => item.id === id);
     currentData.splice(deleteIndex, 1);
 
-    await updateUserCareers({userId: userProfileId, ...currentData});
+    await updateUserCareers({userId: userProfileId, data: currentData});
 
-    console.log("delete", currentData);
   }
 
   const onUpdateWork = async (id: any, values: any) => {
@@ -66,9 +46,8 @@ const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
     
     currentData[updateIndex] = values;
 
-    await updateUserCareers({userId: userProfileId, ...currentData});
+    await updateUserCareers({userId: userProfileId, data: currentData});
 
-    console.log("update", currentData);
     setSelectedEditId(null);
   }
 

@@ -32,19 +32,19 @@ import { Information } from '@prisma/client';
 
 // ----------------------------------------------------------------------
 
-const classesMock = [
-  { className: '12A3' },
-  { className: '12A4' },
-  { className: '12A7' },
-  { className: '12A8' },
-  { className: '12A2' },
-];
+// const classesMock = [
+//   { className: '12A3' },
+//   { className: '12A4' },
+//   { className: '12A7' },
+//   { className: '12A8' },
+//   { className: '12A2' },
+// ];
 
-const gradesMock = [
-  { gradeCode: 'cldkmwwba0000znqpfse54wfp', gradeName: '10' },
-  { gradeCode: 'cldknd6lf0004znqp7o3uet1m', gradeName: '11' },
-  { gradeCode: 'cldl9rf640001zn7v52plsvt9', gradeName: '12' },
-];
+// const gradesMock = [
+//   { gradeCode: 'cldkmwwba0000znqpfse54wfp', gradeName: '10' },
+//   { gradeCode: 'cldknd6lf0004znqp7o3uet1m', gradeName: '11' },
+//   { gradeCode: 'cldl9rf640001zn7v52plsvt9', gradeName: '12' },
+// ];
 
 type UserInfoProps = {
   userInformation?: Information;
@@ -55,9 +55,6 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
 
   const [classes, setClasses] = useState([]);
   const [grades, setGrades] = useState([]);
-
-  console.log("classes", classes);
-  console.log("grades", grades);
 
   const NewUserSchema = Yup.object().shape({
     bio: Yup.string(),
@@ -93,9 +90,8 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
     validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        console.log(values);
-        const data = { ...values, ...values.grade, ...values.class };
-        // await updateUserInformation(data);
+        const {class: _, grade, ...data} = values;
+        await updateUserInformation({...data, gradeCode: grade.gradeCode, gradeName: grade.gradeName, className: _.className});
         // TODO: Call API to submit the form
         // await fakeRequest(500);
         setSubmitting(false);
@@ -195,7 +191,7 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                   direction={{ xs: 'column', sm: 'row' }}
                   spacing={{ xs: 3, sm: 2 }}
                 >
-                   <TextField
+                  <TextField
                     fullWidth
                     label="Họ và tên"
                     {...getFieldProps('fullName')}
@@ -219,7 +215,7 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                     fullWidth
                     id="combo-box-demo"
                     {...getFieldProps('gradeName')}
-                    options={gradesMock}
+                    options={grades}
                     getOptionLabel={option => option.gradeName || ""}
                     onChange={(_, value) => {
                       if (!value) {
@@ -239,7 +235,7 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                     fullWidth
                     id="combo-box-demo"
                     {...getFieldProps('className')}
-                    options={classesMock}
+                    options={classes}
                     getOptionLabel={option => option.className || ""}
                     onChange={(_, value) => {
                       console.log(value);
@@ -296,7 +292,7 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                     variant="contained"
                     loading={isSubmitting}
                   >
-                    Save Changes
+                    Lưu
                   </LoadingButton>
                 </Box>
               </Stack>

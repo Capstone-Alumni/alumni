@@ -29,6 +29,7 @@ export default class CareerController {
       limit: limit ? parseInt(limit as string, 10) : 20,
     });
 
+    res.setHeader('Cache-Control', 'no-store');
     return res.status(200).json({
       status: true,
       data: careerList,

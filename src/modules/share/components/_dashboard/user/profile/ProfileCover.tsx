@@ -11,6 +11,8 @@ import { generateUniqSerial } from 'src/utils';
 import { useState } from 'react';
 import { useGetUserInformationQuery, useUpdateUserInformationMutation } from 'src/redux/slices/userProfileSlice';
 import { usePathname } from 'next/navigation';
+import { useAppSelector } from 'src/redux/hooks';
+import { RootState } from 'src/redux/store';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -58,7 +60,7 @@ type ProfileCoverProps = {
 
 export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
   const { data } = useGetUserInformationQuery(userProfileId);
-
+  const currentUser = useAppSelector((state: RootState) => state.currentUser);
   const [updateUserInformation] = useUpdateUserInformationMutation();
 
   const handleDrop = async (acceptedFiles: any, type: string) => {
@@ -86,6 +88,7 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
       {data && <>
         <InfoStyle>
           <UploadAvatar
+            disabled={currentUser?.data?.information?.userId !== userProfileId}
             file={data?.data?.information?.avatarUrl}
             maxSize={3145728}
             onDrop={(e) => handleDrop(e, 'avatar')}
@@ -108,13 +111,15 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
           <CoverImgStyle alt="profile cover" src={data?.data?.information?.coverImageUrl} />
         </div>
         <RootStyle>
-          <input
+          {
+            currentUser?.data?.information?.userId === userProfileId && <input
             type="file"
             id="uploadWallpaper"
             style={{ display: 'none' }}
             accept="image/png, image/jpeg"
             onChange={(e) => handleDrop(e, 'wallpaper')}
           />
+          }
         </RootStyle>
       </label>
     </>

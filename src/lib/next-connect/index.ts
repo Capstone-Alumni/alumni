@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import nc, { NextHandler } from 'next-connect';
+import { NextApiRequest, NextApiResponse } from 'next';
 import onErrorAPIHandler from './onErrorAPIHandler';
 import onNoMatchAPIHandler from './onNoMatchAPIHandler';
 
@@ -7,7 +7,7 @@ export type NextApiRequestWithTenant = {
   tenantId: string;
 } & NextApiRequest;
 
-const extractTenantId = async (
+export const extractTenantId = async (
   req: NextApiRequestWithTenant,
   res: NextApiResponse,
   next: NextHandler,

@@ -13,39 +13,19 @@ import { useEffect } from 'react';
 import { F } from 'lodash/fp';
 import { useUpdateUserEducationsMutation } from 'src/redux/slices/userProfileSlice';
 
-const mockData = [
-  {
-    id: "1",
-    school: "Hung Vuong",
-    degree: "Cap 3",
-    startDate: "2023-01-27T18:04:07.397Z",
-    endDate: "2023-01-27T18:04:07.397Z",
-    archived: false
-  },
-  {
-    id: "2",
-    jobTitle: "Nhat Tao",
-    company: "Cap 2",
-    startDate: "2023-01-27T18:04:07.397Z",
-    endDate: null,
-    archived: false
-  }
-]
-
 const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
   const theme = useTheme();
 
   const [openAddForm, setOpenAddForm] = useState(false);
   const [selectedEditId, setSelectedEditId] = useState(null);
   const [updateUserEducations] = useUpdateUserEducationsMutation();
-  const educationData = mockData;
+
+  const educationData = userEducations;
 
   const onAddWork = async (values: any) => {
-    console.log("add", values);
-
     const data = [...educationData, values];
 
-    await updateUserEducations({userId: userProfileId, ...data});
+    await updateUserEducations({userId: userProfileId, data});
 
     setOpenAddForm(false);
   }
@@ -57,9 +37,8 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
 
     currentData.splice(deleteIndex, 1);
 
-    await updateUserEducations({userId: userProfileId, ...currentData});
+    await updateUserEducations({userId: userProfileId, data: currentData});
 
-    console.log("delete", currentData);
   }
 
   const onUpdateWork = async (id: any, values: any) => {
@@ -69,9 +48,7 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
 
     currentData[updateIndex] = values;
 
-    await updateUserEducations({userId: userProfileId, ...currentData});
-
-    console.log("update", currentData);
+    await updateUserEducations({userId: userProfileId, data: currentData});
 
     setSelectedEditId(null);
   }

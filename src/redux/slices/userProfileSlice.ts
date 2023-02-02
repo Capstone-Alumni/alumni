@@ -35,8 +35,8 @@ export const userProfileApi = createApi({
       providesTags: ['Careers'],
     }),
 
-    updateUserCareers: builder.mutation<any, Partial<Career> & Pick<Career, 'userId'>>({
-      query: ({ userId, ...data }) => ({
+    updateUserCareers: builder.mutation<any, any>({
+      query: ({ userId, data }) => ({
         url: `api/users/${userId}/career`,
         method: "PUT",
         body: data
@@ -51,8 +51,8 @@ export const userProfileApi = createApi({
       providesTags: ['Educations'],
     }),
 
-    updateUserEducations: builder.mutation<any, Partial<Education> & Pick<Education, 'userId'>>({
-      query: ({ userId, ...data }) => ({
+    updateUserEducations: builder.mutation<any, any>({
+      query: ({ userId, data }) => ({
         url: `api/users/${userId}/education`,
         method: "PUT",
         body: data

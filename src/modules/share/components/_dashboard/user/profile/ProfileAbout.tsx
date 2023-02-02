@@ -47,15 +47,15 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
             </Box>
           </Stack>
           <div>
-            {currentUser.data.information && <Box style={{ paddingLeft: theme.spacing(2) }}>
+            {currentUser?.data?.information && <Box style={{ paddingLeft: theme.spacing(2) }}>
               <Box style={{ display: 'flex' }}>
                 <Box style={{ flex: 1 }}>
                   {Boolean(userInformation?.bio) && <ProfileInfoRow title="Bio" content={userInformation.bio} />}
                   {Boolean(userInformation?.fullName) && <ProfileInfoRow title="Họ và tên" content={userInformation.fullName} />}
-                  {isAllowToViewValue(currentUser.data.information, userInformation, userInformation.emailPublicity) && Boolean(userInformation?.userEmail) && <ProfileInfoRow title="Email liên lạc" content={userInformation.userEmail} />}
-                  {isAllowToViewValue(currentUser.data.information, userInformation, userInformation.phonePublicity) && Boolean(userInformation?.phone) && <ProfileInfoRow title="Điện thoại" content={userInformation.phone} />}
-                  {isAllowToViewValue(currentUser.data.information, userInformation, userInformation.facebookPublicity) && Boolean(userInformation?.facebookUrl) && <ProfileInfoRow title="Facebook" content={userInformation.facebookUrl} />}
-                  {isAllowToViewValue(currentUser.data.information, userInformation, userInformation.dateOfBirthPublicity) && Boolean(userInformation?.dateOfBirth) && <ProfileInfoRow title="Ngày sinh" content={userInformation?.dateOfBirth && new Date(userInformation.dateOfBirth).toLocaleDateString('en-GB')} />}
+                  {isAllowToViewValue(currentUser.data.information, userInformation, userInformation?.emailPublicity) && Boolean(userInformation?.userEmail) && <ProfileInfoRow title="Email liên lạc" content={userInformation.userEmail} />}
+                  {isAllowToViewValue(currentUser.data.information, userInformation, userInformation?.phonePublicity) && Boolean(userInformation?.phone) && <ProfileInfoRow title="Điện thoại" content={userInformation.phone} />}
+                  {isAllowToViewValue(currentUser.data.information, userInformation, userInformation?.facebookPublicity) && Boolean(userInformation?.facebookUrl) && <ProfileInfoRow title="Facebook" content={userInformation.facebookUrl} />}
+                  {isAllowToViewValue(currentUser.data.information, userInformation, userInformation?.dateOfBirthPublicity) && Boolean(userInformation?.dateOfBirth) && <ProfileInfoRow title="Ngày sinh" content={userInformation?.dateOfBirth && new Date(userInformation.dateOfBirth).toLocaleDateString('en-GB')} />}
                   {Boolean(userInformation?.gradeName) && <ProfileInfoRow title="Khối" content={userInformation.gradeName} />}
                   {Boolean(userInformation?.className) && <ProfileInfoRow title="Lớp" content={userInformation.className} />}
                 </Box>
