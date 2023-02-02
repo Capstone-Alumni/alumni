@@ -5,8 +5,9 @@ import { Box, Button, TextField, Typography, useTheme } from '@mui/material';
 import Editor from '@share/components/editor';
 import 'quill/dist/quill.snow.css';
 import useCreateNews from '../hooks/useCreateNews';
+import { CreateNewsProps, News } from '../types';
 
-const CreateNewsForm = ({ initialData }: { initialData?: any }) => {
+const NewsForm = ({ initialData }: { initialData?: News }) => {
   const theme = useTheme();
   const [submitting, setSubmitting] = useState(false);
 
@@ -19,11 +20,11 @@ const CreateNewsForm = ({ initialData }: { initialData?: any }) => {
 
   const { createNews } = useCreateNews();
 
-  const onAddNews = async (values: any) => {
+  const onAddNews = async (values: CreateNewsProps) => {
     await createNews(values);
   };
 
-  const onSubmitHandler = async (values: any) => {
+  const onSubmitHandler = async (values: CreateNewsProps) => {
     setSubmitting(true);
     await onAddNews(values);
     setSubmitting(false);
@@ -85,4 +86,4 @@ const CreateNewsForm = ({ initialData }: { initialData?: any }) => {
   );
 };
 
-export default CreateNewsForm;
+export default NewsForm;

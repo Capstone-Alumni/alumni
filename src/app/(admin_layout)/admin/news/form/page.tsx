@@ -1,8 +1,7 @@
 'use client';
 
-import { noop } from 'lodash';
-import CreateNewsForm from 'src/modules/news/components/CreateNewsForm';
+import NewsForm from 'src/modules/news/components/NewsForm';
 
 export default function Page() {
-  return <CreateNewsForm />;
+  return <NewsForm />;
 }
