@@ -7,9 +7,8 @@ export const isAllowToViewValue = (currentUserInfomation: Information, profileIn
 
     if (permissionToSee === "GRADE") {
         return currentUserInfomation.gradeName === profileInfomation.gradeName
-    } else {
+    } else if (permissionToSee === "CLASS") {
         return currentUserInfomation.className === profileInfomation.className
     }
-
     return false;
 }
