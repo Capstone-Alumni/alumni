@@ -11,8 +11,9 @@ import PersonIcon from '@mui/icons-material/Person';
 // @types
 import { orange } from "@mui/material/colors";
 import ProfileInfoRow from "./InfoRow";
-import { useSession } from "next-auth/react";
 import { isAllowToViewValue } from "src/utils/mappingPublicity";
+import { useAppSelector } from "src/redux/hooks";
+import { RootState } from "src/redux/store";
 
 // ----------------------------------------------------------------------
 
@@ -31,7 +32,7 @@ type ProfileAboutProps = {
 
 const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
   const theme = useTheme();
-  const session = useSession();
+  const currentUser = useAppSelector((state: RootState) => state.currentUser);
 
   return (
     <Grid container spacing={3}>
@@ -46,15 +47,15 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
             </Box>
           </Stack>
           <div>
-            {session.data?.user && <Box style={{ paddingLeft: theme.spacing(2) }}>
+            {currentUser.data.information && <Box style={{ paddingLeft: theme.spacing(2) }}>
               <Box style={{ display: 'flex' }}>
                 <Box style={{ flex: 1 }}>
                   {Boolean(userInformation?.bio) && <ProfileInfoRow title="Bio" content={userInformation.bio} />}
                   {Boolean(userInformation?.fullName) && <ProfileInfoRow title="Họ và tên" content={userInformation.fullName} />}
-                  {isAllowToViewValue(session.data.user.accessLevel, userInformation.emailPublicity) && Boolean(userInformation?.userEmail) && <ProfileInfoRow title="Email liên lạc" content={userInformation.userEmail} />}
-                  {isAllowToViewValue(session.data.user.accessLevel, userInformation.phonePublicity) && Boolean(userInformation?.phone) && <ProfileInfoRow title="Điện thoại" content={userInformation.phone} />}
-                  {isAllowToViewValue(session.data.user.accessLevel, userInformation.facebookPublicity) && Boolean(userInformation?.facebookUrl) && <ProfileInfoRow title="Facebook" content={userInformation.facebookUrl} />}
-                  {isAllowToViewValue(session.data.user.accessLevel, userInformation.dateOfBirthPublicity) && Boolean(userInformation?.dateOfBirth) && <ProfileInfoRow title="Ngày sinh" content={userInformation?.dateOfBirth && new Date(userInformation.dateOfBirth).toLocaleDateString('en-GB')} />}
+                  {isAllowToViewValue(currentUser.data.information, userInformation, userInformation.emailPublicity) && Boolean(userInformation?.userEmail) && <ProfileInfoRow title="Email liên lạc" content={userInformation.userEmail} />}
+                  {isAllowToViewValue(currentUser.data.information, userInformation, userInformation.phonePublicity) && Boolean(userInformation?.phone) && <ProfileInfoRow title="Điện thoại" content={userInformation.phone} />}
+                  {isAllowToViewValue(currentUser.data.information, userInformation, userInformation.facebookPublicity) && Boolean(userInformation?.facebookUrl) && <ProfileInfoRow title="Facebook" content={userInformation.facebookUrl} />}
+                  {isAllowToViewValue(currentUser.data.information, userInformation, userInformation.dateOfBirthPublicity) && Boolean(userInformation?.dateOfBirth) && <ProfileInfoRow title="Ngày sinh" content={userInformation?.dateOfBirth && new Date(userInformation.dateOfBirth).toLocaleDateString('en-GB')} />}
                   {Boolean(userInformation?.gradeName) && <ProfileInfoRow title="Khối" content={userInformation.gradeName} />}
                   {Boolean(userInformation?.className) && <ProfileInfoRow title="Lớp" content={userInformation.className} />}
                 </Box>

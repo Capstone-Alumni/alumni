@@ -7,7 +7,7 @@ import { dispatch } from '../store';
 const initialState: any = {
   isLoading: false,
   error: false,
-  currentUser: {}
+  data: {}
 };
 
 const slice = createSlice({
@@ -27,7 +27,7 @@ const slice = createSlice({
 
     setCurrentUser(state, action) {
       state.isLoading = false;
-      state.currentUser = action.payload;
+      state.data = action.payload;
     }
   }
 });
