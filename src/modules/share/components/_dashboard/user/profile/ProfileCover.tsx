@@ -53,18 +53,13 @@ const CoverImgStyle = styled('img')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 type ProfileCoverProps = {
-  myProfile: Profile;
+  userProfileId: string;
 };
 
-export default function ProfileCover({ myProfile }: ProfileCoverProps) {
-  const pathname = usePathname();
-  const userProfileId = pathname?.slice(pathname?.lastIndexOf("/") + 1);
-
+export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
   const { data } = useGetUserInformationQuery(userProfileId);
 
   const [updateUserInformation] = useUpdateUserInformationMutation();
-
-  const { position, cover } = myProfile;
 
   const handleDrop = async (acceptedFiles: any, type: string) => {
     const { uploadAvatar } = setStorage();
@@ -91,7 +86,7 @@ export default function ProfileCover({ myProfile }: ProfileCoverProps) {
       {data && <>
         <InfoStyle>
           <UploadAvatar
-            file={data?.data?.information.avatarUrl}
+            file={data?.data?.information?.avatarUrl}
             maxSize={3145728}
             onDrop={(e) => handleDrop(e, 'avatar')}
           />
@@ -104,14 +99,13 @@ export default function ProfileCover({ myProfile }: ProfileCoverProps) {
             }}
           >
             <Typography variant="h4">Gia An</Typography>
-            <Typography sx={{ opacity: 0.72 }}>{position}</Typography>
           </Box>
         </InfoStyle>
       </>
       }
       <label htmlFor="uploadWallpaper">
         <div>
-          <CoverImgStyle alt="profile cover" src={data?.data?.information.coverImageUrl} />
+          <CoverImgStyle alt="profile cover" src={data?.data?.information?.coverImageUrl} />
         </div>
         <RootStyle>
           <input

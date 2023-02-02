@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 import dayjs, { Dayjs } from 'dayjs';
 
@@ -14,7 +14,9 @@ import {
   Switch,
   TextField,
   Typography,
+  IconButton
 } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
@@ -25,6 +27,8 @@ import { LoadingButton } from '@mui/lab';
 import { UserInformation } from '../../../../type';
 import { useUpdateUserInformationMutation } from 'src/redux/slices/userProfileSlice';
 import axiosInstance from 'src/utils/axios';
+import FormDialogs from '@share/components/material-ui/dialog/FormDialogs';
+import { Information } from '@prisma/client';
 
 // ----------------------------------------------------------------------
 
@@ -42,11 +46,11 @@ const gradesMock = [
   { gradeCode: 'cldl9rf640001zn7v52plsvt9', gradeName: '12' },
 ];
 
-type UserNewFormProps = {
-  currentUser?: UserInformation;
+type UserInfoProps = {
+  userInformation?: Information;
 };
 
-export default function EditUserInformation({ currentUser }: UserNewFormProps) {
+const UserInfo = ({ userInformation }: UserInfoProps) => {
   const [updateUserInformation] = useUpdateUserInformationMutation();
 
   const [classes, setClasses] = useState([]);
@@ -58,6 +62,7 @@ export default function EditUserInformation({ currentUser }: UserNewFormProps) {
   const NewUserSchema = Yup.object().shape({
     bio: Yup.string(),
     userEmail: Yup.string(),
+    fullName: Yup.string(),
     class: Yup.object().shape({
       className: Yup.string().nullable(),
     }).nullable(),
@@ -71,18 +76,19 @@ export default function EditUserInformation({ currentUser }: UserNewFormProps) {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      userId: currentUser?.userId || '',
-      bio: currentUser?.bio || '',
-      userEmail: currentUser?.userEmail || '',
+      userId: userInformation?.userId || '',
+      bio: userInformation?.bio || '',
+      fullName: userInformation?.fullName || '',
+      userEmail: userInformation?.userEmail || '',
       class: {
-        className: currentUser?.className || null
+        className: userInformation?.className || null
       },
       grade: {
-        gradeName: currentUser?.gradeName || null,
-        gradeCode: currentUser?.gradeCode || null,
+        gradeName: userInformation?.gradeName || null,
+        gradeCode: userInformation?.gradeCode || null,
       },
-      phone: currentUser?.phone || '',
-      dateOfBirth: currentUser?.dateOfBirth || null
+      phone: userInformation?.phone || '',
+      dateOfBirth: userInformation?.dateOfBirth || null
     },
     validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
@@ -161,8 +167,13 @@ export default function EditUserInformation({ currentUser }: UserNewFormProps) {
         <Grid container spacing={3}>
           <Grid item xs={12} md={12}>
             <Card sx={{ p: 3 }}>
-              <Stack sx={{ marginBottom: '1.5rem' }}>
-                <Typography variant="h5">Your information(s)</Typography>
+              <Stack sx={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row' }}>
+                <Typography variant="h5">Thông tin cơ bản</Typography>
+                {userInformation && <FormDialogs editType='visibility' userInformation={userInformation}>
+                  <IconButton aria-label="edit-publicity">
+                    <VisibilityIcon />
+                  </IconButton>
+                </FormDialogs>}
               </Stack>
               <Stack spacing={3}>
                 <Stack
@@ -184,9 +195,16 @@ export default function EditUserInformation({ currentUser }: UserNewFormProps) {
                   direction={{ xs: 'column', sm: 'row' }}
                   spacing={{ xs: 3, sm: 2 }}
                 >
+                   <TextField
+                    fullWidth
+                    label="Họ và tên"
+                    {...getFieldProps('fullName')}
+                    error={Boolean(touched.fullName && errors.fullName)}
+                    helperText={touched.fullName && errors.fullName}
+                  />
                   <TextField
                     fullWidth
-                    label="Email Address"
+                    label="Địa chỉ Email"
                     {...getFieldProps('userEmail')}
                     error={Boolean(touched.userEmail && errors.userEmail)}
                     helperText={touched.userEmail && errors.userEmail}
@@ -213,10 +231,10 @@ export default function EditUserInformation({ currentUser }: UserNewFormProps) {
                     }}
                     defaultValue={values.grade}
                     renderInput={params => (
-                      <TextField {...params} label="Grade" name="gradeName" />
+                      <TextField {...params} label="Khối" name="gradeName" />
                     )}
                   />
-                 {values.grade?.gradeCode &&  <Autocomplete
+                  {values.grade?.gradeCode && <Autocomplete
                     disabled={!Boolean(values.grade?.gradeCode)}
                     fullWidth
                     id="combo-box-demo"
@@ -233,7 +251,7 @@ export default function EditUserInformation({ currentUser }: UserNewFormProps) {
                     }}
                     defaultValue={values.class}
                     renderInput={params => (
-                      <TextField {...params} label="Class" name="className" />
+                      <TextField {...params} label="Lớp" name="className" />
                     )}
                   />}
                 </Stack></>
@@ -245,7 +263,7 @@ export default function EditUserInformation({ currentUser }: UserNewFormProps) {
                 >
                   <TextField
                     fullWidth
-                    label="Phone Number"
+                    label="Số điện thoại"
                     {...getFieldProps('phone')}
                     error={Boolean(touched.phone && errors.phone)}
                     helperText={touched.phone && errors.phone}
@@ -254,11 +272,11 @@ export default function EditUserInformation({ currentUser }: UserNewFormProps) {
                     <DatePicker
                       onChange={(value) => setFieldValue("dateOfBirth", value, true)}
                       value={values.dateOfBirth}
+                      label="Ngày sinh"
                       renderInput={(params) => (
                         <TextField
                           error={Boolean(touched.dateOfBirth && errors.dateOfBirth)}
                           helperText={touched.dateOfBirth && errors.dateOfBirth}
-                          label="Date of Birth"
                           margin="normal"
                           name="birthday"
                           fullWidth
@@ -289,3 +307,4 @@ export default function EditUserInformation({ currentUser }: UserNewFormProps) {
     </FormikProvider>
   );
 }
+export default UserInfo;
