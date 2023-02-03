@@ -14,11 +14,14 @@ import {
   Switch,
   TextField,
   Typography,
-  IconButton
+  IconButton,
+  useTheme
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import PersonIcon from '@mui/icons-material/Person';
+import orange from '@mui/material/colors/orange';
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
@@ -51,6 +54,7 @@ type UserInfoProps = {
 };
 
 const UserInfo = ({ userInformation }: UserInfoProps) => {
+  const theme = useTheme();
   const [updateUserInformation] = useUpdateUserInformationMutation();
 
   const [classes, setClasses] = useState([]);
@@ -90,8 +94,8 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
     validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        const {class: _, grade, ...data} = values;
-        await updateUserInformation({...data, gradeCode: grade.gradeCode, gradeName: grade.gradeName, className: _.className});
+        const { class: _, grade, ...data } = values;
+        await updateUserInformation({ ...data, gradeCode: grade.gradeCode, gradeName: grade.gradeName, className: _.className });
         // TODO: Call API to submit the form
         // await fakeRequest(500);
         setSubmitting(false);
@@ -158,149 +162,156 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
   }
 
   return (
-    <FormikProvider value={formik}>
-      <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={12}>
-            <Card sx={{ p: 3 }}>
-              <Stack sx={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row' }}>
-                <Typography variant="h5">Thông tin cơ bản</Typography>
-                {userInformation && <FormDialogs editType='visibility' userInformation={userInformation}>
-                  <IconButton aria-label="edit-publicity">
-                    <VisibilityIcon />
-                  </IconButton>
-                </FormDialogs>}
-              </Stack>
-              <Stack spacing={3}>
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  spacing={{ xs: 3, sm: 2 }}
-                >
-                  <TextField
-                    multiline
-                    maxRows={4}
-                    rows={2}
-                    fullWidth
-                    label="Bio"
-                    {...getFieldProps('bio')}
-                    error={Boolean(touched.bio && errors.bio)}
-                    helperText={touched.bio && errors.bio}
-                  />
-                </Stack>
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  spacing={{ xs: 3, sm: 2 }}
-                >
-                  <TextField
-                    fullWidth
-                    label="Họ và tên"
-                    {...getFieldProps('fullName')}
-                    error={Boolean(touched.fullName && errors.fullName)}
-                    helperText={touched.fullName && errors.fullName}
-                  />
-                  <TextField
-                    fullWidth
-                    label="Địa chỉ Email"
-                    {...getFieldProps('userEmail')}
-                    error={Boolean(touched.userEmail && errors.userEmail)}
-                    helperText={touched.userEmail && errors.userEmail}
-                  />
-                </Stack>
+    <Grid container spacing={3}>
+      <Grid item xs={12} md={12}>
+        <FormikProvider value={formik}>
+          <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={12}>
+                <Card sx={{ p: 3 }}>
+                  <Stack sx={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row' }}>
+                    <Typography variant="h5" style={{ display: 'flex', fontWeight: 'bold', alignItems: 'center' }}>
+                      <PersonIcon fontSize="large" style={{ color: theme.palette.primary.main, marginRight: theme.spacing(1) }} />
+                      Thông tin cơ bản
+                    </Typography>
+                    {userInformation && <FormDialogs editType='visibility' userInformation={userInformation}>
+                      <IconButton aria-label="edit-publicity">
+                        <VisibilityIcon />
+                      </IconButton>
+                    </FormDialogs>}
+                  </Stack>
+                  <Stack spacing={3}>
+                    <Stack
+                      direction={{ xs: 'column', sm: 'row' }}
+                      spacing={{ xs: 3, sm: 2 }}
+                    >
+                      <TextField
+                        multiline
+                        maxRows={4}
+                        rows={2}
+                        fullWidth
+                        label="Bio"
+                        {...getFieldProps('bio')}
+                        error={Boolean(touched.bio && errors.bio)}
+                        helperText={touched.bio && errors.bio}
+                      />
+                    </Stack>
+                    <Stack
+                      direction={{ xs: 'column', sm: 'row' }}
+                      spacing={{ xs: 3, sm: 2 }}
+                    >
+                      <TextField
+                        fullWidth
+                        label="Họ và tên"
+                        {...getFieldProps('fullName')}
+                        error={Boolean(touched.fullName && errors.fullName)}
+                        helperText={touched.fullName && errors.fullName}
+                      />
+                      <TextField
+                        fullWidth
+                        label="Địa chỉ Email"
+                        {...getFieldProps('userEmail')}
+                        error={Boolean(touched.userEmail && errors.userEmail)}
+                        helperText={touched.userEmail && errors.userEmail}
+                      />
+                    </Stack>
 
-                {grades && <> <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  spacing={{ xs: 3, sm: 2 }}
-                >
-                  <Autocomplete
-                    fullWidth
-                    id="combo-box-demo"
-                    {...getFieldProps('gradeName')}
-                    options={grades}
-                    getOptionLabel={option => option.gradeName || ""}
-                    onChange={(_, value) => {
-                      if (!value) {
-                        setFieldValue("grade", { gradeName: null, gradeCode: null })
-                        setFieldValue("class", { className: null });
-                        return;
-                      }
-                      setFieldValue("grade", value)
-                    }}
-                    defaultValue={values.grade}
-                    renderInput={params => (
-                      <TextField {...params} label="Khối" name="gradeName" />
-                    )}
-                  />
-                  {values.grade?.gradeCode && <Autocomplete
-                    disabled={!Boolean(values.grade?.gradeCode)}
-                    fullWidth
-                    id="combo-box-demo"
-                    {...getFieldProps('className')}
-                    options={classes}
-                    getOptionLabel={option => option.className || ""}
-                    onChange={(_, value) => {
-                      console.log(value);
-                      if (!value) {
-                        setFieldValue("class", { className: null });
-                        return;
-                      }
-                      setFieldValue("class", value)
-                    }}
-                    defaultValue={values.class}
-                    renderInput={params => (
-                      <TextField {...params} label="Lớp" name="className" />
-                    )}
-                  />}
-                </Stack></>
-                }
+                    {grades && <> <Stack
+                      direction={{ xs: 'column', sm: 'row' }}
+                      spacing={{ xs: 3, sm: 2 }}
+                    >
+                      <Autocomplete
+                        fullWidth
+                        id="combo-box-demo"
+                        {...getFieldProps('gradeName')}
+                        options={grades}
+                        getOptionLabel={option => option.gradeName || ""}
+                        onChange={(_, value) => {
+                          if (!value) {
+                            setFieldValue("grade", { gradeName: null, gradeCode: null })
+                            setFieldValue("class", { className: null });
+                            return;
+                          }
+                          setFieldValue("grade", value)
+                        }}
+                        defaultValue={values.grade}
+                        renderInput={params => (
+                          <TextField {...params} label="Khối" name="gradeName" />
+                        )}
+                      />
+                      {values.grade?.gradeCode && <Autocomplete
+                        disabled={!Boolean(values.grade?.gradeCode)}
+                        fullWidth
+                        id="combo-box-demo"
+                        {...getFieldProps('className')}
+                        options={classes}
+                        getOptionLabel={option => option.className || ""}
+                        onChange={(_, value) => {
+                          console.log(value);
+                          if (!value) {
+                            setFieldValue("class", { className: null });
+                            return;
+                          }
+                          setFieldValue("class", value)
+                        }}
+                        defaultValue={values.class}
+                        renderInput={params => (
+                          <TextField {...params} label="Lớp" name="className" />
+                        )}
+                      />}
+                    </Stack></>
+                    }
 
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  spacing={{ xs: 3, sm: 2 }}
-                >
-                  <TextField
-                    fullWidth
-                    label="Số điện thoại"
-                    {...getFieldProps('phone')}
-                    error={Boolean(touched.phone && errors.phone)}
-                    helperText={touched.phone && errors.phone}
-                  />
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      onChange={(value) => setFieldValue("dateOfBirth", value, true)}
-                      value={values.dateOfBirth}
-                      label="Ngày sinh"
-                      renderInput={(params) => (
-                        <TextField
-                          error={Boolean(touched.dateOfBirth && errors.dateOfBirth)}
-                          helperText={touched.dateOfBirth && errors.dateOfBirth}
-                          margin="normal"
-                          name="birthday"
-                          fullWidth
-                          {...params}
+                    <Stack
+                      direction={{ xs: 'column', sm: 'row' }}
+                      spacing={{ xs: 3, sm: 2 }}
+                    >
+                      <TextField
+                        fullWidth
+                        label="Số điện thoại"
+                        {...getFieldProps('phone')}
+                        error={Boolean(touched.phone && errors.phone)}
+                        helperText={touched.phone && errors.phone}
+                      />
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          onChange={(value) => setFieldValue("dateOfBirth", value, true)}
+                          value={values.dateOfBirth}
+                          label="Ngày sinh"
+                          renderInput={(params) => (
+                            <TextField
+                              error={Boolean(touched.dateOfBirth && errors.dateOfBirth)}
+                              helperText={touched.dateOfBirth && errors.dateOfBirth}
+                              margin="normal"
+                              name="birthday"
+                              fullWidth
+                              {...params}
+                            />
+                          )}
                         />
-                      )}
-                    />
-                  </LocalizationProvider>
-                </Stack>
-              </Stack>
-              <Stack spacing={3}>
-                <Box
-                  sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}
-                >
-                  <LoadingButton
-                    type="submit"
-                    variant="contained"
-                    loading={isSubmitting}
-                  >
-                    Lưu
-                  </LoadingButton>
-                </Box>
-              </Stack>
-            </Card>
-          </Grid>
-        </Grid>
-      </Form>
-    </FormikProvider>
+                      </LocalizationProvider>
+                    </Stack>
+                  </Stack>
+                  <Stack spacing={3}>
+                    <Box
+                      sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}
+                    >
+                      <LoadingButton
+                        type="submit"
+                        variant="contained"
+                        loading={isSubmitting}
+                      >
+                        Lưu
+                      </LoadingButton>
+                    </Box>
+                  </Stack>
+                </Card>
+              </Grid>
+            </Grid>
+          </Form>
+        </FormikProvider>
+      </Grid>
+    </Grid>
   );
 }
 export default UserInfo;

@@ -41,7 +41,7 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
           <Stack sx={{ margin: '1rem 0 0.5rem 0' }}>
             <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: theme.spacing(2) }}>
               <Typography variant="h5" style={{ display: 'flex', fontWeight: 'bold', alignItems: 'center' }}>
-                <PersonIcon fontSize="large" style={{ color: orange[900], marginRight: theme.spacing(1) }} />
+                <PersonIcon fontSize="large" style={{ color: theme.palette.primary.main, marginRight: theme.spacing(1) }} />
                 Thông tin liên hệ
               </Typography>
             </Box>

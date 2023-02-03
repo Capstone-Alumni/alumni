@@ -2,15 +2,13 @@ import { Box, Divider, IconButton, Typography, Grid, Card, Stack, useTheme } fro
 import React, { useState } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ProfileInfoRow from './InfoRow';
-import orange from '@mui/material/colors/orange';
+import orange from '@mui/material/colors/purple';
 
-import WorkIcon from '@mui/icons-material/Work';
+import SchoolIcon from '@mui/icons-material/School';
 import EducationForm from './EducationForm';
 import { useDispatch, useSelector } from 'react-redux';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useEffect } from 'react';
-import { F } from 'lodash/fp';
 import { useUpdateUserEducationsMutation } from 'src/redux/slices/userProfileSlice';
 
 const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
@@ -60,7 +58,7 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
           <Stack sx={{ margin: '1rem 0 0.5rem 0' }}>
             <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: theme.spacing(2) }}>
               <Typography variant="h5" style={{ display: 'flex', fontWeight: 'bold', alignItems: 'center' }}>
-                <WorkIcon fontSize="large" style={{ color: orange[900], marginRight: theme.spacing(1) }} />
+                <SchoolIcon fontSize="large" style={{ color: theme.palette.primary.main, marginRight: theme.spacing(1) }} />
                 Học vấn
               </Typography>
               {
@@ -129,7 +127,7 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
                     ))
                   )
                   : (
-                    <Typography>Không có công việc</Typography>
+                    <Typography>Không có thông tin</Typography>
                   )
               }
 

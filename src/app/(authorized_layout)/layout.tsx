@@ -3,7 +3,7 @@ import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
 import Header from '@share/components/layout/Header';
 import Body from '@share/components/layout/Body';
 import Footer from '@share/components/layout/Footer';
-import { redirect,  } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 export default async function AuthorizedLayout({
   children,

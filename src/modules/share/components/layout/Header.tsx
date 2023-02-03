@@ -14,7 +14,7 @@ import Link from 'next/link';
 const Header = ({ user }: { user?: any }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             size="large"

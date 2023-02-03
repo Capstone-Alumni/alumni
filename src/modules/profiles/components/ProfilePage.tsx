@@ -61,17 +61,9 @@ const UserProfile = () => {
         {
             value: 'profile',
             icon: <Icon icon={roundAccountBox} width={20} height={20} />,
-            component: <Profile userInformation={userInformationResponse} userCareers={userCareersResponse} userEducations={userEducationsResponse}/>
+            component: <Profile userProfileId={userProfileId} userInformation={userInformationResponse} userCareers={userCareersResponse} userEducations={userEducationsResponse}/>
         }
     ];
-
-    if (session.data?.user.id === userProfileId) {
-        PROFILE_TABS.push({
-            value: 'edit',
-            icon: <Icon icon={roundPermMedia} width={20} height={20} />,
-            component: <UserEditWrapper userProfileId={userProfileId} userInformation={userInformationResponse} userCareers={userCareersResponse} userEducations={userEducationsResponse} />
-        })
-    }
 
     return (
         userProfileId && <Container maxWidth={'lg'}>
