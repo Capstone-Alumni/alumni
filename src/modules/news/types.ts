@@ -8,6 +8,7 @@ export type News = {
   createdAt: Date;
   updatedAt: Date;
   archived: boolean;
+  newsCategories?: string[];
 };
 
 export type GetNewsListDataParams = {
