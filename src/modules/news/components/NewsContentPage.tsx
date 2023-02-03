@@ -1,3 +1,4 @@
+'use client';
 import { Box, Chip, Typography } from '@mui/material';
 import parse from 'html-react-parser';
 import CreateIcon from '@mui/icons-material/Create';

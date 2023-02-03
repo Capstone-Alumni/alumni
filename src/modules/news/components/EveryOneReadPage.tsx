@@ -1,3 +1,4 @@
+'use client';
 import { Box, Card, Link, Typography } from '@mui/material';
 import data from '../__mockData__/getNewsListForSchoolAdmin';
 
