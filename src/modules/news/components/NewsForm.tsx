@@ -4,16 +4,10 @@ import { Controller, useForm } from 'react-hook-form';
 import { Box, Button, TextField, Typography, useTheme } from '@mui/material';
 import Editor from '@share/components/editor';
 import 'quill/dist/quill.snow.css';
+import useCreateNews from '../hooks/useCreateNews';
+import { CreateNewsProps, News } from '../types';
 
-const CreateNewsForm = ({
-  initialData,
-  onSubmit,
-  onClose,
-}: {
-  initialData?: any;
-  onClose?: () => void;
-  onSubmit: (values: any) => void;
-}) => {
+const NewsForm = ({ initialData }: { initialData?: News }) => {
   const theme = useTheme();
   const [submitting, setSubmitting] = useState(false);
 
@@ -24,11 +18,16 @@ const CreateNewsForm = ({
     },
   });
 
-  const onSubmitHandler = async (values: any) => {
+  const { createNews } = useCreateNews();
+
+  const onAddNews = async (values: CreateNewsProps) => {
+    await createNews(values);
+  };
+
+  const onSubmitHandler = async (values: CreateNewsProps) => {
     setSubmitting(true);
-    await onSubmit(values);
+    await onAddNews(values);
     setSubmitting(false);
-    onClose?.();
   };
 
   return (
@@ -65,6 +64,10 @@ const CreateNewsForm = ({
         render={({ field: { value, onChange } }) => (
           <Editor
             id="content"
+            sx={{
+              height: 500,
+              overflow: 'auto',
+            }}
             placeholder={'Nội dung'}
             value={value}
             onChange={onChange}
@@ -80,11 +83,6 @@ const CreateNewsForm = ({
           gap: theme.spacing(2),
         }}
       >
-        {onClose ? (
-          <Button variant="outlined" disabled={submitting} onClick={onClose}>
-            Huỷ
-          </Button>
-        ) : null}
         <Button
           variant="contained"
           disabled={submitting}
@@ -97,4 +95,4 @@ const CreateNewsForm = ({
   );
 };
 
-export default CreateNewsForm;
+export default NewsForm;
