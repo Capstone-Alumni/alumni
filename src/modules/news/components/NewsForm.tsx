@@ -5,11 +5,14 @@ import { Box, Button, TextField, Typography, useTheme } from '@mui/material';
 import Editor from '@share/components/editor';
 import 'quill/dist/quill.snow.css';
 import useCreateNews from '../hooks/useCreateNews';
-import { CreateNewsProps, News } from '../types';
+import useUpdateNews from '../hooks/useUpdateNews';
+import { CreateNewsProps, News, UpdateNewsProps } from '../types';
+import { useRouter } from 'next/navigation';
 
 const NewsForm = ({ initialData }: { initialData?: News }) => {
   const theme = useTheme();
   const [submitting, setSubmitting] = useState(false);
+  const router = useRouter();
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -19,14 +22,29 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
   });
 
   const { createNews } = useCreateNews();
+  const { updateNews } = useUpdateNews();
 
   const onAddNews = async (values: CreateNewsProps) => {
     await createNews(values);
   };
 
-  const onSubmitHandler = async (values: CreateNewsProps) => {
+  const onUpdateNews = async (newsId: string, data: UpdateNewsProps) => {
+    const updateNewsParams = {
+      newsId,
+      ...data,
+    };
+    await updateNews(updateNewsParams);
+  };
+
+  const handleCancel = () => {
+    initialData ? window.location.reload() : router.replace('/admin/news');
+  };
+
+  const onSubmitHandler = async (values: CreateNewsProps | UpdateNewsProps) => {
     setSubmitting(true);
-    await onAddNews(values);
+    initialData
+      ? await onUpdateNews(initialData.id, values)
+      : await onAddNews(values as CreateNewsProps);
     setSubmitting(false);
   };
 
@@ -83,6 +101,14 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
           gap: theme.spacing(2),
         }}
       >
+        <Button
+          variant="contained"
+          color="error"
+          disabled={submitting}
+          onClick={handleCancel}
+        >
+          Hủy
+        </Button>
         <Button
           variant="contained"
           disabled={submitting}

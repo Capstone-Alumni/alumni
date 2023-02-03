@@ -17,7 +17,16 @@ export const newsSliceApi = createApi({
         method: 'GET',
       }),
     }),
+    getNewsByIdForSchoolAdmin: builer.query({
+      query: (newsId: string) => ({
+        url: `api/news/${newsId}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useGetNewsForSchoolAdminQuery } = newsSliceApi;
+export const {
+  useGetNewsForSchoolAdminQuery,
+  useGetNewsByIdForSchoolAdminQuery,
+} = newsSliceApi;
