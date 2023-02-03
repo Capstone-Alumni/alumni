@@ -77,6 +77,9 @@ const PublicNewsDetails = ({ data }: { data: any }) => {
         sx={{
           lineHeight: 1.8,
           marginBottom: 4,
+          img: {
+            height: 'auto',
+          },
         }}
       >
         {parse(data.content)}
