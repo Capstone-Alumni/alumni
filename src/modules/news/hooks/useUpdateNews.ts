@@ -1,11 +1,10 @@
 import useApi from 'src/modules/share/hooks/useApi';
-import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
 
 type UpdateNewsParams = {
   newsId: string;
   title?: string;
   content?: string;
+  isPublic?: boolean;
 };
 
 type UpdateNewsSuccessResponse = {
@@ -29,24 +28,23 @@ type UpdateNewsError = {
 type UpdateNewsResponse = UpdateNewsSuccessResponse | UpdateNewsSuccessResponse;
 
 const useUpdateNews = () => {
-  const router = useRouter();
   const { fetchApi, isLoading } = useApi<
     UpdateNewsParams,
     UpdateNewsResponse,
     UpdateNewsError
   >(
     'updateNews',
-    ({ newsId, title, content }) => ({
+    ({ newsId, title, content, isPublic }) => ({
       method: 'PUT',
       url: `/api/news/${newsId}`,
       data: {
         title,
         content,
+        isPublic,
       },
     }),
     {
       onSuccess: () => {
-        toast.success('Đăng tin thành công');
         window.location.reload();
       },
     },

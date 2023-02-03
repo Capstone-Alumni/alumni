@@ -1,11 +1,27 @@
 'use client';
 
-import { Box, Card, CardContent, Chip, Link, Typography } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  Chip,
+  Link,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import ReactHtmlParser from 'html-react-parser';
+import Switch from '@mui/material/Switch';
+import { News } from '../types';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import useUpdateNews from '../hooks/useUpdateNews';
 
-const AdminNewsCardItem = ({ item }: { item: any }) => {
+const AdminNewsCardItem = ({ item }: { item: News }) => {
   const content = ReactHtmlParser(item.content);
+  const { updateNews } = useUpdateNews();
+  const handlePublicNews = async () => {
+    await updateNews({ newsId: item.id, isPublic: !item.isPublic });
+  };
   return (
     <Card
       sx={{
@@ -27,7 +43,22 @@ const AdminNewsCardItem = ({ item }: { item: any }) => {
             display: 'flex',
           }}
         >
-          <Typography variant="h5">{item.title}</Typography>
+          <Link
+            sx={{
+              textDecoration: 'none',
+            }}
+            href={`/admin/news/${item.id}`}
+          >
+            <Typography
+              variant="h5"
+              sx={{
+                cursor: 'pointer',
+                color: '#000000',
+              }}
+            >
+              {item.title}
+            </Typography>
+          </Link>
           {item.newsCategories
             ? item.newsCategories.map((category: any) => (
                 <Chip
@@ -69,13 +100,13 @@ const AdminNewsCardItem = ({ item }: { item: any }) => {
         >
           {content}
         </Box>
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'flex',
             alignItems: 'center',
             flexWrap: 'wrap',
-            gap: '8px',
-            marginTop: '24px',
+            gap: 1,
+            marginTop: 3,
           }}
         >
           <AccessTimeIcon color="disabled" />
@@ -89,7 +120,26 @@ const AdminNewsCardItem = ({ item }: { item: any }) => {
           >
             Ngày đăng: {new Date(item.createdAt).toDateString()}
           </Typography>
-        </div>
+          <Box
+            sx={{
+              display: 'flex',
+              marginLeft: 'auto',
+            }}
+          >
+            <Tooltip title="Công khai tin này cho mọi người.">
+              <Switch checked={item.isPublic} onChange={handlePublicNews} />
+            </Tooltip>
+            <Tooltip title="Xóa tin này!">
+              <DeleteOutlineIcon
+                sx={{
+                  margin: 'auto',
+                  marginLeft: 4,
+                }}
+                color="error"
+              />
+            </Tooltip>
+          </Box>
+        </Box>
       </CardContent>
     </Card>
   );
