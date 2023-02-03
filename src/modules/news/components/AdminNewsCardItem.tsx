@@ -28,15 +28,17 @@ const AdminNewsCardItem = ({ item }: { item: any }) => {
           }}
         >
           <Typography variant="h5">{item.title}</Typography>
-          {item.newsCategories.map((category: any) => (
-            <Chip
-              key={item.id}
-              sx={{
-                ml: 1,
-              }}
-              label={category}
-            />
-          ))}
+          {item.newsCategories
+            ? item.newsCategories.map((category: any) => (
+                <Chip
+                  key={item.id}
+                  sx={{
+                    ml: 1,
+                  }}
+                  label={category}
+                />
+              ))
+            : null}
 
           <Link
             sx={{

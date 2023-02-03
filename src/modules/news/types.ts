@@ -10,6 +10,19 @@ export type News = {
   archived: boolean;
 };
 
+export type GetNewsListDataParams = {
+  page?: number;
+  limit?: number;
+  title?: string;
+  content?: string;
+};
+
+export type GetNewsListData = {
+  items: News[];
+  totalItems: number;
+  itemPerPage: number;
+};
+
 /** ========================== BE ================================= */
 
 export type CreateNewsProps = {
