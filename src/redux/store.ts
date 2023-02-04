@@ -3,6 +3,7 @@ import counterReducer from './slices/counterSlice';
 import currentTenantReducer from './slices/currentTenantSlice';
 import { userProfileApi } from './slices/userProfileSlice'
 import currentUser from './slices/currentUserSlice'
+import { newsSliceApi } from './slices/newsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,8 @@ export const store = configureStore({
     currentTenant: currentTenantReducer,
     currentUser,
     [userProfileApi.reducerPath]: userProfileApi.reducer,
+    [newsSliceApi.reducerPath]: newsSliceApi.reducer,
+
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
