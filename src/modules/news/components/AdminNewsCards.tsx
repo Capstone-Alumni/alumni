@@ -20,9 +20,15 @@ const AdminNewsCards = ({
         flexDirection: 'column',
       }}
     >
-      {data.items.map((item: News) => (
-        <AdminNewsCardItem item={item} key={item.id} />
-      ))}
+      <Box
+        sx={{
+          height: '90vh',
+        }}
+      >
+        {data.items.map((item: News) => (
+          <AdminNewsCardItem item={item} key={item.id} />
+        ))}
+      </Box>
       <Pagination
         sx={{
           margin: 'auto',
