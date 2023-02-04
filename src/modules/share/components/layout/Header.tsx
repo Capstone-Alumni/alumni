@@ -8,33 +8,58 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link';
+import Logo from '../Logo';
+import { Divider, useTheme } from '@mui/material';
+import SearchInput from '../SearchInput';
+import { NavItem } from './NavItem';
+import MyAvatar from '../MyAvatar';
+import HeaderUserOptions from './HeaderUserOption';
 
-const Header = ({ user }: { user?: any }) => {
+const Header = ({ user, tenant }: { user?: any; tenant?: any }) => {
+  const theme = useTheme();
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" color="default">
         <Toolbar>
           <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2 }}
           >
-            <MenuIcon />
+            <Logo />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+          <Typography variant="h6" component="div">
+            {tenant?.name}
           </Typography>
+
+          <Divider
+            orientation="vertical"
+            flexItem
+            sx={{ marginX: theme.spacing(2) }}
+          />
+
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              gap: theme.spacing(2),
+            }}
+          >
+            <NavItem label="Tin tức" href="/news" />
+            <NavItem label="Sự kiện" href="/events" />
+          </Box>
+
+          <Box sx={{ flex: 1 }} />
+
+          <Box sx={{ mr: theme.spacing(2) }}>
+            <SearchInput placeholder="Tìm kiếm bạn học" />
+          </Box>
+
           {user ? (
-            <>
-              <Typography>{user?.email}</Typography>
-              <Button color="inherit" onClick={() => signOut()}>
-                Sign Out
-              </Button>
-            </>
+            <HeaderUserOptions user={user} />
           ) : (
             <Link href="/sign_in">
               <Typography color="error">Login</Typography>
