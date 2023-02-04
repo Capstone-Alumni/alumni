@@ -1,24 +1,19 @@
+import { Information } from "@prisma/client"
 import { Icon } from '@iconify/react';
-import pinFill from '@iconify/icons-eva/pin-fill';
-import infoFill from '@iconify/icons-eva/info-fill';
-import emailFill from '@iconify/icons-eva/email-fill';
-import phoneFill from '@iconify/icons-eva/phone-fill';
-import calendarFill from '@iconify/icons-eva/calendar-fill';
-import roundBusinessCenter from '@iconify/icons-ic/round-business-center';
-
 // material
-import { Box, styled } from '@mui/material';
+import { Box, styled, Grid, useTheme } from '@mui/material';
 import {
-  Button,
   Card,
-  CardHeader,
-  Link,
   Stack,
   Typography,
 } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
 // @types
-
-import { Profile } from '../../../../type';
+import { orange } from "@mui/material/colors";
+import ProfileInfoRow from "./InfoRow";
+import { isAllowToViewValue } from "src/utils/mappingPublicity";
+import { useAppSelector } from "src/redux/hooks";
+import { RootState } from "src/redux/store";
 
 // ----------------------------------------------------------------------
 
@@ -31,92 +26,46 @@ const IconStyle = styled(Icon)(({ theme }) => ({
 }));
 
 // ----------------------------------------------------------------------
+type ProfileAboutProps = {
+  userInformation: Information
+}
 
-export default function ProfileAbout({ profile }: { profile: Profile }) {
-  const { quote, country, email, role, company, school } = profile;
+const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
+  const theme = useTheme();
+  const currentUser = useAppSelector((state: RootState) => state.currentUser);
 
   return (
-    <Card>
-      <Stack
-        direction="row"
-        sx={{ justifyContent: 'space-between', alignItems: 'center' }}
-      >
-        <CardHeader title="About" />
-      </Stack>
-
-      <Stack spacing={2} sx={{ p: 3 }}>
-        <Typography variant="body2">{quote}</Typography>
-
-        <Stack direction="row">
-          <IconStyle icon={infoFill} />
-          <Typography variant="body2">
-            Class &nbsp;
-            <Link component="span" variant="subtitle2" color="text.primary">
-              12A4
-            </Link>
-          </Typography>
-          &nbsp;-&nbsp;
-          <Typography variant="body2">
-            Grade &nbsp;
-            <Link component="span" variant="subtitle2" color="text.primary">
-              K15
-            </Link>
-          </Typography>
-        </Stack>
-        <Stack direction="row">
-          <IconStyle icon={pinFill} />
-          <Typography variant="body2">
-            Live at &nbsp;
-            <Link component="span" variant="subtitle2" color="text.primary">
-              {country}
-            </Link>
-          </Typography>
-        </Stack>
-
-        <Stack direction="row">
-          <IconStyle icon={emailFill} />
-          <Typography variant="body2">{email}</Typography>
-        </Stack>
-
-        <Stack direction="row">
-          <IconStyle icon={phoneFill} />
-          <Typography variant="body2">
-            Phone &nbsp;
-            <Link component="span" variant="subtitle2" color="text.primary">
-              0912344834
-            </Link>
-          </Typography>
-        </Stack>
-
-        <Stack direction="row">
-          <IconStyle icon={calendarFill} />
-          <Typography variant="body2">
-            Birth &nbsp;
-            <Link component="span" variant="subtitle2" color="text.primary">
-              23-13-2099
-            </Link>
-          </Typography>
-        </Stack>
-        <Stack direction="row">
-          <IconStyle icon={roundBusinessCenter} />
-          <Typography variant="body2">
-            {role} at &nbsp;
-            <Link component="span" variant="subtitle2" color="text.primary">
-              {company}
-            </Link>
-          </Typography>
-        </Stack>
-
-        <Stack direction="row">
-          <IconStyle icon={roundBusinessCenter} />
-          <Typography variant="body2">
-            Studied at &nbsp;
-            <Link component="span" variant="subtitle2" color="text.primary">
-              {school}
-            </Link>
-          </Typography>
-        </Stack>
-      </Stack>
-    </Card>
+    <Grid container spacing={3}>
+      <Grid item xs={12} md={12}>
+        <Card sx={{ p: 3 }}>
+          <Stack sx={{ margin: '1.5rem 0 0.5rem 0' }}>
+            <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: theme.spacing(2) }}>
+              <Typography variant="h5" style={{ display: 'flex', fontWeight: 'bold', alignItems: 'center' }}>
+                <PersonIcon fontSize="large" style={{ color: theme.palette.primary.main, marginRight: theme.spacing(1) }} />
+                Thông tin liên hệ
+              </Typography>
+            </Box>
+          </Stack>
+          <div>
+            {currentUser?.data?.information && <Box style={{ paddingLeft: theme.spacing(2) }}>
+              <Box style={{ display: 'flex' }}>
+                <Box style={{ flex: 1 }}>
+                  {Boolean(userInformation?.bio) && <ProfileInfoRow title="Bio" content={userInformation.bio} />}
+                  {Boolean(userInformation?.fullName) && <ProfileInfoRow title="Họ và tên" content={userInformation.fullName} />}
+                  {isAllowToViewValue(currentUser.data.information, userInformation, userInformation?.emailPublicity) && Boolean(userInformation?.userEmail) && <ProfileInfoRow title="Email liên lạc" content={userInformation.userEmail} />}
+                  {isAllowToViewValue(currentUser.data.information, userInformation, userInformation?.phonePublicity) && Boolean(userInformation?.phone) && <ProfileInfoRow title="Điện thoại" content={userInformation.phone} />}
+                  {isAllowToViewValue(currentUser.data.information, userInformation, userInformation?.facebookPublicity) && Boolean(userInformation?.facebookUrl) && <ProfileInfoRow title="Facebook" content={userInformation.facebookUrl} />}
+                  {isAllowToViewValue(currentUser.data.information, userInformation, userInformation?.dateOfBirthPublicity) && Boolean(userInformation?.dateOfBirth) && <ProfileInfoRow title="Ngày sinh" content={userInformation?.dateOfBirth && new Date(userInformation.dateOfBirth).toLocaleDateString('en-GB')} />}
+                  {Boolean(userInformation?.gradeName) && <ProfileInfoRow title="Khối" content={userInformation.gradeName} />}
+                  {Boolean(userInformation?.className) && <ProfileInfoRow title="Lớp" content={userInformation.className} />}
+                </Box>
+              </Box>
+            </Box>}
+          </div>
+        </Card>
+      </Grid>
+    </Grid >
   );
 }
+
+export default ProfileAbout;

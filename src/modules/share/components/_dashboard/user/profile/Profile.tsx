@@ -1,31 +1,85 @@
 // material
-import { Grid, Stack } from '@mui/material';
-// @types
-import { UserPost, Profile as UserProfile } from '../../../../type';
+import { Button, Grid, Typography, IconButton, Box } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useAppSelector } from 'src/redux/hooks';
+import { RootState } from 'src/redux/store';
+import { isAllowToViewValue } from 'src/utils/mappingPublicity';
 //
 import ProfileAbout from './ProfileAbout';
-import ProfileSocialInfo from './ProfileSocialInfo';
+import UserCareers from './UserCareers';
+import UserEducation from './UserEducation';
+import EditIcon from '@mui/icons-material/Edit';
+import BackIcon from '@mui/icons-material/ArrowBack';
+import { useState } from 'react';
+import UserEditWrapper from './UserEditWrapper';
+import FormDialogs from '@share/components/material-ui/dialog/FormDialogs';
 
 // ----------------------------------------------------------------------
 
 type ProfileProps = {
-  myProfile: UserProfile;
-  posts: UserPost[];
+  userProfileId: string;
+  userInformation?: any;
+  userCareers?: any;
+  userEducations?: any;
 };
 
-export default function Profile({ myProfile, posts }: ProfileProps) {
+export default function Profile({ userProfileId, userInformation, userCareers, userEducations }: ProfileProps) {
+  const [openEdit, setOpenEdit] = useState<boolean>(false);
+
+  const currentUser = useAppSelector((state: RootState) => state.currentUser);
+
+  const userInformationData = userInformation?.data?.data?.information;
+
+  const handleToggleEdit = () => {
+    setOpenEdit(!openEdit);
+  }
+
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12} md={12}>
-        <Stack spacing={3}>
-          <ProfileAbout profile={myProfile} />
-        </Stack>
-      </Grid>
-      <Grid item xs={12} md={12}>
-        <Stack spacing={3}>
-          <ProfileSocialInfo profile={myProfile} />
-        </Stack>
-      </Grid>
+    !!currentUser?.data?.information?.userId && !!userProfileId && <Grid container spacing={3}>
+      <Box display='flex' sx={{ margin: '1.5rem 0 1.5rem 1.5rem', justifyContent: 'space-between', flexDirection: 'row', alignItems: "center", width: "100%" }}>
+        {currentUser.data.information.userId === userProfileId &&
+          <>
+            <Box display='flex' sx={{ alignItems: "center" }}>
+              <Typography variant='subtitle2'>Ai có thể xem thông tin của bạn? &nbsp;</Typography>
+              <FormDialogs editType='visibility' userInformation={userInformationData}>
+                <IconButton aria-label="edit-publicity">
+                  <VisibilityIcon />
+                </IconButton>
+              </FormDialogs>
+            </Box>
+            <Button variant="outlined" startIcon={openEdit ? <BackIcon /> : <EditIcon />} onClick={handleToggleEdit}>{openEdit ? 'Quay lại' : 'Chỉnh sửa thông tin'}</Button>
+          </>
+        }
+      </Box>
+      {!openEdit ? <>
+        {userInformation?.error ? <Typography>Có lỗi xảy ra! Vui lòng thử lại sau ít phút</Typography> :
+          <Box display='flex' sx={{ width: "100%", marginLeft: "1.5rem" }}>
+            <ProfileAbout userInformation={userInformationData} />
+          </Box>
+        }
+        {currentUser.data.information && userInformationData && <>
+          {userCareers?.error ? <Typography>Có lỗi xảy ra! Vui lòng thử lại sau ít phút</Typography> :
+            isAllowToViewValue(currentUser.data.information, userInformationData, userInformationData.careerPublicity) &&
+            <Grid item xs={12} md={12}>
+              <UserCareers editable={false} userCareers={userCareers?.data?.data?.items} />
+            </Grid>
+          }
+          {userEducations?.error ? <Typography>Có lỗi xảy ra! Vui lòng thử lại sau ít phút</Typography> :
+            isAllowToViewValue(currentUser.data.information, userInformationData, userInformationData.educationPublicity) &&
+            <Grid item xs={12} md={12}>
+              <UserEducation editable={false} userEducations={userEducations?.data?.data?.items} />
+            </Grid>
+          }
+        </>}
+      </> :
+        <>
+          <Box sx={{ paddingLeft: '1.5rem', width: '100%' }}>
+            <UserEditWrapper userProfileId={userProfileId} userInformation={userInformation} userCareers={userCareers} userEducations={userEducations} />
+          </Box>
+          <Box display='flex' sx={{ margin: '1.5rem 0', justifyContent: 'flex-end', flexDirection: 'row', width: "100%" }}>
+            <Button variant="outlined" startIcon={openEdit ? <BackIcon /> : <EditIcon />} onClick={handleToggleEdit}>{openEdit ? 'Quay lại' : 'Chỉnh sửa thông tin'}</Button>
+          </Box></>
+      }
     </Grid>
   );
 }

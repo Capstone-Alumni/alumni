@@ -46,21 +46,6 @@ declare module '@mui/material' {
   }
 }
 
-// const palette = {
-//   light: {
-//     ...COMMON,
-//     text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
-//     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
-//     action: { active: GREY[600], ...COMMON.action },
-//   },
-//   dark: {
-//     ...COMMON,
-//     text: { primary: '#fff', secondary: GREY[500], disabled: GREY[600] },
-//     background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_16] },
-//     action: { active: GREY[500], ...COMMON.action },
-//   },
-// };
-
 const PALETTE_LIST: { [key: string]: any } = {
   green: GREEN_PALETTE,
   purple: PURPLE_PALETTE,

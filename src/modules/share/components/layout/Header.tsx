@@ -10,13 +10,15 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link';
+import { useTheme } from '@mui/material';
 
 const Header = ({ user }: { user?: any }) => {
+  const theme = useTheme();
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="fixed" sx={{ backgroundColor: theme.palette.primary.main}}>
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             size="large"
             edge="start"
             color="inherit"
@@ -24,9 +26,9 @@ const Header = ({ user }: { user?: any }) => {
             sx={{ mr: 2 }}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+            THPT Hùng Vương
           </Typography>
           {user ? (
             <>
