@@ -35,6 +35,19 @@ export const newsSliceApi = createApi({
       }),
       invalidatesTags: ['News'],
     }),
+    getNewsForPublic: builer.query({
+      query: ({ params }: { params: GetNewsListDataParams }) => ({
+        url: '/api/news/public',
+        params: params,
+        method: 'GET',
+      }),
+    }),
+    getNewsByIdForPublic: builer.query({
+      query: (newsId: string) => ({
+        url: `/api/news/public/${newsId}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -42,4 +55,6 @@ export const {
   useGetNewsForSchoolAdminQuery,
   useGetNewsByIdForSchoolAdminQuery,
   useUpdateNewsByIdMutation,
+  useGetNewsForPublicQuery,
+  useGetNewsByIdForPublicQuery,
 } = newsSliceApi;
