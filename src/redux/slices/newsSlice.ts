@@ -23,10 +23,23 @@ export const newsSliceApi = createApi({
         method: 'GET',
       }),
     }),
+    updateNewsById: builer.mutation({
+      query: ({ newsId, title, content, isPublic }) => ({
+        url: `api/news/${newsId}`,
+        method: 'PUT',
+        body: {
+          title,
+          content,
+          isPublic,
+        },
+      }),
+      invalidatesTags: ['News'],
+    }),
   }),
 });
 
 export const {
   useGetNewsForSchoolAdminQuery,
   useGetNewsByIdForSchoolAdminQuery,
+  useUpdateNewsByIdMutation,
 } = newsSliceApi;

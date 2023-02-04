@@ -14,14 +14,18 @@ import ReactHtmlParser from 'html-react-parser';
 import Switch from '@mui/material/Switch';
 import { News } from '../types';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import useUpdateNews from '../hooks/useUpdateNews';
+import { useUpdateNewsByIdMutation } from 'src/redux/slices/newsSlice';
 
 const AdminNewsCardItem = ({ item }: { item: News }) => {
   const content = ReactHtmlParser(item.content);
-  const { updateNews } = useUpdateNews();
+  const [updateNewsPublic] = useUpdateNewsByIdMutation();
   const handlePublicNews = async () => {
-    await updateNews({ newsId: item.id, isPublic: !item.isPublic });
+    await updateNewsPublic({
+      newsId: item.id,
+      isPublic: !item.isPublic,
+    });
   };
+
   return (
     <Card
       sx={{
