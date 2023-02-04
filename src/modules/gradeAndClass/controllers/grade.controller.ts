@@ -1,5 +1,5 @@
 import { NextApiRequestWithTenant } from '@lib/next-connect';
-import getPrismaClient, {prisma} from '@lib/prisma/prisma';
+import getPrismaClient from '@lib/prisma/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ApiErrorResponse, ApiSuccessResponse } from 'src/types';
 
