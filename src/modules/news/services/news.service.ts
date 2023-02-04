@@ -1,10 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { getPageAndLimitFromParams } from 'src/utils';
-import {
-  CreateContentProps,
-  GetListNewParams,
-  UpdateContentProps,
-} from '../types';
+import { CreateNewsProps, GetListNewParams, UpdateNewsProps } from '../types';
 
 const isNewsExisted = async (tenantPrisma: PrismaClient, newsId: string) => {
   const whereFilter = {
@@ -23,7 +19,7 @@ export default class NewsService {
   static createNews = async (
     tenantPrisma: PrismaClient,
     authorId: string,
-    body: CreateContentProps,
+    body: CreateNewsProps,
   ) => {
     const newsCreated = await tenantPrisma.news.create({
       data: {
@@ -37,7 +33,7 @@ export default class NewsService {
   static updateNews = async (
     tenantPrisma: PrismaClient,
     newsId: string,
-    body: UpdateContentProps,
+    body: UpdateNewsProps,
   ) => {
     await isNewsExisted(tenantPrisma, newsId);
 
@@ -94,6 +90,11 @@ export default class NewsService {
         skip: (page - 1) * limit,
         take: limit,
         where: whereFilter,
+        orderBy: [
+          {
+            createdAt: 'desc',
+          },
+        ],
       }),
     ]);
     return {

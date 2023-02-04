@@ -7,7 +7,7 @@ export type NextApiRequestWithTenant = {
   tenantId: string;
 } & NextApiRequest;
 
-const extractTenantId = async (
+export const extractTenantId = async (
   req: NextApiRequestWithTenant,
   res: NextApiResponse,
   next: NextHandler,

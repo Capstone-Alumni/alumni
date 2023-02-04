@@ -1,16 +1,17 @@
 'use client';
 
 import { Box, Pagination } from '@mui/material';
-import { noop } from 'lodash';
+import { GetNewsListData, News } from '../types';
 import AdminNewsCardItem from './AdminNewsCardItem';
 
 const AdminNewsCards = ({
   data,
+  page,
+  onChange,
 }: {
-  data: any;
-  onEdit: (id: string, data: any) => void;
-  onDelete: (id: string) => void;
-  onChangePage: (nextPage: number) => void;
+  data: GetNewsListData;
+  page: number;
+  onChange: (event: React.ChangeEvent<unknown>, value: number) => void;
 }) => {
   return (
     <Box
@@ -19,16 +20,22 @@ const AdminNewsCards = ({
         flexDirection: 'column',
       }}
     >
-      {data.items.map((item: any) => (
-        <AdminNewsCardItem item={item} key={item.id} />
-      ))}
+      <Box
+        sx={{
+          height: '90vh',
+        }}
+      >
+        {data.items.map((item: News) => (
+          <AdminNewsCardItem item={item} key={item.id} />
+        ))}
+      </Box>
       <Pagination
         sx={{
           margin: 'auto',
         }}
         count={Math.ceil(data.totalItems / data.itemPerPage)}
-        page={1}
-        onChange={noop}
+        page={page}
+        onChange={onChange}
       />
     </Box>
   );

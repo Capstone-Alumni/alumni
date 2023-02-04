@@ -8,6 +8,21 @@ export type News = {
   createdAt: Date;
   updatedAt: Date;
   archived: boolean;
+  newsCategories?: string[];
+  isPublic: boolean;
+};
+
+export type GetNewsListDataParams = {
+  page?: number;
+  limit?: number;
+  title?: string;
+  content?: string;
+};
+
+export type GetNewsListData = {
+  items: News[];
+  totalItems: number;
+  itemPerPage: number;
 };
 
 /** ========================== BE ================================= */
