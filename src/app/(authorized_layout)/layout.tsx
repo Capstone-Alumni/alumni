@@ -26,7 +26,7 @@ export default async function AuthorizedLayout({
     <>
       <Header user={session.user} tenant={data} />
       <Body>{children}</Body>
-      <Footer />
+      <Footer tenant={data} />
     </>
   );
 }
