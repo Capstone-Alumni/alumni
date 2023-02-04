@@ -4,18 +4,15 @@ import { Controller, useForm } from 'react-hook-form';
 import { Box, Button, TextField, Typography, useTheme } from '@mui/material';
 import Editor from '@share/components/editor';
 import 'quill/dist/quill.snow.css';
+import useCreateNews from '../hooks/useCreateNews';
+import useUpdateNews from '../hooks/useUpdateNews';
+import { CreateNewsProps, News, UpdateNewsProps } from '../types';
+import { useRouter } from 'next/navigation';
 
-const CreateNewsForm = ({
-  initialData,
-  onSubmit,
-  onClose,
-}: {
-  initialData?: any;
-  onClose?: () => void;
-  onSubmit: (values: any) => void;
-}) => {
+const NewsForm = ({ initialData }: { initialData?: News }) => {
   const theme = useTheme();
   const [submitting, setSubmitting] = useState(false);
+  const router = useRouter();
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -24,11 +21,31 @@ const CreateNewsForm = ({
     },
   });
 
-  const onSubmitHandler = async (values: any) => {
+  const { createNews } = useCreateNews();
+  const { updateNews } = useUpdateNews();
+
+  const onAddNews = async (values: CreateNewsProps) => {
+    await createNews(values);
+  };
+
+  const onUpdateNews = async (newsId: string, data: UpdateNewsProps) => {
+    const updateNewsParams = {
+      newsId,
+      ...data,
+    };
+    await updateNews(updateNewsParams);
+  };
+
+  const handleCancel = () => {
+    initialData ? window.location.reload() : router.replace('/admin/news');
+  };
+
+  const onSubmitHandler = async (values: CreateNewsProps | UpdateNewsProps) => {
     setSubmitting(true);
-    await onSubmit(values);
+    initialData
+      ? await onUpdateNews(initialData.id, values)
+      : await onAddNews(values as CreateNewsProps);
     setSubmitting(false);
-    onClose?.();
   };
 
   return (
@@ -62,8 +79,17 @@ const CreateNewsForm = ({
       <Controller
         control={control}
         name="content"
-        render={({ field }) => (
-          <Editor id="content" placeholder={'Nội dung'} {...field} />
+        render={({ field: { value, onChange } }) => (
+          <Editor
+            id="content"
+            sx={{
+              height: 500,
+              overflow: 'auto',
+            }}
+            placeholder={'Nội dung'}
+            value={value}
+            onChange={onChange}
+          />
         )}
       />
 
@@ -75,11 +101,14 @@ const CreateNewsForm = ({
           gap: theme.spacing(2),
         }}
       >
-        {onClose ? (
-          <Button variant="outlined" disabled={submitting} onClick={onClose}>
-            Huỷ
-          </Button>
-        ) : null}
+        <Button
+          variant="contained"
+          color="error"
+          disabled={submitting}
+          onClick={handleCancel}
+        >
+          Hủy
+        </Button>
         <Button
           variant="contained"
           disabled={submitting}
@@ -92,4 +121,4 @@ const CreateNewsForm = ({
   );
 };
 
-export default CreateNewsForm;
+export default NewsForm;
