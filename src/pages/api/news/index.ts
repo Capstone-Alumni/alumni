@@ -11,7 +11,7 @@ const handler = nc();
 handler
   .use(extractTenantId)
   .use(isAuthenticatedUser)
-  .get(NewsController.getListNews)
+  .get(verifySchoolAdmin, NewsController.getListNews)
   .post(verifySchoolAdmin, NewsController.createNews);
 
 export default handler;

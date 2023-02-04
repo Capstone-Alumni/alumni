@@ -103,4 +103,52 @@ export default class NewsService {
       itemPerPage: limit,
     };
   };
+
+  static getListNewsPublic = async (
+    tenantPrisma: PrismaClient,
+    params: GetListNewParams,
+  ) => {
+    const { page, limit } = getPageAndLimitFromParams(params);
+
+    const { title, content } = params;
+    const whereFilter = {
+      AND: [
+        { title: { contains: title } },
+        { content: { contains: content } },
+        { archived: false },
+        { isPublic: true },
+      ],
+    };
+    const [totalNewsItem, newsItems] = await tenantPrisma.$transaction([
+      tenantPrisma.news.count({
+        where: whereFilter,
+      }),
+      tenantPrisma.news.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereFilter,
+        orderBy: [
+          {
+            createdAt: 'desc',
+          },
+        ],
+      }),
+    ]);
+    return {
+      totalItems: totalNewsItem,
+      items: newsItems,
+      itemPerPage: limit,
+    };
+  };
+
+  static getNewsDetailsPublic = async (
+    tenantPrisma: PrismaClient,
+    newsId: string,
+  ) => {
+    await isNewsExisted(tenantPrisma, newsId);
+    const news = await tenantPrisma.news.findFirst({
+      where: { id: newsId, isPublic: true },
+    });
+    return news;
+  };
 }

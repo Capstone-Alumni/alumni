@@ -116,4 +116,46 @@ export default class NewsController {
       });
     }
   };
+
+  static getListNewsPublic = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const prisma = await getPrismaClient(req.tenantId);
+      const listNews = await NewsService.getListNewsPublic(
+        prisma,
+        req.query as unknown as GetListNewParams,
+      );
+      return res.status(200).json({
+        status: true,
+        data: listNews,
+      });
+    } catch (error: any) {
+      return res.status(400).json({
+        status: false,
+        message: error.message,
+      });
+    }
+  };
+
+  static getNewsDetailsPublic = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const { id } = req.query;
+      const prisma = await getPrismaClient(req.tenantId);
+      const news = await NewsService.getNewsDetailsPublic(prisma, id as string);
+      return res.status(200).json({
+        status: true,
+        data: news,
+      });
+    } catch (error: any) {
+      return res.status(400).json({
+        status: false,
+        message: error.message,
+      });
+    }
+  };
 }
