@@ -10,7 +10,7 @@ export default class GradeController {
     req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
-    // const prisma = await getPrismaClient(req.tenantId);
+    const prisma = await getPrismaClient(req.tenantId);
     const { page, limit, code, name } = req.query;
     const gradeListData = await GradeService.getPublicList(prisma, {
       params: {
@@ -33,7 +33,7 @@ export default class GradeController {
   ) => {
     try {
       const { name, code } = req.body;
-      // const prisma = await getPrismaClient(req.tenantId);
+      const prisma = await getPrismaClient(req.tenantId);
       const newGrade = await GradeService.create(prisma, { name, code });
 
       return res.status(201).json({

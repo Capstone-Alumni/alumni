@@ -30,7 +30,6 @@ export default class InformationController {
       id as string,
     );
     
-    res.setHeader('Cache-Control', 'no-store')
     return res.status(200).json({
       status: true,
       data: information,

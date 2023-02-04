@@ -21,7 +21,6 @@ export default class CareerController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id, jobTitle, company, page, limit } = req.query;
-    console.log(id);
     const careerList = await CareerService.getListByUserId(id as string, {
       jobTitle: jobTitle ? (jobTitle as string) : '',
       company: company ? (company as string) : '',
@@ -29,7 +28,6 @@ export default class CareerController {
       limit: limit ? parseInt(limit as string, 10) : 20,
     });
 
-    res.setHeader('Cache-Control', 'no-store');
     return res.status(200).json({
       status: true,
       data: careerList,
