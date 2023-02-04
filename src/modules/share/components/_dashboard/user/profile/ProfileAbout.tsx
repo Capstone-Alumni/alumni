@@ -38,7 +38,7 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
     <Grid container spacing={3}>
       <Grid item xs={12} md={12}>
         <Card sx={{ p: 3 }}>
-          <Stack sx={{ margin: '1rem 0 0.5rem 0' }}>
+          <Stack sx={{ margin: '1.5rem 0 0.5rem 0' }}>
             <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: theme.spacing(2) }}>
               <Typography variant="h5" style={{ display: 'flex', fontWeight: 'bold', alignItems: 'center' }}>
                 <PersonIcon fontSize="large" style={{ color: theme.palette.primary.main, marginRight: theme.spacing(1) }} />

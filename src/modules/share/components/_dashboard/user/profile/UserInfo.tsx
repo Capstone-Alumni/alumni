@@ -1,53 +1,27 @@
 import * as Yup from 'yup';
 import { useEffect, useState } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
-import dayjs, { Dayjs } from 'dayjs';
-
+import { toast } from 'react-toastify';
 // material
 import {
   Autocomplete,
   Box,
-  Button,
   Card,
   Grid,
   Stack,
-  Switch,
   TextField,
   Typography,
-  IconButton,
   useTheme
 } from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import PersonIcon from '@mui/icons-material/Person';
-import orange from '@mui/material/colors/orange';
-
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
 import { LoadingButton } from '@mui/lab';
 // @types
-import { UserInformation } from '../../../../type';
 import { useUpdateUserInformationMutation } from 'src/redux/slices/userProfileSlice';
 import axiosInstance from 'src/utils/axios';
-import FormDialogs from '@share/components/material-ui/dialog/FormDialogs';
 import { Information } from '@prisma/client';
-
-// ----------------------------------------------------------------------
-
-// const classesMock = [
-//   { className: '12A3' },
-//   { className: '12A4' },
-//   { className: '12A7' },
-//   { className: '12A8' },
-//   { className: '12A2' },
-// ];
-
-// const gradesMock = [
-//   { gradeCode: 'cldkmwwba0000znqpfse54wfp', gradeName: '10' },
-//   { gradeCode: 'cldknd6lf0004znqp7o3uet1m', gradeName: '11' },
-//   { gradeCode: 'cldl9rf640001zn7v52plsvt9', gradeName: '12' },
-// ];
 
 type UserInfoProps = {
   userInformation?: Information;
@@ -96,12 +70,10 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
       try {
         const { class: _, grade, ...data } = values;
         await updateUserInformation({ ...data, gradeCode: grade.gradeCode, gradeName: grade.gradeName, className: _.className });
-        // TODO: Call API to submit the form
-        // await fakeRequest(500);
         setSubmitting(false);
-        // enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
+        toast.success('Cập nhật thành công');
       } catch (error: any) {
-        console.error(error);
+        toast.error('Có lỗi xảy ra, vui lòng thử lại');
         resetForm();
         setSubmitting(false);
         setErrors(error);
@@ -174,11 +146,6 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                       <PersonIcon fontSize="large" style={{ color: theme.palette.primary.main, marginRight: theme.spacing(1) }} />
                       Thông tin cơ bản
                     </Typography>
-                    {userInformation && <FormDialogs editType='visibility' userInformation={userInformation}>
-                      <IconButton aria-label="edit-publicity">
-                        <VisibilityIcon />
-                      </IconButton>
-                    </FormDialogs>}
                   </Stack>
                   <Stack spacing={3}>
                     <Stack

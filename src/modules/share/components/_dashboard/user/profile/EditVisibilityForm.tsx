@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 // material
 import {
@@ -11,6 +12,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Information, ScopePublicity } from '@prisma/client';
@@ -25,7 +27,7 @@ export default function EditVisibilityForm({
   onClose,
   userInformation
 }: EditProfileFormProps) {
-  const [updateUserInformation] = useUpdateUserInformationMutation();
+  const [updateUserInformation, { isLoading: isUpdating }] = useUpdateUserInformationMutation();
 
   const [visibility, setVisibility] = useState({
     emailPublicity: "PRIVATE" as ScopePublicity,
@@ -64,8 +66,13 @@ export default function EditVisibilityForm({
   }
 
   const onSubmitForm = async () => {
-    await updateUserInformation({ userId: userInformation.userId, ...visibility });
-    onClose();
+    try {
+      await updateUserInformation({ userId: userInformation.userId, ...visibility });
+      onClose();
+      toast.success('Cập nhật thành công');
+    } catch (error) {
+      toast.error('Có lỗi xảy ra, vui lòng thử lại');
+    }
   };
 
   return (
@@ -180,9 +187,9 @@ export default function EditVisibilityForm({
         <Button onClick={onClose} color="inherit">
           Huỷ
         </Button>
-        <Button onClick={onSubmitForm} variant="contained">
+        <LoadingButton onClick={onSubmitForm} variant="contained" loading={isUpdating}>
           Lưu
-        </Button>
+        </LoadingButton>
       </DialogActions>
     </>
   );

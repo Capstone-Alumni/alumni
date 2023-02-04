@@ -2,7 +2,7 @@ import { Box, Divider, IconButton, Typography, Grid, Card, Stack, useTheme } fro
 import React, { useState } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ProfileInfoRow from './InfoRow';
-import orange from '@mui/material/colors/purple';
+import { toast } from 'react-toastify';
 
 import SchoolIcon from '@mui/icons-material/School';
 import EducationForm from './EducationForm';
@@ -23,9 +23,15 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
   const onAddWork = async (values: any) => {
     const data = [...educationData, values];
 
-    await updateUserEducations({userId: userProfileId, data});
+    try {
+      await updateUserEducations({userId: userProfileId, data});
 
-    setOpenAddForm(false);
+      setOpenAddForm(false);
+      
+      toast.success('Thêm thành công');
+    } catch (error) {
+      toast.error('Có lỗi xảy ra, vui lòng thử lại');
+    }
   }
 
   const onDeleteWork = async (id: string) => {
@@ -35,8 +41,12 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
 
     currentData.splice(deleteIndex, 1);
 
-    await updateUserEducations({userId: userProfileId, data: currentData});
-
+    try {
+      await updateUserEducations({userId: userProfileId, data: currentData});      
+      toast.success('Cập nhật thành công');
+    } catch (error) {
+      toast.error('Có lỗi xảy ra, vui lòng thử lại');
+    }
   }
 
   const onUpdateWork = async (id: any, values: any) => {
@@ -46,9 +56,15 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
 
     currentData[updateIndex] = values;
 
-    await updateUserEducations({userId: userProfileId, data: currentData});
+    try {
+      await updateUserEducations({userId: userProfileId, data: currentData});
 
-    setSelectedEditId(null);
+      setSelectedEditId(null);
+
+      toast.success('Cập nhật thành công');
+    } catch (error) {
+      toast.error('Có lỗi xảy ra, vui lòng thử lại');
+    }
   }
 
   return (

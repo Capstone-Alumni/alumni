@@ -1,8 +1,9 @@
 import { Box, Divider, IconButton, Typography, Grid, Card, Stack, useTheme } from '@mui/material';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ProfileInfoRow from './InfoRow';
-import orange from '@mui/material/colors/orange';
 
 import WorkIcon from '@mui/icons-material/Work';
 import WorkForm from './WorkForm';
@@ -21,12 +22,16 @@ const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
   const workData = userCareers;
 
   const onAddWork = async (values: any) => {
-
     const data = [...workData, values];
 
-    await updateUserCareers({userId: userProfileId, data});
+    try {
+      await updateUserCareers({userId: userProfileId, data});
+      toast.success('Thêm thành công');
+      setOpenAddForm(false);
+    } catch (error) {
+      toast.error('Có lỗi xảy ra, vui lòng thử lại');
+    }
 
-    setOpenAddForm(false);
   }
 
   const onDeleteWork = async (id: string) => {
@@ -35,8 +40,12 @@ const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
     const deleteIndex = currentData.findIndex((item) => item.id === id);
     currentData.splice(deleteIndex, 1);
 
-    await updateUserCareers({userId: userProfileId, data: currentData});
-
+    try {
+      await updateUserCareers({userId: userProfileId, data: currentData});
+      toast.success('Cập nhật thành công');
+    } catch (error) {
+      toast.error('Có lỗi xảy ra, vui lòng thử lại');
+    }
   }
 
   const onUpdateWork = async (id: any, values: any) => {
@@ -46,9 +55,16 @@ const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
     
     currentData[updateIndex] = values;
 
-    await updateUserCareers({userId: userProfileId, data: currentData});
+    try {
+      await updateUserCareers({userId: userProfileId, data: currentData});
 
-    setSelectedEditId(null);
+      setSelectedEditId(null);
+
+      toast.success('Cập nhật thành công');
+
+    } catch (error) {
+      toast.error('Có lỗi xảy ra, vui lòng thử lại');
+    }
   }
 
   return (

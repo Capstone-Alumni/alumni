@@ -1,21 +1,19 @@
 // material
 import { alpha, styled } from '@mui/material';
 import { Box, Typography } from '@mui/material';
-// material
-import MyAvatar from '../../../MyAvatar';
+import { toast } from 'react-toastify';
 // @types
-import { Profile } from '../../../../type';
 import { UploadAvatar } from '@share/components/upload';
 import { setStorage } from 'src/firebase/methods/setStorage';
 import { generateUniqSerial } from 'src/utils';
-import { useState } from 'react';
 import { useGetUserInformationQuery, useUpdateUserInformationMutation } from 'src/redux/slices/userProfileSlice';
-import { usePathname } from 'next/navigation';
 import { useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
+
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
+  height: '100%',
   '&:before': {
     top: 0,
     zIndex: 9,
@@ -68,17 +66,34 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
 
     if (type === 'avatar') {
       const file = acceptedFiles[0];
+
       try {
+        toast.loading('Uploading...', {
+          toastId: type
+        });
         const url = await uploadAvatar(generateUniqSerial(), file);
         userProfileId && await updateUserInformation({ avatarUrl: url, userId: userProfileId })
+        toast.dismiss(type);
+        toast.success('Cập nhật thành công');
       } catch (error: any) {
-        console.error(error);
+        toast.dismiss(type);
+        toast.error('Có lỗi xảy ra, vui lòng thử lại');
       }
     } else {
       const file = acceptedFiles.target.files[0];
       if (file) {
-      const url = await uploadAvatar(generateUniqSerial(), file);
-      userProfileId && await updateUserInformation({ coverImageUrl: url, userId: userProfileId })
+        try {
+          toast.loading('Uploading...', {
+            toastId: type
+          });
+          const url = await uploadAvatar(generateUniqSerial(), file);
+          userProfileId && await updateUserInformation({ coverImageUrl: url, userId: userProfileId })
+          toast.dismiss(type);
+          toast.success('Cập nhật thành công');
+        } catch (error: any) {
+          toast.dismiss(type);
+          toast.error('Có lỗi xảy ra, vui lòng thử lại');
+        }
       }
     }
   }
@@ -110,16 +125,14 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
         <div>
           <CoverImgStyle alt="profile cover" src={data?.data?.information?.coverImageUrl} />
         </div>
-        <RootStyle>
-          {
-            currentUser?.data?.information?.userId === userProfileId && <input
+        <RootStyle style={{ cursor: `${currentUser?.data?.information?.userId === userProfileId ? "pointer" : "auto"}` }}>
+          {currentUser?.data?.information?.userId === userProfileId && <input
             type="file"
             id="uploadWallpaper"
             style={{ display: 'none' }}
             accept="image/png, image/jpeg"
             onChange={(e) => handleDrop(e, 'wallpaper')}
-          />
-          }
+          />}
         </RootStyle>
       </label>
     </>

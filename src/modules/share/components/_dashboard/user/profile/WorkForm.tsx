@@ -1,4 +1,5 @@
-import { Box, Button, MenuItem, TextField, Typography, useTheme } from '@mui/material';
+import { Box, TextField, Typography, useTheme } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import deepPurple from '@mui/material/colors/deepPurple';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -8,7 +9,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const WorkForm = ({ defaultValues, onSave }: any) => {
   const theme = useTheme();
-  const { register, formState: { errors }, handleSubmit, control } = useForm({
+  const { register, formState: { errors, isSubmitting }, handleSubmit, control } = useForm({
     defaultValues: {
       ...defaultValues
     }
@@ -120,7 +121,7 @@ const WorkForm = ({ defaultValues, onSave }: any) => {
       })
       }
 
-      <Button type="submit" variant="contained">Lưu</Button>
+      <LoadingButton type="submit" variant="contained" loading={isSubmitting}>Lưu</LoadingButton>
     </Box>
   );
 };
