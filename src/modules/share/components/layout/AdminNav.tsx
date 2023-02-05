@@ -11,25 +11,26 @@ import {
   useTheme,
 } from '@mui/material';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const ACCESS_NAV_ITEM = {
   id: 'request_access',
   title: 'Kiểm duyệt',
-  icon: 'material-symbols:meeting-room-outline-rounded',
+  icon: 'grommet-icons:validate',
   link: '/admin/access_request',
 };
 
 const NEWS_NAV_ITEM = {
   id: 'news',
   title: 'Tin tức',
-  icon: 'material-symbols:meeting-room-outline-rounded',
+  icon: 'fluent:news-16-filled',
   link: '/admin/news',
 };
 const EVENT_NAV_ITEM = {
   id: 'grade_class_4',
   title: 'Quỹ',
-  icon: 'material-symbols:meeting-room-outline-rounded',
+  icon: 'ic:baseline-event',
   link: '/admin/events',
 };
 
@@ -42,7 +43,7 @@ const GRADE_NAV_ITEM = {
 const USER_NAV_ITEM = {
   id: 'user',
   title: 'Cựu học sinh',
-  icon: 'material-symbols:meeting-room-outline-rounded',
+  icon: 'ph:student-bold',
   link: '/admin/members',
 };
 
@@ -154,7 +155,6 @@ const generateNavItems = (
 const AdminNav = ({ user, tenant }: { user?: any; tenant: any }) => {
   const theme = useTheme();
   const pathname = usePathname();
-  const router = useRouter();
 
   return (
     <Box sx={{ position: 'relative' }}>
@@ -178,27 +178,31 @@ const AdminNav = ({ user, tenant }: { user?: any; tenant: any }) => {
             {generateNavItems(user.accessLevel).map(item => {
               const isActive = item.link && pathname?.startsWith(item.link);
               return (
-                <StyledNavItem
+                <Link
                   key={item.id}
-                  sx={{
-                    backgroundColor: isActive
-                      ? theme.palette.primary.dark
-                      : undefined,
-                  }}
-                  onClick={() => router.push(item.link)}
+                  href={item.link}
+                  style={{ color: 'inherit', width: '100%' }}
                 >
-                  <Icon height={24} icon={item.icon} />
-                  <Typography fontWeight={600}>{item.title}</Typography>
-                  <Box sx={{ flex: 1 }} />
-                  <Icon
-                    height={24}
-                    icon={
-                      isActive
-                        ? 'material-symbols:keyboard-arrow-right'
-                        : 'material-symbols:keyboard-arrow-down-rounded'
-                    }
-                  />
-                </StyledNavItem>
+                  <StyledNavItem
+                    sx={{
+                      backgroundColor: isActive
+                        ? theme.palette.primary.dark
+                        : undefined,
+                    }}
+                  >
+                    <Icon height={24} icon={item.icon} />
+                    <Typography fontWeight={600}>{item.title}</Typography>
+                    <Box sx={{ flex: 1 }} />
+                    {/* <Icon
+                      height={24}
+                      icon={
+                        isActive
+                          ? 'material-symbols:keyboard-arrow-right'
+                          : 'material-symbols:keyboard-arrow-down-rounded'
+                      }
+                    /> */}
+                  </StyledNavItem>
+                </Link>
               );
             })}
           </StyledNav>
@@ -206,10 +210,12 @@ const AdminNav = ({ user, tenant }: { user?: any; tenant: any }) => {
 
         <StyledFooter>
           <StyledNav sx={{ padding: 0 }}>
-            <StyledNavItem onClick={() => router.push('/')}>
-              <Icon height={24} icon="majesticons:door-exit" />
-              <Typography fontWeight={600}>Thoát bảng điều khiển</Typography>
-            </StyledNavItem>
+            <Link href="/" style={{ color: 'inherit', width: '100%' }}>
+              <StyledNavItem>
+                <Icon height={24} icon="majesticons:door-exit" />
+                <Typography fontWeight={600}>Thoát bảng điều khiển</Typography>
+              </StyledNavItem>
+            </Link>
           </StyledNav>
 
           <StyledAccountWrapper>
