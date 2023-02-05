@@ -7,19 +7,21 @@ export default class InformationService {
     id: string,
     body: UpdateInformationProps,
   ) => {
-    const user = await prisma.user.findUnique({
+    //TODO: sync users table from platform's database
+    // then u can turn on this flag
+    await prisma.user.findUnique({
       where: { id },
     });
-    if (!user) {
-      throw new Error('User not found');
-    }
+    // if (!user) {
+    //   throw new Error('User not found');
+    // }
     const informationUpdated = await prisma.information.upsert({
       where: { userId: id },
       update: body,
       create: {
         ...body,
         user: {
-          connect: {
+          create: {
             id: id,
           },
         },

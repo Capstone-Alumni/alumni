@@ -18,12 +18,8 @@ export function StepLabel(theme: Theme) {
   return {
     MuiStepLabel: {
       styleOverrides: {
-        root: {
-
-        }
+        root: {},
       },
     },
   };
 }
-
-

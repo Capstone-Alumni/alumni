@@ -1,14 +1,22 @@
 // material
 import { alpha, styled } from '@mui/material';
 import { Box, Typography } from '@mui/material';
-// material
-import MyAvatar from '../../../MyAvatar';
+import { toast } from 'react-toastify';
 // @types
-import { Profile } from '../../../../type';
 import { UploadAvatar } from '@share/components/upload';
+import { setStorage } from 'src/firebase/methods/setStorage';
+import { generateUniqSerial } from 'src/utils';
+import {
+  useGetUserInformationQuery,
+  useUpdateUserInformationMutation,
+} from 'src/redux/slices/userProfileSlice';
+import { useAppSelector } from 'src/redux/hooks';
+import { RootState } from 'src/redux/store';
+
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
+  height: '100%',
   '&:before': {
     top: 0,
     zIndex: 9,
@@ -16,9 +24,9 @@ const RootStyle = styled('div')(({ theme }) => ({
     content: "''",
     height: '100%',
     position: 'absolute',
-    backdropFilter: 'blur(3px)',
-    WebkitBackdropFilter: 'blur(3px)', // Fix on Mobile
-    backgroundColor: alpha(theme.palette.primary.darker, 0.72),
+    backdropFilter: 'blur(0px)',
+    WebkitBackdropFilter: 'blur(0px)', // Fix on Mobile
+    backgroundColor: alpha(theme.palette.primary.darker, 0.01),
   },
 }));
 
@@ -47,49 +55,119 @@ const CoverImgStyle = styled('img')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
+const avatarUrlDefault =
+  'https://firebasestorage.googleapis.com/v0/b/alumni-pf.appspot.com/o/users%2F6a5e-9e80-43e-cf66%2Favatar%2Favatar_default.jpeg?alt=media&token=8579e2f1-42b1-41ed-a641-833bbcc84194';
+const wallpaperUrlDefault =
+  'https://firebasestorage.googleapis.com/v0/b/alumni-pf.appspot.com/o/users%2F5cce-2d10-583-0cd9%2Favatar%2Fwallpaper_default.jpg?alt=media&token=8d1b5842-d9ce-4c9f-b577-0b1e36a5100a';
 type ProfileCoverProps = {
-  myProfile: Profile;
+  userProfileId: string;
 };
 
-export default function ProfileCover({ myProfile }: ProfileCoverProps) {
-  const { position, cover } = myProfile;
+export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
+  const { data } = useGetUserInformationQuery(userProfileId);
+  const currentUser = useAppSelector((state: RootState) => state.currentUser);
+  const [updateUserInformation] = useUpdateUserInformationMutation();
 
-  // const handleDrop = (acceptedFiles: any) => {
-  //   const file = acceptedFiles[0];
-  //   console.log(file);
-  // }
+  const handleDrop = async (acceptedFiles: any, type: string) => {
+    const { uploadAvatar } = setStorage();
+
+    if (type === 'avatar') {
+      const file = acceptedFiles[0];
+
+      try {
+        toast.loading('Uploading...', {
+          toastId: type,
+        });
+        const url = await uploadAvatar(generateUniqSerial(), file);
+        userProfileId &&
+          (await updateUserInformation({
+            avatarUrl: url,
+            userId: userProfileId,
+          }));
+        toast.dismiss(type);
+        toast.success('Cập nhật thành công');
+      } catch (error: any) {
+        toast.dismiss(type);
+        toast.error('Có lỗi xảy ra, vui lòng thử lại');
+      }
+    } else {
+      const file = acceptedFiles.target.files[0];
+      if (file) {
+        try {
+          toast.loading('Uploading...', {
+            toastId: type,
+          });
+          const url = await uploadAvatar(generateUniqSerial(), file);
+          userProfileId &&
+            (await updateUserInformation({
+              coverImageUrl: url,
+              userId: userProfileId,
+            }));
+          toast.dismiss(type);
+          toast.success('Cập nhật thành công');
+        } catch (error: any) {
+          toast.dismiss(type);
+          toast.error('Có lỗi xảy ra, vui lòng thử lại');
+        }
+      }
+    }
+  };
 
   return (
-    <RootStyle>
-      <InfoStyle>
-        <MyAvatar
-          sx={{
-            mx: 'auto',
-            borderWidth: 2,
-            borderStyle: 'solid',
-            borderColor: 'common.white',
-            width: { xs: 80, md: 128 },
-            height: { xs: 80, md: 128 },
-          }}
-        />
-        {/* <UploadAvatar
-          file={null}
-          maxSize={3145728}
-          onDrop={handleDrop}
-        /> */}
-        <Box
-          sx={{
-            ml: { md: 3 },
-            mt: { xs: 1, md: 0 },
-            color: 'common.white',
-            textAlign: { xs: 'center', md: 'left' },
+    <>
+      {data && (
+        <>
+          <InfoStyle>
+            <UploadAvatar
+              disabled={
+                currentUser?.data?.information?.userId !== userProfileId
+              }
+              file={data?.data?.information?.avatarUrl || avatarUrlDefault}
+              maxSize={3145728}
+              onDrop={(e, _) => handleDrop(e, 'avatar')}
+            />
+            <Box
+              sx={{
+                ml: { md: 2 },
+                mt: { xs: 1, md: 0 },
+                color: 'common.white',
+                textAlign: { xs: 'center', md: 'left' },
+              }}
+            >
+              <Typography variant="h4">
+                {currentUser?.data?.information?.fullName}
+              </Typography>
+            </Box>
+          </InfoStyle>
+        </>
+      )}
+      <label htmlFor="uploadWallpaper">
+        <div>
+          <CoverImgStyle
+            alt="profile cover"
+            src={data?.data?.information?.coverImageUrl || wallpaperUrlDefault}
+          />
+        </div>
+        <RootStyle
+          style={{
+            cursor: `${
+              currentUser?.data?.information?.userId === userProfileId
+                ? 'pointer'
+                : 'auto'
+            }`,
           }}
         >
-          <Typography variant="h4">Gia An</Typography>
-          <Typography sx={{ opacity: 0.72 }}>{position}</Typography>
-        </Box>
-      </InfoStyle>
-      <CoverImgStyle alt="profile cover" src={cover} />
-    </RootStyle>
+          {currentUser?.data?.information?.userId === userProfileId && (
+            <input
+              type="file"
+              id="uploadWallpaper"
+              style={{ display: 'none' }}
+              accept="image/png, image/jpeg"
+              onChange={(e: any) => handleDrop(e, 'wallpaper')}
+            />
+          )}
+        </RootStyle>
+      </label>
+    </>
   );
 }

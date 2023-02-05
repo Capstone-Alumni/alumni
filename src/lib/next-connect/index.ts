@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import nc, { NextHandler } from 'next-connect';
+import { NextApiRequest, NextApiResponse } from 'next';
 import onErrorAPIHandler from './onErrorAPIHandler';
 import onNoMatchAPIHandler from './onNoMatchAPIHandler';
 

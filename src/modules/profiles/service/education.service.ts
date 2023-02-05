@@ -50,6 +50,32 @@ export default class EducationServices {
     return newEducation;
   };
 
+  static bulkCreate = async (
+    userId: string,
+    educations: CreateOrUpdateEducationServiceProps[],
+  ) => {
+    await isUserExisted(userId);
+
+    await prisma.education.deleteMany({
+      where: {
+        userId,
+      },
+    });
+
+    const newEducations = await prisma.education.createMany({
+      data: educations
+        ? educations.map(education => ({
+            degree: education.degree,
+            school: education.school,
+            startDate: education.startDate,
+            endDate: education.endDate,
+            userId,
+          }))
+        : [],
+    });
+    return newEducations;
+  };
+
   static updateEducation = async (
     userId: string,
     educationId: string,

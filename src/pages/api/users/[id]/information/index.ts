@@ -1,7 +1,11 @@
-import appNextConnect from '@lib/next-connect';
+import { extractTenantId } from '@lib/next-connect';
+import nc from 'next-connect';
 import InformationController from 'src/modules/profiles/controller/information.controller';
 
-const handler = appNextConnect
+const handler = nc();
+
+handler
+  .use(extractTenantId)
   .get(InformationController.getInformationByUserId)
   .put(InformationController.updateInformationByUserId);
 

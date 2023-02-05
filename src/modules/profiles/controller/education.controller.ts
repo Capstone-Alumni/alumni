@@ -20,6 +20,21 @@ export default class EducationController {
     });
   }
 
+  static async createManyRecords(
+    req: NextApiRequest,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) {
+    const { id: userId } = req.query;
+    const educationCreated = await EducationServices.bulkCreate(
+      userId as string,
+      req.body,
+    );
+    return res.status(201).json({
+      status: true,
+      data: educationCreated,
+    });
+  }
+
   static updateEducation = async (
     req: NextApiRequest,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
@@ -76,6 +91,8 @@ export default class EducationController {
       userId as string,
       params as unknown as QueryParamGetEducationByUserId,
     );
+
+    res.setHeader('Cache-Control', 'no-store');
     return res.status(200).json({
       status: true,
       data: userEducations,

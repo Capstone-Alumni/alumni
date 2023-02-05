@@ -29,6 +29,7 @@ export default class InformationController {
     const information = await InformationService.getInformationByUserId(
       id as string,
     );
+
     return res.status(200).json({
       status: true,
       data: information,

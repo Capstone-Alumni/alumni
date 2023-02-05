@@ -21,6 +21,14 @@ const RootStyle = styled('div')(({ theme }) => ({
   border: `1px dashed ${theme.palette.grey[500_32]}`,
 }));
 
+const RootDisabledStyle = styled('div')(({ theme }) => ({
+  width: 144,
+  height: 144,
+  margin: 'auto',
+  borderRadius: '50%',
+  border: `6px solid ${theme.palette.grey[500_32]}`,
+}));
+
 const DropZoneStyle = styled('div')({
   zIndex: 0,
   width: '100%',
@@ -75,6 +83,7 @@ export default function UploadAvatar({
   file,
   caption,
   sx,
+  disabled,
   ...other
 }: UploadAvatarProps) {
   const {
@@ -122,51 +131,70 @@ export default function UploadAvatar({
 
   return (
     <>
-      <RootStyle sx={sx}>
-        <DropZoneStyle
-          {...getRootProps()}
-          sx={{
-            ...(isDragActive && { opacity: 0.72 }),
-            ...((isDragReject || error) && {
-              color: 'error.main',
-              borderColor: 'error.light',
-              bgcolor: 'error.lighter',
-            }),
-          }}
-        >
-          <input {...getInputProps()} />
-
-          {file && (
-            <Box
-              component="img"
-              alt="avatar"
-              src={isString(file) ? file : file.preview}
-              sx={{ zIndex: 8, objectFit: 'cover' }}
-            />
-          )}
-
-          <PlaceholderStyle
-            className="placeholder"
+      {!disabled ? (
+        <RootStyle sx={sx}>
+          <DropZoneStyle
+            {...getRootProps()}
             sx={{
-              ...(file && {
-                opacity: 0,
-                color: 'common.white',
-                bgcolor: 'grey.900',
-                '&:hover': { opacity: 0.72 },
+              ...(isDragActive && { opacity: 0.72 }),
+              ...((isDragReject || error) && {
+                color: 'error.main',
+                borderColor: 'error.light',
+                bgcolor: 'error.lighter',
               }),
             }}
           >
-            <Box
-              component={Icon}
-              icon={roundAddAPhoto}
-              sx={{ width: 24, height: 24, mb: 1 }}
-            />
-            <Typography variant="caption">
-              {file ? 'Update photo' : 'Upload photo'}
-            </Typography>
-          </PlaceholderStyle>
-        </DropZoneStyle>
-      </RootStyle>
+            <input {...getInputProps()} />
+
+            {file && (
+              <Box
+                component="img"
+                alt="avatar"
+                src={isString(file) ? file : file.preview}
+                sx={{ zIndex: 8, objectFit: 'cover' }}
+              />
+            )}
+
+            {!disabled && (
+              <PlaceholderStyle
+                className="placeholder"
+                sx={{
+                  ...(file && {
+                    opacity: 0,
+                    color: 'common.white',
+                    bgcolor: 'grey.900',
+                    '&:hover': { opacity: 0.72 },
+                  }),
+                }}
+              >
+                <Box
+                  component={Icon}
+                  icon={roundAddAPhoto}
+                  sx={{ width: 24, height: 24, mb: 1 }}
+                />
+                <Typography variant="caption">
+                  {file ? 'Update photo' : 'Upload photo'}
+                </Typography>
+              </PlaceholderStyle>
+            )}
+          </DropZoneStyle>
+        </RootStyle>
+      ) : (
+        <RootDisabledStyle>
+          <Box
+            component="img"
+            alt="avatar"
+            src={isString(file) ? file : file?.preview}
+            sx={{
+              zIndex: 8,
+              objectFit: 'cover',
+              width: '100%',
+              height: '100%',
+              borderRadius: '100%',
+            }}
+          />
+        </RootDisabledStyle>
+      )}
 
       {caption}
 

@@ -22,12 +22,12 @@ import { Block } from '../../Block';
 const style = {
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center'
+  justifyContent: 'center',
 };
 
 const RootStyle = styled(Page)(({ theme }) => ({
   paddingTop: theme.spacing(11),
-  paddingBottom: theme.spacing(15)
+  paddingBottom: theme.spacing(15),
 }));
 
 // ----------------------------------------------------------------------
@@ -40,13 +40,17 @@ export default function DialogComponent() {
           pt: 6,
           pb: 1,
           mb: 10,
-          bgcolor: (theme) => (theme.palette.mode === 'light' ? 'grey.200' : 'grey.800')
+          bgcolor: (theme) =>
+            theme.palette.mode === 'light' ? 'grey.200' : 'grey.800',
         }}
       >
         <Container maxWidth="lg">
           <HeaderBreadcrumbs
             heading="Dialog"
-            links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Dialog' }]}
+            links={[
+              { name: 'Components', href: PATH_PAGE.components },
+              { name: 'Dialog' },
+            ]}
             moreLink="https://next.material-ui.com/components/dialogs"
           />
         </Container>

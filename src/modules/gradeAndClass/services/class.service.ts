@@ -25,7 +25,6 @@ export default class GradeService {
     if (!name) {
       throw new Error('invalid class name');
     }
-
     await isGradeExisted(gradeId);
 
     const newClass = await prisma.class.create({
