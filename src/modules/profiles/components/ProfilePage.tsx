@@ -57,14 +57,6 @@ const UserProfile = () => {
     redirect('/403_error');
   }
 
-  if (
-    userEducationsResponse?.error ||
-    userCareersResponse?.error ||
-    userInformationResponse?.error
-  ) {
-    redirect('/403_error');
-  }
-
   const PROFILE_TABS = [
     {
       value: 'profile',
@@ -99,7 +91,7 @@ const UserProfile = () => {
             allowScrollButtonsMobile
             onChange={(e, value) => handleChangeTab(value)}
           >
-            {PROFILE_TABS.map(tab => (
+            {PROFILE_TABS.map((tab) => (
               <Tab
                 disableRipple
                 key={tab.value}
@@ -112,7 +104,7 @@ const UserProfile = () => {
         </TabsWrapperStyle>
       </Card>
 
-      {PROFILE_TABS.map(tab => {
+      {PROFILE_TABS.map((tab) => {
         const isMatched = tab.value === currentTab;
         return isMatched && <Box key={tab.value}>{tab.component}</Box>;
       })}
