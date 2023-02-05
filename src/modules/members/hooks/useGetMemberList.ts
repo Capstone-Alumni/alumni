@@ -24,7 +24,7 @@ const useGetMemberList = (tenantId: string) => {
     `getMemberList/${tenantId}`,
     ({ page, limit, email }) => ({
       method: 'GET',
-      url: '/api/members',
+      url: '/platformHost/api/members',
       params: {
         tenant_id: tenantId,
         page,

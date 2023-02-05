@@ -15,7 +15,7 @@ const useDeleteMemberById = () => {
     DeleteMemberByIdDataError
   >('deleteMemberById', ({ memberId }) => ({
     method: 'DELETE',
-    url: `/api/members/${memberId}`,
+    url: `/platformHost/api/members/${memberId}`,
   }));
 
   return {

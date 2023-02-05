@@ -17,13 +17,14 @@ const useCreateMember = () => {
     CreateMemberError
   >(
     'createMember',
-    ({ email, password, tenantId }) => ({
+    ({ email, password, accessLevel, tenantId }) => ({
       method: 'POST',
-      url: '/api/members',
+      url: '/platformHost/api/members',
       data: {
         email,
         password,
         tenantId,
+        accessLevel,
       },
     }),
     {

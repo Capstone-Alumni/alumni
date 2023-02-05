@@ -2,6 +2,7 @@ import useApi from 'src/modules/share/hooks/useApi';
 
 type UpdateMemberByIdDataParams = {
   memberId: string;
+  accessLevel: string;
   password: string;
 };
 
@@ -14,11 +15,12 @@ const useUpdateMemberById = () => {
     UpdateMemberByIdDataParams,
     UpdateMemberByIdDataResponse,
     UpdateMemberByIdDataError
-  >('updateMemberById', ({ memberId, password }) => ({
+  >('updateMemberById', ({ memberId, password, accessLevel }) => ({
     method: 'PUT',
-    url: `/api/members/${memberId}`,
+    url: `/platformHost/api/members/${memberId}`,
     data: {
       password,
+      accessLevel,
     },
   }));
 

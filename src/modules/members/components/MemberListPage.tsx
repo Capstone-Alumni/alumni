@@ -13,10 +13,13 @@ import LoadingIndicator from '@share/components/LoadingIndicator';
 import MemberForm, { MemberFormValues } from './MemberForm';
 import { useRecoilState } from 'recoil';
 import { getMemberListParamsAtom } from '../state';
+import { useAppSelector } from 'src/redux/hooks';
+import { currentTenantSelector } from 'src/redux/slices/currentTenantSlice';
 
-const MemberListPage = ({ tenantId }: { tenantId: string }) => {
+const MemberListPage = () => {
   const theme = useTheme();
   const [openForm, setOpenForm] = useState(false);
+  const { id: tenantId } = useAppSelector(currentTenantSelector);
 
   const [params, setParams] = useRecoilState(getMemberListParamsAtom);
 
@@ -39,8 +42,11 @@ const MemberListPage = ({ tenantId }: { tenantId: string }) => {
     reload();
   };
 
-  const onUpdate = async (memberId: string, { password }: MemberFormValues) => {
-    await updateMemberById({ memberId, password });
+  const onUpdate = async (
+    memberId: string,
+    { password, accessLevel }: MemberFormValues,
+  ) => {
+    await updateMemberById({ memberId, password, accessLevel });
     reload();
   };
 
@@ -59,17 +65,28 @@ const MemberListPage = ({ tenantId }: { tenantId: string }) => {
           width: '100%',
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
+          gap: theme.spacing(2),
           alignItems: 'center',
         }}
       >
-        <Typography variant="h3">Thành viên</Typography>
+        <Typography variant="h3" sx={{ flex: 1 }}>
+          Thành viên
+        </Typography>
+
+        <Button
+          variant="outlined"
+          startIcon={<AddIcon />}
+          onClick={() => setOpenForm(true)}
+        >
+          Thêm thành viên mới
+        </Button>
+
         <Button
           variant="contained"
           startIcon={<AddIcon />}
           onClick={() => setOpenForm(true)}
         >
-          Thêm thành viên mới
+          Thêm thành viên từ file
         </Button>
       </Box>
 

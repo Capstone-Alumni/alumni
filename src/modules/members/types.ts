@@ -1,8 +1,17 @@
+export type ACCESS_LEVEL =
+  | 'SCHOOL_ADMIN'
+  | 'CLASS_MOD'
+  | 'GRADE_MOD'
+  | 'ALUMNI';
+export type ACCESS_STATUS = 'PENDING' | 'APPROVED';
+
 /** ========================== FE ================================= */
 export type Member = {
   id: string;
   userId: string;
   tenantId: string;
+  accessLevel: ACCESS_LEVEL;
+  accessStatus: ACCESS_STATUS;
 
   isOwner: boolean;
 

@@ -3,23 +3,33 @@ import { Controller, useForm } from 'react-hook-form';
 
 import * as yup from 'yup';
 import {
+  passwordValidator,
   requiredEmailValidator,
-  requiredPasswordValidator,
 } from '@share/utils/validators';
 
-import { Box, Button, TextField, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  MenuItem,
+  TextField,
+  Typography,
+  useTheme,
+} from '@mui/material';
 
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
-import { Member } from '../types';
+import { ACCESS_LEVEL, Member } from '../types';
+import getRoleName from '@share/utils/getRoleName';
 
 export type MemberFormValues = {
   email: string;
   password: string;
+  accessLevel: string;
 };
 
 const validationSchema = yup.object({
   email: requiredEmailValidator,
-  password: requiredPasswordValidator,
+  accessLevel: yup.string(),
+  password: passwordValidator,
 });
 
 const MemberForm = ({
@@ -39,6 +49,7 @@ const MemberForm = ({
   const { control, handleSubmit } = useForm({
     defaultValues: {
       email: initialData?.user.email ?? '',
+      accessLevel: initialData?.accessLevel ?? 'ALUMNI',
       password: '',
     },
     resolver,
@@ -69,8 +80,8 @@ const MemberForm = ({
       <Box sx={{ width: '100%' }}>
         <Typography variant="h6">
           {initialData
-            ? 'Chỉnh sửa thông tin thanh vien'
-            : 'Thêm thanh vien mới'}
+            ? 'Chỉnh sửa thông tin thành viên'
+            : 'Thêm thành viên mới'}
         </Typography>
       </Box>
 
@@ -84,6 +95,29 @@ const MemberForm = ({
             {...field}
             disabled={!!initialData?.user.email}
           />
+        )}
+      />
+
+      <Controller
+        name="accessLevel"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            fullWidth
+            variant="outlined"
+            label="Vai trò"
+            select
+            type="select"
+            {...field}
+          >
+            {['ALUMNI', 'CLASS_MOD', 'GRADE_MOD', 'SCHOOL_ADMIN']?.map(
+              (role: string) => (
+                <MenuItem key={role} value={role}>
+                  {getRoleName(role)}
+                </MenuItem>
+              ),
+            )}
+          </TextField>
         )}
       />
 

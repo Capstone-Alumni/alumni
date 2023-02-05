@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
 export type Tenant = {
+  id: string;
   name: string;
   logo?: string;
   description?: string;
@@ -12,6 +13,7 @@ export type Tenant = {
 };
 
 export interface CurrentTenantState {
+  id: string;
   name: string;
   logo?: string;
   description?: string;
@@ -21,6 +23,7 @@ export interface CurrentTenantState {
 }
 
 const initialState: CurrentTenantState = {
+  id: '',
   name: 'Alumni',
   logo: '/logo.png',
   description: '',
@@ -34,6 +37,7 @@ const currentTenantSlice = createSlice({
   initialState,
   reducers: {
     setTenant: (state, action: PayloadAction<Tenant>) => {
+      state.id = action.payload.id;
       state.name = action.payload.name;
       state.logo = action.payload.logo;
       state.description = action.payload.description;

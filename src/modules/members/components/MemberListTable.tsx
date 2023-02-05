@@ -45,7 +45,7 @@ const AdminMemberListTable = ({
               <TableCell align="left">Email</TableCell>
               <TableCell align="left">Vai trò</TableCell>
               <TableCell align="left">Trạng thái</TableCell>
-              <TableCell align="center">Mat khau</TableCell>
+              <TableCell align="center">Chỉnh sửa</TableCell>
               <TableCell />
             </TableRow>
           </TableHead>

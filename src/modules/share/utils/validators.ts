@@ -25,6 +25,15 @@ export const requiredPasswordValidator = yup
   .max(40, 'Tối đa 40 ký tự')
   .required('Bắt buộc');
 
+export const passwordValidator = yup
+  .string()
+  .matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    'Mật khẩu phải chứa ít nhất 8 ký tự, trong đó có phải có 1 chữ in thường, 1 chữ in hoa, 1 chữ số, và 1 ký tự đặt biệt',
+  )
+  .min(8, 'Tối thiểu 8 ký tự')
+  .max(40, 'Tối đa 40 ký tự');
+
 export const requiredConfirmPasswordValidator = yup
   .string()
   .oneOf([yup.ref('password'), null], 'Mật khẩu không khớp')
