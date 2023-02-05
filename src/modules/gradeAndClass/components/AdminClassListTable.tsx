@@ -44,7 +44,7 @@ const AdminClassListTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.items.map((row) => (
+            {data.items.map(row => (
               <AdminClassListItem
                 key={row.id}
                 data={row}

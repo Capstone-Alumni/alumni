@@ -1,7 +1,6 @@
 'use client';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import useGetUserInformationById from 'src/modules/profiles/hooks/useGetUserInformationById';
 
 const Home = () => {
   const { data: session } = useSession();

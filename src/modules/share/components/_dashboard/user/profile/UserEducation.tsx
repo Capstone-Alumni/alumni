@@ -1,11 +1,11 @@
 import {
   Box,
-  Divider,
-  IconButton,
-  Typography,
-  Grid,
   Card,
+  Divider,
+  Grid,
+  IconButton,
   Stack,
+  Typography,
   useTheme,
 } from '@mui/material';
 import React, { useState } from 'react';
@@ -15,7 +15,6 @@ import { toast } from 'react-toastify';
 
 import SchoolIcon from '@mui/icons-material/School';
 import EducationForm from './EducationForm';
-import { useDispatch, useSelector } from 'react-redux';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useUpdateUserEducationsMutation } from 'src/redux/slices/userProfileSlice';
@@ -46,7 +45,7 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
   const onDeleteWork = async (id: string) => {
     const currentData = [...educationData];
 
-    const deleteIndex = currentData.findIndex((item) => item.id === id);
+    const deleteIndex = currentData.findIndex(item => item.id === id);
 
     currentData.splice(deleteIndex, 1);
 
@@ -61,7 +60,7 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
   const onUpdateWork = async (id: any, values: any) => {
     const currentData = [...educationData];
 
-    const updateIndex = currentData.findIndex((item) => item.id === id);
+    const updateIndex = currentData.findIndex(item => item.id === id);
 
     currentData[updateIndex] = values;
 

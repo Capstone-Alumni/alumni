@@ -55,14 +55,18 @@ export default function EditVisibilityForm({
   }, [userInformation]);
 
   const handleMappingVisibility = (visibility: ScopePublicity) => {
-    if (visibility === ScopePublicity.PRIVATE)
+    if (visibility === ScopePublicity.PRIVATE) {
       return { label: 'Chỉ mình tôi', publicity: ScopePublicity.PRIVATE };
-    if (visibility === ScopePublicity.CLASS)
+    }
+    if (visibility === ScopePublicity.CLASS) {
       return { label: 'Lớp', publicity: ScopePublicity.CLASS };
-    if (visibility === ScopePublicity.GRADE)
+    }
+    if (visibility === ScopePublicity.GRADE) {
       return { label: 'Khối', publicity: ScopePublicity.GRADE };
-    if (visibility === ScopePublicity.SCHOOL)
+    }
+    if (visibility === ScopePublicity.SCHOOL) {
       return { label: 'Trường', publicity: ScopePublicity.SCHOOL };
+    }
   };
 
   const handleOnChange = (value: any, field: string) => {
@@ -119,7 +123,7 @@ export default function EditVisibilityForm({
                   handleOnChange(value, 'emailPublicity');
                 }}
                 sx={{ width: 300 }}
-                renderInput={(params) => (
+                renderInput={params => (
                   <TextField {...params} label="Ai có thể xem" size="small" />
                 )}
               />
@@ -148,7 +152,7 @@ export default function EditVisibilityForm({
                   handleOnChange(value, 'phonePublicity');
                 }}
                 sx={{ width: 300 }}
-                renderInput={(params) => (
+                renderInput={params => (
                   <TextField {...params} label="Ai có thể xem" size="small" />
                 )}
               />
@@ -177,7 +181,7 @@ export default function EditVisibilityForm({
                   handleOnChange(value, 'facebookPublicity');
                 }}
                 sx={{ width: 300 }}
-                renderInput={(params) => (
+                renderInput={params => (
                   <TextField {...params} label="Ai có thể xem" size="small" />
                 )}
               />
@@ -206,7 +210,7 @@ export default function EditVisibilityForm({
                   handleOnChange(value, 'dateOfBirthPublicity');
                 }}
                 sx={{ width: 300 }}
-                renderInput={(params) => (
+                renderInput={params => (
                   <TextField {...params} label="Ai có thể xem" size="small" />
                 )}
               />
@@ -235,7 +239,7 @@ export default function EditVisibilityForm({
                   handleOnChange(value, 'careerPublicity');
                 }}
                 sx={{ width: 300 }}
-                renderInput={(params) => (
+                renderInput={params => (
                   <TextField {...params} label="Ai có thể xem" size="small" />
                 )}
               />
@@ -264,7 +268,7 @@ export default function EditVisibilityForm({
                   handleOnChange(value, 'educationPublicity');
                 }}
                 sx={{ width: 300 }}
-                renderInput={(params) => (
+                renderInput={params => (
                   <TextField {...params} label="Ai có thể xem" size="small" />
                 )}
               />

@@ -88,7 +88,7 @@ export default function EditorToolbar({ id, isSimple, ...other }: any) {
           {!isSimple && (
             <select className="ql-font" defaultValue="">
               <option value="">Font</option>
-              {FONT_FAMILY.map((font) => (
+              {FONT_FAMILY.map(font => (
                 <option key={font} value={font}>
                   {font}
                 </option>
@@ -98,7 +98,7 @@ export default function EditorToolbar({ id, isSimple, ...other }: any) {
 
           {!isSimple && (
             <select className="ql-size" defaultValue="16px">
-              {FONT_SIZE.map((size) => (
+              {FONT_SIZE.map(size => (
                 <option key={size} value={size}>
                   {size}
                 </option>

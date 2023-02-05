@@ -1,11 +1,10 @@
 import { Information } from '@prisma/client';
 import { Icon } from '@iconify/react';
 // material
-import { Box, styled, Grid, useTheme } from '@mui/material';
+import { Box, Grid, styled, useTheme } from '@mui/material';
 import { Card, Stack, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 // @types
-import { orange } from '@mui/material/colors';
 import ProfileInfoRow from './InfoRow';
 import { isAllowToViewValue } from 'src/utils/mappingPublicity';
 import { useAppSelector } from 'src/redux/hooks';

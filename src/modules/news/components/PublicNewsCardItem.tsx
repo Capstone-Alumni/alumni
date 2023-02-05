@@ -1,7 +1,6 @@
 'use client';
 
-import { Box, Card, CardContent, Chip, Link, Typography } from '@mui/material';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { Box, Card, Typography } from '@mui/material';
 import { getImageOfNews } from '@share/utils/getFirstImageOfNews';
 import Image from 'next/image';
 import parse from 'html-react-parser';

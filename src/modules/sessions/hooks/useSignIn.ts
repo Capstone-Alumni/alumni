@@ -16,7 +16,7 @@ export default function useSignIn() {
           email: value?.email,
           password: value?.password,
           redirect: false,
-        }).then((res) => {
+        }).then(res => {
           if (res?.error) {
             // TODO: handle error
           } else {

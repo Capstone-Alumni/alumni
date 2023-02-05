@@ -1,5 +1,4 @@
 import { prisma } from '@lib/prisma/prisma';
-import archiveFill from '@iconify/icons-eva/archive-fill';
 import {
   CreateCareerServiceProps,
   GetCareerListServiceParams,
@@ -51,7 +50,7 @@ export default class CareerService {
 
     const newCareers = await prisma.career.createMany({
       data: careers
-        ? careers.map((career) => ({
+        ? careers.map(career => ({
             jobTitle: career.jobTitle,
             company: career.company,
             startDate: career.startDate,

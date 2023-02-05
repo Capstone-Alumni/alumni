@@ -90,8 +90,8 @@ const AdminGradeListPage = () => {
             onDelete={onDelete}
             onEdit={onUpdate}
             page={params.page || 1}
-            onChangePage={(nextPage) => {
-              setParams((prevParams) => ({ ...prevParams, page: nextPage }));
+            onChangePage={nextPage => {
+              setParams(prevParams => ({ ...prevParams, page: nextPage }));
             }}
           />
         ) : null}

@@ -103,7 +103,7 @@ export default function UploadMultiFile({
         px: 2,
         mt: 3,
         borderColor: 'error.light',
-        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08),
+        bgcolor: theme => alpha(theme.palette.error.main, 0.08),
       }}
     >
       {fileRejections.map(({ file, errors }) => {
@@ -113,7 +113,7 @@ export default function UploadMultiFile({
             <Typography variant="subtitle2" noWrap>
               {path} - {fData(size)}
             </Typography>
-            {errors.map((e) => (
+            {errors.map(e => (
               <Typography key={e.code} variant="caption" component="p">
                 - {e.message}
               </Typography>
@@ -164,7 +164,7 @@ export default function UploadMultiFile({
 
       <List disablePadding sx={{ ...(hasFile && { my: 3 }) }}>
         <AnimatePresence>
-          {files.map((file) => {
+          {files.map(file => {
             const { key, name, size, preview } = getFileData(
               file as CustomFile,
             );
@@ -204,10 +204,9 @@ export default function UploadMultiFile({
                       sx={{
                         p: '2px',
                         color: 'common.white',
-                        bgcolor: (theme) =>
-                          alpha(theme.palette.grey[900], 0.72),
+                        bgcolor: theme => alpha(theme.palette.grey[900], 0.72),
                         '&:hover': {
-                          bgcolor: (theme) =>
+                          bgcolor: theme =>
                             alpha(theme.palette.grey[900], 0.48),
                         },
                       }}
@@ -229,7 +228,7 @@ export default function UploadMultiFile({
                   py: 0.75,
                   px: 2,
                   borderRadius: 1,
-                  border: (theme) => `solid 1px ${theme.palette.divider}`,
+                  border: theme => `solid 1px ${theme.palette.divider}`,
                   bgcolor: 'background.paper',
                 }}
               >

@@ -1,5 +1,4 @@
 // material
-import { Container } from '@mui/material';
 
 import EditUserInformation from './UserInfo';
 import EditUserCareers from './UserCareers';

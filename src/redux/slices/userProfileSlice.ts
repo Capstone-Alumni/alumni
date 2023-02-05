@@ -1,7 +1,6 @@
 // Need to use the React-specific entry point to allow generating React hooks
-import { Education, Career, Information } from '@prisma/client';
+import { Information } from '@prisma/client';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { UserInformation } from '@share/type';
 import { RootState } from 'src/redux/store';
 
 // Define a service using a base URL and expected endpoints
@@ -11,7 +10,7 @@ export const userProfileApi = createApi({
     baseUrl: '/',
   }),
   tagTypes: ['Infomation', 'Careers', 'Educations'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     // Infomation
 
     getUserInformation: builder.query<any, any>({

@@ -89,7 +89,7 @@ export type Education = {
   startDate?: Date | null;
   endDate?: Date | null;
   userId?: string;
-  archived?: Boolean;
+  archived?: boolean;
 };
 
 export type UserEducations = {
@@ -105,7 +105,7 @@ export type Career = {
   startDate?: Date | null;
   endDate?: Date | null;
   userId?: string;
-  archived?: Boolean;
+  archived?: boolean;
 };
 
 export type UserCareers = {

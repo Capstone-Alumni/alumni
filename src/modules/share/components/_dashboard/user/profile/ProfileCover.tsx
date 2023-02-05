@@ -120,7 +120,7 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
               }
               file={data?.data?.information?.avatarUrl}
               maxSize={3145728}
-              onDrop={(e) => handleDrop(e, 'avatar')}
+              onDrop={e => handleDrop(e, 'avatar')}
             />
             <Box
               sx={{
@@ -157,7 +157,7 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
               id="uploadWallpaper"
               style={{ display: 'none' }}
               accept="image/png, image/jpeg"
-              onChange={(e) => handleDrop(e, 'wallpaper')}
+              onChange={e => handleDrop(e, 'wallpaper')}
             />
           )}
         </RootStyle>

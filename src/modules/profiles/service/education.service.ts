@@ -64,7 +64,7 @@ export default class EducationServices {
 
     const newEducations = await prisma.education.createMany({
       data: educations
-        ? educations.map((education) => ({
+        ? educations.map(education => ({
             degree: education.degree,
             school: education.school,
             startDate: education.startDate,

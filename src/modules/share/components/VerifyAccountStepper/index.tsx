@@ -12,7 +12,7 @@ export default function StepperComponent() {
       <Paper
         sx={{
           width: '100%',
-          boxShadow: (theme) => theme.customShadows.z8,
+          boxShadow: theme => theme.customShadows.z8,
         }}
       >
         <VerticalLinearStepper steps={steps} />

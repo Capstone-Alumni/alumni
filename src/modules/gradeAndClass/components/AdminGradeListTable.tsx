@@ -40,7 +40,7 @@ const AdminGradeListTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.items.map((row) => (
+            {data.items.map(row => (
               <AdminGradeListItem
                 key={row.id}
                 data={row}

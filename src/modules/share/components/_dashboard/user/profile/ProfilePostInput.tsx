@@ -24,7 +24,7 @@ export default function ProfilePostInput() {
         sx={{
           '& fieldset': {
             borderWidth: '1px !important',
-            borderColor: (theme) => `${theme.palette.grey[500_32]} !important`,
+            borderColor: theme => `${theme.palette.grey[500_32]} !important`,
           },
         }}
       />

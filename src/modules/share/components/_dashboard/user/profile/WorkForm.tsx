@@ -68,7 +68,7 @@ const WorkForm = ({ defaultValues, onSave }: any) => {
           type: 'text',
           placeholder: 'yyyy-yyyy',
         },
-      ].map((item) => {
+      ].map(item => {
         return item.name !== 'startDate' && item.name !== 'endDate' ? (
           <Controller
             key={item.name}
@@ -106,7 +106,7 @@ const WorkForm = ({ defaultValues, onSave }: any) => {
                   onChange={(event: any) => {
                     onChange(event);
                   }}
-                  renderInput={(params) => (
+                  renderInput={params => (
                     <TextField
                       margin="normal"
                       {...register(item.name, { required: false })}

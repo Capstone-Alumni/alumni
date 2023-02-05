@@ -101,7 +101,7 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
   } = formik;
 
   useEffect(() => {
-    if (!Boolean(grades.length > 0)) {
+    if (!(grades.length > 0)) {
       handleGetGrades();
       return;
     }
@@ -109,20 +109,21 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
     if (values?.grade?.gradeCode) {
       handleGetClasses(values.grade.gradeCode);
       return;
-    } else {
-      setClasses([]);
     }
+    setClasses([]);
   }, [values.grade]);
 
   const handleGetClasses = async (gradeId: string | null) => {
     const res = await axiosInstance({
-      url: `/api/classes`,
+      url: '/api/classes',
       method: 'GET',
       params: {
         grade_id: gradeId,
       },
     });
-    if (!res) return;
+    if (!res) {
+      return;
+    }
     const filteredClasses = res.data?.items.map((classRes: any) => ({
       className: classRes.name,
     }));
@@ -132,10 +133,12 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
 
   const handleGetGrades = async () => {
     const res = await axiosInstance({
-      url: `/api/grades`,
+      url: '/api/grades',
       method: 'GET',
     });
-    if (!res) return;
+    if (!res) {
+      return;
+    }
     const filteredClasses = res.data?.items.map((gradeRes: any) => ({
       gradeCode: gradeRes.id,
       gradeName: gradeRes.name,
@@ -227,7 +230,7 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                             id="combo-box-demo"
                             {...getFieldProps('gradeName')}
                             options={grades}
-                            getOptionLabel={(option) => option.gradeName || ''}
+                            getOptionLabel={option => option.gradeName || ''}
                             onChange={(_, value) => {
                               if (!value) {
                                 setFieldValue('grade', {
@@ -240,7 +243,7 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                               setFieldValue('grade', value);
                             }}
                             defaultValue={values.grade}
-                            renderInput={(params) => (
+                            renderInput={params => (
                               <TextField
                                 {...params}
                                 label="Khối"
@@ -250,14 +253,12 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                           />
                           {values.grade?.gradeCode && (
                             <Autocomplete
-                              disabled={!Boolean(values.grade?.gradeCode)}
+                              disabled={!values.grade?.gradeCode}
                               fullWidth
                               id="combo-box-demo"
                               {...getFieldProps('className')}
                               options={classes}
-                              getOptionLabel={(option) =>
-                                option.className || ''
-                              }
+                              getOptionLabel={option => option.className || ''}
                               onChange={(_, value) => {
                                 console.log(value);
                                 if (!value) {
@@ -267,7 +268,7 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                                 setFieldValue('class', value);
                               }}
                               defaultValue={values.class}
-                              renderInput={(params) => (
+                              renderInput={params => (
                                 <TextField
                                   {...params}
                                   label="Lớp"
@@ -293,12 +294,12 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                       />
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                          onChange={(value) =>
+                          onChange={value =>
                             setFieldValue('dateOfBirth', value, true)
                           }
                           value={values.dateOfBirth}
                           label="Ngày sinh"
-                          renderInput={(params) => (
+                          renderInput={params => (
                             <TextField
                               error={Boolean(
                                 touched.dateOfBirth && errors.dateOfBirth,

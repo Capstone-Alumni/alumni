@@ -48,12 +48,12 @@ export default function ProfilePostCard({ post }: ProfilePostCardProps) {
 
   const handleLike = () => {
     setLiked(true);
-    setLikes((prevLikes) => prevLikes + 1);
+    setLikes(prevLikes => prevLikes + 1);
   };
 
   const handleUnlike = () => {
     setLiked(false);
-    setLikes((prevLikes) => prevLikes - 1);
+    setLikes(prevLikes => prevLikes - 1);
   };
 
   const handleChangeMessage = (value: string) => {
@@ -130,7 +130,7 @@ export default function ProfilePostCard({ post }: ProfilePostCardProps) {
             max={4}
             sx={{ '& .MuiAvatar-root': { width: 32, height: 32 } }}
           >
-            {post.personLikes.map((person) => (
+            {post.personLikes.map(person => (
               <Avatar
                 key={person.name}
                 alt={person.name}
@@ -149,7 +149,7 @@ export default function ProfilePostCard({ post }: ProfilePostCardProps) {
 
         {hasComments && (
           <Stack spacing={1.5}>
-            {post.comments.map((comment) => (
+            {post.comments.map(comment => (
               <Stack key={comment.id} direction="row" spacing={2}>
                 <Avatar
                   alt={comment.author.name}
@@ -191,7 +191,7 @@ export default function ProfilePostCard({ post }: ProfilePostCardProps) {
             value={message}
             inputRef={commentInputRef}
             placeholder="Write a comment…"
-            onChange={(event) => handleChangeMessage(event.target.value)}
+            onChange={event => handleChangeMessage(event.target.value)}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -211,7 +211,7 @@ export default function ProfilePostCard({ post }: ProfilePostCardProps) {
               mr: 1,
               '& fieldset': {
                 borderWidth: '1px !important',
-                borderColor: (theme) =>
+                borderColor: theme =>
                   `${theme.palette.grey[500_32]} !important`,
               },
             }}

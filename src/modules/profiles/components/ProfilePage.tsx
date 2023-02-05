@@ -3,23 +3,21 @@
 import { Icon } from '@iconify/react';
 import { capitalCase } from 'change-case';
 import { useState } from 'react';
-import roundPermMedia from '@iconify/icons-ic/round-perm-media';
 import roundAccountBox from '@iconify/icons-ic/round-account-box';
 
 import { styled } from '@mui/material';
-import { Tab, Box, Card, Tabs, Container } from '@mui/material';
+import { Box, Card, Container, Tab, Tabs } from '@mui/material';
 
 import {
   Profile,
   ProfileCover,
 } from '../../share/components/_dashboard/user/profile';
-import UserEditWrapper from '@share/components/_dashboard/user/profile/UserEditWrapper';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import {
-  useGetUserInformationQuery,
   useGetUserCareersQuery,
   useGetUserEducationsQuery,
+  useGetUserInformationQuery,
 } from 'src/redux/slices/userProfileSlice';
 
 // ----------------------------------------------------------------------
@@ -96,7 +94,7 @@ const UserProfile = () => {
               allowScrollButtonsMobile
               onChange={(e, value) => handleChangeTab(value)}
             >
-              {PROFILE_TABS.map((tab) => (
+              {PROFILE_TABS.map(tab => (
                 <Tab
                   disableRipple
                   key={tab.value}
@@ -109,7 +107,7 @@ const UserProfile = () => {
           </TabsWrapperStyle>
         </Card>
 
-        {PROFILE_TABS.map((tab) => {
+        {PROFILE_TABS.map(tab => {
           const isMatched = tab.value === currentTab;
           return isMatched && <Box key={tab.value}>{tab.component}</Box>;
         })}

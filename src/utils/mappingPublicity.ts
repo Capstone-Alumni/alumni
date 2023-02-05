@@ -4,10 +4,16 @@ export const isAllowToViewValue = (
   currentUserInfomation: Information,
   profileInfomation: Information,
   permissionToSee?: ScopePublicity,
-): Boolean => {
-  if (!permissionToSee) return false;
-  if (permissionToSee === 'PRIVATE') return false;
-  if (permissionToSee === 'SCHOOL') return true;
+): boolean => {
+  if (!permissionToSee) {
+    return false;
+  }
+  if (permissionToSee === 'PRIVATE') {
+    return false;
+  }
+  if (permissionToSee === 'SCHOOL') {
+    return true;
+  }
 
   if (permissionToSee === 'GRADE') {
     return currentUserInfomation.gradeName === profileInfomation.gradeName;
