@@ -59,7 +59,7 @@ const Header = ({ user, tenant }: { user?: any; tenant?: any }) => {
             >
               <Logo />
             </IconButton>
-            <Typography variant="h6" component="div">
+            <Typography variant="h6" component="div" color="primary">
               {tenant?.name}
             </Typography>
 
@@ -77,20 +77,24 @@ const Header = ({ user, tenant }: { user?: any; tenant?: any }) => {
               }}
             >
               <NavItem label="Tin tức" href="/news" />
-              <NavItem label="Sự kiện" href="/events" />
+              {user ? <NavItem label="Sự kiện" href="/events" /> : null}
             </Box>
 
             <Box sx={{ flex: 1 }} />
 
-            <Box sx={{ mr: theme.spacing(2) }}>
-              <SearchInput placeholder="Tìm kiếm bạn học" />
-            </Box>
+            {user ? (
+              <Box sx={{ mr: theme.spacing(2) }}>
+                <SearchInput placeholder="Tìm kiếm bạn học" />
+              </Box>
+            ) : null}
 
             {user ? (
               <HeaderUserOptions user={user} />
             ) : (
-              <Link href="/sign_in">
-                <Typography color="error">Login</Typography>
+              <Link href="/sign_in" style={{ color: 'inherit' }}>
+                <Button color="primary" variant="contained" role="href">
+                  Đăng nhập
+                </Button>
               </Link>
             )}
           </Toolbar>

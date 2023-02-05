@@ -116,7 +116,7 @@ export default class NewsService {
         { title: { contains: title } },
         { content: { contains: content } },
         { archived: false },
-        { isPublic: true },
+        // { isPublic: true },
       ],
     };
     const [totalNewsItem, newsItems] = await tenantPrisma.$transaction([
