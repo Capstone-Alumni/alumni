@@ -82,7 +82,6 @@ const UserProfile = () => {
         }}
       >
         <ProfileCover userProfileId={userProfileId} />
-
         <TabsWrapperStyle>
           <Tabs
             value={currentTab}
@@ -91,7 +90,8 @@ const UserProfile = () => {
             allowScrollButtonsMobile
             onChange={(e, value) => handleChangeTab(value)}
           >
-            {PROFILE_TABS.map((tab) => (
+            {/* prettier-ignore */}
+            {PROFILE_TABS.map((tab, index) => (
               <Tab
                 disableRipple
                 key={tab.value}
@@ -103,8 +103,8 @@ const UserProfile = () => {
           </Tabs>
         </TabsWrapperStyle>
       </Card>
-
-      {PROFILE_TABS.map((tab) => {
+      {/* prettier-ignore */}
+      {PROFILE_TABS.map((tab, index) => {
         const isMatched = tab.value === currentTab;
         return isMatched && <Box key={tab.value}>{tab.component}</Box>;
       })}
