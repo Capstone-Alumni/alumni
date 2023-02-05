@@ -57,15 +57,37 @@ export const getPalette = (paletteName: string) => {
   return {
     light: {
       ...customPalette.COMMON,
-      text: { primary: customPalette.GREY[800], secondary: customPalette.GREY[600], disabled: customPalette.GREY[500] },
-      background: { paper: '#fff', default: '#fff', neutral: customPalette.GREY[200] },
-      action: { active: customPalette.GREY[600], ...customPalette.COMMON.action },
+      text: {
+        primary: customPalette.GREY[800],
+        secondary: customPalette.GREY[600],
+        disabled: customPalette.GREY[500],
+      },
+      background: {
+        paper: '#fff',
+        default: '#fff',
+        neutral: customPalette.GREY[200],
+      },
+      action: {
+        active: customPalette.GREY[600],
+        ...customPalette.COMMON.action,
+      },
     },
     dark: {
       ...customPalette.COMMON,
-      text: { primary: '#fff', secondary: customPalette.GREY[500], disabled: customPalette.GREY[600] },
-      background: { paper: customPalette.GREY[800], default: customPalette.GREY[900], neutral: customPalette.GREY[500_16] },
-      action: { active: customPalette.GREY[500], ...customPalette.COMMON.action },
+      text: {
+        primary: '#fff',
+        secondary: customPalette.GREY[500],
+        disabled: customPalette.GREY[600],
+      },
+      background: {
+        paper: customPalette.GREY[800],
+        default: customPalette.GREY[900],
+        neutral: customPalette.GREY[500_16],
+      },
+      action: {
+        active: customPalette.GREY[500],
+        ...customPalette.COMMON.action,
+      },
     },
   };
-}
+};

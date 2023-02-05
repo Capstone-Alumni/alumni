@@ -10,7 +10,6 @@ export default async function AuthorizedLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   const session = await unstable_getServerSession(nextAuthOptions);
 
   if (!session) {

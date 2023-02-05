@@ -6,7 +6,7 @@ export const setCollection = () => {
     collection: string,
     subCollection: string,
     doc: any,
-    userID: string | undefined
+    userID: string | undefined,
   ) => {
     try {
       const res = await projectFirestore
@@ -17,7 +17,7 @@ export const setCollection = () => {
         .set({
           ...doc,
           createdAt: timestamp(),
-          seen: false
+          seen: false,
         });
     } catch (err) {
       console.log(err);
@@ -28,7 +28,7 @@ export const setCollection = () => {
     collection: string,
     subCollection: string,
     userID: string | undefined,
-    id: string | undefined
+    id: string | undefined,
   ) => {
     try {
       await projectFirestore
@@ -37,7 +37,7 @@ export const setCollection = () => {
         .collection(subCollection)
         .doc(id)
         .update({
-          seen: true
+          seen: true,
         });
     } catch (err) {
       console.log(err);
@@ -46,6 +46,6 @@ export const setCollection = () => {
 
   return {
     addDocWithID,
-    updateSeenMessageField
+    updateSeenMessageField,
   };
 };

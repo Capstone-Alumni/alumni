@@ -58,18 +58,20 @@ export default class EducationServices {
 
     await prisma.education.deleteMany({
       where: {
-        userId
+        userId,
       },
     });
 
     const newEducations = await prisma.education.createMany({
-      data: educations ? educations.map(education => ({
-        degree: education.degree,
-        school: education.school,
-        startDate: education.startDate,
-        endDate: education.endDate,
-        userId
-      })): [],
+      data: educations
+        ? educations.map(education => ({
+            degree: education.degree,
+            school: education.school,
+            startDate: education.startDate,
+            endDate: education.endDate,
+            userId,
+          }))
+        : [],
     });
     return newEducations;
   };

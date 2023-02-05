@@ -24,7 +24,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react'],
+  plugins: ['react', 'unused-imports'],
   ignorePatterns: [
     'src/modules/share/components/@material-extend/*',
     'src/modules/share/components/animate/*',
@@ -42,6 +42,7 @@ module.exports = {
     // Stylistic
     'array-bracket-spacing': 'error',
     'computed-property-spacing': ['error', 'never'],
+    'unused-imports/no-unused-imports-ts': "error",
     curly: 'error',
     'no-lonely-if': 'error',
     'no-unneeded-ternary': 'error',

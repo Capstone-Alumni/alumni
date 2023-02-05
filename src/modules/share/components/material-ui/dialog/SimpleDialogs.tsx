@@ -12,7 +12,7 @@ import {
   DialogTitle,
   ListItemText,
   ListItemAvatar,
-  ListItemButton
+  ListItemButton,
 } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
@@ -51,7 +51,7 @@ export default function SimpleDialog() {
                 <Avatar
                   sx={{
                     color: 'info.main',
-                    backgroundColor: 'info.lighter'
+                    backgroundColor: 'info.lighter',
                   }}
                 >
                   <PersonIcon />

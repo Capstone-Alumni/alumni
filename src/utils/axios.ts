@@ -1,26 +1,25 @@
-import axios, { ParamsSerializerOptions } from 'axios';
-import queryString from 'query-string';
+import axios from 'axios';
 
 // ----------------------------------------------------------------------
 const axiosInstance = axios.create({
-  baseURL: "",
+  baseURL: '',
   headers: {
-    'content-type': 'application/json'
-  }
+    'content-type': 'application/json',
+  },
 });
 
-axiosInstance.interceptors.request.use(async (config) => config);
+axiosInstance.interceptors.request.use(async config => config);
 
 axiosInstance.interceptors.response.use(
-  (response) => {
+  response => {
     if (response && response.data) {
       return response.data;
     }
     return response;
   },
-  (error) => {
+  error => {
     throw error;
-  }
+  },
 );
 
 export default axiosInstance;

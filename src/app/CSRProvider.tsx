@@ -26,7 +26,7 @@ export default function CSRProvider({
               position="top-right"
               autoClose={3000}
               theme="light"
-            />  
+            />
           </ThemeConfig>
         </NextAppDirEmotionCacheProvider>
       </RecoilRoot>

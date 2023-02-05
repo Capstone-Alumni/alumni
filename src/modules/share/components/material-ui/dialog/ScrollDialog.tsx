@@ -6,7 +6,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  DialogContentText
+  DialogContentText,
 } from '@material-ui/core';
 import { DialogProps } from '@material-ui/core/Dialog';
 
@@ -38,7 +38,11 @@ export default function ScrollDialog() {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen('paper')} sx={{ mr: 2 }}>
+      <Button
+        variant="outlined"
+        onClick={handleClickOpen('paper')}
+        sx={{ mr: 2 }}
+      >
         scroll=paper
       </Button>
       <Button variant="outlined" onClick={handleClickOpen('body')}>
@@ -58,7 +62,7 @@ export default function ScrollDialog() {
                 () => `Cras mattis consectetur purus sit amet fermentum.
 Cras justo odio, dapibus ac facilisis in, egestas eget quam.
 Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`
+Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
               )
               .join('\n')}
           </DialogContentText>
