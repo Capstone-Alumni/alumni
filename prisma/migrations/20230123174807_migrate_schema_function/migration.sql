@@ -1,8 +1,6 @@
 -- Create migration schema function
-CREATE OR REPLACE FUNCTION migrate_schema(change text)
-RETURNS integer AS
+CREATE OR REPLACE FUNCTION run_migration(change text) RETURNS void AS
 $BODY$
-
 DECLARE
 v_schema text;
 BEGIN
@@ -14,7 +12,6 @@ BEGIN
 			EXECUTE 'SET LOCAL search_path = ' || v_schema;
 			EXECUTE change;
 END LOOP;
-return 1;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE
