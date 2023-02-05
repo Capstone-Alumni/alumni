@@ -5,6 +5,15 @@ import {
   UpdateCareerInfoByIdServiceProps,
 } from '../types';
 
+// const isUserExisted = async (id: string) => {
+//   const user = await prisma.user.findFirst({
+//     where: { id: id },
+//   });
+
+//   if (!user) {
+//     throw new Error('user not exist');
+//   }
+// };
 export default class CareerService {
   static create = async (
     tenantPrisma: PrismaClient,
