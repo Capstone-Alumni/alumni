@@ -9,11 +9,11 @@ const GetInitialUserInformation = () => {
   useEffect(() => {
     if (!session?.user.id) return;
     getCurrentUser(session?.user.id);
-  }, [session])
+  }, [session]);
 
   const getCurrentUser = async (id: string) => {
     await getCurrentUserInfo(id);
-  }
+  };
 
   return null;
 };

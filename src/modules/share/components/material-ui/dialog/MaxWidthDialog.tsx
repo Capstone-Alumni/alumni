@@ -14,7 +14,7 @@ import {
   DialogContent,
   FormControlLabel,
   DialogContentText,
-  DialogProps
+  DialogProps,
 } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
@@ -32,11 +32,15 @@ export default function MaxWidthDialog() {
     setOpen(false);
   };
 
-  const handleMaxWidthChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleMaxWidthChange = (
+    event: React.ChangeEvent<{ value: unknown }>,
+  ) => {
     setMaxWidth(event.target.value as DialogProps['maxWidth']);
   };
 
-  const handleFullWidthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFullWidthChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setFullWidth(event.target.checked);
   };
 
@@ -46,7 +50,12 @@ export default function MaxWidthDialog() {
         Max Width Dialog
       </Button>
 
-      <Dialog open={open} maxWidth={maxWidth} onClose={handleClose} fullWidth={fullWidth}>
+      <Dialog
+        open={open}
+        maxWidth={maxWidth}
+        onClose={handleClose}
+        fullWidth={fullWidth}
+      >
         <DialogTitle>Optional sizes</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -60,7 +69,7 @@ export default function MaxWidthDialog() {
               margin: 'auto',
               display: 'flex',
               width: 'fit-content',
-              flexDirection: 'column'
+              flexDirection: 'column',
             }}
           >
             <FormControl sx={{ mt: 2, minWidth: 120 }}>
@@ -72,7 +81,7 @@ export default function MaxWidthDialog() {
                 label="maxWidth"
                 inputProps={{
                   name: 'max-width',
-                  id: 'max-width'
+                  id: 'max-width',
                 }}
               >
                 <MenuItem value={false as any}>false</MenuItem>
@@ -84,7 +93,9 @@ export default function MaxWidthDialog() {
               </Select>
             </FormControl>
             <FormControlLabel
-              control={<Switch checked={fullWidth} onChange={handleFullWidthChange} />}
+              control={
+                <Switch checked={fullWidth} onChange={handleFullWidthChange} />
+              }
               label="Full width"
               sx={{ mt: 1 }}
             />

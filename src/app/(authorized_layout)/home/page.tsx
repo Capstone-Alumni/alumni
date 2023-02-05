@@ -1,6 +1,6 @@
 'use client';
 import { signOut, useSession } from 'next-auth/react';
-import Link from 'next/link'
+import Link from 'next/link';
 import useGetUserInformationById from 'src/modules/profiles/hooks/useGetUserInformationById';
 
 const Home = () => {
@@ -12,11 +12,10 @@ const Home = () => {
         Init login by Gmail
       </div>
       {session && (
-
         <>
           <Link
             href={{
-              pathname: `/profile/${session?.user?.id}`
+              pathname: `/profile/${session?.user?.id}`,
             }}
           >
             Profile

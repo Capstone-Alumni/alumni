@@ -29,7 +29,7 @@ export const nextAuthOptions = {
                 'Content-Type': 'application/json',
               },
             },
-          ).then(res => res.json());
+          ).then((res) => res.json());
 
           if (!response.status) {
             return null;

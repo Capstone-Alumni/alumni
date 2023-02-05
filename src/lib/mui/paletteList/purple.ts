@@ -107,6 +107,6 @@ const PURPLE_PALETTE = {
   GREY: GREY,
   GRADIENTS: GRADIENTS,
   COMMON: COMMON,
-}
+};
 
 export default PURPLE_PALETTE;

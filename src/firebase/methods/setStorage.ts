@@ -17,6 +17,6 @@ export const setStorage = () => {
   };
 
   return {
-    uploadAvatar
+    uploadAvatar,
   };
 };

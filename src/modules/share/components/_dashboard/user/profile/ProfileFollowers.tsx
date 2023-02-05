@@ -62,7 +62,7 @@ export default function ProfileFollowers({
       </Typography>
 
       <Grid container spacing={3}>
-        {followers.map(follower => (
+        {followers.map((follower) => (
           <Grid key={follower.id} item xs={12} md={4}>
             <FollowerCard
               follower={follower}

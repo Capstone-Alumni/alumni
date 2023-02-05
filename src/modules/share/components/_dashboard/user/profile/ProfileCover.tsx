@@ -6,7 +6,10 @@ import { toast } from 'react-toastify';
 import { UploadAvatar } from '@share/components/upload';
 import { setStorage } from 'src/firebase/methods/setStorage';
 import { generateUniqSerial } from 'src/utils';
-import { useGetUserInformationQuery, useUpdateUserInformationMutation } from 'src/redux/slices/userProfileSlice';
+import {
+  useGetUserInformationQuery,
+  useUpdateUserInformationMutation,
+} from 'src/redux/slices/userProfileSlice';
 import { useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
 
@@ -69,10 +72,14 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
 
       try {
         toast.loading('Uploading...', {
-          toastId: type
+          toastId: type,
         });
         const url = await uploadAvatar(generateUniqSerial(), file);
-        userProfileId && await updateUserInformation({ avatarUrl: url, userId: userProfileId })
+        userProfileId &&
+          (await updateUserInformation({
+            avatarUrl: url,
+            userId: userProfileId,
+          }));
         toast.dismiss(type);
         toast.success('Cập nhật thành công');
       } catch (error: any) {
@@ -84,10 +91,14 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
       if (file) {
         try {
           toast.loading('Uploading...', {
-            toastId: type
+            toastId: type,
           });
           const url = await uploadAvatar(generateUniqSerial(), file);
-          userProfileId && await updateUserInformation({ coverImageUrl: url, userId: userProfileId })
+          userProfileId &&
+            (await updateUserInformation({
+              coverImageUrl: url,
+              userId: userProfileId,
+            }));
           toast.dismiss(type);
           toast.success('Cập nhật thành công');
         } catch (error: any) {
@@ -96,43 +107,59 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
         }
       }
     }
-  }
+  };
 
   return (
     <>
-      {data && <>
-        <InfoStyle>
-          <UploadAvatar
-            disabled={currentUser?.data?.information?.userId !== userProfileId}
-            file={data?.data?.information?.avatarUrl}
-            maxSize={3145728}
-            onDrop={(e) => handleDrop(e, 'avatar')}
-          />
-          <Box
-            sx={{
-              ml: { md: 3 },
-              mt: { xs: 1, md: 0 },
-              color: 'common.white',
-              textAlign: { xs: 'center', md: 'left' },
-            }}
-          >
-            <Typography variant="h4">Gia An</Typography>
-          </Box>
-        </InfoStyle>
-      </>
-      }
+      {data && (
+        <>
+          <InfoStyle>
+            <UploadAvatar
+              disabled={
+                currentUser?.data?.information?.userId !== userProfileId
+              }
+              file={data?.data?.information?.avatarUrl}
+              maxSize={3145728}
+              onDrop={(e) => handleDrop(e, 'avatar')}
+            />
+            <Box
+              sx={{
+                ml: { md: 3 },
+                mt: { xs: 1, md: 0 },
+                color: 'common.white',
+                textAlign: { xs: 'center', md: 'left' },
+              }}
+            >
+              <Typography variant="h4">Gia An</Typography>
+            </Box>
+          </InfoStyle>
+        </>
+      )}
       <label htmlFor="uploadWallpaper">
         <div>
-          <CoverImgStyle alt="profile cover" src={data?.data?.information?.coverImageUrl} />
+          <CoverImgStyle
+            alt="profile cover"
+            src={data?.data?.information?.coverImageUrl}
+          />
         </div>
-        <RootStyle style={{ cursor: `${currentUser?.data?.information?.userId === userProfileId ? "pointer" : "auto"}` }}>
-          {currentUser?.data?.information?.userId === userProfileId && <input
-            type="file"
-            id="uploadWallpaper"
-            style={{ display: 'none' }}
-            accept="image/png, image/jpeg"
-            onChange={(e) => handleDrop(e, 'wallpaper')}
-          />}
+        <RootStyle
+          style={{
+            cursor: `${
+              currentUser?.data?.information?.userId === userProfileId
+                ? 'pointer'
+                : 'auto'
+            }`,
+          }}
+        >
+          {currentUser?.data?.information?.userId === userProfileId && (
+            <input
+              type="file"
+              id="uploadWallpaper"
+              style={{ display: 'none' }}
+              accept="image/png, image/jpeg"
+              onChange={(e) => handleDrop(e, 'wallpaper')}
+            />
+          )}
         </RootStyle>
       </label>
     </>

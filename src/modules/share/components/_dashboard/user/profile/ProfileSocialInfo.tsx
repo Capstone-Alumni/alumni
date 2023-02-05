@@ -50,7 +50,7 @@ export default function ProfileSocialInfo({ profile }: { profile: Profile }) {
     <Card>
       <CardHeader title="Social" />
       <Stack spacing={2} sx={{ p: 3 }}>
-        {SOCIALS.map(link => (
+        {SOCIALS.map((link) => (
           <Stack key={link.name} direction="row" alignItems="center">
             {link.icon}
             <Link component="span" variant="body2" color="text.primary" noWrap>

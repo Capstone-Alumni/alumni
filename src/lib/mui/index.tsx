@@ -22,7 +22,10 @@ type ThemeConfigProps = {
   children: ReactNode;
 };
 
-export default function ThemeConfig({ paletteName, children }: ThemeConfigProps) {
+export default function ThemeConfig({
+  paletteName,
+  children,
+}: ThemeConfigProps) {
   // const { themeMode, themeDirection } = useSettings();
   const themeMode = 'light';
   const themeDirection = 'ltf';

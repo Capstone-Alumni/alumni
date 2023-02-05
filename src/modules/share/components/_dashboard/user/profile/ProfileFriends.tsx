@@ -72,7 +72,8 @@ function applyFilter(array: Friend[], query: string) {
   if (query) {
     arr = filter(
       array,
-      _friend => _friend.name.toLowerCase().indexOf(query.toLowerCase()) !== -1,
+      (_friend) =>
+        _friend.name.toLowerCase().indexOf(query.toLowerCase()) !== -1,
     );
   }
   return arr;
@@ -103,7 +104,7 @@ function FriendCard({ friend }: { friend: Friend }) {
         {role}
       </Typography>
       <Box sx={{ display: 'flex', mt: 1 }}>
-        {SOCIALS.map(social => (
+        {SOCIALS.map((social) => (
           <Tooltip key={social.name} title={social.name}>
             <IconButton>{social.icon}</IconButton>
           </Tooltip>
@@ -144,7 +145,7 @@ export default function ProfileFriends({
 
       <SearchStyle
         value={findFriends}
-        onChange={e => onFindFriends(e.target.value)}
+        onChange={(e) => onFindFriends(e.target.value)}
         placeholder="Find friends..."
         startAdornment={
           <InputAdornment position="start">
@@ -158,7 +159,7 @@ export default function ProfileFriends({
       />
 
       <Grid container spacing={3}>
-        {friendFiltered.map(friend => (
+        {friendFiltered.map((friend) => (
           <Grid key={friend.id} item xs={12} md={4}>
             <FriendCard friend={friend} />
           </Grid>

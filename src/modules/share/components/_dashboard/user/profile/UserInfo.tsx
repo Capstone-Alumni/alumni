@@ -11,7 +11,7 @@ import {
   Stack,
   TextField,
   Typography,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -38,13 +38,17 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
     bio: Yup.string(),
     userEmail: Yup.string(),
     fullName: Yup.string(),
-    class: Yup.object().shape({
-      className: Yup.string().nullable(),
-    }).nullable(),
-    grade: Yup.object().shape({
-      gradeName: Yup.string().nullable(),
-      gradeCode: Yup.string().nullable(),
-    }).nullable(),
+    class: Yup.object()
+      .shape({
+        className: Yup.string().nullable(),
+      })
+      .nullable(),
+    grade: Yup.object()
+      .shape({
+        gradeName: Yup.string().nullable(),
+        gradeCode: Yup.string().nullable(),
+      })
+      .nullable(),
     phoneNumber: Yup.string(),
   });
 
@@ -56,20 +60,25 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
       fullName: userInformation?.fullName || '',
       userEmail: userInformation?.userEmail || '',
       class: {
-        className: userInformation?.className || null
+        className: userInformation?.className || null,
       },
       grade: {
         gradeName: userInformation?.gradeName || null,
         gradeCode: userInformation?.gradeCode || null,
       },
       phone: userInformation?.phone || '',
-      dateOfBirth: userInformation?.dateOfBirth || null
+      dateOfBirth: userInformation?.dateOfBirth || null,
     },
     validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
         const { class: _, grade, ...data } = values;
-        await updateUserInformation({ ...data, gradeCode: grade.gradeCode, gradeName: grade.gradeName, className: _.className });
+        await updateUserInformation({
+          ...data,
+          gradeCode: grade.gradeCode,
+          gradeName: grade.gradeName,
+          className: _.className,
+        });
         setSubmitting(false);
         toast.success('Cập nhật thành công');
       } catch (error: any) {
@@ -92,11 +101,10 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
   } = formik;
 
   useEffect(() => {
-
     if (!Boolean(grades.length > 0)) {
       handleGetGrades();
       return;
-    };
+    }
 
     if (values?.grade?.gradeCode) {
       handleGetClasses(values.grade.gradeCode);
@@ -104,34 +112,37 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
     } else {
       setClasses([]);
     }
-
-  }, [values.grade])
-
+  }, [values.grade]);
 
   const handleGetClasses = async (gradeId: string | null) => {
     const res = await axiosInstance({
       url: `/api/classes`,
       method: 'GET',
       params: {
-        grade_id: gradeId
-      }
-    })
+        grade_id: gradeId,
+      },
+    });
     if (!res) return;
-    const filteredClasses = res.data?.items.map((classRes: any) => ({ className: classRes.name }));
+    const filteredClasses = res.data?.items.map((classRes: any) => ({
+      className: classRes.name,
+    }));
 
-    setClasses(filteredClasses)
-  }
+    setClasses(filteredClasses);
+  };
 
   const handleGetGrades = async () => {
     const res = await axiosInstance({
       url: `/api/grades`,
       method: 'GET',
-    })
+    });
     if (!res) return;
-    const filteredClasses = res.data?.items.map((gradeRes: any) => ({ gradeCode: gradeRes.id, gradeName: gradeRes.name }));
+    const filteredClasses = res.data?.items.map((gradeRes: any) => ({
+      gradeCode: gradeRes.id,
+      gradeName: gradeRes.name,
+    }));
 
     setGrades(filteredClasses);
-  }
+  };
 
   return (
     <Grid container spacing={3}>
@@ -141,9 +152,30 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
             <Grid container spacing={3}>
               <Grid item xs={12} md={12}>
                 <Card sx={{ p: 3 }}>
-                  <Stack sx={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row' }}>
-                    <Typography variant="h5" style={{ display: 'flex', fontWeight: 'bold', alignItems: 'center' }}>
-                      <PersonIcon fontSize="large" style={{ color: theme.palette.primary.main, marginRight: theme.spacing(1) }} />
+                  <Stack
+                    sx={{
+                      marginBottom: '1.5rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <Typography
+                      variant="h5"
+                      style={{
+                        display: 'flex',
+                        fontWeight: 'bold',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <PersonIcon
+                        fontSize="large"
+                        style={{
+                          color: theme.palette.primary.main,
+                          marginRight: theme.spacing(1),
+                        }}
+                      />
                       Thông tin cơ bản
                     </Typography>
                   </Stack>
@@ -183,51 +215,70 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                       />
                     </Stack>
 
-                    {grades && <> <Stack
-                      direction={{ xs: 'column', sm: 'row' }}
-                      spacing={{ xs: 3, sm: 2 }}
-                    >
-                      <Autocomplete
-                        fullWidth
-                        id="combo-box-demo"
-                        {...getFieldProps('gradeName')}
-                        options={grades}
-                        getOptionLabel={option => option.gradeName || ""}
-                        onChange={(_, value) => {
-                          if (!value) {
-                            setFieldValue("grade", { gradeName: null, gradeCode: null })
-                            setFieldValue("class", { className: null });
-                            return;
-                          }
-                          setFieldValue("grade", value)
-                        }}
-                        defaultValue={values.grade}
-                        renderInput={params => (
-                          <TextField {...params} label="Khối" name="gradeName" />
-                        )}
-                      />
-                      {values.grade?.gradeCode && <Autocomplete
-                        disabled={!Boolean(values.grade?.gradeCode)}
-                        fullWidth
-                        id="combo-box-demo"
-                        {...getFieldProps('className')}
-                        options={classes}
-                        getOptionLabel={option => option.className || ""}
-                        onChange={(_, value) => {
-                          console.log(value);
-                          if (!value) {
-                            setFieldValue("class", { className: null });
-                            return;
-                          }
-                          setFieldValue("class", value)
-                        }}
-                        defaultValue={values.class}
-                        renderInput={params => (
-                          <TextField {...params} label="Lớp" name="className" />
-                        )}
-                      />}
-                    </Stack></>
-                    }
+                    {grades && (
+                      <>
+                        {' '}
+                        <Stack
+                          direction={{ xs: 'column', sm: 'row' }}
+                          spacing={{ xs: 3, sm: 2 }}
+                        >
+                          <Autocomplete
+                            fullWidth
+                            id="combo-box-demo"
+                            {...getFieldProps('gradeName')}
+                            options={grades}
+                            getOptionLabel={(option) => option.gradeName || ''}
+                            onChange={(_, value) => {
+                              if (!value) {
+                                setFieldValue('grade', {
+                                  gradeName: null,
+                                  gradeCode: null,
+                                });
+                                setFieldValue('class', { className: null });
+                                return;
+                              }
+                              setFieldValue('grade', value);
+                            }}
+                            defaultValue={values.grade}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label="Khối"
+                                name="gradeName"
+                              />
+                            )}
+                          />
+                          {values.grade?.gradeCode && (
+                            <Autocomplete
+                              disabled={!Boolean(values.grade?.gradeCode)}
+                              fullWidth
+                              id="combo-box-demo"
+                              {...getFieldProps('className')}
+                              options={classes}
+                              getOptionLabel={(option) =>
+                                option.className || ''
+                              }
+                              onChange={(_, value) => {
+                                console.log(value);
+                                if (!value) {
+                                  setFieldValue('class', { className: null });
+                                  return;
+                                }
+                                setFieldValue('class', value);
+                              }}
+                              defaultValue={values.class}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  label="Lớp"
+                                  name="className"
+                                />
+                              )}
+                            />
+                          )}
+                        </Stack>
+                      </>
+                    )}
 
                     <Stack
                       direction={{ xs: 'column', sm: 'row' }}
@@ -242,13 +293,19 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                       />
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                          onChange={(value) => setFieldValue("dateOfBirth", value, true)}
+                          onChange={(value) =>
+                            setFieldValue('dateOfBirth', value, true)
+                          }
                           value={values.dateOfBirth}
                           label="Ngày sinh"
                           renderInput={(params) => (
                             <TextField
-                              error={Boolean(touched.dateOfBirth && errors.dateOfBirth)}
-                              helperText={touched.dateOfBirth && errors.dateOfBirth}
+                              error={Boolean(
+                                touched.dateOfBirth && errors.dateOfBirth,
+                              )}
+                              helperText={
+                                touched.dateOfBirth && errors.dateOfBirth
+                              }
                               margin="normal"
                               name="birthday"
                               fullWidth
@@ -261,7 +318,11 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                   </Stack>
                   <Stack spacing={3}>
                     <Box
-                      sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}
+                      sx={{
+                        mt: 3,
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                      }}
                     >
                       <LoadingButton
                         type="submit"
@@ -280,5 +341,5 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
       </Grid>
     </Grid>
   );
-}
+};
 export default UserInfo;

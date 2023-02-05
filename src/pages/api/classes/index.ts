@@ -4,7 +4,8 @@ import ClassController from 'src/modules/gradeAndClass/controllers/class.control
 
 const handler = nc();
 
-handler.use(extractTenantId)
+handler
+  .use(extractTenantId)
   .get(ClassController.getList)
   .post(ClassController.create);
 

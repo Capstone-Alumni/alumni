@@ -9,7 +9,7 @@ export const newsSliceApi = createApi({
     baseUrl: '/',
   }),
   tagTypes: ['News'],
-  endpoints: builer => ({
+  endpoints: (builer) => ({
     getNewsForSchoolAdmin: builer.query({
       query: ({ params }: { params: GetNewsListDataParams }) => ({
         url: '/api/news',

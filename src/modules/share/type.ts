@@ -83,14 +83,14 @@ export type UserInformation = {
 };
 
 export type Education = {
-  id: string,
-  degree?: string,
-  school?: string,
-  startDate?: Date | null,
-  endDate?: Date | null,
-  userId?: string,
-  archived?: Boolean
-}
+  id: string;
+  degree?: string;
+  school?: string;
+  startDate?: Date | null;
+  endDate?: Date | null;
+  userId?: string;
+  archived?: Boolean;
+};
 
 export type UserEducations = {
   totalItems: number;
@@ -98,16 +98,15 @@ export type UserEducations = {
   itemPerPage: number;
 };
 
-
 export type Career = {
-  id: string,
-  jobTitle?: string,
-  company?: string,
-  startDate?: Date | null,
-  endDate?: Date | null,
-  userId?: string,
-  archived?: Boolean
-}
+  id: string;
+  jobTitle?: string;
+  company?: string;
+  startDate?: Date | null;
+  endDate?: Date | null;
+  userId?: string;
+  archived?: Boolean;
+};
 
 export type UserCareers = {
   totalItems: number;

@@ -17,7 +17,7 @@ const queryGetUserInformationById = (id?: string) => {
     GetInformationDataError
   >('getUserInformation', () => ({
     method: 'GET',
-    url: `/api/users/${id}/information`
+    url: `/api/users/${id}/information`,
   }));
 
   useEffect(() => {

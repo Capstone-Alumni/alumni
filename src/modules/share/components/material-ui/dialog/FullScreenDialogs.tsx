@@ -12,7 +12,7 @@ import {
   IconButton,
   Typography,
   ListItemText,
-  ListItemButton
+  ListItemButton,
 } from '@material-ui/core';
 import { TransitionProps } from '@material-ui/core/transitions';
 
@@ -22,8 +22,8 @@ const Transition = forwardRef(
     props: TransitionProps & {
       children?: React.ReactElement;
     },
-    ref: React.Ref<unknown>
-  ) => <Slide direction="up" ref={ref} {...props} />
+    ref: React.Ref<unknown>,
+  ) => <Slide direction="up" ref={ref} {...props} />,
 );
 export default function FullScreenDialogs() {
   const [open, setOpen] = useState(false);
@@ -42,7 +42,12 @@ export default function FullScreenDialogs() {
         Full Screen Dialogs
       </Button>
 
-      <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+      <Dialog
+        fullScreen
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+      >
         <AppBar position="relative">
           <Toolbar>
             <IconButton color="inherit" edge="start" onClick={handleClose}>
@@ -64,7 +69,10 @@ export default function FullScreenDialogs() {
           <Divider />
 
           <ListItemButton>
-            <ListItemText primary="Default notification ringtone" secondary="Tethys" />
+            <ListItemText
+              primary="Default notification ringtone"
+              secondary="Tethys"
+            />
           </ListItemButton>
         </List>
       </Dialog>

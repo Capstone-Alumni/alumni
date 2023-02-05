@@ -4,7 +4,8 @@ import InformationController from 'src/modules/profiles/controller/information.c
 
 const handler = nc();
 
-handler.use(extractTenantId)
+handler
+  .use(extractTenantId)
   .get(InformationController.getInformationByUserId)
   .put(InformationController.updateInformationByUserId);
 

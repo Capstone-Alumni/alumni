@@ -1,6 +1,6 @@
 // Need to use the React-specific entry point to allow generating React hooks
 import { Education, Career, Information } from '@prisma/client';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { UserInformation } from '@share/type';
 import { RootState } from 'src/redux/store';
 
@@ -8,22 +8,24 @@ import { RootState } from 'src/redux/store';
 export const userProfileApi = createApi({
   reducerPath: 'userProfile',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/'
+    baseUrl: '/',
   }),
   tagTypes: ['Infomation', 'Careers', 'Educations'],
   endpoints: (builder) => ({
-
     // Infomation
 
     getUserInformation: builder.query<any, any>({
       query: (id: string) => `api/users/${id}/information`,
       providesTags: ['Infomation'],
     }),
-    updateUserInformation: builder.mutation<any, Partial<Information> & Pick<Information, 'userId'>>({
+    updateUserInformation: builder.mutation<
+      any,
+      Partial<Information> & Pick<Information, 'userId'>
+    >({
       query: ({ userId, ...data }) => ({
         url: `api/users/${userId}/information`,
-        method: "PUT",
-        body: data
+        method: 'PUT',
+        body: data,
       }),
       invalidatesTags: ['Infomation'],
     }),
@@ -38,8 +40,8 @@ export const userProfileApi = createApi({
     updateUserCareers: builder.mutation<any, any>({
       query: ({ userId, data }) => ({
         url: `api/users/${userId}/career`,
-        method: "PUT",
-        body: data
+        method: 'PUT',
+        body: data,
       }),
       invalidatesTags: ['Careers'],
     }),
@@ -54,19 +56,25 @@ export const userProfileApi = createApi({
     updateUserEducations: builder.mutation<any, any>({
       query: ({ userId, data }) => ({
         url: `api/users/${userId}/education`,
-        method: "PUT",
-        body: data
+        method: 'PUT',
+        body: data,
       }),
       invalidatesTags: ['Educations'],
     }),
-
   }),
-})
+});
 
 // Selectors
-export const currentUserState = (state: RootState) => userProfileApi.endpoints.getUserInformation.select(state);
-
+export const currentUserState = (state: RootState) =>
+  userProfileApi.endpoints.getUserInformation.select(state);
 
 // Export hooks for usage in function components, which are
 // auto-generated based on the defined endpoints
-export const { useGetUserCareersQuery, useGetUserEducationsQuery, useGetUserInformationQuery, useUpdateUserInformationMutation, useUpdateUserCareersMutation, useUpdateUserEducationsMutation } = userProfileApi
+export const {
+  useGetUserCareersQuery,
+  useGetUserEducationsQuery,
+  useGetUserInformationQuery,
+  useUpdateUserInformationMutation,
+  useUpdateUserCareersMutation,
+  useUpdateUserEducationsMutation,
+} = userProfileApi;

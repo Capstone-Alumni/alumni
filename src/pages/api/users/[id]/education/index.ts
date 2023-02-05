@@ -4,9 +4,10 @@ import EducationController from 'src/modules/profiles/controller/education.contr
 
 const handler = nc();
 
-handler.use(extractTenantId)
-.get(EducationController.getEducationsByUserId)
-.post(EducationController.create)
-.put(EducationController.createManyRecords);
+handler
+  .use(extractTenantId)
+  .get(EducationController.getEducationsByUserId)
+  .post(EducationController.create)
+  .put(EducationController.createManyRecords);
 
 export default handler;

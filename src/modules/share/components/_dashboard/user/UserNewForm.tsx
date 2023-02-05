@@ -122,11 +122,11 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
   );
 
   const handleDeleteJob = (id: string) => {
-    setCareers(careers.filter(career => career.id !== id));
+    setCareers(careers.filter((career) => career.id !== id));
   };
 
   const handleDeleteEducation = (id: string) => {
-    setEducations(educations.filter(education => education.id !== id));
+    setEducations(educations.filter((education) => education.id !== id));
   };
 
   const handleAddNewJob = () => {
@@ -183,7 +183,7 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                 openTo="year"
                 views={['year', 'month', 'day']}
                 {...getFieldProps('dateOfBirth')}
-                renderInput={params => <TextField fullWidth {...params} />}
+                renderInput={(params) => <TextField fullWidth {...params} />}
               />
               <DatePicker
                 disableFuture
@@ -191,7 +191,7 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                 openTo="year"
                 views={['year', 'month', 'day']}
                 {...getFieldProps('dateOfBirth')}
-                renderInput={params => <TextField fullWidth {...params} />}
+                renderInput={(params) => <TextField fullWidth {...params} />}
               />
             </LocalizationProvider>
           </Stack>
@@ -247,7 +247,7 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                 openTo="year"
                 views={['year', 'month', 'day']}
                 {...getFieldProps('dateOfBirth')}
-                renderInput={params => <TextField fullWidth {...params} />}
+                renderInput={(params) => <TextField fullWidth {...params} />}
               />
               <DatePicker
                 disableFuture
@@ -255,7 +255,7 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                 openTo="year"
                 views={['year', 'month', 'day']}
                 {...getFieldProps('dateOfBirth')}
-                renderInput={params => <TextField fullWidth {...params} />}
+                renderInput={(params) => <TextField fullWidth {...params} />}
               />
             </LocalizationProvider>
           </Stack>
@@ -319,7 +319,7 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                     fullWidth
                     id="combo-box-demo"
                     options={classesMock}
-                    renderInput={params => (
+                    renderInput={(params) => (
                       <TextField {...params} label="Class" />
                     )}
                   />
@@ -328,7 +328,7 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                     fullWidth
                     id="combo-box-demo"
                     options={gradesMock}
-                    renderInput={params => (
+                    renderInput={(params) => (
                       <TextField {...params} label="Grade" />
                     )}
                   />
@@ -352,7 +352,7 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
                       openTo="year"
                       views={['year', 'month', 'day']}
                       {...getFieldProps('dateOfBirth')}
-                      renderInput={params => (
+                      renderInput={(params) => (
                         <TextField fullWidth {...params} />
                       )}
                     />

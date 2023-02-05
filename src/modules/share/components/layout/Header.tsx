@@ -16,7 +16,10 @@ const Header = ({ user }: { user?: any }) => {
   const theme = useTheme();
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{ backgroundColor: theme.palette.primary.main}}>
+      <AppBar
+        position="fixed"
+        sx={{ backgroundColor: theme.palette.primary.main }}
+      >
         <Toolbar>
           {/* <IconButton
             size="large"

@@ -1,5 +1,5 @@
 'use client';
-import { signOut } from "next-auth/react"
+import { signOut } from 'next-auth/react';
 
 import VerifyAccountStepper from '@share/components/VerifyAccountStepper';
 

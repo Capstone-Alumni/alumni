@@ -81,10 +81,10 @@ type ProfileGalleryProps = {
 export default function ProfileGallery({ gallery }: ProfileGalleryProps) {
   const [openLightbox, setOpenLightbox] = useState(false);
   const [selectedImage, setSelectedImage] = useState<number>(0);
-  const imagesLightbox = gallery.map(img => img.imageUrl);
+  const imagesLightbox = gallery.map((img) => img.imageUrl);
 
   const handleOpenLightbox = (url: string) => {
-    const selectedImage = findIndex(imagesLightbox, index => index === url);
+    const selectedImage = findIndex(imagesLightbox, (index) => index === url);
     setOpenLightbox(true);
     setSelectedImage(selectedImage);
   };
@@ -96,7 +96,7 @@ export default function ProfileGallery({ gallery }: ProfileGalleryProps) {
 
       <Card sx={{ p: 3 }}>
         <Grid container spacing={3}>
-          {gallery.map(image => (
+          {gallery.map((image) => (
             <Grid key={image.id} item xs={12} sm={6} md={4}>
               <GalleryItem image={image} onOpenLightbox={handleOpenLightbox} />
             </Grid>

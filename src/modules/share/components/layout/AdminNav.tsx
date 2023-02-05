@@ -172,7 +172,7 @@ const AdminNav = ({ user }: { user?: any }) => {
           </StyledHeader>
 
           <StyledNav>
-            {generateNavItems(user.accessLevel).map(item => {
+            {generateNavItems(user.accessLevel).map((item) => {
               const isActive = item.link && pathname?.startsWith(item.link);
               return (
                 <StyledNavItem
