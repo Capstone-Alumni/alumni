@@ -67,7 +67,7 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                   <ProfileInfoRow
                     title="Bio"
                     content={
-                      Boolean(userInformation?.bio)
+                      userInformation?.bio
                         ? userInformation.bio
                         : 'Chưa cập nhật'
                     }
@@ -75,7 +75,7 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                   <ProfileInfoRow
                     title="Họ và tên"
                     content={
-                      Boolean(userInformation?.fullName)
+                      userInformation?.fullName
                         ? userInformation.fullName
                         : 'Chưa cập nhật'
                     }
@@ -132,7 +132,7 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                   <ProfileInfoRow
                     title="Khối"
                     content={
-                      Boolean(userInformation?.gradeName)
+                      userInformation?.gradeName
                         ? userInformation.gradeName
                         : 'Chưa cập nhật'
                     }
@@ -140,7 +140,7 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                   <ProfileInfoRow
                     title="Lớp"
                     content={
-                      Boolean(userInformation?.className)
+                      userInformation?.className
                         ? userInformation.className
                         : 'Chưa cập nhật'
                     }

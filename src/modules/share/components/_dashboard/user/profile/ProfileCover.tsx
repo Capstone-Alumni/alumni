@@ -12,8 +12,7 @@ import {
 } from 'src/redux/slices/userProfileSlice';
 import { useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
-import avatarDefault from 'src/assets/avatar_default.jpeg';
-import wallpaperDefault from 'src/assets/wallpaper_default.jpg';
+
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -125,7 +124,7 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
               }
               file={data?.data?.information?.avatarUrl || avatarUrlDefault}
               maxSize={3145728}
-              onDrop={(e) => handleDrop(e, 'avatar')}
+              onDrop={(e, _) => handleDrop(e, 'avatar')}
             />
             <Box
               sx={{
@@ -164,7 +163,7 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
               id="uploadWallpaper"
               style={{ display: 'none' }}
               accept="image/png, image/jpeg"
-              onChange={(e) => handleDrop(e, 'wallpaper')}
+              onChange={(e: any) => handleDrop(e, 'wallpaper')}
             />
           )}
         </RootStyle>
