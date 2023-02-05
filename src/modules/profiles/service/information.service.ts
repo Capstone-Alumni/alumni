@@ -9,7 +9,7 @@ export default class InformationService {
   ) => {
     //TODO: sync users table from platform's database
     // then u can turn on this flag
-    const user = await prisma.user.findUnique({
+    await prisma.user.findUnique({
       where: { id },
     });
     // if (!user) {

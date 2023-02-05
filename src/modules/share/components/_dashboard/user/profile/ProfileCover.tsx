@@ -55,6 +55,10 @@ const CoverImgStyle = styled('img')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
+const avatarUrlDefault =
+  'https://firebasestorage.googleapis.com/v0/b/alumni-pf.appspot.com/o/users%2F6a5e-9e80-43e-cf66%2Favatar%2Favatar_default.jpeg?alt=media&token=8579e2f1-42b1-41ed-a641-833bbcc84194';
+const wallpaperUrlDefault =
+  'https://firebasestorage.googleapis.com/v0/b/alumni-pf.appspot.com/o/users%2F5cce-2d10-583-0cd9%2Favatar%2Fwallpaper_default.jpg?alt=media&token=8d1b5842-d9ce-4c9f-b577-0b1e36a5100a';
 type ProfileCoverProps = {
   userProfileId: string;
 };
@@ -118,19 +122,21 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
               disabled={
                 currentUser?.data?.information?.userId !== userProfileId
               }
-              file={data?.data?.information?.avatarUrl}
+              file={data?.data?.information?.avatarUrl || avatarUrlDefault}
               maxSize={3145728}
-              onDrop={e => handleDrop(e, 'avatar')}
+              onDrop={(e, _) => handleDrop(e, 'avatar')}
             />
             <Box
               sx={{
-                ml: { md: 3 },
+                ml: { md: 2 },
                 mt: { xs: 1, md: 0 },
                 color: 'common.white',
                 textAlign: { xs: 'center', md: 'left' },
               }}
             >
-              <Typography variant="h4">Gia An</Typography>
+              <Typography variant="h4">
+                {currentUser?.data?.information?.fullName}
+              </Typography>
             </Box>
           </InfoStyle>
         </>
@@ -139,7 +145,7 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
         <div>
           <CoverImgStyle
             alt="profile cover"
-            src={data?.data?.information?.coverImageUrl}
+            src={data?.data?.information?.coverImageUrl || wallpaperUrlDefault}
           />
         </div>
         <RootStyle
@@ -157,7 +163,7 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
               id="uploadWallpaper"
               style={{ display: 'none' }}
               accept="image/png, image/jpeg"
-              onChange={e => handleDrop(e, 'wallpaper')}
+              onChange={(e: any) => handleDrop(e, 'wallpaper')}
             />
           )}
         </RootStyle>
