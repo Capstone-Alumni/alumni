@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -17,7 +18,7 @@ import {
 } from '@mui/material';
 
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
-import { ACCESS_LEVEL, Member } from '../types';
+import { Member } from '../types';
 import getRoleName from '@share/utils/getRoleName';
 
 export type MemberFormValues = {
@@ -50,7 +51,7 @@ const MemberForm = ({
     defaultValues: {
       email: initialData?.user.email ?? '',
       accessLevel: initialData?.accessLevel ?? 'ALUMNI',
-      password: '',
+      password: undefined,
     },
     resolver,
   });
@@ -113,6 +114,7 @@ const MemberForm = ({
             {['ALUMNI', 'CLASS_MOD', 'GRADE_MOD', 'SCHOOL_ADMIN']?.map(
               (role: string) => (
                 <MenuItem key={role} value={role}>
+                  {/** @ts-ignore */}
                   {getRoleName(role)}
                 </MenuItem>
               ),
