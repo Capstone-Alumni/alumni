@@ -1,22 +1,12 @@
 'use client';
 
-import { Box, Card, CardContent, Chip, Link, Typography } from '@mui/material';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { Box, Typography } from '@mui/material';
 import { getImageOfNews } from '@share/utils/getFirstImageOfNews';
-import Image from 'next/image';
-import parse from 'html-react-parser';
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import PublicNewsCardItemImage from './PublicNewsCardItemImage';
 
-const PublicNewsCardItems = ({
-  item,
-  sx,
-  relativeImg = false,
-}: {
-  item: any;
-  sx?: any;
-  relativeImg?: boolean;
-}) => {
+const PublicNewsCardItems = ({ item, sx }: { item: any; sx?: any }) => {
   const srcImg = getImageOfNews(item.content);
   const router = useRouter();
   const readNewsDetails = (event: React.ChangeEvent<unknown>) => {
@@ -29,28 +19,7 @@ const PublicNewsCardItems = ({
         width: sx.width,
       }}
     >
-      <Card
-        sx={{
-          height: sx.height,
-        }}
-      >
-        {!srcImg.startsWith('/logo') ? (
-          <div
-            style={{
-              height: '100%',
-            }}
-          >
-            {parse(srcImg)}
-          </div>
-        ) : (
-          <Image
-            src={srcImg}
-            alt="logo"
-            width={sx.imgWidth}
-            height={sx.imgHeight}
-          />
-        )}
-      </Card>
+      <PublicNewsCardItemImage srcImg={srcImg} sx={sx} />
       <Typography
         sx={{
           marginTop: sx.marginImg,
