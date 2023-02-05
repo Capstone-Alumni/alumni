@@ -44,14 +44,14 @@ const NewsContentPage = ({ data }: { data: News }) => {
           marginY: '24px',
         }}
       >
-        <CreateIcon fontSize="small" color="disabled" />
+        {/* <CreateIcon fontSize="small" color="disabled" /> */}
         <Typography
           variant="body2"
           sx={{
             color: 'text.secondary',
           }}
         >
-          {data.authorId}
+          Người viết: {data.authorId}
         </Typography>
         <Box
           sx={{
