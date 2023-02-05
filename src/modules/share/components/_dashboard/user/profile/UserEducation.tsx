@@ -45,7 +45,7 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
   const onDeleteWork = async (id: string) => {
     const currentData = [...educationData];
 
-    const deleteIndex = currentData.findIndex(item => item.id === id);
+    const deleteIndex = currentData.findIndex((item) => item.id === id);
 
     currentData.splice(deleteIndex, 1);
 
@@ -60,7 +60,7 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
   const onUpdateWork = async (id: any, values: any) => {
     const currentData = [...educationData];
 
-    const updateIndex = currentData.findIndex(item => item.id === id);
+    const updateIndex = currentData.findIndex((item) => item.id === id);
 
     currentData[updateIndex] = values;
 
@@ -125,7 +125,7 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
             <Box style={{ paddingLeft: theme.spacing(2) }}>
               {educationData && educationData.length > 0 ? (
                 educationData?.map((item: any, index: number) => (
-                  <>
+                  <div key={index}>
                     {selectedEditId === item.id ? (
                       <EducationForm
                         defaultValues={item}
@@ -187,7 +187,7 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
                         }}
                       />
                     ) : null}
-                  </>
+                  </div>
                 ))
               ) : (
                 <Typography>Không có thông tin</Typography>

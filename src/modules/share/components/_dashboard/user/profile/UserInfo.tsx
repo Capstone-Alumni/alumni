@@ -132,19 +132,21 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
   };
 
   const handleGetGrades = async () => {
-    const res = await axiosInstance({
-      url: '/api/grades',
-      method: 'GET',
-    });
-    if (!res) {
-      return;
-    }
-    const filteredClasses = res.data?.items.map((gradeRes: any) => ({
-      gradeCode: gradeRes.id,
-      gradeName: gradeRes.name,
-    }));
+    try {
+      const res = await axiosInstance({
+        url: '/api/grades',
+        method: 'GET',
+      });
+      if (!res) {
+        return;
+      }
+      const filteredClasses = res.data?.items.map((gradeRes: any) => ({
+        gradeCode: gradeRes.id,
+        gradeName: gradeRes.name,
+      }));
 
-    setGrades(filteredClasses);
+      setGrades(filteredClasses);
+    } catch (error) {}
   };
 
   return (
@@ -230,7 +232,7 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                             id="combo-box-demo"
                             {...getFieldProps('gradeName')}
                             options={grades}
-                            getOptionLabel={option => option.gradeName || ''}
+                            getOptionLabel={(option) => option.gradeName || ''}
                             onChange={(_, value) => {
                               if (!value) {
                                 setFieldValue('grade', {
@@ -243,7 +245,7 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                               setFieldValue('grade', value);
                             }}
                             defaultValue={values.grade}
-                            renderInput={params => (
+                            renderInput={(params) => (
                               <TextField
                                 {...params}
                                 label="Khối"
@@ -258,7 +260,9 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                               id="combo-box-demo"
                               {...getFieldProps('className')}
                               options={classes}
-                              getOptionLabel={option => option.className || ''}
+                              getOptionLabel={(option) =>
+                                option.className || ''
+                              }
                               onChange={(_, value) => {
                                 console.log(value);
                                 if (!value) {
@@ -268,7 +272,7 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                                 setFieldValue('class', value);
                               }}
                               defaultValue={values.class}
-                              renderInput={params => (
+                              renderInput={(params) => (
                                 <TextField
                                   {...params}
                                   label="Lớp"
@@ -294,12 +298,12 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                       />
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                          onChange={value =>
+                          onChange={(value) =>
                             setFieldValue('dateOfBirth', value, true)
                           }
                           value={values.dateOfBirth}
                           label="Ngày sinh"
-                          renderInput={params => (
+                          renderInput={(params) => (
                             <TextField
                               error={Boolean(
                                 touched.dateOfBirth && errors.dateOfBirth,

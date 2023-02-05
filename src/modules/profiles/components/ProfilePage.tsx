@@ -13,7 +13,7 @@ import {
   ProfileCover,
 } from '../../share/components/_dashboard/user/profile';
 import { useSession } from 'next-auth/react';
-import { usePathname } from 'next/navigation';
+import { usePathname, redirect } from 'next/navigation';
 import {
   useGetUserCareersQuery,
   useGetUserEducationsQuery,
@@ -42,7 +42,6 @@ const TabsWrapperStyle = styled('div')(({ theme }) => ({
 
 const UserProfile = () => {
   const [currentTab, setCurrentTab] = useState('profile');
-  const session = useSession();
 
   const pathname = usePathname();
   const userProfileId = pathname?.slice(pathname?.lastIndexOf('/') + 1);
@@ -56,7 +55,15 @@ const UserProfile = () => {
   };
 
   if (!userProfileId) {
-    return null;
+    redirect('/403_error');
+  }
+
+  if (
+    userEducationsResponse?.error ||
+    userCareersResponse?.error ||
+    userInformationResponse?.error
+  ) {
+    redirect('/403_error');
   }
 
   const PROFILE_TABS = [
@@ -74,45 +81,45 @@ const UserProfile = () => {
     },
   ];
 
-  return (
-    userProfileId && (
-      <Container maxWidth={'lg'}>
-        <Card
-          sx={{
-            mb: 3,
-            height: 280,
-            position: 'relative',
-          }}
-        >
-          <ProfileCover userProfileId={userProfileId} />
+  return userProfileId ? (
+    <Container maxWidth={'lg'}>
+      <Card
+        sx={{
+          mb: 3,
+          height: 280,
+          position: 'relative',
+        }}
+      >
+        <ProfileCover userProfileId={userProfileId} />
 
-          <TabsWrapperStyle>
-            <Tabs
-              value={currentTab}
-              scrollButtons="auto"
-              variant="scrollable"
-              allowScrollButtonsMobile
-              onChange={(e, value) => handleChangeTab(value)}
-            >
-              {PROFILE_TABS.map(tab => (
-                <Tab
-                  disableRipple
-                  key={tab.value}
-                  value={tab.value}
-                  icon={tab.icon}
-                  label={capitalCase(tab.value)}
-                />
-              ))}
-            </Tabs>
-          </TabsWrapperStyle>
-        </Card>
+        <TabsWrapperStyle>
+          <Tabs
+            value={currentTab}
+            scrollButtons="auto"
+            variant="scrollable"
+            allowScrollButtonsMobile
+            onChange={(e, value) => handleChangeTab(value)}
+          >
+            {PROFILE_TABS.map((tab) => (
+              <Tab
+                disableRipple
+                key={tab.value}
+                value={tab.value}
+                icon={tab.icon}
+                label={capitalCase(tab.value)}
+              />
+            ))}
+          </Tabs>
+        </TabsWrapperStyle>
+      </Card>
 
-        {PROFILE_TABS.map(tab => {
-          const isMatched = tab.value === currentTab;
-          return isMatched && <Box key={tab.value}>{tab.component}</Box>;
-        })}
-      </Container>
-    )
+      {PROFILE_TABS.map((tab) => {
+        const isMatched = tab.value === currentTab;
+        return isMatched && <Box key={tab.value}>{tab.component}</Box>;
+      })}
+    </Container>
+  ) : (
+    <></>
   );
 };
 

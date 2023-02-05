@@ -44,7 +44,7 @@ const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
   const onDeleteWork = async (id: string) => {
     const currentData = [...workData];
 
-    const deleteIndex = currentData.findIndex(item => item.id === id);
+    const deleteIndex = currentData.findIndex((item) => item.id === id);
     currentData.splice(deleteIndex, 1);
 
     try {
@@ -58,7 +58,7 @@ const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
   const onUpdateWork = async (id: any, values: any) => {
     const currentData = [...workData];
 
-    const updateIndex = currentData.findIndex(item => item.id === id);
+    const updateIndex = currentData.findIndex((item) => item.id === id);
 
     currentData[updateIndex] = values;
 
@@ -123,7 +123,7 @@ const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
             <Box style={{ paddingLeft: theme.spacing(2) }}>
               {workData && workData.length > 0 ? (
                 workData?.map((item: any, index: number) => (
-                  <>
+                  <div key={index}>
                     {selectedEditId === item.id ? (
                       <WorkForm
                         defaultValues={item}
@@ -188,7 +188,7 @@ const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
                         }}
                       />
                     ) : null}
-                  </>
+                  </div>
                 ))
               ) : (
                 <Typography>Không có thông tin</Typography>
