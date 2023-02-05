@@ -1,7 +1,6 @@
 'use client';
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import useGetUserInformationById from 'src/modules/profiles/hooks/useGetUserInformationById';
 
 const Home = () => {
   const { data: session } = useSession();
