@@ -1,10 +1,6 @@
 'use client';
 
-import { Box, Button, Container, Typography, useTheme } from '@mui/material';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useAppSelector } from 'src/redux/hooks';
-import { currentTenantSelector } from 'src/redux/slices/currentTenantSlice';
+import { Box, Container, Typography, useTheme } from '@mui/material';
 
 const IntroductionSection = ({ tenant }: { tenant: any }) => {
   const theme = useTheme();
@@ -13,7 +9,8 @@ const IntroductionSection = ({ tenant }: { tenant: any }) => {
     <Box
       sx={{
         paddingX: theme.spacing(2),
-        backgroundImage: 'url("/side_background.png")',
+        background:
+          'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("/side_background.png")',
         backgroundPosition: 'center',
         backgroundSize: 'cover',
         backgroundColor: 'yellow',
@@ -41,17 +38,22 @@ const IntroductionSection = ({ tenant }: { tenant: any }) => {
               display: 'flex',
               flexDirection: 'row',
               gap: theme.spacing(2),
+              color: theme.palette.primary.contrastText,
             }}
           >
             <Typography variant="h2">
               Mạng lưới cựu học sinh{' '}
-              <Typography variant="h2" color="primary" component="span">
+              <Typography
+                variant="h2"
+                component="span"
+                sx={{ color: theme.palette.primary.light }}
+              >
                 {tenant.name}
               </Typography>
             </Typography>
           </Box>
 
-          <Typography fontSize={18}>{tenant.description}</Typography>
+          {/* <Typography fontSize={18}>{tenant.description}</Typography> */}
 
           {/* <Box>
             <Link

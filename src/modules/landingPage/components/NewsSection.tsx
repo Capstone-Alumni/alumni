@@ -42,7 +42,7 @@ const NewsSection = () => {
             margin: 'auto',
           }}
         >
-          <Typography variant="h5" color="primary" textAlign="center">
+          <Typography variant="h2" color="primary" textAlign="center">
             Tin tức
           </Typography>
 
@@ -51,7 +51,7 @@ const NewsSection = () => {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center',
-              gap: theme.spacing(3),
+              gap: theme.spacing(6),
             }}
           >
             {isLoading ? <LoadingIndicator /> : null}
