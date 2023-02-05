@@ -15,10 +15,24 @@ import { usePathname, useRouter } from 'next/navigation';
 
 const ACCESS_NAV_ITEM = {
   id: 'request_access',
-  title: 'Kiểm duyệt thành viên',
+  title: 'Kiểm duyệt',
   icon: 'material-symbols:meeting-room-outline-rounded',
   link: '/admin/access_request',
 };
+
+const NEWS_NAV_ITEM = {
+  id: 'news',
+  title: 'Tin tức',
+  icon: 'material-symbols:meeting-room-outline-rounded',
+  link: '/admin/news',
+};
+const EVENT_NAV_ITEM = {
+  id: 'grade_class_4',
+  title: 'Quỹ',
+  icon: 'material-symbols:meeting-room-outline-rounded',
+  link: '/admin/events',
+};
+
 const GRADE_NAV_ITEM = {
   id: 'grade_class',
   title: 'Niên khoá và Lớp',
@@ -27,21 +41,9 @@ const GRADE_NAV_ITEM = {
 };
 const USER_NAV_ITEM = {
   id: 'user',
-  title: 'Người dùng',
+  title: 'Cựu học sinh',
   icon: 'material-symbols:meeting-room-outline-rounded',
-  link: '/admin/user',
-};
-const NEWS_NAV_ITEM = {
-  id: 'news',
-  title: 'Tin tức',
-  icon: 'material-symbols:meeting-room-outline-rounded',
-  link: '/admin/news',
-};
-const FUND_NAV_ITEM = {
-  id: 'grade_class_4',
-  title: 'Quỹ',
-  icon: 'material-symbols:meeting-room-outline-rounded',
-  link: '/admin/fund',
+  link: '/admin/members',
 };
 
 const StyledSidebar = styled(Box)(() => ({
@@ -78,6 +80,7 @@ const StyledNav = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
+  gap: theme.spacing(1),
   paddingLeft: theme.spacing(2),
   paddingRight: theme.spacing(2),
 }));
@@ -134,21 +137,21 @@ const generateNavItems = (
     case 'ALUMNI':
       return [];
     case 'CLASS_MOD':
-      return [ACCESS_NAV_ITEM, NEWS_NAV_ITEM];
+      return [ACCESS_NAV_ITEM, EVENT_NAV_ITEM];
     case 'GRADE_MOD':
-      return [ACCESS_NAV_ITEM, NEWS_NAV_ITEM, USER_NAV_ITEM];
+      return [ACCESS_NAV_ITEM, EVENT_NAV_ITEM, NEWS_NAV_ITEM];
     case 'SCHOOL_ADMIN':
       return [
         ACCESS_NAV_ITEM,
         NEWS_NAV_ITEM,
-        FUND_NAV_ITEM,
+        EVENT_NAV_ITEM,
         GRADE_NAV_ITEM,
         USER_NAV_ITEM,
       ];
   }
 };
 
-const AdminNav = ({ user }: { user?: any }) => {
+const AdminNav = ({ user, tenant }: { user?: any; tenant: any }) => {
   const theme = useTheme();
   const pathname = usePathname();
   const router = useRouter();
@@ -166,7 +169,7 @@ const AdminNav = ({ user }: { user?: any }) => {
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Image src="/logo.png" alt="logo" width={32} height={32} />
               <Typography variant="h5" sx={{ ml: theme.spacing(1) }}>
-                Alumni Hub
+                {tenant?.name}
               </Typography>
             </Box>
           </StyledHeader>
@@ -203,14 +206,9 @@ const AdminNav = ({ user }: { user?: any }) => {
 
         <StyledFooter>
           <StyledNav sx={{ padding: 0 }}>
-            <StyledNavItem>
-              <Icon height={24} icon="icon-park-outline:setting-two" />
-              <Typography fontWeight={600}>Cài đặt</Typography>
-            </StyledNavItem>
-
             <StyledNavItem onClick={() => router.push('/')}>
               <Icon height={24} icon="majesticons:door-exit" />
-              <Typography fontWeight={600}>Thoát chế độ admin</Typography>
+              <Typography fontWeight={600}>Thoát bảng điều khiển</Typography>
             </StyledNavItem>
           </StyledNav>
 
