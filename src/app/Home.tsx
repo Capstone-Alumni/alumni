@@ -1,7 +1,6 @@
 'use client';
 import { signOut, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation'
-import useGetUserInformationById from 'src/modules/profiles/hooks/useGetUserInformationById';
+import { useRouter } from 'next/navigation';
 
 const Home = () => {
   const { data: session } = useSession();
@@ -20,8 +19,9 @@ const Home = () => {
       {session && (
         <>
           <p className="text-zinc-500">Hello {session?.user?.name}</p>
-          <button onClick={() => router.push(`/profile/${session?.user?.id}`)
-          }>Profile</button>
+          <button onClick={() => router.push(`/profile/${session?.user?.id}`)}>
+            Profile
+          </button>
           <button onClick={() => signOut()} style={{ backgroundColor: 'red' }}>
             Logout
           </button>

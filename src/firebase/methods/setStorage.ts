@@ -1,7 +1,7 @@
 import { projectStorage } from '../config';
 
 export const setStorage = () => {
-  let error = null;
+  const error = null;
   let filePath = null;
 
   const uploadAvatar = async (userID: any, file: any) => {
@@ -9,7 +9,7 @@ export const setStorage = () => {
     const storageRef = projectStorage.ref(filePath);
     try {
       const res = await storageRef.put(file);
-      let url = await res.ref.getDownloadURL();
+      const url = await res.ref.getDownloadURL();
       return url;
     } catch (err) {
       console.log(err.message);
@@ -17,6 +17,6 @@ export const setStorage = () => {
   };
 
   return {
-    uploadAvatar
+    uploadAvatar,
   };
 };

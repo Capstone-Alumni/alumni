@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogActions,
   DialogContent,
-  DialogContentText
+  DialogContentText,
 } from '@material-ui/core';
 import { TransitionProps } from '@material-ui/core/transitions';
 
@@ -18,8 +18,8 @@ const Transition = forwardRef(
     props: TransitionProps & {
       children?: React.ReactElement<any, any>;
     },
-    ref: React.Ref<unknown>
-  ) => <Slide direction="up" ref={ref} {...props} />
+    ref: React.Ref<unknown>,
+  ) => <Slide direction="up" ref={ref} {...props} />,
 );
 
 export default function TransitionsDialogs() {
@@ -47,11 +47,13 @@ export default function TransitionsDialogs() {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-slide-title">Use Google's location service?</DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">
+          Use Google's location service?
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Let Google help apps determine location. This means sending anonymous location data to
-            Google, even when no apps are running.
+            Let Google help apps determine location. This means sending
+            anonymous location data to Google, even when no apps are running.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

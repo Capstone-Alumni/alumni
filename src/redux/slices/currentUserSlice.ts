@@ -7,7 +7,7 @@ import { dispatch } from '../store';
 const initialState: any = {
   isLoading: false,
   error: false,
-  data: {}
+  data: {},
 };
 
 const slice = createSlice({
@@ -28,8 +28,8 @@ const slice = createSlice({
     setCurrentUser(state, action) {
       state.isLoading = false;
       state.data = action.payload;
-    }
-  }
+    },
+  },
 });
 
 // Reducer

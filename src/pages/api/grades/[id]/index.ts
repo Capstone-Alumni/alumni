@@ -4,9 +4,10 @@ import GradeController from 'src/modules/gradeAndClass/controllers/grade.control
 
 const handler = nc();
 
-handler.use(extractTenantId)
-.get(GradeController.getById)
-.put(GradeController.updateInfoById)
-.delete(GradeController.deleteById);
+handler
+  .use(extractTenantId)
+  .get(GradeController.getById)
+  .put(GradeController.updateInfoById)
+  .delete(GradeController.deleteById);
 
 export default handler;

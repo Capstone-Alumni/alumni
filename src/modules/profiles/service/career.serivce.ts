@@ -1,5 +1,4 @@
 import { prisma } from '@lib/prisma/prisma';
-import archiveFill from '@iconify/icons-eva/archive-fill';
 import {
   CreateCareerServiceProps,
   GetCareerListServiceParams,
@@ -45,18 +44,20 @@ export default class CareerService {
 
     await prisma.career.deleteMany({
       where: {
-        userId
+        userId,
       },
     });
-    
+
     const newCareers = await prisma.career.createMany({
-      data: careers ? careers.map(career => ({
-        jobTitle: career.jobTitle,
-        company: career.company,
-        startDate: career.startDate,
-        endDate: career.endDate,
-        userId
-      })): [],
+      data: careers
+        ? careers.map(career => ({
+            jobTitle: career.jobTitle,
+            company: career.company,
+            startDate: career.startDate,
+            endDate: career.endDate,
+            userId,
+          }))
+        : [],
     });
     return newCareers;
   };

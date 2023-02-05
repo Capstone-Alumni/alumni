@@ -4,9 +4,10 @@ import CareerController from '../../../../../modules/profiles/controller/career.
 
 const handler = nc();
 
-handler.use(extractTenantId)
-.get(CareerController.getListByUserId)
-.post(CareerController.createCareer)
-.put(CareerController.updateCareers);
+handler
+  .use(extractTenantId)
+  .get(CareerController.getListByUserId)
+  .post(CareerController.createCareer)
+  .put(CareerController.updateCareers);
 
 export default handler;

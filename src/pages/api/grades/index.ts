@@ -6,8 +6,9 @@ import GradeController from 'src/modules/gradeAndClass/controllers/grade.control
 
 const handler = nc();
 
-handler.use(extractTenantId)
-.get(GradeController.getPublicList)
-.post(verifySchoolAdmin, GradeController.create);
+handler
+  .use(extractTenantId)
+  .get(GradeController.getPublicList)
+  .post(verifySchoolAdmin, GradeController.create);
 
 export default handler;
