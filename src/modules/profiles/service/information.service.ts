@@ -21,17 +21,16 @@ export default class InformationService {
       update: body,
       create: {
         ...body,
-        user: {
-          create: {
-            id: id,
-          },
-        },
+        userId: id,
       },
     });
     return informationUpdated;
   };
 
-  static getInformationByUserId = async (tenantPrisma:PrismaClient, id: string) => {
+  static getInformationByUserId = async (
+    tenantPrisma: PrismaClient,
+    id: string,
+  ) => {
     const userInformation = await tenantPrisma.user.findUnique({
       where: { id },
       include: {
