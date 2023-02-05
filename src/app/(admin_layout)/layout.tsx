@@ -4,6 +4,8 @@ import { redirect } from 'next/navigation';
 import AdminNav from '@share/components/layout/AdminNav';
 import AdminLayoutWrapper from '@share/components/layout/AdminLayoutWrapper';
 import AdminBodyWrapper from '@share/components/layout/AdminBodyWrapper';
+import { cookies } from 'next/headers';
+import { getTenantData } from '@share/utils/getTenantData';
 
 const ALLOWED_LEVELS = ['CLASS_MOD', 'GRADE_MOD', 'SCHOOL_ADMIN'];
 
@@ -25,9 +27,13 @@ export default async function AuthorizedLayout({
     redirect('/403_error');
   }
 
+  const tenant = cookies().get('tenant-subdomain');
+  const res = await getTenantData(tenant?.value || '');
+  const { data } = res;
+
   return (
     <AdminLayoutWrapper>
-      <AdminNav user={session.user} />
+      <AdminNav user={session.user} tenant={data} />
       <AdminBodyWrapper>{children}</AdminBodyWrapper>
     </AdminLayoutWrapper>
   );

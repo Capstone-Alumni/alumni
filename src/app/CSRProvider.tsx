@@ -23,9 +23,9 @@ export default function CSRProvider({
           <ThemeConfig paletteName={theme}>
             {children}
             <ToastContainer
-              position="top-right"
+              position="bottom-right"
               autoClose={3000}
-              theme="light"
+              theme="colored"
             />
           </ThemeConfig>
         </NextAppDirEmotionCacheProvider>

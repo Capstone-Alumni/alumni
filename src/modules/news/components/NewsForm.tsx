@@ -101,12 +101,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
           gap: theme.spacing(2),
         }}
       >
-        <Button
-          variant="contained"
-          color="error"
-          disabled={submitting}
-          onClick={handleCancel}
-        >
+        <Button variant="outlined" disabled={submitting} onClick={handleCancel}>
           Hủy
         </Button>
         <Button
