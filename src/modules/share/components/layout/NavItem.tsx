@@ -1,4 +1,4 @@
-import { alpha, styled, Typography } from '@mui/material';
+import { alpha, styled } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 

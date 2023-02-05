@@ -3,21 +3,14 @@
 import {
   alpha,
   Box,
-  Button,
   Card,
-  CardActionArea,
-  CardActions,
   CardContent,
   CardMedia,
-  Chip,
   Link,
   Typography,
   useTheme,
 } from '@mui/material';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { getImageOfNews } from '@share/utils/getFirstImageOfNews';
-import Image from 'next/image';
-import parse from 'html-react-parser';
 import React from 'react';
 
 const NewsCard = ({

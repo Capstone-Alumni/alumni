@@ -1,16 +1,7 @@
 'use client';
 
-import {
-  Box,
-  Button,
-  Card,
-  CardMedia,
-  Container,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Container, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
-import Link from 'next/link';
 
 const AboutSection = ({ tenant }: { tenant: any }) => {
   const theme = useTheme();

@@ -1,7 +1,5 @@
 'use client';
 
-import { signOut } from 'next-auth/react';
-
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,7 +11,6 @@ import Logo from '../Logo';
 import { Divider, useScrollTrigger, useTheme } from '@mui/material';
 import SearchInput from '../SearchInput';
 import { NavItem } from './NavItem';
-import MyAvatar from '../MyAvatar';
 import HeaderUserOptions from './HeaderUserOption';
 import React from 'react';
 
