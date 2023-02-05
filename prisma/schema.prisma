@@ -80,6 +80,7 @@ model Class {
 model Information {
   id                   String         @id @default(cuid())
   bio                  String?
+  fullName             String?
   avatarUrl            String?        @map("avatar_url")
   coverImageUrl        String?        @map("cover_image_url")
   userEmail            String?        @map("user_email")
@@ -94,6 +95,8 @@ model Information {
   gradeName            String?        @map("grade_name")
   className            String?        @map("class_name")
   userId               String         @unique
+  careerPublicity      ScopePublicity @default(PRIVATE) @map("career_publicity")
+  educationPublicity   ScopePublicity @default(PRIVATE) @map("education_publicity")
   user                 User           @relation(fields: [userId], references: [id])
 
   @@map("informations")

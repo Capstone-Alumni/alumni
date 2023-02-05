@@ -7,7 +7,8 @@ BEGIN
 	FOR v_schema IN
 		SELECT quote_ident(nspname)  
 		FROM   pg_namespace n
-		WHERE  nspname !~~ 'pg_%' 
+		WHERE  nspname !~~ 'pg_%'
+		AND    nspname <>  'information_schema'
 		LOOP
 			EXECUTE 'SET LOCAL search_path = ' || v_schema;
 			EXECUTE change;
