@@ -39,7 +39,7 @@ export default function Profile({
     setOpenEdit(!openEdit);
   };
 
-  return !!currentUser?.data?.information?.userId && !!userProfileId ? (
+  return !!currentUser?.data?.id && !!userProfileId ? (
     <Grid container spacing={3}>
       <Box
         display="flex"
@@ -51,7 +51,7 @@ export default function Profile({
           width: '100%',
         }}
       >
-        {currentUser.data.information.userId === userProfileId && (
+        {currentUser.data.id === userProfileId && (
           <>
             <Box display="flex" sx={{ alignItems: 'center' }}>
               <Typography variant="subtitle2">

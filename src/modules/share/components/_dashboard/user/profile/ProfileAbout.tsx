@@ -61,87 +61,93 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
             </Box>
           </Stack>
           <div>
-            {currentUser?.data?.information && (
-              <Box style={{ paddingLeft: theme.spacing(2) }}>
-                <Box style={{ display: 'flex' }}>
-                  <Box style={{ flex: 1 }}>
-                    {Boolean(userInformation?.bio) && (
+            <Box style={{ paddingLeft: theme.spacing(2) }}>
+              <Box style={{ display: 'flex' }}>
+                <Box style={{ flex: 1 }}>
+                  <ProfileInfoRow
+                    title="Bio"
+                    content={
+                      Boolean(userInformation?.bio)
+                        ? userInformation.bio
+                        : 'Chưa cập nhật'
+                    }
+                  />
+                  <ProfileInfoRow
+                    title="Họ và tên"
+                    content={
+                      Boolean(userInformation?.fullName)
+                        ? userInformation.fullName
+                        : 'Chưa cập nhật'
+                    }
+                  />
+                  {isAllowToViewValue(
+                    currentUser.data.information,
+                    userInformation,
+                    userInformation?.emailPublicity,
+                  ) &&
+                    Boolean(userInformation?.userEmail) && (
                       <ProfileInfoRow
-                        title="Bio"
-                        content={userInformation.bio}
+                        title="Email liên lạc"
+                        content={userInformation.userEmail}
                       />
                     )}
-                    {Boolean(userInformation?.fullName) && (
+                  {isAllowToViewValue(
+                    currentUser.data.information,
+                    userInformation,
+                    userInformation?.phonePublicity,
+                  ) &&
+                    Boolean(userInformation?.phone) && (
                       <ProfileInfoRow
-                        title="Họ và tên"
-                        content={userInformation.fullName}
+                        title="Điện thoại"
+                        content={userInformation.phone}
                       />
                     )}
-                    {isAllowToViewValue(
-                      currentUser.data.information,
-                      userInformation,
-                      userInformation?.emailPublicity,
-                    ) &&
-                      Boolean(userInformation?.userEmail) && (
-                        <ProfileInfoRow
-                          title="Email liên lạc"
-                          content={userInformation.userEmail}
-                        />
-                      )}
-                    {isAllowToViewValue(
-                      currentUser.data.information,
-                      userInformation,
-                      userInformation?.phonePublicity,
-                    ) &&
-                      Boolean(userInformation?.phone) && (
-                        <ProfileInfoRow
-                          title="Điện thoại"
-                          content={userInformation.phone}
-                        />
-                      )}
-                    {isAllowToViewValue(
-                      currentUser.data.information,
-                      userInformation,
-                      userInformation?.facebookPublicity,
-                    ) &&
-                      Boolean(userInformation?.facebookUrl) && (
-                        <ProfileInfoRow
-                          title="Facebook"
-                          content={userInformation.facebookUrl}
-                        />
-                      )}
-                    {isAllowToViewValue(
-                      currentUser.data.information,
-                      userInformation,
-                      userInformation?.dateOfBirthPublicity,
-                    ) &&
-                      Boolean(userInformation?.dateOfBirth) && (
-                        <ProfileInfoRow
-                          title="Ngày sinh"
-                          content={
-                            userInformation?.dateOfBirth &&
-                            new Date(
-                              userInformation.dateOfBirth,
-                            ).toLocaleDateString('en-GB')
-                          }
-                        />
-                      )}
-                    {Boolean(userInformation?.gradeName) && (
+                  {isAllowToViewValue(
+                    currentUser.data.information,
+                    userInformation,
+                    userInformation?.facebookPublicity,
+                  ) &&
+                    Boolean(userInformation?.facebookUrl) && (
                       <ProfileInfoRow
-                        title="Khối"
-                        content={userInformation.gradeName}
+                        title="Facebook"
+                        content={userInformation.facebookUrl}
                       />
                     )}
-                    {Boolean(userInformation?.className) && (
+                  {isAllowToViewValue(
+                    currentUser.data.information,
+                    userInformation,
+                    userInformation?.dateOfBirthPublicity,
+                  ) &&
+                    Boolean(userInformation?.dateOfBirth) && (
                       <ProfileInfoRow
-                        title="Lớp"
-                        content={userInformation.className}
+                        title="Ngày sinh"
+                        content={
+                          userInformation?.dateOfBirth &&
+                          new Date(
+                            userInformation.dateOfBirth,
+                          ).toLocaleDateString('en-GB')
+                        }
                       />
                     )}
-                  </Box>
+                  <ProfileInfoRow
+                    title="Khối"
+                    content={
+                      Boolean(userInformation?.gradeName)
+                        ? userInformation.gradeName
+                        : 'Chưa cập nhật'
+                    }
+                  />
+                  <ProfileInfoRow
+                    title="Lớp"
+                    content={
+                      Boolean(userInformation?.className)
+                        ? userInformation.className
+                        : 'Chưa cập nhật'
+                    }
+                  />
                 </Box>
               </Box>
-            )}
+            </Box>
           </div>
         </Card>
       </Grid>
