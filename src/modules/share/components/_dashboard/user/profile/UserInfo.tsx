@@ -146,7 +146,9 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
       }));
 
       setGrades(filteredClasses);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -232,7 +234,7 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                             id="combo-box-demo"
                             {...getFieldProps('gradeName')}
                             options={grades}
-                            getOptionLabel={(option) => option.gradeName || ''}
+                            getOptionLabel={option => option.gradeName || ''}
                             onChange={(_, value) => {
                               if (!value) {
                                 setFieldValue('grade', {
@@ -245,7 +247,7 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                               setFieldValue('grade', value);
                             }}
                             defaultValue={values.grade}
-                            renderInput={(params) => (
+                            renderInput={params => (
                               <TextField
                                 {...params}
                                 label="Khối"
@@ -260,9 +262,7 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                               id="combo-box-demo"
                               {...getFieldProps('className')}
                               options={classes}
-                              getOptionLabel={(option) =>
-                                option.className || ''
-                              }
+                              getOptionLabel={option => option.className || ''}
                               onChange={(_, value) => {
                                 console.log(value);
                                 if (!value) {
@@ -272,7 +272,7 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                                 setFieldValue('class', value);
                               }}
                               defaultValue={values.class}
-                              renderInput={(params) => (
+                              renderInput={params => (
                                 <TextField
                                   {...params}
                                   label="Lớp"
@@ -298,12 +298,12 @@ const UserInfo = ({ userInformation }: UserInfoProps) => {
                       />
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                          onChange={(value) =>
+                          onChange={value =>
                             setFieldValue('dateOfBirth', value, true)
                           }
                           value={values.dateOfBirth}
                           label="Ngày sinh"
-                          renderInput={(params) => (
+                          renderInput={params => (
                             <TextField
                               error={Boolean(
                                 touched.dateOfBirth && errors.dateOfBirth,

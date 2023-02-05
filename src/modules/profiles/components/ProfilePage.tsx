@@ -12,8 +12,7 @@ import {
   Profile,
   ProfileCover,
 } from '../../share/components/_dashboard/user/profile';
-import { useSession } from 'next-auth/react';
-import { usePathname, redirect } from 'next/navigation';
+import { redirect, usePathname } from 'next/navigation';
 import {
   useGetUserCareersQuery,
   useGetUserEducationsQuery,
@@ -100,7 +99,7 @@ const UserProfile = () => {
             allowScrollButtonsMobile
             onChange={(e, value) => handleChangeTab(value)}
           >
-            {PROFILE_TABS.map((tab) => (
+            {PROFILE_TABS.map(tab => (
               <Tab
                 disableRipple
                 key={tab.value}
@@ -113,7 +112,7 @@ const UserProfile = () => {
         </TabsWrapperStyle>
       </Card>
 
-      {PROFILE_TABS.map((tab) => {
+      {PROFILE_TABS.map(tab => {
         const isMatched = tab.value === currentTab;
         return isMatched && <Box key={tab.value}>{tab.component}</Box>;
       })}
