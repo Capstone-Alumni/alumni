@@ -76,7 +76,7 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
           </Link>
         ) : null}
 
-        <Link href={`/profile${user.id}`} style={{ color: 'inherit' }}>
+        <Link href={`/profile/${user.id}`} style={{ color: 'inherit' }}>
           <MenuItem>
             <ListItemIcon>
               <PersonOutlineIcon />
