@@ -7,6 +7,7 @@ import AdminNewsCards from './AdminNewsCards';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { useGetNewsForSchoolAdminQuery } from 'src/redux/slices/newsSlice';
 import { useState } from 'react';
+import Link from 'next/link';
 
 const AdminNewsListPage = () => {
   const theme = useTheme();
@@ -32,7 +33,7 @@ const AdminNewsListPage = () => {
   });
 
   const navigateToNewsForm = () => {
-    router.replace('/admin/news/form');
+    router.replace('');
   };
 
   return (
@@ -55,15 +56,15 @@ const AdminNewsListPage = () => {
         }}
       >
         <Typography variant="h3">Tin tức</Typography>
-        <Button
-          onClick={navigateToNewsForm}
-          variant="contained"
-          startIcon={<AddIcon />}
-        >
-          Thêm tin tức
-        </Button>
+        <Link href="/admin/news/form">
+          <Button role="href" variant="contained" startIcon={<AddIcon />}>
+            Thêm tin tức
+          </Button>
+        </Link>
       </Box>
+
       {isLoading ? <LoadingIndicator /> : null}
+
       {newsListData ? (
         <Box
           sx={{

@@ -123,7 +123,7 @@ const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
             <Box style={{ paddingLeft: theme.spacing(2) }}>
               {workData && workData.length > 0 ? (
                 workData?.map((item: any, index: number) => (
-                  <>
+                  <div key={index}>
                     {selectedEditId === item.id ? (
                       <WorkForm
                         defaultValues={item}
@@ -188,7 +188,7 @@ const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
                         }}
                       />
                     ) : null}
-                  </>
+                  </div>
                 ))
               ) : (
                 <Typography>Không có thông tin</Typography>
