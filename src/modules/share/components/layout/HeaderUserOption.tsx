@@ -17,6 +17,7 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import MyAvatar from '../MyAvatar';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const Wrapper = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -64,18 +65,26 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
           'aria-labelledby': 'header-user-option',
         }}
       >
-        <MenuItem>
-          <ListItemIcon>
-            <AdminPanelSettingsIcon />
-          </ListItemIcon>
-          <ListItemText>Bảng điều khiển</ListItemText>
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <PersonOutlineIcon />
-          </ListItemIcon>
-          <ListItemText>Hồ sơ của tôi</ListItemText>
-        </MenuItem>
+        {user.accessLevel !== 'ALUMNI' ? (
+          <Link href="/admin/access_request" style={{ color: 'inherit' }}>
+            <MenuItem>
+              <ListItemIcon>
+                <AdminPanelSettingsIcon />
+              </ListItemIcon>
+              <ListItemText>Bảng điều khiển</ListItemText>
+            </MenuItem>
+          </Link>
+        ) : null}
+
+        <Link href={`/profile${user.id}`} style={{ color: 'inherit' }}>
+          <MenuItem>
+            <ListItemIcon>
+              <PersonOutlineIcon />
+            </ListItemIcon>
+            <ListItemText>Hồ sơ của tôi</ListItemText>
+          </MenuItem>
+        </Link>
+
         <MenuItem
           onClick={async () => {
             await signOut({ redirect: false });
