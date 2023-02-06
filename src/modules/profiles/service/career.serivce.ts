@@ -62,7 +62,6 @@ export default class CareerService {
     userId: string,
     params: GetCareerListServiceParams,
   ) => {
-
     const { jobTitle, company, page, limit } = params;
 
     const whereFilter = {
@@ -113,7 +112,7 @@ export default class CareerService {
     return careerUpdated;
   };
 
-  static deleteById = async (tenantPrisma:PrismaClient, id: string) => {
+  static deleteById = async (tenantPrisma: PrismaClient, id: string) => {
     const career = await tenantPrisma.career.update({
       where: {
         id: id,

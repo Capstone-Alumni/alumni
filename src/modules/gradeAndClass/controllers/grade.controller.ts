@@ -72,7 +72,11 @@ export default class GradeController {
   ) => {
     const { id } = req.query;
     const prisma = await getPrismaClient(req.tenantId);
-    const grade = await GradeService.updateInfoById(prisma, id as string, req.body);
+    const grade = await GradeService.updateInfoById(
+      prisma,
+      id as string,
+      req.body,
+    );
 
     return res.status(200).json({
       status: true,

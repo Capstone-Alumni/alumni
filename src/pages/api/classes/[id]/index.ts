@@ -8,7 +8,7 @@ const handler = nc();
 handler
   .use(extractTenantId)
   .get(verifySchoolAdmin, ClassController.getById)
-  .put(verifySchoolAdmin,ClassController.updateInfoById)
-  .delete(verifySchoolAdmin,ClassController.deleteById);
+  .put(verifySchoolAdmin, ClassController.updateInfoById)
+  .delete(verifySchoolAdmin, ClassController.deleteById);
 
 export default handler;

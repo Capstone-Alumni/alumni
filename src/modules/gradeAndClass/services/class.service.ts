@@ -7,17 +7,20 @@ import {
 } from '../types';
 
 export default class GradeService {
-  static create = async (tenantPrisma: PrismaClient, { name, gradeId }: CreateClassServiceProps) => {
+  static create = async (
+    tenantPrisma: PrismaClient,
+    { name, gradeId }: CreateClassServiceProps,
+  ) => {
     if (!name) {
       throw new Error('invalid class name');
     }
-    if(!gradeId){
+    if (!gradeId) {
       throw new Error('invalid grade ID');
     }
     const grade = await tenantPrisma.grade.findUnique({
       where: { id: gradeId },
     });
-  
+
     if (!grade) {
       throw new Error('grade not exist');
     }
@@ -36,8 +39,10 @@ export default class GradeService {
     return newClass;
   };
 
-  static getList = async (tenantPrisma: PrismaClient, { params, gradeId }: GetClassListServiceProps) => {
-    
+  static getList = async (
+    tenantPrisma: PrismaClient,
+    { params, gradeId }: GetClassListServiceProps,
+  ) => {
     const { name, page, limit } = params;
 
     const whereFilter = {

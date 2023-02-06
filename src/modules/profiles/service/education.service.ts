@@ -80,8 +80,8 @@ export default class EducationServices {
     educationId: string,
     body: CreateOrUpdateEducationServiceProps,
   ) => {
-  //  await isUserExisted(userId);
-    await isEducationExisted(tenantPrisma,educationId);
+    //  await isUserExisted(userId);
+    await isEducationExisted(tenantPrisma, educationId);
 
     const educationUpdated = await tenantPrisma.education.update({
       where: { id: educationId },
@@ -91,7 +91,11 @@ export default class EducationServices {
     return educationUpdated;
   };
 
-  static getEducationByEduId = async (tenantPrisma:PrismaClient, userId: string, educationId: string) => {
+  static getEducationByEduId = async (
+    tenantPrisma: PrismaClient,
+    userId: string,
+    educationId: string,
+  ) => {
     //await isUserExisted(userId);
 
     const whereFilter = {
@@ -109,8 +113,8 @@ export default class EducationServices {
     userId: string,
     educationId: string,
   ) => {
-   // await isUserExisted(userId);
-    await isEducationExisted(tenantPrisma,educationId);
+    // await isUserExisted(userId);
+    await isEducationExisted(tenantPrisma, educationId);
 
     const education = await tenantPrisma.education.update({
       where: { id: educationId },
@@ -140,16 +144,17 @@ export default class EducationServices {
         { archived: false },
       ],
     };
-    const [totalEducationItem, educationItems] = await tenantPrisma.$transaction([
-      tenantPrisma.education.count({
-        where: whereFilter,
-      }),
-      tenantPrisma.education.findMany({
-        skip: (page - 1) * limit,
-        take: limit,
-        where: whereFilter,
-      }),
-    ]);
+    const [totalEducationItem, educationItems] =
+      await tenantPrisma.$transaction([
+        tenantPrisma.education.count({
+          where: whereFilter,
+        }),
+        tenantPrisma.education.findMany({
+          skip: (page - 1) * limit,
+          take: limit,
+          where: whereFilter,
+        }),
+      ]);
     return {
       totalItems: totalEducationItem,
       items: educationItems,

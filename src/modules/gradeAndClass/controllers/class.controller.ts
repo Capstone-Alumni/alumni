@@ -11,7 +11,7 @@ export default class ClassController {
   ) => {
     try {
       const { name, gradeId } = req.body;
-      const prisma = await getPrismaClient(req.tenantId); 
+      const prisma = await getPrismaClient(req.tenantId);
       const newClass = await ClassService.create(prisma, {
         gradeId: gradeId as string,
         name,
@@ -46,7 +46,7 @@ export default class ClassController {
   ) => {
     try {
       const { grade_id: gradeId, page, limit, name } = req.query;
-      const prisma = await getPrismaClient(req.tenantId); 
+      const prisma = await getPrismaClient(req.tenantId);
       const classListData = await ClassService.getList(prisma, {
         gradeId: gradeId as string,
         params: {
@@ -77,7 +77,7 @@ export default class ClassController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id } = req.query;
-    const prisma = await getPrismaClient(req.tenantId); 
+    const prisma = await getPrismaClient(req.tenantId);
     const classGotten = await ClassService.getById(prisma, id as string);
 
     return res.status(200).json({
@@ -91,7 +91,7 @@ export default class ClassController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id } = req.query;
-    const prisma = await getPrismaClient(req.tenantId); 
+    const prisma = await getPrismaClient(req.tenantId);
     const classUpdated = await ClassService.updateInfoById(
       prisma,
       id as string,
@@ -109,7 +109,7 @@ export default class ClassController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id } = req.query;
-    const prisma = await getPrismaClient(req.tenantId); 
+    const prisma = await getPrismaClient(req.tenantId);
     const classDeleted = await ClassService.deleteById(prisma, id as string);
 
     return res.status(200).json({
