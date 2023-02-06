@@ -1,6 +1,7 @@
 'use client';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useGetNewsByIdForSchoolAdminQuery } from 'src/redux/slices/newsSlice';
@@ -25,8 +26,12 @@ const AdminNewsDetails = () => {
         <Box
           sx={{
             display: 'flex',
+            alignItems: 'center',
           }}
         >
+          <Link href="/admin/news">
+            <Typography>Danh sách tin tức</Typography>
+          </Link>
           <Button
             sx={{
               marginLeft: 'auto',

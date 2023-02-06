@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,49 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// =========== ENUM =================
-
-enum AccessLevel {
-  ALUMNI
-  CLASS_MOD
-  GRADE_MOD
-  SCHOOL_ADMIN
-}
-
-enum AccessStatus {
-  PENDING
-  APPROVED
-}
-
-enum AccessMode {
-  FULL_ACCESS
-  READ_ONLY
-}
-
-enum ScopePublicity {
-  PRIVATE
-  CLASS
-  GRADE
-  SCHOOL
-}
-
-// ============== MODEL =======================
-
 model Account {
   id                String  @id @default(cuid())
   userId            String  @map("user_id")
   type              String
   provider          String
   providerAccountId String  @map("provider_account_id")
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
@@ -70,15 +38,14 @@ model User {
   username      String?      @unique
   password      String?
   image         String?
-  accounts      Account[]
   accessLevel   AccessLevel  @default(ALUMNI) @map("access_level")
   accessStatus  AccessStatus @default(PENDING) @map("access_status")
   accessMode    AccessMode   @default(FULL_ACCESS) @map("access_mode")
-
-  class       Class?       @relation(fields: [classId], references: [id], onDelete: SetNull)
-  information Information?
-  careers     Career[]
-  Education   Education[]
+  accounts      Account[]
+  careers       Career[]
+  Education     Education[]
+  information   Information?
+  class         Class?       @relation(fields: [classId], references: [id])
 
   @@unique([id, email])
   @@map("users")
@@ -104,9 +71,8 @@ model Class {
   updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
   name        String
   description String?
+  grade       Grade    @relation(fields: [gradeId], references: [id])
   users       User[]
-
-  grade Grade @relation(fields: [gradeId], references: [id])
 
   @@map("classes")
 }
@@ -117,7 +83,7 @@ model Information {
   fullName             String?
   avatarUrl            String?        @map("avatar_url")
   coverImageUrl        String?        @map("cover_image_url")
-  userEmail            String?        @map("user_email") // email contact, no related to email user
+  userEmail            String?        @map("user_email")
   emailPublicity       ScopePublicity @default(PRIVATE) @map("email_publicity")
   phone                String?
   phonePublicity       ScopePublicity @default(PRIVATE) @map("phone_publicity")
@@ -131,8 +97,7 @@ model Information {
   userId               String         @unique
   careerPublicity      ScopePublicity @default(PRIVATE) @map("career_publicity")
   educationPublicity   ScopePublicity @default(PRIVATE) @map("education_publicity")
-
-  user User @relation(fields: [userId], references: [id])
+  user                 User           @relation(fields: [userId], references: [id])
 
   @@map("informations")
 }
@@ -155,11 +120,10 @@ model Education {
   degree    String?
   school    String
   startDate DateTime? @map("start_date")
-  endDate   DateTime? @map("end_date") // in case  not graduated
+  endDate   DateTime? @map("end_date")
   archived  Boolean   @default(false)
   userId    String    @map("user_id")
-
-  user User @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
 
   @@map("educations")
 }
@@ -175,4 +139,28 @@ model News {
   isPublic  Boolean  @default(false)
 
   @@map("news")
+}
+
+enum AccessLevel {
+  ALUMNI
+  CLASS_MOD
+  GRADE_MOD
+  SCHOOL_ADMIN
+}
+
+enum AccessStatus {
+  PENDING
+  APPROVED
+}
+
+enum AccessMode {
+  FULL_ACCESS
+  READ_ONLY
+}
+
+enum ScopePublicity {
+  PRIVATE
+  CLASS
+  GRADE
+  SCHOOL
 }

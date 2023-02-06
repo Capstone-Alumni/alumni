@@ -10,6 +10,7 @@ export default class InformationService {
   ) => {
     //TODO: sync users table from platform's database
     // then u can turn on this flag
+
     // const user = await tenantPrisma.user.findUnique({
     //   where: { id },
     // });

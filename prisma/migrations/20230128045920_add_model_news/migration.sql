@@ -1,6 +1,5 @@
 -- CreateTable
-
-SELECT migrate_schema(
+SELECT run_migration(
     '
         CREATE TABLE "news" (
             "id" TEXT NOT NULL,
@@ -14,4 +13,4 @@ SELECT migrate_schema(
             CONSTRAINT "news_pkey" PRIMARY KEY ("id")
         );
     '
-)
+);

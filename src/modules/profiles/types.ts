@@ -4,6 +4,7 @@ export type GetInformationParams = {
   id: string;
 };
 export type UpdateInformationProps = {
+  id: string;
   bio?: string;
   avatarUrl?: string;
   coverImageUrl?: string;

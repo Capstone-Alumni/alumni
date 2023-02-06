@@ -21,7 +21,7 @@ export const nextAuthOptions = {
         };
         try {
           const response = await fetch(
-            `${process.env.PLATFORM_HOST}/api/login`,
+            `${process.env.NEXT_PUBLIC_PLATFORM_HOST}/api/login`,
             {
               method: 'POST',
               body: JSON.stringify(payload),
