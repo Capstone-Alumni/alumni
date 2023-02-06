@@ -23,10 +23,11 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   async rewrites() {
+    const platformHost = process.env.NEXT_PUBLIC_PLATFORM_HOST;
     return [
       {
-        source: '/platformHost/api/:path*',
-        destination: 'http://localhost:3000/api/:path*',
+        source: '/platformHost/:path*',
+        destination: `${platformHost}/:path*`,
       },
     ];
   },

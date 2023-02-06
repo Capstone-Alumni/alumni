@@ -1,5 +1,6 @@
 import { NextRequestWithAuth, withAuth } from 'next-auth/middleware';
 import { NextResponse } from 'next/server';
+import { getTenantData } from '@share/utils/getTenantData';
 
 export const config = {
   matcher: [
@@ -26,8 +27,12 @@ export default withAuth(
 
     const response = NextResponse.next();
     const currentTenant = response.cookies.get('tenant-subdomain')?.value;
-    if (currentTenant !== currentHost) {
+    const currentTenantId = response.cookies.get('tenant-id')?.value;
+    if (currentTenant !== currentHost || !currentTenantId) {
       response.cookies.set('tenant-subdomain', currentHost);
+      await getTenantData(currentHost).then(({ data }) =>
+        response.cookies.set('tenant-id', data.tenantId),
+      );
     }
     return response;
   },

@@ -14,6 +14,8 @@ export const extractTenantId = async (
 ) => {
   const tenantId = req.cookies['tenant-id'];
 
+  console.log(tenantId);
+
   if (!tenantId) {
     throw new Error('unauthorized');
   }
