@@ -20,7 +20,7 @@ export default function useSignIn() {
           if (res?.error) {
             // TODO: handle error
           } else {
-            router.replace('/home');
+            router.replace('/');
           }
         });
       default:

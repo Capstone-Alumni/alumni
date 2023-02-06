@@ -21,8 +21,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>High school alumni management platform</title>
+        <title>{data.name}</title>
         <meta content="initial-scale=1, width=device-width" name="viewport" />
+        <link rel="shortcut icon" href="/logo.png" />
       </head>
       <body style={{ margin: 0, minHeight: '100vh' }}>
         <CSRProvider theme={data.theme}>
