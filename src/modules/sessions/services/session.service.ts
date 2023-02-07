@@ -1,11 +1,14 @@
 import { compareSync, hashSync } from 'bcrypt';
 import { omit } from 'lodash';
-import { prisma } from '@lib/prisma/prisma';
 import { SignInRequestBody, SignUpRequestBody } from '../types';
+import { PrismaClient } from '@prisma/client';
 
 export default class SessionService {
-  static signUp = async ({ email, username, password }: SignUpRequestBody) => {
-    const existedUsers = await prisma.user.findMany({
+  static signUp = async (
+    tenantPrisma: PrismaClient,
+    { email, username, password }: SignUpRequestBody,
+  ) => {
+    const existedUsers = await tenantPrisma.user.findMany({
       where: {
         OR: [{ email }, { username }],
       },
@@ -17,7 +20,7 @@ export default class SessionService {
 
     const passwordEncrypted = hashSync(password, 10);
 
-    const newUser = await prisma.user.create({
+    const newUser = await tenantPrisma.user.create({
       data: {
         username,
         email,
@@ -32,7 +35,7 @@ export default class SessionService {
     usernameOrEmail,
     password: passwordInputted,
   }: SignInRequestBody) => {
-    const existedUsers = await prisma.user.findMany({
+    const existedUsers = await tenantPrisma.user.findMany({
       where: {
         OR: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
       },
