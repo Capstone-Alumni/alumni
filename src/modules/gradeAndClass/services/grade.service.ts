@@ -1,6 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { prisma } from '@lib/prisma/prisma';
-
 import {
   CreateGradeServiceProps,
   GetGradeListServiceProps,
@@ -67,8 +65,8 @@ export default class GradeService {
     };
   };
 
-  static getById = async (id: string) => {
-    const grade = await prisma.grade.findUnique({
+  static getById = async (tenanttPrisma: PrismaClient, id: string) => {
+    const grade = await tenanttPrisma.grade.findUnique({
       where: {
         id: id,
       },
@@ -78,10 +76,11 @@ export default class GradeService {
   };
 
   static updateInfoById = async (
+    tenanttPrisma: PrismaClient,
     id: string,
     data: UpdateGradeInfoByIdServiceProps,
   ) => {
-    const grade = await prisma.grade.update({
+    const grade = await tenanttPrisma.grade.update({
       where: {
         id: id,
       },
@@ -91,8 +90,8 @@ export default class GradeService {
     return grade;
   };
 
-  static deleteById = async (id: string) => {
-    const grade = await prisma.grade.update({
+  static deleteById = async (tenanttPrisma: PrismaClient, id: string) => {
+    const grade = await tenanttPrisma.grade.update({
       where: {
         id: id,
       },

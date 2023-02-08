@@ -1,16 +1,20 @@
 import { omit } from 'lodash';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { ApiErrorResponse, ApiSuccessResponse } from 'src/types';
 import EducationServices from '../service/education.service';
 import { QueryParamGetEducationByUserId } from '../types';
+import { NextApiRequestWithTenant } from '../../../lib/next-connect/index';
+import getPrismaClient from '@lib/prisma/prisma';
 
 export default class EducationController {
   static async create(
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) {
     const { id: userId } = req.query;
+    const prisma = await getPrismaClient(req.tenantId);
     const educationCreated = await EducationServices.createEducation(
+      prisma,
       userId as string,
       req.body,
     );
@@ -21,11 +25,13 @@ export default class EducationController {
   }
 
   static async createManyRecords(
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) {
     const { id: userId } = req.query;
+    const prisma = await getPrismaClient(req.tenantId);
     const educationCreated = await EducationServices.bulkCreate(
+      prisma,
       userId as string,
       req.body,
     );
@@ -36,11 +42,13 @@ export default class EducationController {
   }
 
   static updateEducation = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id: userId, educationId } = req.query;
+    const prisma = await getPrismaClient(req.tenantId);
     const educationUpdated = await EducationServices.updateEducation(
+      prisma,
       userId as string,
       educationId as string,
       req.body,
@@ -52,11 +60,13 @@ export default class EducationController {
   };
 
   static deleteducation = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id: userId, educationId } = req.query;
+    const prisma = await getPrismaClient(req.tenantId);
     const educationDeleted = await EducationServices.deleteEducationByEduId(
+      prisma,
       userId as string,
       educationId as string,
     );
@@ -67,11 +77,13 @@ export default class EducationController {
   };
 
   static getEducationByEduId = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id: userId, educationId } = req.query;
+    const prisma = await getPrismaClient(req.tenantId);
     const education = await EducationServices.getEducationByEduId(
+      prisma,
       userId as string,
       educationId as string,
     );
@@ -82,12 +94,14 @@ export default class EducationController {
   };
 
   static getEducationsByUserId = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const params = omit(req.query, ['id']);
     const { id: userId } = req.query;
+    const prisma = await getPrismaClient(req.tenantId);
     const userEducations = await EducationServices.getEducationsByUserId(
+      prisma,
       userId as string,
       params as unknown as QueryParamGetEducationByUserId,
     );

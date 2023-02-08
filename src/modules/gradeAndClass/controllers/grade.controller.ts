@@ -1,6 +1,6 @@
 import { NextApiRequestWithTenant } from '@lib/next-connect';
 import getPrismaClient from '@lib/prisma/prisma';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { ApiErrorResponse, ApiSuccessResponse } from 'src/types';
 
 import GradeService from '../services/grade.service';
@@ -53,11 +53,12 @@ export default class GradeController {
   };
 
   static getById = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id } = req.query;
-    const grade = await GradeService.getById(id as string);
+    const prisma = await getPrismaClient(req.tenantId);
+    const grade = await GradeService.getById(prisma, id as string);
 
     return res.status(200).json({
       status: true,
@@ -66,11 +67,16 @@ export default class GradeController {
   };
 
   static updateInfoById = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id } = req.query;
-    const grade = await GradeService.updateInfoById(id as string, req.body);
+    const prisma = await getPrismaClient(req.tenantId);
+    const grade = await GradeService.updateInfoById(
+      prisma,
+      id as string,
+      req.body,
+    );
 
     return res.status(200).json({
       status: true,
@@ -79,11 +85,12 @@ export default class GradeController {
   };
 
   static deleteById = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id } = req.query;
-    const grade = await GradeService.deleteById(id as string);
+    const prisma = await getPrismaClient(req.tenantId);
+    const grade = await GradeService.deleteById(prisma, id as string);
 
     return res.status(200).json({
       status: true,
