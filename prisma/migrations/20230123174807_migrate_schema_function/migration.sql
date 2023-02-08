@@ -10,8 +10,10 @@ BEGIN
 		WHERE  nspname !~~ 'pg_%'
 		AND    nspname <>  'information_schema'
 		LOOP
-			EXECUTE 'SET LOCAL search_path = ' || v_schema;
-			EXECUTE change;
+			IF v_schema <> 'public' THEN
+				EXECUTE 'SET LOCAL search_path = ' || v_schema;
+				EXECUTE change;
+			END IF;
 END LOOP;
 END;
 $BODY$
