@@ -1,16 +1,18 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { ApiErrorResponse, ApiSuccessResponse } from 'src/types';
-
+import { NextApiRequestWithTenant } from '@lib/next-connect';
 import ClassService from '../services/class.service';
+import getPrismaClient from '@lib/prisma/prisma';
 
 export default class ClassController {
   static create = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
       const { name, gradeId } = req.body;
-      const newClass = await ClassService.create({
+      const prisma = await getPrismaClient(req.tenantId);
+      const newClass = await ClassService.create(prisma, {
         gradeId: gradeId as string,
         name,
       });
@@ -39,12 +41,13 @@ export default class ClassController {
   };
 
   static getList = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
       const { grade_id: gradeId, page, limit, name } = req.query;
-      const classListData = await ClassService.getList({
+      const prisma = await getPrismaClient(req.tenantId);
+      const classListData = await ClassService.getList(prisma, {
         gradeId: gradeId as string,
         params: {
           page: page ? parseInt(page as string, 10) : 1,
@@ -70,11 +73,12 @@ export default class ClassController {
   };
 
   static getById = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id } = req.query;
-    const classGotten = await ClassService.getById(id as string);
+    const prisma = await getPrismaClient(req.tenantId);
+    const classGotten = await ClassService.getById(prisma, id as string);
 
     return res.status(200).json({
       status: true,
@@ -83,11 +87,13 @@ export default class ClassController {
   };
 
   static updateInfoById = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id } = req.query;
+    const prisma = await getPrismaClient(req.tenantId);
     const classUpdated = await ClassService.updateInfoById(
+      prisma,
       id as string,
       req.body,
     );
@@ -99,11 +105,12 @@ export default class ClassController {
   };
 
   static deleteById = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id } = req.query;
-    const classDeleted = await ClassService.deleteById(id as string);
+    const prisma = await getPrismaClient(req.tenantId);
+    const classDeleted = await ClassService.deleteById(prisma, id as string);
 
     return res.status(200).json({
       status: true,

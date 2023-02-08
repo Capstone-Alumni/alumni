@@ -1,4 +1,4 @@
-import { prisma } from '@lib/prisma/prisma';
+import { PrismaClient } from '@prisma/client';
 
 import {
   CreateClassServiceProps,
@@ -6,28 +6,26 @@ import {
   UpdateClassInfoByIdServiceProps,
 } from '../types';
 
-const isGradeExisted = async (id: string) => {
-  if (!id) {
-    throw new Error('grade not exist');
-  }
-
-  const grade = await prisma.grade.findUnique({
-    where: { id: id },
-  });
-
-  if (!grade) {
-    throw new Error('grade not exist');
-  }
-};
-
 export default class GradeService {
-  static create = async ({ name, gradeId }: CreateClassServiceProps) => {
+  static create = async (
+    tenantPrisma: PrismaClient,
+    { name, gradeId }: CreateClassServiceProps,
+  ) => {
     if (!name) {
       throw new Error('invalid class name');
     }
-    await isGradeExisted(gradeId);
+    if (!gradeId) {
+      throw new Error('invalid grade ID');
+    }
+    const grade = await tenantPrisma.grade.findUnique({
+      where: { id: gradeId },
+    });
 
-    const newClass = await prisma.class.create({
+    if (!grade) {
+      throw new Error('grade not exist');
+    }
+
+    const newClass = await tenantPrisma.class.create({
       data: {
         name: name,
         grade: {
@@ -41,9 +39,10 @@ export default class GradeService {
     return newClass;
   };
 
-  static getList = async ({ params, gradeId }: GetClassListServiceProps) => {
-    await isGradeExisted(gradeId);
-
+  static getList = async (
+    tenantPrisma: PrismaClient,
+    { params, gradeId }: GetClassListServiceProps,
+  ) => {
     const { name, page, limit } = params;
 
     const whereFilter = {
@@ -54,11 +53,11 @@ export default class GradeService {
       ],
     };
 
-    const [totalClassItem, classItems] = await prisma.$transaction([
-      prisma.class.count({
+    const [totalClassItem, classItems] = await tenantPrisma.$transaction([
+      tenantPrisma.class.count({
         where: whereFilter,
       }),
-      prisma.class.findMany({
+      tenantPrisma.class.findMany({
         skip: (page - 1) * limit,
         take: limit,
         where: whereFilter,
@@ -72,8 +71,8 @@ export default class GradeService {
     };
   };
 
-  static getById = async (id: string) => {
-    const grade = await prisma.class.findUnique({
+  static getById = async (tenantPrisma: PrismaClient, id: string) => {
+    const grade = await tenantPrisma.class.findUnique({
       where: {
         id: id,
       },
@@ -83,10 +82,11 @@ export default class GradeService {
   };
 
   static updateInfoById = async (
+    tenantPrisma: PrismaClient,
     id: string,
     data: UpdateClassInfoByIdServiceProps,
   ) => {
-    const classUpdated = await prisma.class.update({
+    const classUpdated = await tenantPrisma.class.update({
       where: {
         id: id,
       },
@@ -96,8 +96,8 @@ export default class GradeService {
     return classUpdated;
   };
 
-  static deleteById = async (id: string) => {
-    const classDeleted = await prisma.class.update({
+  static deleteById = async (tenantPrisma: PrismaClient, id: string) => {
+    const classDeleted = await tenantPrisma.class.update({
       where: {
         id: id,
       },
