@@ -1,5 +1,5 @@
 -- Create migration schema function
-CREATE OR REPLACE FUNCTION run_migration(change text) RETURNS void AS
+CREATE OR REPLACE FUNCTION template.run_migration(change text) RETURNS void AS
 $BODY$
 DECLARE
 v_schema text;

@@ -1,6 +1,6 @@
 -- create clone shema function
 
-CREATE OR REPLACE FUNCTION public.clone_schema(
+CREATE OR REPLACE FUNCTION template.clone_schema(
 	source_schema text,
 	dest_schema text)
 RETURNS void AS
