@@ -36,6 +36,9 @@ export default class GradeService {
   ) => {
     const { name, code, page, limit } = params;
 
+    console.log(code);
+    console.log(name);
+
     const whereFilter = {
       AND: [
         { OR: [{ code: { contains: code } }, { name: { contains: name } }] },
