@@ -9,7 +9,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import AbcRoundedIcon from '@mui/icons-material/AbcRounded';
 import ReactHtmlParser from 'html-react-parser';
 import Switch from '@mui/material/Switch';
 import { News } from '../types';
@@ -113,7 +113,7 @@ const AdminNewsCardItem = ({ item }: { item: News }) => {
             marginTop: 3,
           }}
         >
-          <AccessTimeIcon color="disabled" />
+          <AbcRoundedIcon color="disabled" />
           <Typography
             sx={{
               fontFamily: 'Inter',
