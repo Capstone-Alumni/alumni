@@ -6,7 +6,7 @@ import {
   UpdateClassInfoByIdServiceProps,
 } from '../types';
 
-export default class GradeService {
+export default class ClassService {
   static create = async (
     tenantPrisma: PrismaClient,
     { name, gradeId }: CreateClassServiceProps,
@@ -36,6 +36,8 @@ export default class GradeService {
       },
     });
 
+    await tenantPrisma.$disconnect();
+
     return newClass;
   };
 
@@ -64,6 +66,8 @@ export default class GradeService {
       }),
     ]);
 
+    await tenantPrisma.$disconnect();
+
     return {
       totalItems: totalClassItem,
       items: classItems,
@@ -77,6 +81,8 @@ export default class GradeService {
         id: id,
       },
     });
+
+    await tenantPrisma.$disconnect();
 
     return grade;
   };
