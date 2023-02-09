@@ -76,6 +76,12 @@ export type GetCareerListServiceParams = {
   limit: number;
 };
 
+export type GetUsersInformationListServiceParams = {
+  name: string;
+  page: number;
+  limit: number;
+};
+
 export type UpdateCareerInfoByIdServiceProps = {
   jobTitle?: string;
   company?: string;
