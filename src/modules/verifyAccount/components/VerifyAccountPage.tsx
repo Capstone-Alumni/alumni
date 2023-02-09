@@ -16,6 +16,8 @@ import VeriticalLinearStepper from './VerticalLinearStepper';
 import VerifyForm from './VerifyForm';
 import GradeStep from './GradeStep';
 import ClassStep from './ClassStep';
+import useVerifyAccount from '../hooks/useVerifyAccount';
+import { useSession } from 'next-auth/react';
 
 type VerifyFormValues = {
   fullName: string;
@@ -62,6 +64,22 @@ const VerifyAccountPage = () => {
     resolver,
   });
 
+  const { data: session } = useSession();
+  const { verifyAccount } = useVerifyAccount();
+
+  const onSubmit = async (values: VerifyFormValues) => {
+    if (!session?.user.id) {
+      return;
+    }
+
+    await verifyAccount({
+      userId: session.user.id,
+      fullName: values.fullName,
+      classId: values.class,
+      email: session.user.email,
+    });
+  };
+
   return (
     <Stack spacing={1}>
       <Paper
@@ -71,7 +89,9 @@ const VerifyAccountPage = () => {
         }}
       >
         <FormProvider {...methods}>
-          <VeriticalLinearStepper steps={steps} />
+          <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <VeriticalLinearStepper steps={steps} />
+          </form>
         </FormProvider>
       </Paper>
     </Stack>

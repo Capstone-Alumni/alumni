@@ -9,7 +9,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import AbcRoundedIcon from '@mui/icons-material/AbcRounded';
+// import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ReactHtmlParser from 'html-react-parser';
 import Switch from '@mui/material/Switch';
 import { News } from '../types';
@@ -113,7 +113,7 @@ const AdminNewsCardItem = ({ item }: { item: News }) => {
             marginTop: 3,
           }}
         >
-          <AbcRoundedIcon color="disabled" />
+          <DeleteOutlineIcon color="disabled" />
           <Typography
             sx={{
               fontFamily: 'Inter',

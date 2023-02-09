@@ -1,17 +1,18 @@
 import { NextApiResponse } from 'next';
 import { ApiErrorResponse, ApiSuccessResponse } from 'src/types';
-import UserService from '../services/user.service';
 import { NextApiRequestWithTenant } from '../../../lib/next-connect/index';
 import getPrismaClient from '../../../lib/prisma/prisma';
+import AccessRequestService from '../services/accessRequest.service';
 
-export default class UserController {
+export default class AccessRequestController {
   static verifyAccount = async (
     req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id } = req.query;
     const prisma = await getPrismaClient(req.tenantId);
-    const accountUpdated = await UserService.updateInfoById(
+
+    const accountUpdated = await AccessRequestService.verifyAccount(
       prisma,
       id as string,
       req.body,

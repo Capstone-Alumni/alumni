@@ -15,6 +15,9 @@ import EndingStep from './EndingStep';
 import Logo from '@share/components/Logo';
 import { useAppSelector } from 'src/redux/hooks';
 import { currentTenantSelector } from 'src/redux/slices/currentTenantSlice';
+import { useFormContext } from 'react-hook-form';
+import { useResetRecoilState } from 'recoil';
+import { selectedClassAtom, selectedGradeAtom } from '../states';
 // ----------------------------------------------------------------------
 
 export type Step = {
@@ -29,6 +32,9 @@ interface VerifyAccountPageProps {
 
 const VeriticalLinearStepper = ({ steps }: VerifyAccountPageProps) => {
   const theme = useTheme();
+  const { reset: resetForm } = useFormContext();
+  const resetSelectedGrade = useResetRecoilState(selectedGradeAtom);
+  const resetSelectedClass = useResetRecoilState(selectedClassAtom);
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
 
@@ -70,6 +76,9 @@ const VeriticalLinearStepper = ({ steps }: VerifyAccountPageProps) => {
 
   const handleReset = () => {
     setActiveStep(0);
+    resetSelectedGrade();
+    resetSelectedClass();
+    resetForm();
   };
 
   return (
@@ -140,30 +149,31 @@ const VeriticalLinearStepper = ({ steps }: VerifyAccountPageProps) => {
           }}
         >
           {activeStep < steps.length ? (
-            steps?.[activeStep].component
+            <>
+              {steps?.[activeStep].component}
+              <Box sx={{ display: 'flex' }}>
+                <Button
+                  color="inherit"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                >
+                  Quay lại
+                </Button>
+                <Box sx={{ flexGrow: 1 }} />
+                {steps[activeStep].optional && (
+                  <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+                    Bỏ qua
+                  </Button>
+                )}
+                <Button variant="contained" onClick={handleNext}>
+                  {activeStep === steps.length - 1 ? 'Hoàn thành' : 'Tiếp theo'}
+                </Button>
+              </Box>
+            </>
           ) : (
-            <EndingStep />
+            <EndingStep reset={handleReset} />
           )}
-
-          <Box sx={{ display: 'flex' }}>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Quay lại
-            </Button>
-            <Box sx={{ flexGrow: 1 }} />
-            {steps[activeStep].optional && (
-              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                Bỏ qua
-              </Button>
-            )}
-            <Button variant="contained" onClick={handleNext}>
-              {activeStep === steps.length - 1 ? 'Hoàn thành' : 'Tiếp theo'}
-            </Button>
-          </Box>
         </Paper>
       </Grid>
     </Grid>

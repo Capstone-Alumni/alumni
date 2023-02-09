@@ -16,11 +16,11 @@ import {
 import { useEffect, useState } from 'react';
 import useGetGradeList from 'src/modules/gradeAndClass/hooks/useGetGradeList';
 import { getGradeListParamsAtom } from 'src/modules/gradeAndClass/state';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import SearchInput from '@share/components/SearchInput';
 import { useFormContext } from 'react-hook-form';
-import { selectedGradeAtom } from '../states';
+import { selectedClassAtom, selectedGradeAtom } from '../states';
 
 const GradeStep = () => {
   const theme = useTheme();
@@ -29,6 +29,7 @@ const GradeStep = () => {
   const { data: gradeList, isLoading } = useGetGradeList();
   const [params, setParams] = useRecoilState(getGradeListParamsAtom);
   const [selectedGrade, setSelectedGrade] = useRecoilState(selectedGradeAtom);
+  const resetSelectedClass = useResetRecoilState(selectedClassAtom);
 
   const { setValue } = useFormContext();
 
@@ -100,6 +101,7 @@ const GradeStep = () => {
               onClick={() => {
                 setValue('grade', grade.id);
                 setSelectedGrade(grade);
+                resetSelectedClass();
               }}
             >
               <ListItemText sx={{ minWidth: theme.spacing(14) }}>
