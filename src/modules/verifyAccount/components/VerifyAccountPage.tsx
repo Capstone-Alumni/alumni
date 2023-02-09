@@ -4,7 +4,7 @@ import * as yup from 'yup';
 
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { Paper, Stack } from '@mui/material';
+import { Paper } from '@mui/material';
 
 import {
   requiredFullNameValidator,
@@ -18,6 +18,7 @@ import GradeStep from './GradeStep';
 import ClassStep from './ClassStep';
 import useVerifyAccount from '../hooks/useVerifyAccount';
 import { useSession } from 'next-auth/react';
+import { AccessRequest } from '../types';
 
 type VerifyFormValues = {
   fullName: string;
@@ -51,15 +52,19 @@ export const steps = [
   },
 ];
 
-const VerifyAccountPage = () => {
+const VerifyAccountPage = ({
+  initialData,
+}: {
+  initialData: AccessRequest | undefined;
+}) => {
   const resolver = useYupValidateionResolver(validationSchema);
 
   const methods = useForm<VerifyFormValues>({
     mode: 'onChange',
     defaultValues: {
-      fullName: '',
-      grade: '',
-      class: '',
+      fullName: initialData?.fullName ?? '',
+      grade: initialData?.gradeId ?? '',
+      class: initialData?.alumClassId ?? '',
     },
     resolver,
   });
@@ -82,20 +87,17 @@ const VerifyAccountPage = () => {
   };
 
   return (
-    <Stack spacing={1}>
-      <Paper
-        sx={{
-          width: '100%',
-          boxShadow: theme => theme.customShadows.z8,
-        }}
-      >
-        <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <VeriticalLinearStepper steps={steps} />
-          </form>
-        </FormProvider>
-      </Paper>
-    </Stack>
+    <Paper
+      sx={{
+        width: '100%',
+      }}
+    >
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <VeriticalLinearStepper steps={steps} />
+        </form>
+      </FormProvider>
+    </Paper>
   );
 };
 

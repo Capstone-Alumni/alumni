@@ -3,7 +3,6 @@ import { useState } from 'react';
 import {
   Box,
   Button,
-  Grid,
   Paper,
   Step,
   StepLabel,
@@ -12,7 +11,6 @@ import {
   useTheme,
 } from '@mui/material';
 import EndingStep from './EndingStep';
-import Logo from '@share/components/Logo';
 import { useAppSelector } from 'src/redux/hooks';
 import { currentTenantSelector } from 'src/redux/slices/currentTenantSlice';
 import { useFormContext } from 'react-hook-form';
@@ -82,101 +80,97 @@ const VeriticalLinearStepper = ({ steps }: VerifyAccountPageProps) => {
   };
 
   return (
-    <Grid container sx={{ minHeight: '100vh' }}>
-      <Grid item xs={4}>
-        <Paper
+    <Box sx={{ display: 'flex', flexDirection: 'row', minHeight: '80vh' }}>
+      <Paper
+        sx={{
+          px: 8,
+          py: 4,
+          width: '100%',
+          bgcolor: 'grey.50012',
+          minHeight: '80vh',
+          maxWidth: theme.spacing(45),
+        }}
+      >
+        <Box
           sx={{
-            px: 8,
-            py: 4,
-            width: '100%',
-            bgcolor: 'grey.50012',
-            height: '100vh',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              gap: theme.spacing(1),
-              mb: theme.spacing(4),
-            }}
-          >
-            <Logo />
-            <Typography variant="h3" color="primary">
-              {tenant?.name}
-            </Typography>
-          </Box>
-
-          <Stepper activeStep={activeStep} orientation="vertical">
-            {steps.map(({ label, optional }, index) => {
-              const stepProps: { completed?: boolean } = {};
-              const labelProps: {
-                optional?: React.ReactNode;
-              } = {};
-
-              if (optional) {
-                labelProps.optional = (
-                  <Typography variant="caption">Optional</Typography>
-                );
-              }
-
-              if (isStepSkipped(index)) {
-                stepProps.completed = false;
-              }
-
-              return (
-                <Step key={label} {...stepProps}>
-                  <StepLabel sx={{ fontWeight: 700 }} {...labelProps}>
-                    <Typography variant="h6">{label}</Typography>
-                  </StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
-        </Paper>
-      </Grid>
-
-      <Grid item xs={8}>
-        <Paper
-          sx={{
-            width: '100%',
-            height: '100vh',
             display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            px: 8,
-            py: 4,
+            flexDirection: 'row',
+            gap: theme.spacing(1),
+            mb: theme.spacing(4),
           }}
         >
-          {activeStep < steps.length ? (
-            <>
-              {steps?.[activeStep].component}
-              <Box sx={{ display: 'flex' }}>
-                <Button
-                  color="inherit"
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  sx={{ mr: 1 }}
-                >
-                  Quay lại
+          <Typography variant="h3" color="primary">
+            {tenant?.name}
+          </Typography>
+        </Box>
+
+        <Stepper activeStep={activeStep} orientation="vertical">
+          {steps.map(({ label, optional }, index) => {
+            const stepProps: { completed?: boolean } = {};
+            const labelProps: {
+              optional?: React.ReactNode;
+            } = {};
+
+            if (optional) {
+              labelProps.optional = (
+                <Typography variant="caption">Optional</Typography>
+              );
+            }
+
+            if (isStepSkipped(index)) {
+              stepProps.completed = false;
+            }
+
+            return (
+              <Step key={label} {...stepProps}>
+                <StepLabel sx={{ fontWeight: 700 }} {...labelProps}>
+                  <Typography variant="h6">{label}</Typography>
+                </StepLabel>
+              </Step>
+            );
+          })}
+        </Stepper>
+      </Paper>
+
+      <Paper
+        sx={{
+          width: '100%',
+          minHeight: '80vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          px: 8,
+          py: 4,
+        }}
+      >
+        {activeStep < steps.length ? (
+          <>
+            {steps?.[activeStep].component}
+            <Box sx={{ display: 'flex' }}>
+              <Button
+                color="inherit"
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                sx={{ mr: 1 }}
+              >
+                Quay lại
+              </Button>
+              <Box sx={{ flexGrow: 1 }} />
+              {steps[activeStep].optional && (
+                <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+                  Bỏ qua
                 </Button>
-                <Box sx={{ flexGrow: 1 }} />
-                {steps[activeStep].optional && (
-                  <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                    Bỏ qua
-                  </Button>
-                )}
-                <Button variant="contained" onClick={handleNext}>
-                  {activeStep === steps.length - 1 ? 'Hoàn thành' : 'Tiếp theo'}
-                </Button>
-              </Box>
-            </>
-          ) : (
-            <EndingStep reset={handleReset} />
-          )}
-        </Paper>
-      </Grid>
-    </Grid>
+              )}
+              <Button variant="contained" onClick={handleNext}>
+                {activeStep === steps.length - 1 ? 'Hoàn thành' : 'Tiếp theo'}
+              </Button>
+            </Box>
+          </>
+        ) : (
+          <EndingStep reset={handleReset} />
+        )}
+      </Paper>
+    </Box>
   );
 };
 

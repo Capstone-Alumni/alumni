@@ -113,7 +113,6 @@ const AdminNewsCardItem = ({ item }: { item: News }) => {
             marginTop: 3,
           }}
         >
-          <DeleteOutlineIcon color="disabled" />
           <Typography
             sx={{
               fontFamily: 'Inter',

@@ -158,4 +158,35 @@ export default class AccessRequestService {
 
     return accessRequest;
   };
+
+  static getAccessRequestByUserId = async (
+    tenantPrisma: PrismaClient,
+    { userId }: { userId: string },
+  ) => {
+    const accessRequest = await tenantPrisma.accessRequest.findFirst({
+      where: {
+        userId: userId,
+        archived: false,
+      },
+      include: {
+        alumClass: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        grade: {
+          select: {
+            id: true,
+            code: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    await tenantPrisma.$disconnect();
+
+    return accessRequest;
+  };
 }

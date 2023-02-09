@@ -1,7 +1,7 @@
 'use client';
 
-import { useAppDispatch } from 'src/redux/hooks';
-import { setTenant, Tenant } from 'src/redux/slices/currentTenantSlice';
+import { useAppDispatch } from '@redux/hooks';
+import { setTenant, Tenant } from '@redux/slices/currentTenantSlice';
 
 const SetCurrentTenant = ({ tenantData }: { tenantData: Tenant }) => {
   const dispatch = useAppDispatch();
