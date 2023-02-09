@@ -34,5 +34,7 @@ export const isAuthenticatedUser = async (
 
   req.user = session?.user;
 
+  console.log(req.user);
+
   next();
 };

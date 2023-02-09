@@ -77,6 +77,7 @@ const VerifyAccountPage = () => {
       fullName: values.fullName,
       classId: values.class,
       email: session.user.email,
+      gradeId: values.grade,
     });
   };
 

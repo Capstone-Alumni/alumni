@@ -6,6 +6,7 @@ type VerifyAccountParams = {
   userId: string;
   fullName: string;
   classId: string;
+  gradeId: string;
   email: string;
 };
 
@@ -22,12 +23,13 @@ const useVerifyAccount = () => {
     VerifyAccountError
   >(
     'verifyAccount',
-    ({ userId, classId, fullName, email }) => ({
+    ({ gradeId, classId, fullName, email }) => ({
       method: 'PUT',
-      url: `/api/verify_account/${userId}`,
+      url: '/api/verify_account',
       data: {
         fullName,
         classId,
+        gradeId,
         email,
       },
     }),
