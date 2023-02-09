@@ -1,5 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -41,7 +41,6 @@ model AccessRequest {
   userId      String @map("user_id")
   gradeId     String @map("grade_id")
   alumClassId String @map("alum_class_id")
-
   isApproved Boolean @map("is_approved")
 
   archived  Boolean  @default(false)
