@@ -50,6 +50,8 @@ const ClassSection = () => {
           >
             <Card raised>
               <CardMedia
+                title="class-landing-page"
+                component="div"
                 sx={{
                   height: theme.spacing(70),
                   width: theme.spacing(55),

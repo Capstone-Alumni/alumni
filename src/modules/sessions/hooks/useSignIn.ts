@@ -20,7 +20,7 @@ export default function useSignIn() {
           if (res?.error) {
             // TODO: handle error
           } else {
-            router.replace('/');
+            router.replace('/verify_account');
           }
         });
       default:

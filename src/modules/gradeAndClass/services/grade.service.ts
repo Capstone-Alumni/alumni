@@ -38,8 +38,7 @@ export default class GradeService {
 
     const whereFilter = {
       AND: [
-        { code: { contains: code } },
-        { name: { contains: name } },
+        { OR: [{ code: { contains: code } }, { name: { contains: name } }] },
         { archived: false },
       ],
     };
@@ -57,6 +56,8 @@ export default class GradeService {
         },
       }),
     ]);
+
+    await tenantPrisma.$disconnect();
 
     return {
       totalItems: totalGradeItem,

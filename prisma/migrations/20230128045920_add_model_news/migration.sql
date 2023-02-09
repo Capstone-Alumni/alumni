@@ -1,5 +1,5 @@
 -- CreateTable
-SELECT run_migration(
+SELECT template.run_migration(
     '
         CREATE TABLE "news" (
             "id" TEXT NOT NULL,
