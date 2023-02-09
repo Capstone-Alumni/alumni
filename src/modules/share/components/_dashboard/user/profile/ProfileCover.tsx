@@ -135,7 +135,7 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
               }}
             >
               <Typography variant="h4">
-                {currentUser?.data?.information?.fullName}
+                {data?.data?.information?.fullName}
               </Typography>
             </Box>
           </InfoStyle>
