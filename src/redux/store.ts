@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import counterReducer from './slices/counterSlice';
 import currentTenantReducer from './slices/currentTenantSlice';
 import { userProfileApi } from './slices/userProfileSlice';
+import { searchProfilesApi } from './slices/searchProfiles';
 import currentUser from './slices/currentUserSlice';
 import { newsSliceApi } from './slices/newsSlice';
 
@@ -12,6 +13,7 @@ export const store = configureStore({
     currentUser,
     [userProfileApi.reducerPath]: userProfileApi.reducer,
     [newsSliceApi.reducerPath]: newsSliceApi.reducer,
+    [searchProfilesApi.reducerPath]: searchProfilesApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -19,7 +21,8 @@ export const store = configureStore({
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware()
       .concat(userProfileApi.middleware)
-      .concat(newsSliceApi.middleware),
+      .concat(newsSliceApi.middleware)
+      .concat(searchProfilesApi.middleware),
 });
 
 const { dispatch } = store;
