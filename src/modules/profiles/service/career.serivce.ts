@@ -1,54 +1,49 @@
-import { prisma } from '@lib/prisma/prisma';
+import { PrismaClient } from '@prisma/client';
 import {
   CreateCareerServiceProps,
   GetCareerListServiceParams,
   UpdateCareerInfoByIdServiceProps,
 } from '../types';
 
-const isUserExisted = async (id: string) => {
-  const user = await prisma.user.findFirst({
-    where: { id: id },
-  });
+// const isUserExisted = async (id: string) => {
+//   const user = await prisma.user.findFirst({
+//     where: { id: id },
+//   });
 
-  if (!user) {
-    throw new Error('user not exist');
-  }
-};
+//   if (!user) {
+//     throw new Error('user not exist');
+//   }
+// };
 export default class CareerService {
   static create = async (
+    tenantPrisma: PrismaClient,
     userId: string,
     { jobTitle, company, startDate, endDate }: CreateCareerServiceProps,
   ) => {
-    isUserExisted(userId);
-    const newCareer = await prisma.career.create({
+    const newCareer = await tenantPrisma.career.create({
       data: {
         jobTitle: jobTitle,
         company: company,
         startDate: startDate,
         endDate: endDate,
-        user: {
-          connect: {
-            id: userId,
-          },
-        },
+        userId: userId,
       },
     });
     return newCareer;
   };
 
   static createMany = async (
+    tenantPrisma: PrismaClient,
     userId: string,
     careers: CreateCareerServiceProps[],
   ) => {
-    isUserExisted(userId);
-
-    await prisma.career.deleteMany({
+    await tenantPrisma.career.deleteMany({
       where: {
         userId,
       },
     });
 
-    const newCareers = await prisma.career.createMany({
+    const newCareers = await tenantPrisma.career.createMany({
       data: careers
         ? careers.map(career => ({
             jobTitle: career.jobTitle,
@@ -63,11 +58,10 @@ export default class CareerService {
   };
 
   static getListByUserId = async (
+    tenantPrisma: PrismaClient,
     userId: string,
     params: GetCareerListServiceParams,
   ) => {
-    isUserExisted(userId);
-
     const { jobTitle, company, page, limit } = params;
 
     const whereFilter = {
@@ -80,9 +74,9 @@ export default class CareerService {
       ],
     };
 
-    const [totalCareerItem, careerItems] = await prisma.$transaction([
-      prisma.career.count({ where: whereFilter }),
-      prisma.career.findMany({
+    const [totalCareerItem, careerItems] = await tenantPrisma.$transaction([
+      tenantPrisma.career.count({ where: whereFilter }),
+      tenantPrisma.career.findMany({
         skip: (page - 1) * limit,
         take: limit,
         where: whereFilter,
@@ -95,8 +89,8 @@ export default class CareerService {
     };
   };
 
-  static getById = async (careerId: string) => {
-    const career = await prisma.career.findUnique({
+  static getById = async (tenantPrisma: PrismaClient, careerId: string) => {
+    const career = await tenantPrisma.career.findUnique({
       where: {
         id: careerId,
       },
@@ -105,10 +99,11 @@ export default class CareerService {
   };
 
   static updateCareerById = async (
+    tenantPrisma: PrismaClient,
     id: string,
     data: UpdateCareerInfoByIdServiceProps,
   ) => {
-    const careerUpdated = await prisma.career.update({
+    const careerUpdated = await tenantPrisma.career.update({
       where: {
         id: id,
       },
@@ -117,8 +112,8 @@ export default class CareerService {
     return careerUpdated;
   };
 
-  static deleteById = async (id: string) => {
-    const career = await prisma.career.update({
+  static deleteById = async (tenantPrisma: PrismaClient, id: string) => {
+    const career = await tenantPrisma.career.update({
       where: {
         id: id,
       },

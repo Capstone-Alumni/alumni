@@ -1,10 +1,14 @@
-import { prisma } from '@lib/prisma/prisma';
 import { compareSync, hashSync } from 'bcrypt';
 import { omit } from 'lodash';
 import { UpdateAccountByIdProps } from '../types';
+import { PrismaClient } from '@prisma/client';
 export default class AccountService {
-  static update = async (id: string, body: UpdateAccountByIdProps) => {
-    const user = await prisma.user.findUnique({
+  static update = async (
+    tenantPrisma: PrismaClient,
+    id: string,
+    body: UpdateAccountByIdProps,
+  ) => {
+    const user = await tenantPrisma.user.findUnique({
       where: { id },
     });
     if (!user) {
@@ -12,7 +16,7 @@ export default class AccountService {
     }
 
     let accountUpdateInfo;
-    const account = await prisma.account.findFirst({
+    const account = await tenantPrisma.account.findFirst({
       where: { userId: id },
     });
 
@@ -27,7 +31,7 @@ export default class AccountService {
         throw new Error('Must update password');
       }
 
-      const isUsernameExisted = await prisma.user.findFirst({
+      const isUsernameExisted = await tenantPrisma.user.findFirst({
         where: { username: body.username },
       });
       if (isUsernameExisted) {
@@ -59,7 +63,7 @@ export default class AccountService {
       ...accountUpdateInfo,
       password: newPasswordEncrypted,
     };
-    const userUpdated = await prisma.user.update({
+    const userUpdated = await tenantPrisma.user.update({
       where: { id },
       data: accountUpdateInfo,
     });

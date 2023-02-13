@@ -5,7 +5,6 @@ const nextConfig = {
     // Required:
     appDir: true,
     esmExternals: false,
-    swcMinify: false,
   },
   compiler: {
     styledComponents: true,
@@ -21,6 +20,15 @@ const nextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true,
+  },
+  async rewrites() {
+    const platformHost = process.env.NEXT_PUBLIC_PLATFORM_HOST;
+    return [
+      {
+        source: '/platformHost/:path*',
+        destination: `${platformHost}/:path*`,
+      },
+    ];
   },
 };
 

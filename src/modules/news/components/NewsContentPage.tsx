@@ -1,7 +1,7 @@
 'use client';
 import { Box, Chip, Typography } from '@mui/material';
 import parse from 'html-react-parser';
-import CreateIcon from '@mui/icons-material/Create';
+// import CreateIcon from '@mui/icons-material/Create';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { News } from '../types';
 
@@ -44,14 +44,14 @@ const NewsContentPage = ({ data }: { data: News }) => {
           marginY: '24px',
         }}
       >
-        <CreateIcon fontSize="small" color="disabled" />
+        {/* <CreateIcon fontSize="small" color="disabled" /> */}
         <Typography
           variant="body2"
           sx={{
             color: 'text.secondary',
           }}
         >
-          {data.authorId}
+          Người viết: {data.authorId}
         </Typography>
         <Box
           sx={{

@@ -15,8 +15,11 @@ export const store = configureStore({
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
+  // prettier-ignore
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(userProfileApi.middleware).concat(newsSliceApi.middleware),
+    getDefaultMiddleware()
+      .concat(userProfileApi.middleware)
+      .concat(newsSliceApi.middleware),
 });
 
 const { dispatch } = store;

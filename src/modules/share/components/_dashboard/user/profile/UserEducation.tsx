@@ -125,7 +125,7 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
             <Box style={{ paddingLeft: theme.spacing(2) }}>
               {educationData && educationData.length > 0 ? (
                 educationData?.map((item: any, index: number) => (
-                  <>
+                  <div key={index}>
                     {selectedEditId === item.id ? (
                       <EducationForm
                         defaultValues={item}
@@ -187,7 +187,7 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
                         }}
                       />
                     ) : null}
-                  </>
+                  </div>
                 ))
               ) : (
                 <Typography>Không có thông tin</Typography>

@@ -1,33 +1,30 @@
 import React from 'react';
 
-import { cookies } from 'next/headers';
-
-import CSRProvider from './CSRProvider';
+import CSRProvider from '../modules/share/helpers/CSRProvider';
 
 import { Providers } from '../redux/providers';
-import SetCurrentTenant from './SetCurrentTenant';
-import { getTenantData } from '@share/utils/getTenantData';
-import GetInitialUserInformation from './GetInitialUserInformation';
+import GetInitialUserInformation from '@share/helpers/GetInitialUserInformation';
+import SetCurrentTenant from '@share/helpers/SetCurrentTenant';
+import { getTenantDataSSR } from '@share/helpers/SSRAuthorization';
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const tenant = cookies().get('tenant-subdomain');
-  const res = await getTenantData(tenant?.value || '');
-  const { data } = res;
+  const data = await getTenantDataSSR();
 
   return (
     <html lang="en">
       <head>
-        <title>High school alumni management platform</title>
+        <title>{data.name}</title>
         <meta content="initial-scale=1, width=device-width" name="viewport" />
+        <link rel="shortcut icon" href="/logo.png" />
       </head>
       <body style={{ margin: 0, minHeight: '100vh' }}>
         <CSRProvider theme={data.theme}>
           <Providers>
-            <div style={{ marginTop: '4rem' }}>{children}</div>
+            {children}
             <SetCurrentTenant tenantData={data} />
             <GetInitialUserInformation />
           </Providers>

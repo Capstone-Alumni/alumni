@@ -16,7 +16,7 @@ const getPrismaClient = async (tenantId: string): Promise<PrismaClient> => {
   const newPrismaClient = await new PrismaClient({
     datasources: {
       db: {
-        url: `${process.env.DATABASE_URL}?schema=${tenantId}`,
+        url: `${process.env.BASE_DATABASE_URL}?schema=${tenantId}`,
       },
     },
     log: ['query'],

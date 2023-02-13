@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Pagination } from '@mui/material';
+import { Box, Pagination, Typography } from '@mui/material';
 import { GetNewsListData, News } from '../types';
 import AdminNewsCardItem from './AdminNewsCardItem';
 
@@ -20,6 +20,12 @@ const AdminNewsCards = ({
         flexDirection: 'column',
       }}
     >
+      {data.totalItems === 0 ? (
+        <Typography fontWeight={600} textAlign="center">
+          Không có tin tức
+        </Typography>
+      ) : null}
+
       <Box
         sx={{
           height: '90vh',
@@ -29,6 +35,7 @@ const AdminNewsCards = ({
           <AdminNewsCardItem item={item} key={item.id} />
         ))}
       </Box>
+
       <Pagination
         sx={{
           margin: 'auto',

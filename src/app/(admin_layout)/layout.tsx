@@ -1,33 +1,22 @@
-import { unstable_getServerSession } from 'next-auth';
-import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
-import { redirect } from 'next/navigation';
 import AdminNav from '@share/components/layout/AdminNav';
 import AdminLayoutWrapper from '@share/components/layout/AdminLayoutWrapper';
 import AdminBodyWrapper from '@share/components/layout/AdminBodyWrapper';
-
-const ALLOWED_LEVELS = ['CLASS_MOD', 'GRADE_MOD', 'SCHOOL_ADMIN'];
+import {
+  getTenantDataSSR,
+  verifyAdminOrMod,
+} from '@share/helpers/SSRAuthorization';
 
 export default async function AuthorizedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await unstable_getServerSession(nextAuthOptions);
-
-  if (!session) {
-    redirect('/sign_in');
-  }
-
-  if (
-    !session.user.accessLevel ||
-    !ALLOWED_LEVELS.includes(session.user.accessLevel)
-  ) {
-    redirect('/403_error');
-  }
+  const session = await verifyAdminOrMod();
+  const data = await getTenantDataSSR();
 
   return (
     <AdminLayoutWrapper>
-      <AdminNav user={session.user} />
+      <AdminNav user={session.user} tenant={data} />
       <AdminBodyWrapper>{children}</AdminBodyWrapper>
     </AdminLayoutWrapper>
   );

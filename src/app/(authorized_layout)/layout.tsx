@@ -1,26 +1,21 @@
-import { unstable_getServerSession } from 'next-auth';
-import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
 import Header from '@share/components/layout/Header';
 import Body from '@share/components/layout/Body';
 import Footer from '@share/components/layout/Footer';
-import { redirect } from 'next/navigation';
+import { getTenantDataSSR, verifyUser } from '@share/helpers/SSRAuthorization';
 
 export default async function AuthorizedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await unstable_getServerSession(nextAuthOptions);
-
-  if (!session) {
-    redirect('/sign_in');
-  }
+  const session = await verifyUser();
+  const data = await getTenantDataSSR();
 
   return (
     <>
-      <Header user={session.user} />
+      <Header user={session.user} tenant={data} />
       <Body>{children}</Body>
-      <Footer />
+      <Footer tenant={data} />
     </>
   );
 }
