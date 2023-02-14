@@ -1,16 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 import counterReducer from './slices/counterSlice';
+import currentUserReducer from './slices/currentUserSlice';
 import currentTenantReducer from './slices/currentTenantSlice';
 import { userProfileApi } from './slices/userProfileSlice';
 import { searchProfilesApi } from './slices/searchProfiles';
-import currentUser from './slices/currentUserSlice';
 import { newsSliceApi } from './slices/newsSlice';
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     currentTenant: currentTenantReducer,
-    currentUser,
+    currentUser: currentUserReducer,
     [userProfileApi.reducerPath]: userProfileApi.reducer,
     [newsSliceApi.reducerPath]: newsSliceApi.reducer,
     [searchProfilesApi.reducerPath]: searchProfilesApi.reducer,

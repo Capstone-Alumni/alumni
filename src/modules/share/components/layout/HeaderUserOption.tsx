@@ -18,6 +18,8 @@ import MyAvatar from '../MyAvatar';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useAppSelector } from 'src/redux/hooks';
+import { RootState } from 'src/redux/store';
 
 const Wrapper = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -34,6 +36,9 @@ const Wrapper = styled('div')(({ theme }) => ({
 const HeaderUserOptions = ({ user }: { user: any }) => {
   const theme = useTheme();
   const router = useRouter();
+  const currentUser = useAppSelector((state: RootState) => state.currentUser);
+
+  console.log(user);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -53,7 +58,7 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        <MyAvatar />
+        <MyAvatar src={currentUser?.data?.avatarUrl ?? null} />
         <Typography>{user?.email}</Typography>
       </Wrapper>
       <Menu

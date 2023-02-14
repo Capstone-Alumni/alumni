@@ -13,7 +13,7 @@ import SearchInput from '../SearchInput';
 import { NavItem } from './NavItem';
 import HeaderUserOptions from './HeaderUserOption';
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Props {
   /**
@@ -43,7 +43,9 @@ function ElevationScroll(props: Props) {
 
 const Header = ({ user, tenant }: { user?: any; tenant?: any }) => {
   const theme = useTheme();
-  const [search, setSearch] = useState<string>('');
+  const searchParams = useSearchParams();
+  const name = searchParams.get('name');
+  const [search, setSearch] = useState<string>(name ?? '');
   const router = useRouter();
 
   const handleSearchOnChange = (e: any) => {

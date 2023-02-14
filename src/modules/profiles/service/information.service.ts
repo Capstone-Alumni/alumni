@@ -35,11 +35,8 @@ export default class InformationService {
     tenantPrisma: PrismaClient,
     id: string,
   ) => {
-    const userInformation = await tenantPrisma.user.findUnique({
-      where: { id },
-      include: {
-        information: true,
-      },
+    let userInformation = await tenantPrisma.information.findUnique({
+      where: { userId: id },
     });
 
     return omit(userInformation, ['password']);
@@ -51,21 +48,18 @@ export default class InformationService {
   ) => {
     const { name, page, limit } = params;
 
-    const whereFilter = {
-      AND: [{ fullName: { contains: name } }],
-    };
-
     const [totalUsersInformation, usersInformationItems] =
       await tenantPrisma.$transaction([
-        tenantPrisma.information.count({ where: whereFilter }),
+        tenantPrisma.information.count({
+          where: {
+            fullName: { contains: name, mode: 'insensitive' },
+          },
+        }),
         tenantPrisma.information.findMany({
           skip: (page - 1) * limit,
           take: limit,
           where: {
-            fullName: {
-              contains: name,
-              mode: 'insensitive',
-            },
+            fullName: { contains: name, mode: 'insensitive' },
           },
         }),
       ]);
