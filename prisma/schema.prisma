@@ -41,7 +41,6 @@ model AccessRequest {
   userId      String @map("user_id")
   gradeId     String @map("grade_id")
   alumClassId String @map("alum_class_id")
-
   isApproved Boolean @map("is_approved")
 
   archived  Boolean  @default(false)
@@ -113,6 +112,55 @@ model News {
 
   @@map("news")
 }
+
+model Event {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  title             String
+  description       String?
+  isOffline         Boolean     @default(false) @map("is_offline")
+  location          String?
+  registrationTime  DateTime    @default(now()) @map("registration_time")
+  startTime         DateTime    @default(now()) @map("start_time")
+  endTime           DateTime?   @map("end_time")
+  isEnded           Boolean     @default(false) @map("is_ended")
+  isApproved        Boolean     @default(false) @map("is_approved")
+  publicity         AccessLevel @default(ALUMNI)
+  publicParticipant Boolean     @default(false) @map("public_participant")
+
+  userId String @map("user_id")
+
+  // EventParticipant  EventParticipant[]
+
+  @@map("events")
+}
+
+// model EventCoHost {
+//   id        String   @id @default(cuid())
+//   archived  Boolean  @default(false)
+//   createdAt DateTime @default(now()) @map("created_at")
+//   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+//   eventId String
+//   event   Event  @relation(fields: [eventId], references: [id])
+
+//   @@map("event_co_hosts")
+// }
+
+// model EventParticipant {
+//   id        String   @id @default(cuid())
+//   archived  Boolean  @default(false)
+//   createdAt DateTime @default(now()) @map("created_at")
+//   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+//   eventId String
+//   event   Event  @relation(fields: [eventId], references: [id])
+
+//   @@map("event_participants")
+// }
 
 enum AccessLevel {
   ALUMNI
