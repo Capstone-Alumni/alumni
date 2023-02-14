@@ -7,7 +7,9 @@ import { useRouter } from 'next/navigation';
 import PublicNewsCardItemImage from './PublicNewsCardItemImage';
 
 const PublicNewsCardItems = ({ item, sx }: { item: any; sx?: any }) => {
-  const srcImg = getImageOfNews(item.content);
+  const srcImg = item.newsImageUrl
+    ? item.newsImageUrl
+    : getImageOfNews(item.content);
   const router = useRouter();
   const readNewsDetails = (event: React.ChangeEvent<unknown>) => {
     event.preventDefault();
