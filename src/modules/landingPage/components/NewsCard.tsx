@@ -39,7 +39,7 @@ const NewsCard = ({
         sx={{
           height: theme.spacing(23),
           padding: theme.spacing(2),
-          backgroundImage: srcImg,
+          backgroundImage: 'url("public/logo.png")',
         }}
       />
       {/* {!srcImg.startsWith('/logo') ? (

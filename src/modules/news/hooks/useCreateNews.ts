@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 type CreateNewsParams = {
   title: string;
   content: string;
+  newsImageUrl?: string;
 };
 
 type CreateNewsSuccessResponse = {
@@ -17,6 +18,7 @@ type CreateNewsSuccessResponse = {
     createdAt: Date;
     updatedAt: Date;
     archived: boolean;
+    newsImageUrl: string;
   };
 };
 
@@ -34,12 +36,13 @@ const useCreateNews = () => {
     CreateNewsError
   >(
     'createNews',
-    ({ title, content }) => ({
+    ({ title, content, newsImageUrl }) => ({
       method: 'POST',
       url: '/api/news',
       data: {
         title,
         content,
+        newsImageUrl,
       },
     }),
     {

@@ -81,14 +81,14 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
           </Link>
         ) : null}
 
-        <Link href={`/profile/${user.id}`} style={{ color: 'inherit' }}>
-          <MenuItem>
-            <ListItemIcon>
-              <PersonOutlineIcon />
-            </ListItemIcon>
-            <ListItemText>Hồ sơ của tôi</ListItemText>
-          </MenuItem>
-        </Link>
+        {/* <Link href={`/profile/${user.id}`} style={{ color: 'inherit' }}> */}
+        <MenuItem>
+          <ListItemIcon>
+            <PersonOutlineIcon />
+          </ListItemIcon>
+          <ListItemText>Hồ sơ của tôi</ListItemText>
+        </MenuItem>
+        {/* </Link> */}
 
         <MenuItem
           onClick={async () => {

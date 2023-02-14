@@ -1,5 +1,5 @@
 -- Create migration schema function
-CREATE OR REPLACE FUNCTION run_migration(change text) RETURNS void AS
+CREATE OR REPLACE FUNCTION template.run_migration(change text) RETURNS void AS
 $BODY$
 DECLARE
 v_schema text;
@@ -10,8 +10,10 @@ BEGIN
 		WHERE  nspname !~~ 'pg_%'
 		AND    nspname <>  'information_schema'
 		LOOP
-			EXECUTE 'SET LOCAL search_path = ' || v_schema;
-			EXECUTE change;
+			IF v_schema <> 'public' THEN
+				EXECUTE 'SET LOCAL search_path = ' || v_schema;
+				EXECUTE change;
+			END IF;
 END LOOP;
 END;
 $BODY$
