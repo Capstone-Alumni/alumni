@@ -21,6 +21,24 @@ export const verifySchoolAdmin = async (
   next();
 };
 
+export const verifyAdminOrMod = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  next: NextHandler,
+) => {
+  const session = await unstable_getServerSession(req, res, nextAuthOptions);
+
+  if (!session) {
+    throw new Error('unauthorized');
+  }
+
+  if (session.user.accessLevel === 'ALUMNI') {
+    throw new Error('denied');
+  }
+
+  next();
+};
+
 export const isAuthenticatedUser = async (
   req: NextApiRequest,
   res: NextApiResponse,
