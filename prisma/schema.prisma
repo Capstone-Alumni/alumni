@@ -41,7 +41,7 @@ model AccessRequest {
   userId      String @map("user_id")
   gradeId     String @map("grade_id")
   alumClassId String @map("alum_class_id")
-  
+
   isApproved Boolean @map("is_approved")
 
   archived  Boolean  @default(false)
@@ -101,14 +101,15 @@ model Education {
 }
 
 model News {
-  id        String   @id @default(cuid())
-  archived  Boolean  @default(false)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
-  title     String
-  content   String
-  authorId  String   @map("author_id")
-  isPublic  Boolean  @default(false)
+  id           String   @id @default(cuid())
+  archived     Boolean  @default(false)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at")
+  title        String
+  content      String
+  authorId     String   @map("author_id")
+  newsImageUrl String?   @map("news_image_url")
+  isPublic     Boolean  @default(false) @map("is_public")
 
   @@map("news")
 }
