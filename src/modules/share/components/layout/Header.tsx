@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import Link from 'next/link';
 import Logo from '../Logo';
 import { Divider, useScrollTrigger, useTheme } from '@mui/material';
@@ -36,7 +37,10 @@ function ElevationScroll(props: Props) {
 
   return React.cloneElement(children, {
     elevation: trigger ? 4 : 0,
-    color: trigger ? 'default' : 'transparent',
+    sx: {
+      backgroundColor: trigger ? '#fff' : 'transparent',
+      color: trigger ? 'inherit' : '#fff',
+    },
   });
 }
 
@@ -46,7 +50,11 @@ const Header = ({ user, tenant }: { user?: any; tenant?: any }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <ElevationScroll>
-        <AppBar color="inherit">
+        <AppBar
+        // color="inherit"
+        // sx={{ backgroundColor: 'inherit' }}
+        // elevation={0}
+        >
           <Toolbar>
             <IconButton
               size="large"
@@ -83,6 +91,21 @@ const Header = ({ user, tenant }: { user?: any; tenant?: any }) => {
               <Box sx={{ mr: theme.spacing(2) }}>
                 <SearchInput placeholder="Tìm kiếm bạn học" />
               </Box>
+            ) : null}
+
+            {user.accessLevel !== 'ALUMNI' ? (
+              <Link
+                href="/admin/access_request"
+                style={{ color: 'inherit', marginRight: theme.spacing(2) }}
+              >
+                <Button
+                  startIcon={<AdminPanelSettingsIcon />}
+                  variant="contained"
+                  color="warning"
+                >
+                  Bảng điều khiển
+                </Button>
+              </Link>
             ) : null}
 
             {user ? (
