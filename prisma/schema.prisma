@@ -177,7 +177,7 @@ model Recruitment {
   expiredAt   DateTime? @map("expired_at")
   salary      String   @default("negotiate")
   isApproved  Boolean  @default(false)
-  authorId    String   @map("author_id")
+  recruitmentOwnerId    String   @map("recruitment_owner_id")
 
   @@map("recruitments")
 }
