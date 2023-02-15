@@ -11,6 +11,7 @@ const WorkForm = ({ defaultValues, onSave }: any) => {
   const theme = useTheme();
   const {
     register,
+    getValues,
     formState: { errors, isSubmitting },
     handleSubmit,
     control,
@@ -68,7 +69,7 @@ const WorkForm = ({ defaultValues, onSave }: any) => {
           type: 'text',
           placeholder: 'yyyy-yyyy',
         },
-      ].map(item => {
+      ].map((item) => {
         return item.name !== 'startDate' && item.name !== 'endDate' ? (
           <Controller
             key={item.name}
@@ -103,10 +104,14 @@ const WorkForm = ({ defaultValues, onSave }: any) => {
                   label={item.label}
                   inputFormat="DD-MM-YYYY"
                   value={value}
+                  minDate={
+                    item.name === 'endDate' &&
+                    new Date(getValues('startDate') || defaultValues.startDate)
+                  }
                   onChange={(event: any) => {
                     onChange(event);
                   }}
-                  renderInput={params => (
+                  renderInput={(params) => (
                     <TextField
                       margin="normal"
                       {...register(item.name, { required: false })}
