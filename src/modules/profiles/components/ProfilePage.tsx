@@ -57,6 +57,21 @@ const UserProfile = () => {
     redirect('/403_error');
   }
 
+  const PROFILE_TABS = [
+    {
+      value: 'profile',
+      icon: <Icon icon={roundAccountBox} width={20} height={20} />,
+      component: (
+        <Profile
+          userProfileId={userProfileId}
+          userInformation={userInformationResponse}
+          userCareers={userCareersResponse}
+          userEducations={userEducationsResponse}
+        />
+      ),
+    },
+  ];
+
   return userProfileId ? (
     <Container maxWidth={'lg'}>
       <Card
@@ -67,15 +82,32 @@ const UserProfile = () => {
         }}
       >
         <ProfileCover userProfileId={userProfileId} />
+        <TabsWrapperStyle>
+          <Tabs
+            value={currentTab}
+            scrollButtons="auto"
+            variant="scrollable"
+            allowScrollButtonsMobile
+            onChange={(e, value) => handleChangeTab(value)}
+          >
+            {/* prettier-ignore */}
+            {PROFILE_TABS.map((tab, index) => (
+              <Tab
+                disableRipple
+                key={tab.value}
+                value={tab.value}
+                icon={tab.icon}
+                label={capitalCase(tab.value)}
+              />
+            ))}
+          </Tabs>
+        </TabsWrapperStyle>
       </Card>
-      <Box>
-        <Profile
-          userProfileId={userProfileId}
-          userInformation={userInformationResponse}
-          userCareers={userCareersResponse}
-          userEducations={userEducationsResponse}
-        />
-      </Box>
+      {/* prettier-ignore */}
+      {PROFILE_TABS.map((tab, index) => {
+        const isMatched = tab.value === currentTab;
+        return isMatched && <Box key={tab.value}>{tab.component}</Box>;
+      })}
     </Container>
   ) : (
     <></>

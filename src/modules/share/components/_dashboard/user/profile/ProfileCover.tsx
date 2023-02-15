@@ -65,7 +65,6 @@ type ProfileCoverProps = {
 
 export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
   const { data } = useGetUserInformationQuery(userProfileId);
-
   const currentUser = useAppSelector((state: RootState) => state.currentUser);
   const [updateUserInformation] = useUpdateUserInformationMutation();
 
@@ -120,8 +119,10 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
         <>
           <InfoStyle>
             <UploadAvatar
-              disabled={currentUser?.data?.userId !== userProfileId}
-              file={data?.data?.avatarUrl || avatarUrlDefault}
+              disabled={
+                currentUser?.data?.information?.userId !== userProfileId
+              }
+              file={data?.data?.information?.avatarUrl || avatarUrlDefault}
               maxSize={3145728}
               onDrop={(e, _) => handleDrop(e, 'avatar')}
             />
@@ -133,7 +134,9 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
                 textAlign: { xs: 'center', md: 'left' },
               }}
             >
-              <Typography variant="h4">{data?.data?.fullName}</Typography>
+              <Typography variant="h4">
+                {currentUser?.data?.information?.fullName}
+              </Typography>
             </Box>
           </InfoStyle>
         </>
@@ -142,17 +145,19 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
         <div>
           <CoverImgStyle
             alt="profile cover"
-            src={data?.data?.coverImageUrl || wallpaperUrlDefault}
+            src={data?.data?.information?.coverImageUrl || wallpaperUrlDefault}
           />
         </div>
         <RootStyle
           style={{
             cursor: `${
-              currentUser?.data?.userId === userProfileId ? 'pointer' : 'auto'
+              currentUser?.data?.information?.userId === userProfileId
+                ? 'pointer'
+                : 'auto'
             }`,
           }}
         >
-          {currentUser?.data?.userId === userProfileId && (
+          {currentUser?.data?.information?.userId === userProfileId && (
             <input
               type="file"
               id="uploadWallpaper"

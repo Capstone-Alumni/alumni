@@ -12,8 +12,7 @@ import { Divider, useScrollTrigger, useTheme } from '@mui/material';
 import SearchInput from '../SearchInput';
 import { NavItem } from './NavItem';
 import HeaderUserOptions from './HeaderUserOption';
-import React, { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import React from 'react';
 
 interface Props {
   /**
@@ -43,19 +42,6 @@ function ElevationScroll(props: Props) {
 
 const Header = ({ user, tenant }: { user?: any; tenant?: any }) => {
   const theme = useTheme();
-  const searchParams = useSearchParams();
-  const name = searchParams.get('name');
-  const [search, setSearch] = useState<string>(name ?? '');
-  const router = useRouter();
-
-  const handleSearchOnChange = (e: any) => {
-    setSearch(e.target.value);
-  };
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    router.push(`/search?name=${search}`);
-  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -95,14 +81,7 @@ const Header = ({ user, tenant }: { user?: any; tenant?: any }) => {
 
             {user ? (
               <Box sx={{ mr: theme.spacing(2) }}>
-                <form onSubmit={handleSubmit}>
-                  <SearchInput
-                    placeholder="Tìm kiếm bạn học"
-                    value={search}
-                    onChange={handleSearchOnChange}
-                  />
-                  <button type="submit" style={{ display: 'none' }}></button>
-                </form>
+                <SearchInput placeholder="Tìm kiếm bạn học" />
               </Box>
             ) : null}
 

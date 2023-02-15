@@ -9,7 +9,7 @@ import ProfileInfoRow from './InfoRow';
 import { isAllowToViewValue } from 'src/utils/mappingPublicity';
 import { useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
-import Linkify from 'react-linkify';
+
 // ----------------------------------------------------------------------
 
 const IconStyle = styled(Icon)(({ theme }) => ({
@@ -81,7 +81,7 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                     }
                   />
                   {isAllowToViewValue(
-                    currentUser.data,
+                    currentUser.data.information,
                     userInformation,
                     userInformation?.emailPublicity,
                   ) &&
@@ -92,7 +92,7 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                       />
                     )}
                   {isAllowToViewValue(
-                    currentUser.data,
+                    currentUser.data.information,
                     userInformation,
                     userInformation?.phonePublicity,
                   ) &&
@@ -103,32 +103,18 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                       />
                     )}
                   {isAllowToViewValue(
-                    currentUser.data,
+                    currentUser.data.information,
                     userInformation,
                     userInformation?.facebookPublicity,
                   ) &&
                     Boolean(userInformation?.facebookUrl) && (
                       <ProfileInfoRow
                         title="Facebook"
-                        content={
-                          <Linkify
-                            componentDecorator={(
-                              decoratedHref,
-                              decoratedText,
-                              key,
-                            ) => (
-                              <a target="blank" href={decoratedHref} key={key}>
-                                {decoratedText}
-                              </a>
-                            )}
-                          >
-                            {userInformation.facebookUrl}
-                          </Linkify>
-                        }
+                        content={userInformation.facebookUrl}
                       />
                     )}
                   {isAllowToViewValue(
-                    currentUser.data,
+                    currentUser.data.information,
                     userInformation,
                     userInformation?.dateOfBirthPublicity,
                   ) &&

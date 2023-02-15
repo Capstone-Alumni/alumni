@@ -1,8 +1,5 @@
 import { omit } from 'lodash';
-import {
-  GetUsersInformationListServiceParams,
-  UpdateInformationProps,
-} from '../types';
+import { UpdateInformationProps } from '../types';
 import { PrismaClient } from '@prisma/client';
 
 export default class InformationService {
@@ -35,38 +32,13 @@ export default class InformationService {
     tenantPrisma: PrismaClient,
     id: string,
   ) => {
-    let userInformation = await tenantPrisma.information.findUnique({
-      where: { userId: id },
+    const userInformation = await tenantPrisma.user.findUnique({
+      where: { id },
+      include: {
+        information: true,
+      },
     });
 
     return omit(userInformation, ['password']);
-  };
-
-  static getUsersInformationByName = async (
-    tenantPrisma: PrismaClient,
-    params: GetUsersInformationListServiceParams,
-  ) => {
-    const { name, page, limit } = params;
-
-    const [totalUsersInformation, usersInformationItems] =
-      await tenantPrisma.$transaction([
-        tenantPrisma.information.count({
-          where: {
-            fullName: { contains: name, mode: 'insensitive' },
-          },
-        }),
-        tenantPrisma.information.findMany({
-          skip: (page - 1) * limit,
-          take: limit,
-          where: {
-            fullName: { contains: name, mode: 'insensitive' },
-          },
-        }),
-      ]);
-    return {
-      totalItems: totalUsersInformation,
-      items: usersInformationItems,
-      itemPerPage: limit,
-    };
   };
 }
