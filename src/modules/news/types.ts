@@ -10,6 +10,7 @@ export type News = {
   archived: boolean;
   newsCategories?: string[];
   isPublic: boolean;
+  newsImageUrl?: string;
 };
 
 export type GetNewsListDataParams = {
@@ -30,11 +31,13 @@ export type GetNewsListData = {
 export type CreateNewsProps = {
   title: string;
   content: string;
+  newsImageUrl?: string;
 };
 
 export type UpdateNewsProps = {
   title?: string;
   content?: string;
+  newsImageUrl?: string;
 };
 
 export type GetListNewParams = {
