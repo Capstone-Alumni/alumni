@@ -173,7 +173,8 @@ model Recruitment {
   title       String
   type        String
   startAt     DateTime @default(now()) @map("start_at")
-  expiredAt   DateTime @default(now()) @map("expired_at")
+  startAt     DateTime? @map("start_at")
+  expiredAt   DateTime? @map("expired_at")
   salary      String   @default("negotiate")
   isApproved  Boolean  @default(false)
   authorId    String   @map("author_id")
