@@ -33,18 +33,13 @@ export default function Profile({
 
   const currentUser = useAppSelector((state: RootState) => state.currentUser);
 
-  const userInformationData = userInformation?.data?.data;
-
-  console.log(userInformationData);
-  console.log(currentUser);
-  console.log(userProfileId);
-  console.log(!!currentUser?.data?.userId, !!userProfileId);
+  const userInformationData = userInformation?.data?.data?.information;
 
   const handleToggleEdit = () => {
     setOpenEdit(!openEdit);
   };
 
-  return !!currentUser?.data?.userId && !!userProfileId ? (
+  return !!currentUser?.data?.id && !!userProfileId ? (
     <Grid container spacing={3}>
       <Box
         display="flex"
@@ -56,7 +51,7 @@ export default function Profile({
           width: '100%',
         }}
       >
-        {currentUser.data.userId === userProfileId && (
+        {currentUser.data.id === userProfileId && (
           <>
             <Box display="flex" sx={{ alignItems: 'center' }}>
               <Typography variant="subtitle2">
@@ -90,7 +85,7 @@ export default function Profile({
               <ProfileAbout userInformation={userInformationData} />
             </Box>
           )}
-          {currentUser.data && userInformationData && (
+          {currentUser.data.information && userInformationData && (
             <>
               {userCareers?.error ? (
                 <Typography>
@@ -98,7 +93,7 @@ export default function Profile({
                 </Typography>
               ) : (
                 isAllowToViewValue(
-                  currentUser.data,
+                  currentUser.data.information,
                   userInformationData,
                   userInformationData.careerPublicity,
                 ) && (
@@ -116,7 +111,7 @@ export default function Profile({
                 </Typography>
               ) : (
                 isAllowToViewValue(
-                  currentUser.data,
+                  currentUser.data.information,
                   userInformationData,
                   userInformationData.educationPublicity,
                 ) && (
@@ -162,8 +157,6 @@ export default function Profile({
       )}
     </Grid>
   ) : (
-    <>
-      <p>Loading</p>
-    </>
+    <></>
   );
 }

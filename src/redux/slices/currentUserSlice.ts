@@ -44,9 +44,7 @@ export async function getCurrentUserInfo(id: string) {
   dispatch(slice.actions.startLoading());
   try {
     const response = await axiosInstance.get(`/api/users/${id}/information`);
-
-    dispatch(slice.actions.setCurrentUser({ ...response.data, userId: id }));
-
+    dispatch(slice.actions.setCurrentUser(response.data));
     return response;
   } catch (error) {
     dispatch(slice.actions.hasError(error));
