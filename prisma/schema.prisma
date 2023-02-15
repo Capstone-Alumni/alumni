@@ -113,6 +113,25 @@ model News {
   @@map("news")
 }
 
+model Recruitment {
+  id          String @id @default(cuid())
+  archived    Boolean @default(false)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
+  companyName String @map("company_name")
+  address     String 
+  position    String
+  title       String
+  type        String
+  startAt     DateTime @default(now()) @map("start_at")
+  expiredAt   DateTime @default(now()) @map("expired_at")
+  salary      String @default("negotiate")
+  isApproved  Boolean @default(false)
+  authorId    String @map("author_id")
+
+  @@map("recruitments")
+}
+
 enum AccessLevel {
   ALUMNI
   CLASS_MOD
