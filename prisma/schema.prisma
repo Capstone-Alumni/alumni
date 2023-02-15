@@ -163,21 +163,23 @@ model Event {
 // }
 
 model Recruitment {
-  id          String   @id @default(cuid())
-  archived    Boolean  @default(false)
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
-  companyName String   @map("company_name")
-  address     String 
-  position    String
-  title       String
-  type        String
-  startAt     DateTime @default(now()) @map("start_at")
-  startAt     DateTime? @map("start_at")
-  expiredAt   DateTime? @map("expired_at")
-  salary      String   @default("negotiate")
-  isApproved  Boolean  @default(false)
-  recruitmentOwnerId    String   @map("recruitment_owner_id")
+  id                    String    @id @default(cuid())
+  archived              Boolean   @default(false)
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @default(now()) @updatedAt @map("updated_at")
+  companyName           String    @map("company_name")
+  website               String
+  job                   String
+  address               String 
+  position              String
+  title                 String
+  description           String
+  type                  String    @map("type_of_job)
+  startAt               DateTime? @map("start_at")
+  expiredAt             DateTime? @map("expired_at")
+  salary                String    @default("negotiate")
+  isApproved            Boolean   @default(false)
+  recruitmentOwnerId    String    @map("recruitment_owner_id")
 
   @@map("recruitments")
 }
