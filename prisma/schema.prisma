@@ -71,6 +71,7 @@ model Information {
   careerPublicity      ScopePublicity @default(PRIVATE) @map("career_publicity")
   educationPublicity   ScopePublicity @default(PRIVATE) @map("education_publicity")
   alumClass            AlumClass?     @relation(fields: [alumClassId], references: [id])
+  NewsComment          NewsComment?
 
   @@map("informations")
 }
@@ -164,15 +165,17 @@ model Event {
 // }
 
 model NewsComment {
-  id             String   @id @default(cuid())
-  archived       Boolean  @default(false)
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at")
-  commentContent String   @map("comment_content")
-  commenterId    String   @map("commenter_id")
-  newsId         String   @map("news_id")
+  id              String   @id @default(cuid())
+  archived        Boolean  @default(false)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
+  commentContent  String   @map("comment_content")
+  commenterId     String   @map("commenter_id")
+  commenterInfoId String   @map("commenter_info_id") @unique
+  newsId          String   @map("news_id")
 
-  news News? @relation(fields: [newsId], references: [id])
+  news          News?       @relation(fields: [newsId], references: [id])
+  commenterInfo Information? @relation(fields: [commenterInfoId], references: [id])
 
   @@map("(news_comment)")
 }
