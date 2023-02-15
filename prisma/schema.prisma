@@ -174,7 +174,7 @@ model Recruitment {
   position              String
   title                 String
   description           String
-  type                  String    @map("type_of_job)
+  type                  String    @map("type")
   startAt               DateTime? @map("start_at")
   expiredAt             DateTime? @map("expired_at")
   salary                String    @default("negotiate")
