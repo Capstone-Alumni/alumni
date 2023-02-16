@@ -127,7 +127,7 @@ model Event {
   startTime         DateTime    @default(now()) @map("start_time")
   endTime           DateTime?   @map("end_time")
   isEnded           Boolean     @default(false) @map("is_ended")
-  isApproved        Boolean     @default(false) @map("is_approved")
+  approvedStatus    Int     @default(-1) @map("approved_status")
   publicity         AccessLevel @default(ALUMNI)
   publicParticipant Boolean     @default(false) @map("public_participant")
 

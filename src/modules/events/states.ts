@@ -18,7 +18,7 @@ export const getAdminEventListParamsAtom = atom<GetAdminEventListParams>({
 export const getOwnerEventListParamsAtom = atom<GetOwnerEventListParams>({
   key: 'getOwnerEventListParams',
   default: {
-    limit: 10,
+    limit: 12,
     page: 1,
   },
 });

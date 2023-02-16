@@ -13,7 +13,7 @@ export type Event = {
   startTime: string | Date;
   endTime: string | Date;
   isEnded: boolean;
-  isApproved: boolean;
+  approvedStatus: -1 | 0 | 1;
   publicity: AccessLevel;
   publicParticipant: boolean;
   userId: string;

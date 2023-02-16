@@ -1,18 +1,19 @@
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import useApi from 'src/modules/share/hooks/useApi';
+import { EventFormValues } from '../components/EventForm';
 
-type CreateEventByIdParams = never;
+type CreateEventParams = EventFormValues;
 
-type CreateEventByIdResponse = unknown;
+type CreateEventResponse = unknown;
 
-type CreateEventByIdError = AxiosError;
+type CreateEventError = AxiosError;
 
-const useCreateEventById = () => {
+const useCreateEvent = () => {
   const { fetchApi, isLoading } = useApi<
-    CreateEventByIdParams,
-    CreateEventByIdResponse,
-    CreateEventByIdError
+    CreateEventParams,
+    CreateEventResponse,
+    CreateEventError
   >(
     'createEvent',
     data => ({
@@ -36,4 +37,4 @@ const useCreateEventById = () => {
   };
 };
 
-export default useCreateEventById;
+export default useCreateEvent;

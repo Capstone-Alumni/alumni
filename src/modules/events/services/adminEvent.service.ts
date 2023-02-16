@@ -26,7 +26,7 @@ export default class AdminEventService {
     const whereFilter = {
       ...publicityFilter,
       archived: archived,
-      isApproved: approved,
+      approvedStatus: approved ? 1 : -1,
     };
 
     const [totalItems, items] = await tenantPrisma.$transaction([
@@ -85,7 +85,7 @@ export default class AdminEventService {
         id: eventId,
       },
       data: {
-        isApproved: true,
+        approvedStatus: 1,
       },
     });
 
@@ -107,7 +107,7 @@ export default class AdminEventService {
         id: eventId,
       },
       data: {
-        archived: true,
+        approvedStatus: 0,
       },
     });
 
