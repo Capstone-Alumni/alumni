@@ -84,19 +84,30 @@ export default class OwnerEventController {
     req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
-    const prisma = await getPrismaClient(req.tenantId);
-    const { id: userId } = req.user;
-    const { id } = req.query;
+    try {
+      const prisma = await getPrismaClient(req.tenantId);
+      const { id: userId } = req.user;
+      const { id } = req.query;
 
-    const data = await OwnerEventService.deleteById(
-      prisma,
-      userId,
-      id as string,
-    );
+      const data = await OwnerEventService.deleteById(
+        prisma,
+        userId,
+        id as string,
+      );
 
-    return res.status(200).json({
-      data: data,
-      status: true,
-    });
+      return res.status(200).json({
+        data: data,
+        status: true,
+      });
+    } catch (err) {
+      if (err.message.contains('denied')) {
+        return res.status(403).json({
+          message: 'Event is not exist or you are not the owner.',
+          status: false,
+        });
+      }
+
+      throw err;
+    }
   };
 }

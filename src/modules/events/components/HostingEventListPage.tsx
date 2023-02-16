@@ -3,6 +3,7 @@
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Box, Button, IconButton, Pagination, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
+import Link from 'next/link';
 import { useRecoilState } from 'recoil';
 import useOwnerDeleteEventById from '../hooks/useOwnerDeleteEventById';
 import useOwnerGetEventList from '../hooks/useOwnerGetEventList';
@@ -41,9 +42,15 @@ const HostingEventListPage = () => {
             key={item.id}
             data={item}
             actions={[
-              <Button key="edit-btn" fullWidth variant="outlined">
-                Chỉnh sửa
-              </Button>,
+              <Link
+                key="edit-btn"
+                href={`/events/hosting/${item.id}`}
+                style={{ width: '100%' }}
+              >
+                <Button fullWidth variant="outlined">
+                  Chỉnh sửa
+                </Button>
+              </Link>,
               <IconButton
                 key="delete-btn"
                 color="error"

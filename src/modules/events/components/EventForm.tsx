@@ -40,11 +40,25 @@ const EventForm = ({
 
   const resolver = useYupValidateionResolver(validationSchema);
 
-  const { control, handleSubmit, formState } = useForm({
+  const { control, handleSubmit } = useForm({
     resolver,
+    defaultValues: {
+      title: initialData?.title ?? '',
+      description: initialData?.description,
+      isOffline: initialData?.isOffline ?? false,
+      location: initialData?.location,
+      registrationTime: initialData?.registrationTime
+        ? new Date(initialData.registrationTime)
+        : undefined,
+      startTime: initialData?.startTime
+        ? new Date(initialData.startTime)
+        : new Date(),
+      endTime: initialData?.endTime ? new Date(initialData.endTime) : undefined,
+      isEnded: initialData?.isEnded,
+      publicity: initialData?.publicity ?? 'ALUMNI',
+      publicParticipant: initialData?.publicParticipant ?? false,
+    },
   });
-
-  console.log(formState.errors);
 
   return (
     <Box
@@ -160,7 +174,7 @@ const EventForm = ({
       </Box>
 
       <Button variant="contained" onClick={handleSubmit(onSubmit)}>
-        Gửi yêu cầu
+        Lưu
       </Button>
     </Box>
   );
