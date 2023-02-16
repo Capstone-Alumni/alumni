@@ -15,7 +15,7 @@ export default async function AuthorizedLayout({
 
   return (
     <>
-      <Header user={session?.user} tenant={data} />
+      <Header user={session?.user} tenant={data} hasAnimation={false} />
       <Body>{children}</Body>
       <Footer tenant={data} />
     </>
