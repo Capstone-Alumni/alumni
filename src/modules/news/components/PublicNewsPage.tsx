@@ -71,9 +71,9 @@ const PublicNewsPage = () => {
                       item={item}
                       sx={{
                         width: '45%',
-                        height: '300px',
+                        height: '250px',
                         imgWidth: 500,
-                        imgHeight: 300,
+                        imgHeight: 250,
                         typoVariant: 'h5',
                         marginImg: 2,
                       }}

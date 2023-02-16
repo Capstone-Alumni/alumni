@@ -95,6 +95,7 @@ export default class NewsCommentService {
     tenantPrisma: PrismaClient,
     commentId: string,
     userId: string,
+    isSchoolAdmin: boolean,
   ) => {
     const newsComment = await tenantPrisma.newsComment.findFirst({
       where: { id: commentId, archived: false },
@@ -102,10 +103,11 @@ export default class NewsCommentService {
 
     if (!newsComment) {
       throw new Error('Comment is not existed');
-    } else if (newsComment && newsComment.commenterId !== userId) {
-      throw new Error('Not allowed to delete this comment');
+    } else if (!isSchoolAdmin) {
+      if (newsComment && newsComment.commenterId !== userId) {
+        throw new Error('Not allowed to delete this comment');
+      }
     }
-
     const newsCommetDeleted = await tenantPrisma.newsComment.update({
       where: { id: commentId },
       data: {

@@ -3,7 +3,7 @@
 import { Box, Button, Typography } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { User } from 'next-auth';
-import { getSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -17,18 +17,14 @@ const AdminNewsDetails = () => {
   const newsId = pathname?.split('/')[3] || '';
   const { data: newsData, isLoading } =
     useGetNewsByIdForSchoolAdminQuery(newsId);
+  const { data: session } = useSession();
   const [user, setUser] = useState<User>();
 
-  const getSessionServer = async () => {
-    const resposne = await getSession();
-    if (resposne) {
-      setUser(resposne?.user);
-    }
-  };
-
   useEffect(() => {
-    getSessionServer();
-  });
+    if (session) {
+      setUser(session.user);
+    }
+  }, [session]);
 
   const [openEditform, setOpenEditForm] = useState(false);
   return (

@@ -1,6 +1,8 @@
 import { NextApiRequestWithTenant } from '@lib/next-connect';
 import getPrismaClient from '@lib/prisma/prisma';
 import { NextApiResponse } from 'next';
+import { unstable_getServerSession } from 'next-auth';
+import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
 import { ApiErrorResponse, ApiSuccessResponse } from 'src/types';
 import NewsCommentService from '../services/newsComment.service';
 
@@ -87,6 +89,14 @@ export default class NewsCommentController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
+      const session = await unstable_getServerSession(
+        req,
+        res,
+        nextAuthOptions,
+      );
+
+      const isSchoolAdmin = session?.user.accessLevel === 'SCHOOL_ADMIN';
+
       const prisma = await getPrismaClient(req.tenantId);
       const { commentId } = req.query;
       const userId = req.user.id;
@@ -94,6 +104,7 @@ export default class NewsCommentController {
         prisma,
         commentId as string,
         userId,
+        isSchoolAdmin,
       );
       return res.status(200).json({
         status: true,

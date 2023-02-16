@@ -5,12 +5,20 @@ import NewsCommentList from './NewsCommentList';
 import NewsCommentInput from './NewsCommentInput';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { User } from 'next-auth';
 
 const CommentSection = () => {
   const pathname = usePathname();
   const newsId = pathname?.split('/')[2] || '';
   const { data: session } = useSession();
-  const { user } = session!;
+  const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    if (session) {
+      setUser(session.user);
+    }
+  }, [session]);
   return (
     <Box
       sx={{
