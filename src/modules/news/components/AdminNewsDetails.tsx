@@ -1,10 +1,12 @@
 'use client';
+
 import { Box, Button, Typography } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
-import { useSession } from 'next-auth/react';
+import { User } from 'next-auth';
+import { getSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGetNewsByIdForSchoolAdminQuery } from 'src/redux/slices/newsSlice';
 import NewsCommentList from './NewsCommentList';
 import NewsContentPage from './NewsContentPage';
@@ -15,8 +17,18 @@ const AdminNewsDetails = () => {
   const newsId = pathname?.split('/')[3] || '';
   const { data: newsData, isLoading } =
     useGetNewsByIdForSchoolAdminQuery(newsId);
-  const { data: session } = useSession();
-  const { user } = session!;
+  const [user, setUser] = useState<User>();
+
+  const getSessionServer = async () => {
+    const resposne = await getSession();
+    if (resposne) {
+      setUser(resposne?.user);
+    }
+  };
+
+  useEffect(() => {
+    getSessionServer();
+  });
 
   const [openEditform, setOpenEditForm] = useState(false);
   return (

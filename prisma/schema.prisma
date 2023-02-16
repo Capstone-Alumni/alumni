@@ -72,6 +72,7 @@ model Information {
   educationPublicity   ScopePublicity @default(PRIVATE) @map("education_publicity")
   alumClass            AlumClass?     @relation(fields: [alumClassId], references: [id])
   NewsComment          NewsComment?
+  News                 News[]
 
   @@map("informations")
 }
@@ -111,6 +112,9 @@ model News {
   newsImageUrl String?       @map("news_image_url")
   isPublic     Boolean       @default(false) @map("is_public")
   NewsComment  NewsComment[]
+  authorInfoId String         @map("author_info_id")
+
+  authorInfo Information @relation(fields: [authorInfoId], references: [id])
 
   @@map("news")
 }
@@ -171,13 +175,13 @@ model NewsComment {
   updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
   commentContent  String   @map("comment_content")
   commenterId     String   @map("commenter_id")
-  commenterInfoId String   @map("commenter_info_id") @unique
+  commenterInfoId String   @unique @map("commenter_info_id")
   newsId          String   @map("news_id")
 
-  news          News?       @relation(fields: [newsId], references: [id])
-  commenterInfo Information? @relation(fields: [commenterInfoId], references: [id])
+  news          News        @relation(fields: [newsId], references: [id])
+  commenterInfo Information @relation(fields: [commenterInfoId], references: [id])
 
-  @@map("(news_comment)")
+  @@map("news_comment")
 }
 
 enum AccessLevel {

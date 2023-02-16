@@ -233,11 +233,11 @@ const MenuDropDown = ({
     >
       <MenuItem disabled={!canEdit} onClick={onEdit}>
         <EditIcon sx={{ width: 16, height: 16, mr: 0.5 }} />
-        Sua
+        Sửa
       </MenuItem>
       <MenuItem onClick={onDelete}>
         <DeleteIcon sx={{ width: 16, height: 16, mr: 0.5, color: 'red' }} />
-        Xoa
+        Xóa
       </MenuItem>
     </Menu>
   );

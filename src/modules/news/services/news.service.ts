@@ -21,10 +21,20 @@ export default class NewsService {
     authorId: string,
     body: CreateNewsProps,
   ) => {
+    const authorInformation = await tenantPrisma.information.findFirst({
+      where: { userId: authorId },
+    });
+    console.log(
+      '🚀 ~ file: news.service.ts:27 ~ NewsService ~ authorInformation',
+      authorInformation,
+    );
     const newsCreated = await tenantPrisma.news.create({
       data: {
         ...body,
         authorId: authorId,
+        authorInfo: {
+          connect: { id: authorInformation?.id },
+        },
       },
     });
     return newsCreated;
@@ -64,6 +74,15 @@ export default class NewsService {
     await isNewsExisted(tenantPrisma, newsId);
     const news = await tenantPrisma.news.findFirst({
       where: { id: newsId },
+      include: {
+        authorInfo: {
+          select: {
+            id: true,
+            fullName: true,
+            avatarUrl: true,
+          },
+        },
+      },
     });
     return news;
   };
@@ -90,6 +109,15 @@ export default class NewsService {
         skip: (page - 1) * limit,
         take: limit,
         where: whereFilter,
+        include: {
+          authorInfo: {
+            select: {
+              id: true,
+              fullName: true,
+              avatarUrl: true,
+            },
+          },
+        },
         orderBy: [
           {
             createdAt: 'desc',
@@ -127,6 +155,15 @@ export default class NewsService {
         skip: (page - 1) * limit,
         take: limit,
         where: whereFilter,
+        include: {
+          authorInfo: {
+            select: {
+              id: true,
+              fullName: true,
+              avatarUrl: true,
+            },
+          },
+        },
         orderBy: [
           {
             createdAt: 'desc',
@@ -148,6 +185,15 @@ export default class NewsService {
     await isNewsExisted(tenantPrisma, newsId);
     const news = await tenantPrisma.news.findFirst({
       where: { id: newsId, isPublic: true },
+      include: {
+        authorInfo: {
+          select: {
+            id: true,
+            fullName: true,
+            avatarUrl: true,
+          },
+        },
+      },
     });
     return news;
   };

@@ -48,7 +48,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
       ...data,
     };
     await updateNews(updateNewsParams);
-    router.push(`/admin/news/${initialData?.id}`);
+    handleCancel();
   };
 
   const handleCancel = () => {
