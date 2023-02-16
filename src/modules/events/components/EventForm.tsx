@@ -49,11 +49,11 @@ const EventForm = ({
       location: initialData?.location,
       registrationTime: initialData?.registrationTime
         ? new Date(initialData.registrationTime)
-        : undefined,
+        : new Date(),
       startTime: initialData?.startTime
         ? new Date(initialData.startTime)
         : new Date(),
-      endTime: initialData?.endTime ? new Date(initialData.endTime) : undefined,
+      endTime: initialData?.endTime ? new Date(initialData.endTime) : null,
       isEnded: initialData?.isEnded,
       publicity: initialData?.publicity ?? 'ALUMNI',
       publicParticipant: initialData?.publicParticipant ?? false,
