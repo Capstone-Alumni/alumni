@@ -17,13 +17,17 @@ export type Event = {
   publicity: AccessLevel;
   publicParticipant: boolean;
   userId: string;
+  hostInformation?: {
+    id: string;
+    userId: string;
+    email: string;
+  };
 };
 
 export type GetAdminEventListParams = {
   page: number;
   limit: number;
-  archived: boolean;
-  approved: boolean;
+  approved: number | undefined;
 };
 
 export type GetOwnerEventListParams = {

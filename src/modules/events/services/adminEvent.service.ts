@@ -9,14 +9,12 @@ export default class AdminEventService {
       user,
       page,
       limit,
-      archived,
       approved,
     }: {
       user: User;
       page: number;
       limit: number;
-      archived: boolean;
-      approved: boolean;
+      approved: number | undefined;
     },
   ) => {
     const publicityFilter = buildAccessLevelFilter(
@@ -25,8 +23,7 @@ export default class AdminEventService {
     );
     const whereFilter = {
       ...publicityFilter,
-      archived: archived,
-      approvedStatus: approved ? 1 : -1,
+      approvedStatus: approved ? approved : undefined,
     };
 
     const [totalItems, items] = await tenantPrisma.$transaction([
@@ -39,6 +36,9 @@ export default class AdminEventService {
         where: whereFilter,
         orderBy: {
           createdAt: 'desc',
+        },
+        include: {
+          hostInformation: true,
         },
       }),
     ]);
@@ -79,7 +79,7 @@ export default class AdminEventService {
       user.accessLevel,
     );
 
-    const event = await tenantPrisma.event.update({
+    await tenantPrisma.event.updateMany({
       where: {
         ...publicityFilter,
         id: eventId,
@@ -89,7 +89,7 @@ export default class AdminEventService {
       },
     });
 
-    return event;
+    return null;
   };
 
   static reject = async (
@@ -101,7 +101,7 @@ export default class AdminEventService {
       user.accessLevel,
     );
 
-    const event = await tenantPrisma.event.update({
+    await tenantPrisma.event.updateMany({
       where: {
         ...publicityFilter,
         id: eventId,
@@ -111,6 +111,6 @@ export default class AdminEventService {
       },
     });
 
-    return event;
+    return null;
   };
 }
