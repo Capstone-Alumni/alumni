@@ -1,16 +1,19 @@
 import { AxiosError } from 'axios';
 import useApi from 'src/modules/share/hooks/useApi';
+import { Event } from '../types';
 
 type GetPublicGetEventByIdParams = {
   eventId: string;
 };
 
-type GetPublicGetEventByIdResponse = unknown;
+type GetPublicGetEventByIdResponse = {
+  data: Event;
+};
 
 type GetPublicGetEventByIdError = AxiosError;
 
 const usePublicGetEventById = () => {
-  const { fetchApi, isLoading } = useApi<
+  const { fetchApi, data, isLoading } = useApi<
     GetPublicGetEventByIdParams,
     GetPublicGetEventByIdResponse,
     GetPublicGetEventByIdError
@@ -22,6 +25,7 @@ const usePublicGetEventById = () => {
   return {
     isLoading,
     fetchApi,
+    data,
   };
 };
 
