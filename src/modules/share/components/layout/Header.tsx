@@ -104,7 +104,7 @@ const Header = ({
               </Box>
             ) : null}
 
-            {user.accessLevel !== 'ALUMNI' ? (
+            {user && user.accessLevel !== 'ALUMNI' ? (
               <Link
                 href="/admin/access_request"
                 style={{ color: 'inherit', marginRight: theme.spacing(2) }}
