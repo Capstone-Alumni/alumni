@@ -10,14 +10,13 @@ export default class AdminEventController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const prisma = await getPrismaClient(req.tenantId);
-    const { page, limit, archived, approved } = req.query;
+    const { page, limit, approved } = req.query;
 
     const listData = await AdminEventService.getList(prisma, {
       user: req.user,
       page: page ? parseInt(page as string, 10) : 1,
       limit: limit ? parseInt(limit as string, 10) : 10,
-      archived: !!archived,
-      approved: !!approved,
+      approved: approved ? parseInt(approved as string, 10) : undefined,
     });
 
     return res.status(200).json({

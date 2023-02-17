@@ -10,15 +10,14 @@ export const getAdminEventListParamsAtom = atom<GetAdminEventListParams>({
   default: {
     limit: 10,
     page: 1,
-    archived: false,
-    approved: false,
+    approved: undefined,
   },
 });
 
 export const getOwnerEventListParamsAtom = atom<GetOwnerEventListParams>({
   key: 'getOwnerEventListParams',
   default: {
-    limit: 10,
+    limit: 12,
     page: 1,
   },
 });

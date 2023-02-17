@@ -7,7 +7,6 @@ export default function Tabs(theme: Theme) {
     MuiTab: {
       styleOverrides: {
         root: {
-          padding: 0,
           fontWeight: theme.typography.fontWeightMedium,
           borderTopLeftRadius: theme.shape.borderRadius,
           borderTopRightRadius: theme.shape.borderRadius,
@@ -15,7 +14,7 @@ export default function Tabs(theme: Theme) {
             color: theme.palette.text.primary,
           },
           '&:not(:last-child)': {
-            marginRight: theme.spacing(5),
+            marginRight: theme.spacing(1),
           },
           '@media (min-width: 600px)': {
             minWidth: 48,
