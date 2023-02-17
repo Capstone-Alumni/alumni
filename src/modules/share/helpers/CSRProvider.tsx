@@ -5,9 +5,11 @@ import { SessionProvider } from 'next-auth/react';
 import { RecoilRoot } from 'recoil';
 
 import ThemeConfig from '@lib/mui';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 export default function CSRProvider({
   children,
@@ -21,12 +23,14 @@ export default function CSRProvider({
       <RecoilRoot>
         <NextAppDirEmotionCacheProvider options={{ key: 'css' }}>
           <ThemeConfig paletteName={theme}>
-            {children}
-            <ToastContainer
-              position="bottom-right"
-              autoClose={3000}
-              theme="colored"
-            />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              {children}
+              <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                theme="colored"
+              />
+            </LocalizationProvider>
           </ThemeConfig>
         </NextAppDirEmotionCacheProvider>
       </RecoilRoot>
