@@ -14,7 +14,7 @@ CREATE TABLE "recruitments" (
     "type" TEXT NOT NULL,
     "start_at" TIMESTAMP(3),
     "expired_at" TIMESTAMP(3),
-    "salary" TEXT NOT NULL DEFAULT "negotiate",
+    "salary" TEXT NOT NULL DEFAULT ''negotiate'',
     "isApproved" BOOLEAN NOT NULL DEFAULT false,
     "recruitment_owner_id" TEXT NOT NULL,
 
