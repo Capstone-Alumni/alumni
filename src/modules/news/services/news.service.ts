@@ -24,19 +24,22 @@ export default class NewsService {
     const authorInformation = await tenantPrisma.information.findFirst({
       where: { userId: authorId },
     });
-    console.log(
-      '🚀 ~ file: news.service.ts:27 ~ NewsService ~ authorInformation',
-      authorInformation,
-    );
-    const newsCreated = await tenantPrisma.news.create({
-      data: {
-        ...body,
-        authorId: authorId,
-        authorInfo: {
-          connect: { id: authorInformation?.id },
-        },
-      },
-    });
+    const newsCreated = authorInformation
+      ? await tenantPrisma.news.create({
+          data: {
+            ...body,
+            authorId: authorId,
+            authorInfo: {
+              connect: { id: authorInformation?.id },
+            },
+          },
+        })
+      : await tenantPrisma.news.create({
+          data: {
+            ...body,
+            authorId: authorId,
+          },
+        });
     return newsCreated;
   };
 

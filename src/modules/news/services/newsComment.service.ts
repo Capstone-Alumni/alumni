@@ -11,18 +11,28 @@ export default class NewsCommentService {
     const information = await tenantPrisma.information.findFirst({
       where: { userId: userId },
     });
-    const newsCommetCreated = await tenantPrisma.newsComment.create({
-      data: {
-        ...body,
-        commenterId: userId,
-        news: {
-          connect: { id: newsId },
-        },
-        commenterInfo: {
-          connect: { id: information!.id },
-        },
-      },
-    });
+    const newsCommetCreated = information
+      ? await tenantPrisma.newsComment.create({
+          data: {
+            ...body,
+            commenterId: userId,
+            news: {
+              connect: { id: newsId },
+            },
+            commenterInfo: {
+              connect: { id: information!.id },
+            },
+          },
+        })
+      : await tenantPrisma.newsComment.create({
+          data: {
+            ...body,
+            commenterId: userId,
+            news: {
+              connect: { id: newsId },
+            },
+          },
+        });
     return newsCommetCreated;
   };
 

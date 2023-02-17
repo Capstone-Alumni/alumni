@@ -83,8 +83,8 @@ const NewsCommentItem = ({
         }}
       >
         <Avatar
-          alt={item.commenterInfo.fullName}
-          src={item.commenterInfo.avatarUrl || ''}
+          alt={item.commenterInfo ? item.commenterInfo.fullName : ''}
+          src={item.commenterInfo ? item.commenterInfo.avatarUrl : ''}
           sx={{ width: 48, height: 48 }}
         />
         <Box
@@ -101,7 +101,9 @@ const NewsCommentItem = ({
           >
             <Link
               underline="none"
-              href={`/profile/${item.commenterInfo.id}`}
+              href={`/profile/${
+                item.commenterInfo ? item.commenterInfo.id : ''
+              }`}
               color="inherit"
             >
               <Typography
@@ -111,7 +113,7 @@ const NewsCommentItem = ({
                 }}
                 variant="subtitle1"
               >
-                {item.commenterInfo.fullName}
+                {item.commenterInfo ? item.commenterInfo.fullName : ''}
               </Typography>
             </Link>
             {user.id === item.commenterId ||

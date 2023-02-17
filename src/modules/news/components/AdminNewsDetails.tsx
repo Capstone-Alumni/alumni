@@ -26,15 +26,15 @@ const AdminNewsDetails = () => {
     }
   }, [session]);
 
-  const [openEditform, setOpenEditForm] = useState(false);
+  const [openEditForm, setOpenEditForm] = useState(false);
   return (
     <Box
       sx={{
-        width: openEditform ? '100%' : '80%',
+        width: openEditForm ? '100%' : '80%',
         margin: 'auto',
       }}
     >
-      {!openEditform && (
+      {!openEditForm && (
         <Box
           sx={{
             display: 'flex',
@@ -55,9 +55,9 @@ const AdminNewsDetails = () => {
           </Button>
         </Box>
       )}
-      {openEditform && <NewsForm initialData={newsData.data} />}
-      {isLoading && !openEditform ? <LoadingIndicator /> : null}
-      {newsData && !openEditform ? (
+      {openEditForm && <NewsForm initialData={newsData.data} />}
+      {isLoading && !openEditForm ? <LoadingIndicator /> : null}
+      {newsData && !openEditForm ? (
         <NewsContentPage data={newsData.data} />
       ) : null}
       <NewsCommentList user={user} newsId={newsId} />

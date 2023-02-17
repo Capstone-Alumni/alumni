@@ -11,14 +11,16 @@ import {
 } from '@mui/material';
 import Editor from '@share/components/editor';
 import 'quill/dist/quill.snow.css';
-import useCreateNews from '../hooks/useCreateNews';
 import { CreateNewsProps, News, UpdateNewsProps } from '../types';
 import { useRouter } from 'next/navigation';
 import { UploadAvatar as UploadImage } from '@share/components/upload';
 import { setStorage } from 'src/firebase/methods/setStorage';
 import { generateUniqSerial } from 'src/utils';
 import { toast } from 'react-toastify';
-import { useUpdateNewsByIdMutation } from 'src/redux/slices/newsSlice';
+import {
+  useCreateNewsMutation,
+  useUpdateNewsByIdMutation,
+} from 'src/redux/slices/newsSlice';
 
 const NewsForm = ({ initialData }: { initialData?: News }) => {
   const theme = useTheme();
@@ -32,14 +34,24 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
       content: initialData?.content ?? '',
     },
   });
+  const [hasValueTitle, setHasValueTitle] = useState(false);
+  const [hasValueContent, setHasValueContent] = useState(false);
 
-  const { createNews } = useCreateNews();
-  // const { updateNews } = useUpdateNews();
+  const [createNews] = useCreateNewsMutation();
 
   const [updateNews] = useUpdateNewsByIdMutation();
 
   const onAddNews = async (values: CreateNewsProps) => {
-    await createNews(values);
+    await createNews(values)
+      .unwrap()
+      .then(result => {
+        if (result.status) {
+          toast.success('Đăng tin thành công');
+          handleCancel();
+        } else {
+          toast.error('Đăng tin thất bại');
+        }
+      });
   };
 
   const onUpdateNews = async (newsId: string, data: UpdateNewsProps) => {
@@ -47,8 +59,16 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
       newsId,
       ...data,
     };
-    await updateNews(updateNewsParams);
-    handleCancel();
+    await updateNews(updateNewsParams)
+      .unwrap()
+      .then(result => {
+        if (result.status) {
+          toast.success('Cập nhật tin thành công');
+          handleCancel();
+        } else {
+          toast.error('Cập nhật tin thất bại');
+        }
+      });
   };
 
   const handleCancel = () => {
@@ -118,16 +138,24 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
         <Controller
           control={control}
           name="title"
-          render={({ field }) => (
-            <TextField
-              sx={{
-                width: '90%',
-              }}
-              fullWidth
-              label="Tiêu đề"
-              {...field}
-            />
-          )}
+          render={({ field }) => {
+            const { value } = field;
+            if (value.length > 0) {
+              setHasValueTitle(true);
+            } else {
+              setHasValueTitle(false);
+            }
+            return (
+              <TextField
+                sx={{
+                  width: '90%',
+                }}
+                fullWidth
+                label="Tiêu đề"
+                {...field}
+              />
+            );
+          }}
         />
         <Tooltip title="Tải ảnh đại diện cho tin">
           <Box ml={2}>
@@ -148,18 +176,25 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
       <Controller
         control={control}
         name="content"
-        render={({ field: { value, onChange } }) => (
-          <Editor
-            id="content"
-            sx={{
-              height: 500,
-              overflow: 'auto',
-            }}
-            placeholder={'Nội dung'}
-            value={value}
-            onChange={onChange}
-          />
-        )}
+        render={({ field: { value, onChange } }) => {
+          if (value.length > 0) {
+            setHasValueContent(true);
+          } else {
+            setHasValueContent(false);
+          }
+          return (
+            <Editor
+              id="content"
+              sx={{
+                height: 500,
+                overflow: 'auto',
+              }}
+              placeholder={'Nội dung'}
+              value={value}
+              onChange={onChange}
+            />
+          );
+        }}
       />
 
       <Box
@@ -175,7 +210,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
         </Button>
         <Button
           variant="contained"
-          disabled={submitting}
+          disabled={submitting || !hasValueTitle || !hasValueContent}
           onClick={handleSubmit(onSubmitHandler)}
         >
           Lưu
