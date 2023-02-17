@@ -42,6 +42,11 @@ export type GetOwnerEventListParams = {
   limit: number;
 };
 
+export type GetOwnerGoingEventListParams = {
+  page: number;
+  limit: number;
+};
+
 export type GetPublicEventListParams = {
   page: number;
   limit: number;

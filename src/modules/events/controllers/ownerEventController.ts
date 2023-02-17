@@ -110,4 +110,24 @@ export default class OwnerEventController {
       throw err;
     }
   };
+
+  static getGoingList = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    const prisma = await getPrismaClient(req.tenantId);
+    const { id: userId } = req.user;
+    const { page, limit } = req.query;
+
+    const listData = await OwnerEventService.getGoingList(prisma, {
+      userId,
+      page: page ? parseInt(page as string, 10) : 1,
+      limit: limit ? parseInt(limit as string, 10) : 10,
+    });
+
+    return res.status(200).json({
+      data: listData,
+      status: true,
+    });
+  };
 }
