@@ -6,7 +6,7 @@ export default class PublicEventService {
     { page, limit }: { page: number; limit: number },
   ) => {
     const whereFilter = {
-      AND: [{ isApproved: true }, { archived: false }],
+      AND: [{ approvedStatus: 1 }, { archived: false }],
     };
 
     const [totalItems, items] = await tenantPrisma.$transaction([
@@ -39,7 +39,7 @@ export default class PublicEventService {
     const event = await tenantPrisma.event.findFirst({
       where: {
         id: eventId,
-        isApproved: true,
+        approvedStatus: 1,
       },
     });
 

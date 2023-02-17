@@ -3,6 +3,7 @@
 import { Icon } from '@iconify/react';
 import {
   alpha,
+  Box,
   ListItemIcon,
   ListItemText,
   Menu,
@@ -13,11 +14,12 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+// import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import MyAvatar from '../MyAvatar';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import getRoleName from '@share/utils/getRoleName';
+// import Link from 'next/link';
 
 const Wrapper = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -25,9 +27,10 @@ const Wrapper = styled('div')(({ theme }) => ({
   alignItems: 'center',
   gap: theme.spacing(1),
   borderRadius: theme.spacing(4),
-  paddingRight: theme.spacing(1),
+  paddingLeft: theme.spacing(2),
+  backgroundColor: alpha(theme.palette.primary.main, 0.1),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.black, 0.05),
+    backgroundColor: alpha(theme.palette.primary.main, 0.2),
   },
 }));
 
@@ -53,9 +56,21 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="body2">{user?.email}</Typography>
+          <Typography variant="caption" color="warning">
+            {getRoleName(user.accessLevel)}
+          </Typography>
+        </Box>
         <MyAvatar />
-        <Typography>{user?.email}</Typography>
       </Wrapper>
+
       <Menu
         id="header-user-menu"
         anchorEl={anchorEl}
@@ -65,7 +80,7 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
           'aria-labelledby': 'header-user-option',
         }}
       >
-        {user.accessLevel !== 'ALUMNI' ? (
+        {/* {user.accessLevel !== 'ALUMNI' ? (
           <Link href="/admin/access_request" style={{ color: 'inherit' }}>
             <MenuItem>
               <ListItemIcon>
@@ -74,7 +89,7 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
               <ListItemText>Bảng điều khiển</ListItemText>
             </MenuItem>
           </Link>
-        ) : null}
+        ) : null} */}
 
         {/* <Link href={`/profile/${user.id}`} style={{ color: 'inherit' }}> */}
         <MenuItem>

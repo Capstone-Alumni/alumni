@@ -73,6 +73,7 @@ model Information {
   alumClass            AlumClass?     @relation(fields: [alumClassId], references: [id])
   NewsComment          NewsComment[]
   News                 News[]
+  events               Event[]
 
   @@map("informations")
 }
@@ -133,11 +134,12 @@ model Event {
   startTime         DateTime    @default(now()) @map("start_time")
   endTime           DateTime?   @map("end_time")
   isEnded           Boolean     @default(false) @map("is_ended")
-  isApproved        Boolean     @default(false) @map("is_approved")
+  approvedStatus    Int         @default(-1) @map("approved_status")
   publicity         AccessLevel @default(ALUMNI)
   publicParticipant Boolean     @default(false) @map("public_participant")
 
-  userId String @map("user_id")
+  userId          String      @map("user_id")
+  hostInformation Information @relation(fields: [userId], references: [userId])
 
   // EventParticipant  EventParticipant[]
 

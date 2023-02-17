@@ -23,10 +23,10 @@ const useAdminRejectEventById = () => {
     }),
     {
       onError: () => {
-        toast.error('Xoá sự kiện thất bại');
+        toast.error('Huỷ sự kiện thất bại');
       },
       onSuccess: () => {
-        toast.success('Xoá sự kiện thành công');
+        toast.success('Huỷ sự kiện thành công');
       },
     },
   );

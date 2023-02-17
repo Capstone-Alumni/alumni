@@ -114,26 +114,29 @@ export default class OwnerEventService {
       publicParticipant?: boolean;
     },
   ) => {
-    const event = await tenantPrisma.event.updateMany({
+    const event = await tenantPrisma.event.findUnique({
       where: {
-        AND: [
-          {
-            id: eventId,
-          },
-          {
-            userId: userId,
-          },
-        ],
+        id: eventId,
+      },
+    });
+
+    if (!event || event.userId !== userId) {
+      throw new Error('403 denied');
+    }
+
+    const newEvent = await tenantPrisma.event.update({
+      where: {
+        id: eventId,
       },
       data: {
         ...data,
-        isApproved: false,
+        approvedStatus: -1,
       },
     });
 
     await tenantPrisma.$disconnect();
 
-    return event;
+    return newEvent;
   };
 
   static deleteById = async (
