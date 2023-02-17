@@ -1,4 +1,4 @@
-// import EventSidebar from 'src/modules/events/components/EventSidebar';
+import EventSidebar from 'src/modules/events/components/EventSidebar';
 
 export default async function AuthorizedLayout({
   children,
@@ -6,9 +6,9 @@ export default async function AuthorizedLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      {/* <EventSidebar /> */}
-      {children}
-    </>
+    <div style={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>
+      <EventSidebar />
+      <div style={{ flex: 1 }}>{children}</div>
+    </div>
   );
 }
