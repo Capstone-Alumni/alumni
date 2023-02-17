@@ -10,8 +10,7 @@ export const getAdminEventListParamsAtom = atom<GetAdminEventListParams>({
   default: {
     limit: 10,
     page: 1,
-    archived: false,
-    approved: false,
+    approved: undefined,
   },
 });
 

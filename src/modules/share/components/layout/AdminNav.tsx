@@ -28,10 +28,10 @@ const NEWS_NAV_ITEM = {
   link: '/admin/news',
 };
 const EVENT_NAV_ITEM = {
-  id: 'grade_class_4',
-  title: 'Quỹ',
+  id: 'event',
+  title: 'Sự kiện',
   icon: 'ic:baseline-event',
-  link: '/admin/events',
+  link: '/admin/event',
 };
 
 const GRADE_NAV_ITEM = {
