@@ -106,4 +106,34 @@ export default class RecruimentService {
     });
     return recruitment;
   };
+
+  static getListByOwnerId = async (
+    tenantPrisma: PrismaClient,
+    {
+      recruitmentOwnerId,
+      page,
+      limit,
+    }: { recruitmentOwnerId: string; page: number; limit: number },
+  ) => {
+    const whereFilter = {
+      AND: [{ archived: false }, { recruitmentOwnerId: recruitmentOwnerId }],
+    };
+
+    const [totalItem, recruitmentItem] = await tenantPrisma.$transaction([
+      tenantPrisma.recruitment.count({
+        where: whereFilter,
+      }),
+      tenantPrisma.recruitment.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereFilter,
+        orderBy: [{ createdAt: 'desc' }],
+      }),
+    ]);
+    return {
+      totalItems: totalItem,
+      items: recruitmentItem,
+      itemPerPage: limit,
+    };
+  };
 }

@@ -34,16 +34,8 @@ export default class AdminRecruitmentService {
   ) => {
     const { page, limit } = getPageAndLimitFromParams(params);
 
-    const { companyName, job, position, salary, type } = params;
-    const whereFilter = {
-      AND: [
-        { companyName: { contains: companyName } },
-        { job: { contains: job } },
-        { position: { contains: position } },
-        { salary: { contains: salary } },
-        { type: { contains: type } },
-      ],
-    };
+    const { companyName } = params;
+    const whereFilter = { companyName: { contains: companyName } };
 
     const [totalItem, recruitmentItem] = await tenantPrisma.$transaction([
       tenantPrisma.recruitment.count({
