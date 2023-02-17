@@ -1,4 +1,4 @@
--- CreateTable
+SELECT template.run_migration('
 CREATE TABLE "recruitments" (
     "id" TEXT NOT NULL,
     "archived" BOOLEAN NOT NULL DEFAULT false,
@@ -20,3 +20,4 @@ CREATE TABLE "recruitments" (
 
     CONSTRAINT "recruitments_pkey" PRIMARY KEY ("id")
 );
+');
