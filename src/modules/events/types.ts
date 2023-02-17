@@ -24,6 +24,13 @@ export type Event = {
   };
 };
 
+export type EventParticipant = {
+  id: string;
+  userId: string;
+  eventId: string;
+  participantInformation: any;
+};
+
 export type GetAdminEventListParams = {
   page: number;
   limit: number;
@@ -36,6 +43,11 @@ export type GetOwnerEventListParams = {
 };
 
 export type GetPublicEventListParams = {
+  page: number;
+  limit: number;
+};
+
+export type GetPublicEventParticipantListParams = {
   page: number;
   limit: number;
 };

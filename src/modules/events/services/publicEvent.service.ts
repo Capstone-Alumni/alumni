@@ -92,4 +92,39 @@ export default class PublicEventService {
 
     return participant;
   };
+
+  static getParticipantList = async (
+    tenantPrisma: PrismaClient,
+    { eventId, page, limit }: { eventId: string; page: number; limit: number },
+  ) => {
+    const whereFilter = {
+      eventId: eventId,
+      archived: false,
+    };
+
+    const [totalItems, items] = await tenantPrisma.$transaction([
+      tenantPrisma.eventParticipant.count({
+        where: whereFilter,
+      }),
+      tenantPrisma.eventParticipant.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereFilter,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        include: {
+          participantInformation: true,
+        },
+      }),
+    ]);
+
+    await tenantPrisma.$disconnect();
+
+    return {
+      totalItems: totalItems,
+      items,
+      itemPerPage: limit,
+    };
+  };
 }

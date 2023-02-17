@@ -3,6 +3,7 @@ import {
   GetAdminEventListParams,
   GetOwnerEventListParams,
   GetPublicEventListParams,
+  GetPublicEventParticipantListParams,
 } from './types';
 
 export const getAdminEventListParamsAtom = atom<GetAdminEventListParams>({
@@ -29,3 +30,12 @@ export const getPublicEventListParamsAtom = atom<GetPublicEventListParams>({
     page: 1,
   },
 });
+
+export const getPublicEventParticipantListParamsAtom =
+  atom<GetPublicEventParticipantListParams>({
+    key: 'getPublicEventParticipantListParams',
+    default: {
+      limit: 10,
+      page: 1,
+    },
+  });

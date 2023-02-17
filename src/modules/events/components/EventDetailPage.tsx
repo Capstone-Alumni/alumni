@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from 'react';
 import usePublicGetEventById from '../hooks/usePublicGetEventById';
 import Image from 'next/image';
 import usePublicJoinEventById from '../hooks/usePublicJoinEventById';
+import EventParticipantListTab from './EventParticipantListTab';
 
 const EventDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
@@ -199,6 +200,8 @@ const EventDetailPage = () => {
           <Typography>{eventData?.description}</Typography>
         </Box>
       ) : null}
+
+      {tabKey === 'participant' ? <EventParticipantListTab /> : null}
     </Box>
   );
 };

@@ -11,6 +11,8 @@ const handler = nc({
   onNoMatch: onNoMatchAPIHandler,
 }).use(extractTenantId);
 
-handler.post(isAuthenticatedUser, PublicEventController.joinEvent);
+handler
+  .get(PublicEventController.getParticipantList)
+  .post(isAuthenticatedUser, PublicEventController.joinEvent);
 
 export default handler;
