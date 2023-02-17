@@ -47,4 +47,49 @@ export default class PublicEventService {
 
     return event;
   };
+
+  static joinEvent = async (
+    tenantPrisma: PrismaClient,
+    { eventId, userId }: { eventId: string; userId: string },
+  ) => {
+    const event = await tenantPrisma.event.findUnique({
+      where: {
+        id: eventId,
+      },
+    });
+
+    if (!event || event?.approvedStatus !== 1) {
+      throw new Error('404 not found event');
+    }
+
+    const existedParticipant = await tenantPrisma.eventParticipant.findFirst({
+      where: {
+        userId: userId,
+        eventId: eventId,
+      },
+    });
+
+    if (existedParticipant) {
+      return existedParticipant;
+    }
+
+    const participant = await tenantPrisma.eventParticipant.create({
+      data: {
+        event: {
+          connect: {
+            id: eventId,
+          },
+        },
+        participantInformation: {
+          connect: {
+            userId: userId,
+          },
+        },
+      },
+    });
+
+    await tenantPrisma.$disconnect();
+
+    return participant;
+  };
 }

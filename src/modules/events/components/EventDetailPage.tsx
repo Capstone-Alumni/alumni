@@ -9,6 +9,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import usePublicGetEventById from '../hooks/usePublicGetEventById';
 import Image from 'next/image';
+import usePublicJoinEventById from '../hooks/usePublicJoinEventById';
 
 const EventDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
@@ -18,6 +19,8 @@ const EventDetailPage = () => {
   const eventId = pathname?.split('/')[2] || '';
 
   const { data, fetchApi, isLoading } = usePublicGetEventById();
+  const { fetchApi: joinEvent, isLoading: joiningEvent } =
+    usePublicJoinEventById();
 
   useEffect(() => {
     fetchApi({ eventId: eventId });
@@ -48,6 +51,10 @@ const EventDetailPage = () => {
 
     return 'ended';
   }, [data?.data]);
+
+  const onJoinEvent = async () => {
+    await joinEvent({ eventId: eventId });
+  };
 
   if (isLoading || !data?.data) {
     return <LoadingIndicator />;
@@ -154,9 +161,14 @@ const EventDetailPage = () => {
           <Button
             fullWidth
             variant="contained"
-            disabled={eventStatus === 'not-open' || eventStatus === 'ended'}
+            disabled={
+              eventStatus === 'not-open' ||
+              eventStatus === 'ended' ||
+              joiningEvent
+            }
             startIcon={<AppRegistrationIcon />}
             sx={{ mb: 1 }}
+            onClick={onJoinEvent}
           >
             Tham gia
           </Button>
