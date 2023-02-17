@@ -112,9 +112,9 @@ model News {
   newsImageUrl String?       @map("news_image_url")
   isPublic     Boolean       @default(false) @map("is_public")
   NewsComment  NewsComment[]
-  authorInfoId String         @map("author_info_id")
+  authorInfoId String?         @map("author_info_id")
 
-  authorInfo Information @relation(fields: [authorInfoId], references: [id])
+  authorInfo Information? @relation(fields: [authorInfoId], references: [id])
 
   @@map("news")
 }
