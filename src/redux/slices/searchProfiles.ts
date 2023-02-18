@@ -8,12 +8,12 @@ export const searchProfilesApi = createApi({
     baseUrl: '/',
   }),
   tagTypes: ['Search'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     // Infomation
 
     getUsersProfile: builder.query<any, any>({
       query: (name: string) => ({
-        url: `api/users/search`,
+        url: 'api/users/search',
         method: 'GET',
         params: {
           name,

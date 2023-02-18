@@ -138,7 +138,7 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
           </InfoStyle>
         </>
       )}
-      <label htmlFor="uploadWallpaper">
+      {/* <label htmlFor="uploadWallpaper">
         <div>
           <CoverImgStyle
             alt="profile cover"
@@ -162,7 +162,7 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
             />
           )}
         </RootStyle>
-      </label>
+      </label> */}
     </>
   );
 }

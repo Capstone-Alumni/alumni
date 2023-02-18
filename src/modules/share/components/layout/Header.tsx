@@ -9,7 +9,6 @@ import IconButton from '@mui/material/IconButton';
 import Link from 'next/link';
 import Logo from '../Logo';
 import { Divider, useScrollTrigger, useTheme } from '@mui/material';
-import SearchInput from '../SearchInput';
 import { NavItem } from './NavItem';
 import HeaderUserOptions from './HeaderUserOption';
 import React, { useState } from 'react';
@@ -48,15 +47,6 @@ const Header = ({ user, tenant }: { user?: any; tenant?: any }) => {
   const [search, setSearch] = useState<string>(name ?? '');
   const router = useRouter();
 
-  const handleSearchOnChange = (e: any) => {
-    setSearch(e.target.value);
-  };
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    router.push(`/search?name=${search}`);
-  };
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <ElevationScroll>
@@ -88,23 +78,15 @@ const Header = ({ user, tenant }: { user?: any; tenant?: any }) => {
               }}
             >
               <NavItem label="Tin tức" href="/news" />
-              {user ? <NavItem label="Sự kiện" href="/events" /> : null}
+              {user ? (
+                <>
+                  <NavItem label="Sự kiện" href="/events" />
+                  <NavItem label="Tìm bạn" href="/find" />
+                </>
+              ) : null}
             </Box>
 
             <Box sx={{ flex: 1 }} />
-
-            {user ? (
-              <Box sx={{ mr: theme.spacing(2) }}>
-                <form onSubmit={handleSubmit}>
-                  <SearchInput
-                    placeholder="Tìm kiếm bạn học"
-                    value={search}
-                    onChange={handleSearchOnChange}
-                  />
-                  <button type="submit" style={{ display: 'none' }}></button>
-                </form>
-              </Box>
-            ) : null}
 
             {user ? (
               <HeaderUserOptions user={user} />

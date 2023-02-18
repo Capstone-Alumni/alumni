@@ -35,7 +35,7 @@ export default class InformationService {
     tenantPrisma: PrismaClient,
     id: string,
   ) => {
-    let userInformation = await tenantPrisma.information.findUnique({
+    const userInformation = await tenantPrisma.information.findUnique({
       where: { userId: id },
     });
 

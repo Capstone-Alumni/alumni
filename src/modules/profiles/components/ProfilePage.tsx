@@ -1,12 +1,9 @@
 'use client';
 
-import { Icon } from '@iconify/react';
-import { capitalCase } from 'change-case';
 import { useState } from 'react';
-import roundAccountBox from '@iconify/icons-ic/round-account-box';
 
 import { styled } from '@mui/material';
-import { Box, Card, Container, Tab, Tabs } from '@mui/material';
+import { Box, Card, Container } from '@mui/material';
 
 import {
   Profile,
