@@ -74,6 +74,8 @@ model Information {
   events               Event[]
   eventParticipants    EventParticipant[]
   eventInterests       EventInterest[]
+  News                 News[]
+  NewsComment          NewsComment[]
 
   @@map("informations")
 }
@@ -103,15 +105,19 @@ model Education {
 }
 
 model News {
-  id           String   @id @default(cuid())
-  archived     Boolean  @default(false)
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at")
+  id           String        @id @default(cuid())
+  archived     Boolean       @default(false)
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @default(now()) @updatedAt @map("updated_at")
   title        String
   content      String
-  authorId     String   @map("author_id")
-  newsImageUrl String?  @map("news_image_url")
-  isPublic     Boolean  @default(false) @map("is_public")
+  authorId     String        @map("author_id")
+  newsImageUrl String?       @map("news_image_url")
+  isPublic     Boolean       @default(false) @map("is_public")
+  NewsComment  NewsComment[]
+  authorInfoId String?       @map("author_info_id")
+
+  authorInfo Information? @relation(fields: [authorInfoId], references: [id])
 
   @@map("news")
 }
@@ -172,6 +178,44 @@ model EventInterest {
 
   @@map("event_interests")
 }
+
+model NewsComment {
+  id              String   @id @default(cuid())
+  archived        Boolean  @default(false)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
+  commentContent  String   @map("comment_content")
+  commenterId     String   @map("commenter_id")
+  commenterInfoId String?  @map("commenter_info_id")
+  newsId          String   @map("news_id")
+
+  news          News         @relation(fields: [newsId], references: [id])
+  commenterInfo Information? @relation(fields: [commenterInfoId], references: [id])
+
+  @@map("news_comment")
+}
+
+// model Recruitment {
+//   id                    String    @id @default(cuid())
+//   archived              Boolean   @default(false)
+//   createdAt             DateTime  @default(now()) @map("created_at")
+//   updatedAt             DateTime  @default(now()) @updatedAt @map("updated_at")
+//   companyName           String    @map("company_name")
+//   website               String
+//   job                   String
+//   address               String 
+//   position              String
+//   title                 String
+//   description           String
+//   type                  String    @map("type")
+//   startAt               DateTime? @map("start_at")
+//   expiredAt             DateTime? @map("expired_at")
+//   salary                String    @default("negotiate")
+//   isApproved            Boolean   @default(false)
+//   recruitmentOwnerId    String    @map("recruitment_owner_id")
+
+//   @@map("recruitments")
+// }
 
 enum AccessLevel {
   ALUMNI

@@ -22,7 +22,7 @@ export default function UserEditWrapper({
     <>
       {!userInformation.error && !userInformation.isLoading && (
         <EditUserInformation
-          userInformation={userInformation.data.data.information}
+          userInformation={userInformation.data.data}
           userProfileId={userProfileId}
         />
       )}

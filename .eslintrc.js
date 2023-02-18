@@ -42,7 +42,7 @@ module.exports = {
     // Stylistic
     'array-bracket-spacing': 'error',
     'computed-property-spacing': ['error', 'never'],
-    'unused-imports/no-unused-imports-ts': "error",
+    'unused-imports/no-unused-imports-ts': 'error',
     curly: 'error',
     'no-lonely-if': 'error',
     'no-unneeded-ternary': 'error',

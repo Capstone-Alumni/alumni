@@ -26,6 +26,32 @@ export type GetNewsListData = {
   itemPerPage: number;
 };
 
+export type GetListNewComment = {
+  page?: number;
+  limit?: number;
+};
+
+export type CreateOrUpdateNewComment = {
+  commentContent: string;
+};
+
+type CommenterInfor = {
+  id: string;
+  fullName: string;
+  avatarUrl: string;
+};
+
+export type NewsComment = {
+  archived: boolean;
+  commentContent: string;
+  commenterId: string;
+  commenterInfo: CommenterInfor;
+  commenterInfoId: string;
+  createdAt: string;
+  id: string;
+  newsId: string;
+  updatedAt: string;
+};
 /** ========================== BE ================================= */
 
 export type CreateNewsProps = {
