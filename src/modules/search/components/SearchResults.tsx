@@ -4,10 +4,10 @@ import {
   Box,
   Card,
   Grid,
+  Pagination,
   Stack,
   styled,
   Typography,
-  Pagination,
 } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
