@@ -40,7 +40,7 @@ const AdminMemberListItem = ({
             <Typography>
               {data.accessStatus === 'APPROVED' ? (
                 <Button variant="outlined" size="small" color="success">
-                  Đã có lớp
+                  Đã xác thực
                 </Button>
               ) : (
                 <Button variant="outlined" size="small" color="warning">
