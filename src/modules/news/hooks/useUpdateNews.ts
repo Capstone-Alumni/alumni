@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import useApi from 'src/modules/share/hooks/useApi';
 
 type UpdateNewsParams = {
@@ -5,6 +6,7 @@ type UpdateNewsParams = {
   title?: string;
   content?: string;
   isPublic?: boolean;
+  newsImageUrl?: string;
 };
 
 type UpdateNewsSuccessResponse = {
@@ -17,6 +19,7 @@ type UpdateNewsSuccessResponse = {
     createdAt: Date;
     updatedAt: Date;
     archived: boolean;
+    newsImageUrl: string;
   };
 };
 
@@ -34,17 +37,19 @@ const useUpdateNews = () => {
     UpdateNewsError
   >(
     'updateNews',
-    ({ newsId, title, content, isPublic }) => ({
+    ({ newsId, title, content, isPublic, newsImageUrl }) => ({
       method: 'PUT',
       url: `/api/news/${newsId}`,
       data: {
         title,
         content,
         isPublic,
+        newsImageUrl,
       },
     }),
     {
       onSuccess: () => {
+        toast.success('Cập nhật thành công');
         window.location.reload();
       },
     },

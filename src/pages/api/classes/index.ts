@@ -11,7 +11,7 @@ const handler = nc({
 }).use(extractTenantId);
 
 handler
-  .get(verifySchoolAdmin, ClassController.getList)
+  .get(ClassController.getList)
   .post(verifySchoolAdmin, ClassController.create);
 
 export default handler;
