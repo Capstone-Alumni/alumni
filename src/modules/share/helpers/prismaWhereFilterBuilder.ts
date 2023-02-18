@@ -22,7 +22,7 @@ export const buildAccessLevelFilter = (
       enums = [];
   }
 
-  return {
+  const orCond = {
     OR: enums.map(e => {
       const cond: { [key: string]: { equals: string } } = {};
       cond[fieldName] = {
@@ -30,5 +30,9 @@ export const buildAccessLevelFilter = (
       };
       return cond;
     }),
+  };
+
+  return {
+    ...orCond,
   };
 };
