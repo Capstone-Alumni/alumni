@@ -57,6 +57,7 @@ export default function SearchInput({
   placeholder,
   value,
   onChange,
+  ...props
 }: InputProps) {
   return (
     <Search>
