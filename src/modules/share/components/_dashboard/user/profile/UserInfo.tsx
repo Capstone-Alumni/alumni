@@ -39,6 +39,7 @@ const UserInfo = ({ userInformation, userProfileId }: UserInfoProps) => {
     bio: Yup.string(),
     userEmail: Yup.string(),
     fullName: Yup.string(),
+    facebookUrl: Yup.string(),
     class: Yup.object()
       .shape({
         className: Yup.string().nullable(),
@@ -60,6 +61,8 @@ const UserInfo = ({ userInformation, userProfileId }: UserInfoProps) => {
       bio: userInformation?.bio || '',
       fullName: userInformation?.fullName || '',
       userEmail: userInformation?.userEmail || '',
+      facebookUrl: userInformation?.facebookUrl || '',
+      phone: userInformation?.phone || '',
       class: {
         className: userInformation?.className || null,
       },
@@ -67,7 +70,6 @@ const UserInfo = ({ userInformation, userProfileId }: UserInfoProps) => {
         gradeName: userInformation?.gradeName || null,
         gradeCode: userInformation?.gradeCode || null,
       },
-      phone: userInformation?.phone || '',
       dateOfBirth: userInformation?.dateOfBirth || null,
     },
     validationSchema: NewUserSchema,
@@ -226,6 +228,21 @@ const UserInfo = ({ userInformation, userProfileId }: UserInfoProps) => {
                       />
                     </Stack>
 
+                    <Stack
+                      direction={{ xs: 'column', sm: 'row' }}
+                      spacing={{ xs: 3, sm: 2 }}
+                    >
+                      <TextField
+                        fullWidth
+                        label="Địa chỉ Facebook"
+                        {...getFieldProps('facebookUrl')}
+                        error={Boolean(
+                          touched.facebookUrl && errors.facebookUrl,
+                        )}
+                        helperText={touched.facebookUrl && errors.facebookUrl}
+                      />
+                    </Stack>
+
                     {grades && (
                       <>
                         {' '}
@@ -272,7 +289,6 @@ const UserInfo = ({ userInformation, userProfileId }: UserInfoProps) => {
                                 option.className || ''
                               }
                               onChange={(_, value) => {
-                                console.log(value);
                                 if (!value) {
                                   setFieldValue('class', { className: null });
                                   return;
