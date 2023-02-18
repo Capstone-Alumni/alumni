@@ -91,7 +91,7 @@ const Header = ({
               }}
             >
               <NavItem label="Tin tức" href="/news" />
-              <NavItem label="Sự kiện" href="/events" />
+              <NavItem label="Sự kiện" href="/events/discover" />
               {user ? (
                 <>
                   <NavItem label="Tìm bạn" href="/find" />
