@@ -49,3 +49,12 @@ export const getOwnerGoingEventListParamsAtom =
       page: 1,
     },
   });
+
+export const getOwnerInterestEventListParamsAtom =
+  atom<GetOwnerGoingEventListParams>({
+    key: 'getOwnerInterestEventListParamsAtom',
+    default: {
+      limit: 10,
+      page: 1,
+    },
+  });
