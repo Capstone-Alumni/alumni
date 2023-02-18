@@ -1,10 +1,14 @@
 'use client';
+
 import { Box, Button, Typography } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
+import { User } from 'next-auth';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGetNewsByIdForSchoolAdminQuery } from 'src/redux/slices/newsSlice';
+import NewsCommentList from './NewsCommentList';
 import NewsContentPage from './NewsContentPage';
 import NewsForm from './NewsForm';
 
@@ -13,16 +17,24 @@ const AdminNewsDetails = () => {
   const newsId = pathname?.split('/')[3] || '';
   const { data: newsData, isLoading } =
     useGetNewsByIdForSchoolAdminQuery(newsId);
+  const { data: session } = useSession();
+  const [user, setUser] = useState<User>();
 
-  const [openEditform, setOpenEditForm] = useState(false);
+  useEffect(() => {
+    if (session) {
+      setUser(session.user);
+    }
+  }, [session]);
+
+  const [openEditForm, setOpenEditForm] = useState(false);
   return (
     <Box
       sx={{
-        width: openEditform ? '100%' : '80%',
+        width: openEditForm ? '100%' : '80%',
         margin: 'auto',
       }}
     >
-      {!openEditform && (
+      {!openEditForm && (
         <Box
           sx={{
             display: 'flex',
@@ -43,11 +55,12 @@ const AdminNewsDetails = () => {
           </Button>
         </Box>
       )}
-      {openEditform && <NewsForm initialData={newsData.data} />}
-      {isLoading && !openEditform ? <LoadingIndicator /> : null}
-      {newsData && !openEditform ? (
+      {openEditForm && <NewsForm initialData={newsData.data} />}
+      {isLoading && !openEditForm ? <LoadingIndicator /> : null}
+      {newsData && !openEditForm ? (
         <NewsContentPage data={newsData.data} />
       ) : null}
+      <NewsCommentList user={user} newsId={newsId} />
     </Box>
   );
 };

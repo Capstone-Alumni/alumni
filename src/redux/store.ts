@@ -5,6 +5,7 @@ import currentTenantReducer from './slices/currentTenantSlice';
 import { userProfileApi } from './slices/userProfileSlice';
 import { searchProfilesApi } from './slices/searchProfiles';
 import { newsSliceApi } from './slices/newsSlice';
+import { newsCommentSliceApi } from './slices/newsCommentSlice';
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     currentUser: currentUserReducer,
     [userProfileApi.reducerPath]: userProfileApi.reducer,
     [newsSliceApi.reducerPath]: newsSliceApi.reducer,
+    [newsCommentSliceApi.reducerPath]: newsCommentSliceApi.reducer,
     [searchProfilesApi.reducerPath]: searchProfilesApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
@@ -22,6 +24,7 @@ export const store = configureStore({
     getDefaultMiddleware()
       .concat(userProfileApi.middleware)
       .concat(newsSliceApi.middleware)
+      .concat(newsCommentSliceApi.middleware)
       .concat(searchProfilesApi.middleware),
 });
 
