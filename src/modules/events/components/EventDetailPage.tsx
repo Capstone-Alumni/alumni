@@ -11,6 +11,8 @@ import usePublicGetEventById from '../hooks/usePublicGetEventById';
 import Image from 'next/image';
 import usePublicJoinEventById from '../hooks/usePublicJoinEventById';
 import EventParticipantListTab from './EventParticipantListTab';
+import usePublicInterestEventById from '../hooks/usePublicInterestEventById';
+import usePublicUninterestEventById from '../hooks/usePublicUninterestEventById';
 
 const EventDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
@@ -22,10 +24,28 @@ const EventDetailPage = () => {
   const { data, fetchApi, isLoading } = usePublicGetEventById();
   const { fetchApi: joinEvent, isLoading: joiningEvent } =
     usePublicJoinEventById();
+  const { fetchApi: interestEvent, isLoading: isInterestingEvent } =
+    usePublicInterestEventById();
+  const { fetchApi: uninterestEvent, isLoading: isUninterestingEvent } =
+    usePublicUninterestEventById();
 
   useEffect(() => {
     fetchApi({ eventId: eventId });
   }, []);
+
+  const isInterested = useMemo(() => {
+    return (
+      data?.data?.eventInterests?.length &&
+      data?.data?.eventInterests?.length > 0
+    );
+  }, [data?.data]);
+
+  const isJoined = useMemo(() => {
+    return (
+      data?.data?.eventParticipants?.length &&
+      data?.data?.eventParticipants?.length > 0
+    );
+  }, [data?.data]);
 
   const eventStatus = useMemo(() => {
     if (!data?.data) {
@@ -55,6 +75,17 @@ const EventDetailPage = () => {
 
   const onJoinEvent = async () => {
     await joinEvent({ eventId: eventId });
+    fetchApi({ eventId: eventId });
+  };
+
+  const onInterestEvent = async () => {
+    await interestEvent({ eventId: eventId });
+    fetchApi({ eventId: eventId });
+  };
+
+  const onUninterestEvent = async () => {
+    await uninterestEvent({ eventId: eventId });
+    fetchApi({ eventId: eventId });
   };
 
   if (isLoading || !data?.data) {
@@ -179,23 +210,24 @@ const EventDetailPage = () => {
             disabled={
               eventStatus === 'not-open' ||
               eventStatus === 'ended' ||
-              eventData.eventParticipants.length > 0 ||
+              isJoined ||
               joiningEvent
             }
             startIcon={<AppRegistrationIcon />}
             sx={{ mb: 1 }}
             onClick={onJoinEvent}
           >
-            {eventData.eventParticipants.length > 0
-              ? 'Đã tham gia'
-              : 'Tham gia'}
+            {isJoined ? 'Đã tham gia' : 'Tham gia'}
           </Button>
+
           <Button
             fullWidth
             variant="outlined"
             startIcon={<BookmarkBorderIcon />}
+            disabled={isInterestingEvent || isUninterestingEvent}
+            onClick={isInterested ? onUninterestEvent : onInterestEvent}
           >
-            Quan tâm
+            {isInterested ? 'Huỷ lưu' : 'Lưu'}
           </Button>
         </Box>
       </Box>

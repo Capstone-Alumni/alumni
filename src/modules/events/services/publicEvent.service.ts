@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 export default class PublicEventService {
   static getList = async (
     tenantPrisma: PrismaClient,
-    { page, limit }: { page: number; limit: number },
+    { page, limit, userId }: { page: number; limit: number; userId?: string },
   ) => {
     const whereFilter = {
       AND: [{ approvedStatus: 1 }, { archived: false }],
@@ -19,6 +19,19 @@ export default class PublicEventService {
         where: whereFilter,
         orderBy: {
           createdAt: 'desc',
+        },
+        include: {
+          eventParticipants: {
+            where: {
+              userId: userId ?? '',
+            },
+          },
+          eventInterests: {
+            where: {
+              userId: userId ?? '',
+            },
+          },
+          hostInformation: true,
         },
       }),
     ]);
@@ -43,6 +56,11 @@ export default class PublicEventService {
       },
       include: {
         eventParticipants: {
+          where: {
+            userId: userId ?? '',
+          },
+        },
+        eventInterests: {
           where: {
             userId: userId ?? '',
           },
