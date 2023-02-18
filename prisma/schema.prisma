@@ -72,7 +72,8 @@ model Information {
   educationPublicity   ScopePublicity     @default(PRIVATE) @map("education_publicity")
   alumClass            AlumClass?         @relation(fields: [alumClassId], references: [id])
   events               Event[]
-  eventParticipants     EventParticipant[]
+  eventParticipants    EventParticipant[]
+  eventInterests       EventInterest[]
 
   @@map("informations")
 }
@@ -136,23 +137,11 @@ model Event {
   userId          String      @map("user_id")
   hostInformation Information @relation(fields: [userId], references: [userId])
 
-  // EventParticipant  EventParticipant[]
   eventParticipants EventParticipant[]
+  eventInterests    EventInterest[]
 
   @@map("events")
 }
-
-// model EventCoHost {
-//   id        String   @id @default(cuid())
-//   archived  Boolean  @default(false)
-//   createdAt DateTime @default(now()) @map("created_at")
-//   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
-
-//   eventId String
-//   event   Event  @relation(fields: [eventId], references: [id])
-
-//   @@map("event_co_hosts")
-// }
 
 model EventParticipant {
   id        String   @id @default(cuid())
@@ -169,27 +158,20 @@ model EventParticipant {
   @@map("event_participants")
 }
 
-// model Recruitment {
-//   id                    String    @id @default(cuid())
-//   archived              Boolean   @default(false)
-//   createdAt             DateTime  @default(now()) @map("created_at")
-//   updatedAt             DateTime  @default(now()) @updatedAt @map("updated_at")
-//   companyName           String    @map("company_name")
-//   website               String
-//   job                   String
-//   address               String 
-//   position              String
-//   title                 String
-//   description           String
-//   type                  String    @map("type")
-//   startAt               DateTime? @map("start_at")
-//   expiredAt             DateTime? @map("expired_at")
-//   salary                String    @default("negotiate")
-//   isApproved            Boolean   @default(false)
-//   recruitmentOwnerId    String    @map("recruitment_owner_id")
+model EventInterest {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-//   @@map("recruitments")
-// }
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
+
+  userId          String
+  userInformation Information @relation(fields: [userId], references: [userId])
+
+  @@map("event_interests")
+}
 
 enum AccessLevel {
   ALUMNI
