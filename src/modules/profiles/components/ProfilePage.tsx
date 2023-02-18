@@ -3,12 +3,9 @@
 import { useState } from 'react';
 
 import { styled } from '@mui/material';
-import { Box, Card, Container } from '@mui/material';
+import { Box, Container } from '@mui/material';
 
-import {
-  Profile,
-  ProfileCover,
-} from '../../share/components/_dashboard/user/profile';
+import { Profile } from '../../share/components/_dashboard/user/profile';
 import { redirect, usePathname } from 'next/navigation';
 import {
   useGetUserCareersQuery,

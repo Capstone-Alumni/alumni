@@ -13,7 +13,6 @@ import BackIcon from '@mui/icons-material/ArrowBack';
 import { useState } from 'react';
 import UserEditWrapper from './UserEditWrapper';
 import FormDialogs from '@share/components/material-ui/dialog/FormDialogs';
-import ProfileCover from './ProfileCover';
 
 // ----------------------------------------------------------------------
 
