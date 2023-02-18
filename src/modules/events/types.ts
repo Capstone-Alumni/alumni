@@ -21,7 +21,10 @@ export type Event = {
     id: string;
     userId: string;
     email: string;
+    fullName: string;
   };
+  eventParticipants: EventParticipant[];
+  eventInterests: EventInterest[];
 };
 
 export type EventParticipant = {
@@ -29,6 +32,12 @@ export type EventParticipant = {
   userId: string;
   eventId: string;
   participantInformation: any;
+};
+
+export type EventInterest = {
+  id: string;
+  userId: string;
+  eventId: string;
 };
 
 export type GetAdminEventListParams = {
@@ -43,6 +52,11 @@ export type GetOwnerEventListParams = {
 };
 
 export type GetOwnerGoingEventListParams = {
+  page: number;
+  limit: number;
+};
+
+export type GetOwnerInterestEventListParams = {
   page: number;
   limit: number;
 };

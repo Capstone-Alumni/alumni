@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 export default class PublicEventService {
   static getList = async (
     tenantPrisma: PrismaClient,
-    { page, limit }: { page: number; limit: number },
+    { page, limit, userId }: { page: number; limit: number; userId?: string },
   ) => {
     const whereFilter = {
       AND: [{ approvedStatus: 1 }, { archived: false }],
@@ -20,6 +20,19 @@ export default class PublicEventService {
         orderBy: {
           createdAt: 'desc',
         },
+        include: {
+          eventParticipants: {
+            where: {
+              userId: userId ?? '',
+            },
+          },
+          eventInterests: {
+            where: {
+              userId: userId ?? '',
+            },
+          },
+          hostInformation: true,
+        },
       }),
     ]);
 
@@ -34,12 +47,25 @@ export default class PublicEventService {
 
   static getById = async (
     tenantPrisma: PrismaClient,
-    { eventId }: { eventId: string },
+    { eventId, userId }: { eventId: string; userId: string },
   ) => {
     const event = await tenantPrisma.event.findFirst({
       where: {
         id: eventId,
         approvedStatus: 1,
+      },
+      include: {
+        eventParticipants: {
+          where: {
+            userId: userId ?? '',
+          },
+        },
+        eventInterests: {
+          where: {
+            userId: userId ?? '',
+          },
+        },
+        hostInformation: true,
       },
     });
 
@@ -126,5 +152,76 @@ export default class PublicEventService {
       items,
       itemPerPage: limit,
     };
+  };
+
+  static interestEvent = async (
+    tenantPrisma: PrismaClient,
+    { eventId, userId }: { eventId: string; userId: string },
+  ) => {
+    const event = await tenantPrisma.event.findUnique({
+      where: {
+        id: eventId,
+      },
+    });
+
+    if (!event || event?.approvedStatus !== 1) {
+      throw new Error('404 not found event');
+    }
+
+    const existedInterest = await tenantPrisma.eventInterest.findFirst({
+      where: {
+        userId: userId,
+        eventId: eventId,
+      },
+    });
+
+    if (existedInterest) {
+      return existedInterest;
+    }
+
+    const participant = await tenantPrisma.eventInterest.create({
+      data: {
+        event: {
+          connect: {
+            id: eventId,
+          },
+        },
+        userInformation: {
+          connect: {
+            userId: userId,
+          },
+        },
+      },
+    });
+
+    await tenantPrisma.$disconnect();
+
+    return participant;
+  };
+
+  static uninterestEvent = async (
+    tenantPrisma: PrismaClient,
+    { eventId, userId }: { eventId: string; userId: string },
+  ) => {
+    const event = await tenantPrisma.event.findUnique({
+      where: {
+        id: eventId,
+      },
+    });
+
+    if (!event || event?.approvedStatus !== 1) {
+      throw new Error('404 not found event');
+    }
+
+    const interest = await tenantPrisma.eventInterest.deleteMany({
+      where: {
+        userId: userId,
+        eventId: eventId,
+      },
+    });
+
+    await tenantPrisma.$disconnect();
+
+    return interest;
   };
 }

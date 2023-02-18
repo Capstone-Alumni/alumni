@@ -11,6 +11,8 @@ import usePublicGetEventById from '../hooks/usePublicGetEventById';
 import Image from 'next/image';
 import usePublicJoinEventById from '../hooks/usePublicJoinEventById';
 import EventParticipantListTab from './EventParticipantListTab';
+import usePublicInterestEventById from '../hooks/usePublicInterestEventById';
+import usePublicUninterestEventById from '../hooks/usePublicUninterestEventById';
 
 const EventDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
@@ -22,10 +24,28 @@ const EventDetailPage = () => {
   const { data, fetchApi, isLoading } = usePublicGetEventById();
   const { fetchApi: joinEvent, isLoading: joiningEvent } =
     usePublicJoinEventById();
+  const { fetchApi: interestEvent, isLoading: isInterestingEvent } =
+    usePublicInterestEventById();
+  const { fetchApi: uninterestEvent, isLoading: isUninterestingEvent } =
+    usePublicUninterestEventById();
 
   useEffect(() => {
     fetchApi({ eventId: eventId });
   }, []);
+
+  const isInterested = useMemo(() => {
+    return (
+      data?.data?.eventInterests?.length &&
+      data?.data?.eventInterests?.length > 0
+    );
+  }, [data?.data]);
+
+  const isJoined = useMemo(() => {
+    return (
+      data?.data?.eventParticipants?.length &&
+      data?.data?.eventParticipants?.length > 0
+    );
+  }, [data?.data]);
 
   const eventStatus = useMemo(() => {
     if (!data?.data) {
@@ -55,6 +75,17 @@ const EventDetailPage = () => {
 
   const onJoinEvent = async () => {
     await joinEvent({ eventId: eventId });
+    fetchApi({ eventId: eventId });
+  };
+
+  const onInterestEvent = async () => {
+    await interestEvent({ eventId: eventId });
+    fetchApi({ eventId: eventId });
+  };
+
+  const onUninterestEvent = async () => {
+    await uninterestEvent({ eventId: eventId });
+    fetchApi({ eventId: eventId });
   };
 
   if (isLoading || !data?.data) {
@@ -95,6 +126,20 @@ const EventDetailPage = () => {
       >
         <Box sx={{ flex: 1 }}>
           <Grid container spacing={1}>
+            <Grid item xs={3}>
+              <Typography>Người tổ chức</Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography>{eventData.hostInformation?.fullName}</Typography>
+            </Grid>
+
+            <Grid item xs={3}>
+              <Typography>Email</Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography>{eventData.hostInformation?.email}</Typography>
+            </Grid>
+
             <Grid item xs={3}>
               <Typography>Hình thức</Typography>
             </Grid>
@@ -165,20 +210,24 @@ const EventDetailPage = () => {
             disabled={
               eventStatus === 'not-open' ||
               eventStatus === 'ended' ||
+              isJoined ||
               joiningEvent
             }
             startIcon={<AppRegistrationIcon />}
             sx={{ mb: 1 }}
             onClick={onJoinEvent}
           >
-            Tham gia
+            {isJoined ? 'Đã tham gia' : 'Tham gia'}
           </Button>
+
           <Button
             fullWidth
             variant="outlined"
             startIcon={<BookmarkBorderIcon />}
+            disabled={isInterestingEvent || isUninterestingEvent}
+            onClick={isInterested ? onUninterestEvent : onInterestEvent}
           >
-            Quan tâm
+            {isInterested ? 'Huỷ lưu' : 'Lưu'}
           </Button>
         </Box>
       </Box>
@@ -192,7 +241,6 @@ const EventDetailPage = () => {
         {eventData?.publicParticipant ? (
           <Tab value="participant" label="Người tham dự" />
         ) : null}
-        <Tab value="fund" label="Gây quỹ" />
       </Tabs>
 
       {tabKey === 'description' ? (

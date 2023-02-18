@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import Link from 'next/link';
 import Logo from '../Logo';
 import { Divider, useScrollTrigger, useTheme } from '@mui/material';
@@ -13,6 +14,7 @@ import { NavItem } from './NavItem';
 import HeaderUserOptions from './HeaderUserOption';
 import React, { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import SearchInput from '../SearchInput';
 
 interface Props {
   /**
@@ -87,6 +89,27 @@ const Header = ({ user, tenant }: { user?: any; tenant?: any }) => {
             </Box>
 
             <Box sx={{ flex: 1 }} />
+
+            {user ? (
+              <Box sx={{ mr: theme.spacing(2) }}>
+                <SearchInput placeholder="Tìm kiếm bạn học" />
+              </Box>
+            ) : null}
+
+            {user && user.accessLevel !== 'ALUMNI' ? (
+              <Link
+                href="/admin/access_request"
+                style={{ color: 'inherit', marginRight: theme.spacing(2) }}
+              >
+                <Button
+                  startIcon={<AdminPanelSettingsIcon />}
+                  variant="contained"
+                  color="warning"
+                >
+                  Bảng điều khiển
+                </Button>
+              </Link>
+            ) : null}
 
             {user ? (
               <HeaderUserOptions user={user} />

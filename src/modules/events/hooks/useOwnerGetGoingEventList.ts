@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
-import { getOwnerEventListParamsAtom } from '../states';
+import { getOwnerGoingEventListParamsAtom } from '../states';
 import { Event, GetOwnerGoingEventListParams } from '../types';
 
 type OwnerGetGoingEventListParams = GetOwnerGoingEventListParams;
@@ -19,7 +19,7 @@ type OwnerGetGoingEventListResponse = {
 type OwnerGetGoingEventListError = AxiosError;
 
 const useOwnerGetGoingEventList = () => {
-  const params = useRecoilValue(getOwnerEventListParamsAtom);
+  const params = useRecoilValue(getOwnerGoingEventListParamsAtom);
 
   const { fetchApi, data, isLoading } = useApi<
     OwnerGetGoingEventListParams,

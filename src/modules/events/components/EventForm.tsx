@@ -9,6 +9,7 @@ import Checkbox from '@share/components/form/Checkbox';
 import DateTimeInput from '@share/components/form/DateTimeInput';
 import SelectInput from '@share/components/form/SelectInput';
 import { Typography } from '@mui/material';
+import { useState } from 'react';
 
 export type EventFormValues = {
   title: string;
@@ -34,8 +35,9 @@ const EventForm = ({
   onSubmit,
 }: {
   initialData?: Event;
-  onSubmit: (values: EventFormValues) => void;
+  onSubmit: (values: EventFormValues) => Promise<void>;
 }) => {
+  const [isSaving, setIsSaving] = useState(false);
   const theme = useTheme();
 
   const resolver = useYupValidateionResolver(validationSchema);
@@ -59,6 +61,12 @@ const EventForm = ({
       publicParticipant: initialData?.publicParticipant ?? false,
     },
   });
+
+  const onSubmitWithStatus = async (values: EventFormValues) => {
+    setIsSaving(true);
+    await onSubmit(values);
+    setIsSaving(false);
+  };
 
   return (
     <Box
@@ -173,7 +181,11 @@ const EventForm = ({
         </Typography>
       </Box>
 
-      <Button variant="contained" onClick={handleSubmit(onSubmit)}>
+      <Button
+        variant="contained"
+        disabled={isSaving}
+        onClick={handleSubmit(onSubmit)}
+      >
         Lưu
       </Button>
     </Box>
