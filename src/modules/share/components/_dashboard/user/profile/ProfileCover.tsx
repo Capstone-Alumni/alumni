@@ -15,42 +15,16 @@ import { RootState } from 'src/redux/store';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('div')(({ theme }) => ({
-  height: '100%',
-  '&:before': {
-    top: 0,
-    zIndex: 9,
-    width: '100%',
-    content: "''",
-    height: '100%',
-    position: 'absolute',
-    backdropFilter: 'blur(0px)',
-    WebkitBackdropFilter: 'blur(0px)', // Fix on Mobile
-    backgroundColor: alpha(theme.palette.primary.darker, 0.01),
-  },
-}));
-
 const InfoStyle = styled('div')(({ theme }) => ({
   left: 0,
-  right: 0,
-  zIndex: 99,
+  top: '-30%',
+  zIndex: 99999,
   position: 'absolute',
-  marginTop: theme.spacing(5),
   [theme.breakpoints.up('md')]: {
     right: 'auto',
     display: 'flex',
     alignItems: 'center',
-    left: theme.spacing(3),
-    bottom: theme.spacing(3),
   },
-}));
-
-const CoverImgStyle = styled('img')(({ theme }) => ({
-  zIndex: 8,
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  position: 'absolute',
 }));
 
 // ----------------------------------------------------------------------
@@ -129,11 +103,10 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
               sx={{
                 ml: { md: 2 },
                 mt: { xs: 1, md: 0 },
-                color: 'common.white',
                 textAlign: { xs: 'center', md: 'left' },
               }}
             >
-              <Typography variant="h4">{data?.data?.fullName}</Typography>
+              <Typography variant="h5">{data?.data?.fullName}</Typography>
             </Box>
           </InfoStyle>
         </>

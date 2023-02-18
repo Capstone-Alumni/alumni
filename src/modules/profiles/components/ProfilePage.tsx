@@ -56,15 +56,6 @@ const UserProfile = () => {
 
   return userProfileId ? (
     <Container maxWidth={'lg'}>
-      <Card
-        sx={{
-          mb: 3,
-          height: 280,
-          position: 'relative',
-        }}
-      >
-        <ProfileCover userProfileId={userProfileId} />
-      </Card>
       <Box>
         <Profile
           userProfileId={userProfileId}

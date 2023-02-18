@@ -10,6 +10,7 @@ import { isAllowToViewValue } from 'src/utils/mappingPublicity';
 import { useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
 import Linkify from 'react-linkify';
+import ProfileCover from './ProfileCover';
 // ----------------------------------------------------------------------
 
 const IconStyle = styled(Icon)(({ theme }) => ({
@@ -32,13 +33,14 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={12}>
-        <Card sx={{ p: 3 }}>
+        <Card sx={{ p: 3, overflow: 'visible' }}>
+          <ProfileCover userProfileId={userInformation.userId} />
           <Stack sx={{ margin: '1.5rem 0 0.5rem 0' }}>
             <Box
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                marginBottom: theme.spacing(2),
+                marginBottom: theme.spacing(5),
               }}
             >
               <Typography

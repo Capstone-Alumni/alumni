@@ -13,8 +13,8 @@ import { fData } from '@share/utils/formatNumber';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
-  width: 144,
-  height: 144,
+  width: 122,
+  height: 122,
   margin: 'auto',
   borderRadius: '50%',
   padding: theme.spacing(1),
@@ -22,8 +22,8 @@ const RootStyle = styled('div')(({ theme }) => ({
 }));
 
 const RootDisabledStyle = styled('div')(({ theme }) => ({
-  width: 144,
-  height: 144,
+  width: 122,
+  height: 122,
   margin: 'auto',
   borderRadius: '50%',
   border: `6px solid ${theme.palette.grey[500_32]}`,
@@ -108,7 +108,7 @@ export default function UploadAvatar({
         px: 2,
         my: 2,
         borderColor: 'error.light',
-        bgcolor: theme => alpha(theme.palette.error.main, 0.08),
+        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08),
       }}
     >
       {fileRejections.map(({ file, errors }) => {
@@ -118,7 +118,7 @@ export default function UploadAvatar({
             <Typography variant="subtitle2" noWrap>
               {path} - {fData(size)}
             </Typography>
-            {errors.map(e => (
+            {errors.map((e) => (
               <Typography key={e.code} variant="caption" component="p">
                 - {e.message}
               </Typography>
