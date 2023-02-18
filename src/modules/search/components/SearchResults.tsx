@@ -7,6 +7,7 @@ import {
   Stack,
   styled,
   Typography,
+  Pagination,
 } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -116,6 +117,22 @@ const SeachPage = () => {
     <>
       {usersProfileResponse.isLoading && <p>Loading</p>}
       {handleRenderUsersProfile()}
+      <Grid
+        container
+        spacing={3}
+        maxWidth="md"
+        sx={{
+          marginTop: '3rem',
+          margin: 'auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Stack spacing={4}>
+          <Pagination count={10} color="primary" />
+        </Stack>
+      </Grid>
     </>
   );
 };
