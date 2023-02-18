@@ -164,4 +164,39 @@ export default class OwnerEventService {
 
     return event;
   };
+
+  static getGoingList = async (
+    tenantPrisma: PrismaClient,
+    { userId, page, limit }: { userId: string; page: number; limit: number },
+  ) => {
+    const whereFilter = {
+      userId: userId,
+      archived: false,
+    };
+
+    const [totalItems, items] = await tenantPrisma.$transaction([
+      tenantPrisma.eventParticipant.count({
+        where: whereFilter,
+      }),
+      tenantPrisma.eventParticipant.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereFilter,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        include: {
+          event: true,
+        },
+      }),
+    ]);
+
+    await tenantPrisma.$disconnect();
+
+    return {
+      totalItems: totalItems,
+      items: items.map(item => item.event),
+      itemPerPage: limit,
+    };
+  };
 }

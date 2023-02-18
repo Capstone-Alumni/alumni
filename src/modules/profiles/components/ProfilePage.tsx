@@ -1,17 +1,11 @@
 'use client';
 
-import { Icon } from '@iconify/react';
-import { capitalCase } from 'change-case';
 import { useState } from 'react';
-import roundAccountBox from '@iconify/icons-ic/round-account-box';
 
 import { styled } from '@mui/material';
-import { Box, Card, Container, Tab, Tabs } from '@mui/material';
+import { Box, Container } from '@mui/material';
 
-import {
-  Profile,
-  ProfileCover,
-} from '../../share/components/_dashboard/user/profile';
+import { Profile } from '../../share/components/_dashboard/user/profile';
 import { redirect, usePathname } from 'next/navigation';
 import {
   useGetUserCareersQuery,
@@ -57,57 +51,16 @@ const UserProfile = () => {
     redirect('/403_error');
   }
 
-  const PROFILE_TABS = [
-    {
-      value: 'profile',
-      icon: <Icon icon={roundAccountBox} width={20} height={20} />,
-      component: (
+  return userProfileId ? (
+    <Container maxWidth={'lg'}>
+      <Box>
         <Profile
           userProfileId={userProfileId}
           userInformation={userInformationResponse}
           userCareers={userCareersResponse}
           userEducations={userEducationsResponse}
         />
-      ),
-    },
-  ];
-
-  return userProfileId ? (
-    <Container maxWidth={'lg'}>
-      <Card
-        sx={{
-          mb: 3,
-          height: 280,
-          position: 'relative',
-        }}
-      >
-        <ProfileCover userProfileId={userProfileId} />
-        <TabsWrapperStyle>
-          <Tabs
-            value={currentTab}
-            scrollButtons="auto"
-            variant="scrollable"
-            allowScrollButtonsMobile
-            onChange={(e, value) => handleChangeTab(value)}
-          >
-            {/* prettier-ignore */}
-            {PROFILE_TABS.map((tab, index) => (
-              <Tab
-                disableRipple
-                key={tab.value}
-                value={tab.value}
-                icon={tab.icon}
-                label={capitalCase(tab.value)}
-              />
-            ))}
-          </Tabs>
-        </TabsWrapperStyle>
-      </Card>
-      {/* prettier-ignore */}
-      {PROFILE_TABS.map((tab, index) => {
-        const isMatched = tab.value === currentTab;
-        return isMatched && <Box key={tab.value}>{tab.component}</Box>;
-      })}
+      </Box>
     </Container>
   ) : (
     <></>

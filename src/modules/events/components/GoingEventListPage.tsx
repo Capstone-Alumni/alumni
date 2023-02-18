@@ -1,18 +1,17 @@
 'use client';
 
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import { Box, Button, IconButton, Pagination, useTheme } from '@mui/material';
+import { Box, Button, Pagination, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
-import usePublicGetEventList from '../hooks/usePublicGetEventList';
-import { getOwnerEventListParamsAtom } from '../states';
+import useOwnerGetGoingEventList from '../hooks/useOwnerGetGoingEventList';
+import { getOwnerGoingEventListParamsAtom } from '../states';
 import EventCardItem from './EventCardItem';
 
-const DiscoverEventListPage = () => {
+const GoingEventListPage = () => {
   const theme = useTheme();
-  const [params, setParams] = useRecoilState(getOwnerEventListParamsAtom);
-  const { data, isLoading } = usePublicGetEventList();
+  const [params, setParams] = useRecoilState(getOwnerGoingEventListParamsAtom);
+  const { data, isLoading } = useOwnerGetGoingEventList();
 
   if (isLoading || !data?.data) {
     return <LoadingIndicator />;
@@ -40,12 +39,9 @@ const DiscoverEventListPage = () => {
                 style={{ width: '100%' }}
               >
                 <Button fullWidth variant="outlined">
-                  Tìm hiểu thêm
+                  Xem chi tiết
                 </Button>
               </Link>,
-              <IconButton key="save-btn">
-                <BookmarkBorderIcon />
-              </IconButton>,
             ]}
           />
         ))}
@@ -67,4 +63,4 @@ const DiscoverEventListPage = () => {
   );
 };
 
-export default DiscoverEventListPage;
+export default GoingEventListPage;

@@ -54,12 +54,12 @@ model AccessRequest {
 }
 
 model Information {
-  id                   String         @id @default(cuid())
+  id                   String             @id @default(cuid())
   bio                  String?
   fullName             String?
-  avatarUrl            String?        @map("avatar_url")
-  coverImageUrl        String?        @map("cover_image_url")
-  email                String         @unique @map("email")
+  avatarUrl            String?            @map("avatar_url")
+  coverImageUrl        String?            @map("cover_image_url")
+  email                String             @unique @map("email")
   phone                String?
   phonePublicity       ScopePublicity @default(PRIVATE) @map("phone_publicity")
   facebookUrl          String?        @map("facebook_url")
@@ -74,6 +74,7 @@ model Information {
   NewsComment          NewsComment[]
   News                 News[]
   events               Event[]
+  eventParticipants     EventParticipant[]
 
   @@map("informations")
 }
@@ -142,6 +143,7 @@ model Event {
   hostInformation Information @relation(fields: [userId], references: [userId])
 
   // EventParticipant  EventParticipant[]
+  eventParticipants EventParticipant[]
 
   @@map("events")
 }
@@ -158,17 +160,20 @@ model Event {
 //   @@map("event_co_hosts")
 // }
 
-// model EventParticipant {
-//   id        String   @id @default(cuid())
-//   archived  Boolean  @default(false)
-//   createdAt DateTime @default(now()) @map("created_at")
-//   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+model EventParticipant {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-//   eventId String
-//   event   Event  @relation(fields: [eventId], references: [id])
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id])
 
-//   @@map("event_participants")
-// }
+  userId                 String
+  participantInformation Information @relation(fields: [userId], references: [userId])
+  
+  @@map("event_participants")
+}
 
 model NewsComment {
   id              String   @id @default(cuid())
@@ -185,6 +190,28 @@ model NewsComment {
 
   @@map("news_comment")
 }
+
+// model Recruitment {
+//   id                    String    @id @default(cuid())
+//   archived              Boolean   @default(false)
+//   createdAt             DateTime  @default(now()) @map("created_at")
+//   updatedAt             DateTime  @default(now()) @updatedAt @map("updated_at")
+//   companyName           String    @map("company_name")
+//   website               String
+//   job                   String
+//   address               String 
+//   position              String
+//   title                 String
+//   description           String
+//   type                  String    @map("type")
+//   startAt               DateTime? @map("start_at")
+//   expiredAt             DateTime? @map("expired_at")
+//   salary                String    @default("negotiate")
+//   isApproved            Boolean   @default(false)
+//   recruitmentOwnerId    String    @map("recruitment_owner_id")
+
+//   @@map("recruitments")
+// }
 
 enum AccessLevel {
   ALUMNI
