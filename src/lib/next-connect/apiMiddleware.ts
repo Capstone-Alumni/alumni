@@ -58,3 +58,16 @@ export const isAuthenticatedUser = async (
 
   next();
 };
+
+export const extractUser = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  next: NextHandler,
+) => {
+  const session = await unstable_getServerSession(req, res, nextAuthOptions);
+
+  if (session) {
+    req.user = session?.user;
+  }
+  next();
+};

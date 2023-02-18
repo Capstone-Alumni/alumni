@@ -96,6 +96,20 @@ const EventDetailPage = () => {
         <Box sx={{ flex: 1 }}>
           <Grid container spacing={1}>
             <Grid item xs={3}>
+              <Typography>Người tổ chức</Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography>{eventData.hostInformation?.fullName}</Typography>
+            </Grid>
+
+            <Grid item xs={3}>
+              <Typography>Email</Typography>
+            </Grid>
+            <Grid item xs={9}>
+              <Typography>{eventData.hostInformation?.email}</Typography>
+            </Grid>
+
+            <Grid item xs={3}>
               <Typography>Hình thức</Typography>
             </Grid>
             <Grid item xs={9}>
@@ -165,13 +179,16 @@ const EventDetailPage = () => {
             disabled={
               eventStatus === 'not-open' ||
               eventStatus === 'ended' ||
+              eventData.eventParticipants.length > 0 ||
               joiningEvent
             }
             startIcon={<AppRegistrationIcon />}
             sx={{ mb: 1 }}
             onClick={onJoinEvent}
           >
-            Tham gia
+            {eventData.eventParticipants.length > 0
+              ? 'Đã tham gia'
+              : 'Tham gia'}
           </Button>
           <Button
             fullWidth
@@ -192,7 +209,6 @@ const EventDetailPage = () => {
         {eventData?.publicParticipant ? (
           <Tab value="participant" label="Người tham dự" />
         ) : null}
-        <Tab value="fund" label="Gây quỹ" />
       </Tabs>
 
       {tabKey === 'description' ? (

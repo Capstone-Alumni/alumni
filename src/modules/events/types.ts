@@ -21,7 +21,9 @@ export type Event = {
     id: string;
     userId: string;
     email: string;
+    fullName: string;
   };
+  eventParticipants: EventParticipant[];
 };
 
 export type EventParticipant = {

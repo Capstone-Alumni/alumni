@@ -34,12 +34,22 @@ export default class PublicEventService {
 
   static getById = async (
     tenantPrisma: PrismaClient,
-    { eventId }: { eventId: string },
+    { eventId, userId }: { eventId: string; userId: string },
   ) => {
+    console.log(userId);
+
     const event = await tenantPrisma.event.findFirst({
       where: {
         id: eventId,
         approvedStatus: 1,
+      },
+      include: {
+        eventParticipants: {
+          where: {
+            userId: userId ?? '',
+          },
+        },
+        hostInformation: true,
       },
     });
 
