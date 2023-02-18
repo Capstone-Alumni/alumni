@@ -91,4 +91,64 @@ export default class PublicEventController {
       status: true,
     });
   };
+
+  static interestEvent = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const prisma = await getPrismaClient(req.tenantId);
+      const { id: userId } = req.user;
+      const { id } = req.query;
+
+      const data = await PublicEventService.interestEvent(prisma, {
+        eventId: id as string,
+        userId: userId,
+      });
+
+      return res.status(200).json({
+        data: data,
+        status: true,
+      });
+    } catch (err) {
+      if (err.message.contains('404')) {
+        return res.status(400).json({
+          message: 'Event does not exist or is not approved',
+          status: false,
+        });
+      }
+
+      throw err;
+    }
+  };
+
+  static uninterestEvent = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const prisma = await getPrismaClient(req.tenantId);
+      const { id: userId } = req.user;
+      const { id } = req.query;
+
+      const data = await PublicEventService.uninterestEvent(prisma, {
+        eventId: id as string,
+        userId: userId,
+      });
+
+      return res.status(200).json({
+        data: data,
+        status: true,
+      });
+    } catch (err) {
+      if (err.message.contains('404')) {
+        return res.status(400).json({
+          message: 'Event does not exist or is not approved',
+          status: false,
+        });
+      }
+
+      throw err;
+    }
+  };
 }

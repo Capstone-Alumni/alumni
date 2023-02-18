@@ -36,8 +36,6 @@ export default class PublicEventService {
     tenantPrisma: PrismaClient,
     { eventId, userId }: { eventId: string; userId: string },
   ) => {
-    console.log(userId);
-
     const event = await tenantPrisma.event.findFirst({
       where: {
         id: eventId,
@@ -136,5 +134,76 @@ export default class PublicEventService {
       items,
       itemPerPage: limit,
     };
+  };
+
+  static interestEvent = async (
+    tenantPrisma: PrismaClient,
+    { eventId, userId }: { eventId: string; userId: string },
+  ) => {
+    const event = await tenantPrisma.event.findUnique({
+      where: {
+        id: eventId,
+      },
+    });
+
+    if (!event || event?.approvedStatus !== 1) {
+      throw new Error('404 not found event');
+    }
+
+    const existedInterest = await tenantPrisma.eventInterest.findFirst({
+      where: {
+        userId: userId,
+        eventId: eventId,
+      },
+    });
+
+    if (existedInterest) {
+      return existedInterest;
+    }
+
+    const participant = await tenantPrisma.eventInterest.create({
+      data: {
+        event: {
+          connect: {
+            id: eventId,
+          },
+        },
+        userInformation: {
+          connect: {
+            userId: userId,
+          },
+        },
+      },
+    });
+
+    await tenantPrisma.$disconnect();
+
+    return participant;
+  };
+
+  static uninterestEvent = async (
+    tenantPrisma: PrismaClient,
+    { eventId, userId }: { eventId: string; userId: string },
+  ) => {
+    const event = await tenantPrisma.event.findUnique({
+      where: {
+        id: eventId,
+      },
+    });
+
+    if (!event || event?.approvedStatus !== 1) {
+      throw new Error('404 not found event');
+    }
+
+    const interest = await tenantPrisma.eventInterest.deleteMany({
+      where: {
+        userId: userId,
+        eventId: eventId,
+      },
+    });
+
+    await tenantPrisma.$disconnect();
+
+    return interest;
   };
 }
