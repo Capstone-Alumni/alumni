@@ -2,26 +2,11 @@ import { PrismaClient } from '@prisma/client';
 import { getPageAndLimitFromParams } from 'src/utils';
 import { GetListRecruitmentParams } from '../type';
 
-const isRecruitmentExisted = async (
-  tenantPrisma: PrismaClient,
-  recruitmentId: string,
-) => {
-  const recruitment = await tenantPrisma.recruitment.findFirst({
-    where: {
-      AND: [{ id: recruitmentId }, { archived: false }],
-    },
-  });
-  if (!recruitment) {
-    throw new Error('Recruitment is not Existed');
-  }
-};
-
 export default class AdminRecruitmentService {
   static getById = async (
     tenantPrisma: PrismaClient,
     recruitmentId: string,
   ) => {
-    await isRecruitmentExisted(tenantPrisma, recruitmentId);
     const recruitment = await tenantPrisma.recruitment.findFirst({
       where: { id: recruitmentId },
     });

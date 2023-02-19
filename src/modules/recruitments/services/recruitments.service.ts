@@ -76,7 +76,7 @@ export default class RecruimentService {
         { salary: { contains: salary } },
         { type: { contains: type } },
         { archived: false },
-        { isAproved: true },
+        { isApproved: true },
       ],
     };
 
@@ -137,5 +137,15 @@ export default class RecruimentService {
       items: recruitmentItem,
       itemPerPage: limit,
     };
+  };
+
+  static getById = async (
+    tenantPrisma: PrismaClient,
+    recruitmentId: string,
+  ) => {
+    const recruitment = await tenantPrisma.recruitment.findFirst({
+      where: { id: recruitmentId, archived: false },
+    });
+    return recruitment;
   };
 }
