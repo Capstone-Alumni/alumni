@@ -6,28 +6,28 @@ import { Button, Grid, IconButton, Pagination, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
-import usePublicGetEventList from '../hooks/usePublicGetEventList';
-import { getOwnerEventListParamsAtom } from '../states';
-import EventCardItem from './EventCardItem';
-import usePublicInterestEventById from '../hooks/usePublicInterestEventById';
-import usePublicUninterestEventById from '../hooks/usePublicUninterestEventById';
+import usePublicGetFundList from '../hooks/usePublicGetFundList';
+import { getOwnerFundListParamsAtom } from '../states';
+import FundCardItem from './FundCardItem';
+import usePublicInterestFundById from '../hooks/usePublicSaveFundById';
+import usePublicUninterestFundById from '../hooks/usePublicUnsaveFundById';
 
-const DiscoverEventListPage = () => {
+const DiscoverFundListPage = () => {
   const theme = useTheme();
-  const [params, setParams] = useRecoilState(getOwnerEventListParamsAtom);
-  const { data, reload, isLoading } = usePublicGetEventList();
-  const { fetchApi: interestEvent, isLoading: isInterestingEvent } =
-    usePublicInterestEventById();
-  const { fetchApi: uninterestEvent, isLoading: isUninterestingEvent } =
-    usePublicUninterestEventById();
+  const [params, setParams] = useRecoilState(getOwnerFundListParamsAtom);
+  const { data, reload, isLoading } = usePublicGetFundList();
+  const { fetchApi: interestFund, isLoading: isInterestingFund } =
+    usePublicInterestFundById();
+  const { fetchApi: uninterestFund, isLoading: isUninterestingFund } =
+    usePublicUninterestFundById();
 
-  const onInterestEvent = async (eventId: string) => {
-    await interestEvent({ eventId: eventId });
+  const onInterestFund = async (FundId: string) => {
+    await interestFund({ fundId: FundId });
     reload();
   };
 
-  const onUninterestEvent = async (eventId: string) => {
-    await uninterestEvent({ eventId: eventId });
+  const onUninterestFund = async (FundId: string) => {
+    await uninterestFund({ fundId: FundId });
     reload();
   };
 
@@ -45,37 +45,36 @@ const DiscoverEventListPage = () => {
         }}
       >
         {data?.data.items.map(item => {
-          const isJoined = item.eventParticipants.length > 0;
-          const isInterested = item.eventInterests.length > 0;
+          const isSaved = item.fundSaved.length > 0;
 
           return (
-            <EventCardItem
+            <FundCardItem
               key={item.id}
               data={item}
               actions={[
                 <Link
                   key="edit-btn"
-                  href={`/events/${item.id}`}
+                  href={`/funds/${item.id}`}
                   style={{ width: '100%', marginRight: theme.spacing(1) }}
                 >
                   <Button fullWidth variant="outlined">
                     Tìm hiểu thêm
                   </Button>
                 </Link>,
-                isInterested ? (
+                isSaved ? (
                   <IconButton
                     key="unsave-btn"
                     color="warning"
-                    disabled={isUninterestingEvent}
-                    onClick={() => onUninterestEvent(item.id)}
+                    disabled={isUninterestingFund}
+                    onClick={() => onUninterestFund(item.id)}
                   >
                     <BookmarkIcon />
                   </IconButton>
                 ) : (
                   <IconButton
                     key="save-btn"
-                    disabled={isInterestingEvent}
-                    onClick={() => onInterestEvent(item.id)}
+                    disabled={isInterestingFund}
+                    onClick={() => onInterestFund(item.id)}
                   >
                     <BookmarkBorderIcon />
                   </IconButton>
@@ -104,4 +103,4 @@ const DiscoverEventListPage = () => {
   );
 };
 
-export default DiscoverEventListPage;
+export default DiscoverFundListPage;

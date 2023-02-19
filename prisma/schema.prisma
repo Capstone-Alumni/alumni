@@ -76,6 +76,8 @@ model Information {
   eventInterests       EventInterest[]
   News                 News[]
   NewsComment          NewsComment[]
+  fund                 Fund[]
+  fundSaved            FundSaved[]
 
   @@map("informations")
 }
@@ -179,6 +181,49 @@ model EventInterest {
   @@map("event_interests")
 }
 
+model Fund {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  title             String
+  description       String?
+  isOffline         Boolean     @default(false) @map("is_offline")
+  location          String?
+  startTime         DateTime    @default(now()) @map("start_time")
+  endTime           DateTime?   @map("end_time")
+  isEnded           Boolean     @default(false) @map("is_ended")
+  targetBalance     Int         @default(0) @map("target_balance")
+  currentBalance    Int         @default(0) @map("current_balance")
+  balanceUpdatedAt  DateTime    @default(now()) @map("target_updated")
+  approvedStatus    Int         @default(-1) @map("approved_status")
+  publicity         AccessLevel @default(ALUMNI)
+  publicParticipant Boolean     @default(false) @map("public_participant")
+
+  userId          String      @map("user_id")
+  hostInformation Information @relation(fields: [userId], references: [userId])
+
+  fundSaved FundSaved[]
+
+  @@map("funds")
+}
+
+model FundSaved {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  fundId String @map("fund_id")
+  fund   Fund   @relation(fields: [fundId], references: [id])
+
+  userId          String      @map("user_id")
+  userInformation Information @relation(fields: [userId], references: [userId])
+
+  @@map("fund_saved")
+}
+
 model NewsComment {
   id              String   @id @default(cuid())
   archived        Boolean  @default(false)
@@ -196,23 +241,23 @@ model NewsComment {
 }
 
 model Recruitment {
-  id                    String    @id @default(cuid())
-  archived              Boolean   @default(false)
-  createdAt             DateTime  @default(now()) @map("created_at")
-  updatedAt             DateTime  @default(now()) @updatedAt @map("updated_at")
-  companyName           String    @map("company_name")
-  website               String
-  job                   String
-  address               String 
-  position              String
-  title                 String
-  description           String
-  type                  String    @map("type")
-  startAt               DateTime? @map("start_at")
-  expiredAt             DateTime? @map("expired_at")
-  salary                String    @default("negotiate")
-  isApproved            Boolean   @default(false)
-  recruitmentOwnerId    String    @map("recruitment_owner_id")
+  id                 String    @id @default(cuid())
+  archived           Boolean   @default(false)
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @default(now()) @updatedAt @map("updated_at")
+  companyName        String    @map("company_name")
+  website            String
+  job                String
+  address            String
+  position           String
+  title              String
+  description        String
+  type               String    @map("type")
+  startAt            DateTime? @map("start_at")
+  expiredAt          DateTime? @map("expired_at")
+  salary             String    @default("negotiate")
+  isApproved         Boolean   @default(false)
+  recruitmentOwnerId String    @map("recruitment_owner_id")
 
   @@map("recruitments")
 }

@@ -1,18 +1,25 @@
 'use client';
 
-import { Grid } from '@mui/material';
-import { Button, Pagination, useTheme } from '@mui/material';
+import { Button, Grid, IconButton, Pagination, useTheme } from '@mui/material';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
-import useOwnerGetGoingEventList from '../hooks/useOwnerGetGoingEventList';
-import { getOwnerGoingEventListParamsAtom } from '../states';
-import EventCardItem from './EventCardItem';
+import useOwnerGetSavedFundList from '../hooks/useOwnerGetSavedFundList';
+import usePublicUnSavedFundById from '../hooks/usePublicUnsaveFundById';
+import { getOwnerSavedFundListParamsAtom } from '../states';
+import EventCardItem from './FundCardItem';
 
-const GoingEventListPage = () => {
+const SavedFundListPage = () => {
   const theme = useTheme();
-  const [params, setParams] = useRecoilState(getOwnerGoingEventListParamsAtom);
-  const { data, isLoading } = useOwnerGetGoingEventList();
+  const [params, setParams] = useRecoilState(getOwnerSavedFundListParamsAtom);
+  const { data, reload, isLoading } = useOwnerGetSavedFundList();
+  const { fetchApi: unSavedFund } = usePublicUnSavedFundById();
+
+  const onUnSavedFund = async (id: string) => {
+    await unSavedFund({ fundId: id });
+    reload();
+  };
 
   if (isLoading || !data?.data) {
     return <LoadingIndicator />;
@@ -34,13 +41,20 @@ const GoingEventListPage = () => {
             actions={[
               <Link
                 key="edit-btn"
-                href={`/events/${item.id}`}
-                style={{ width: '100%' }}
+                href={`/funds/${item.id}`}
+                style={{ width: '100%', marginRight: theme.spacing(1) }}
               >
                 <Button fullWidth variant="outlined">
                   Xem chi tiết
                 </Button>
               </Link>,
+              <IconButton
+                key="save-btn"
+                color="warning"
+                onClick={() => onUnSavedFund(item.id)}
+              >
+                <BookmarkIcon />
+              </IconButton>,
             ]}
           />
         ))}
@@ -62,4 +76,4 @@ const GoingEventListPage = () => {
   );
 };
 
-export default GoingEventListPage;
+export default SavedFundListPage;

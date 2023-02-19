@@ -1,20 +1,20 @@
+import { Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import {
   Card,
   CardActions,
   CardContent,
-  CardMedia,
-  Grid,
   Typography,
   useTheme,
 } from '@mui/material';
 import { ReactNode } from 'react';
-import { Event } from '../types';
+import { Fund } from '../types';
 
-const EventCardItem = ({
+const FundCardItem = ({
   data,
   actions,
 }: {
-  data: Event;
+  data: Fund;
   actions?: ReactNode[];
 }) => {
   const theme = useTheme();
@@ -26,22 +26,25 @@ const EventCardItem = ({
           width: '100%',
         }}
       >
-        <CardMedia
-          title="news image"
-          sx={{
-            height: theme.spacing(18),
-            padding: theme.spacing(2),
-            backgroundImage: 'url("/side_background.png")',
-          }}
-        />
         <CardContent>
-          <Typography variant="caption">
-            {new Date(data.startTime).toDateString()}
-          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography variant="caption">
+              {new Date(data.startTime).toDateString()}
+            </Typography>
+
+            <Typography variant="caption">
+              {data.isOffline ? data.location : 'Online'}
+            </Typography>
+          </Box>
+
           <Typography variant="h6">{data.title}</Typography>
-          <Typography variant="body2">
-            {data.isOffline ? data.location : 'Online'}
-          </Typography>
+
           <Typography variant="body2">
             {data.approvedStatus === -1 ? 'Đang chờ xác nhận' : null}
             {data.approvedStatus === 0 ? 'Đã bị từ chối' : null}
@@ -54,4 +57,4 @@ const EventCardItem = ({
   );
 };
 
-export default EventCardItem;
+export default FundCardItem;

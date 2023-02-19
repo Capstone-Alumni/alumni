@@ -1,5 +1,5 @@
-import EventSidebar from 'src/modules/events/components/EventSidebar';
 import { unstable_getServerSession } from 'next-auth';
+import FundSidebar from 'src/modules/funds/components/FundSidebar';
 import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
 
 export default async function AuthorizedLayout({
@@ -11,7 +11,7 @@ export default async function AuthorizedLayout({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>
-      {session ? <EventSidebar /> : null}
+      {session ? <FundSidebar user={session.user} /> : null}
       <div style={{ flex: 1 }}>{children}</div>
     </div>
   );

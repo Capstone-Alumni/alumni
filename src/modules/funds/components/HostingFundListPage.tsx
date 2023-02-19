@@ -1,18 +1,26 @@
 'use client';
 
-import { Grid } from '@mui/material';
-import { Button, Pagination, useTheme } from '@mui/material';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { Button, Grid, IconButton, Pagination, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
-import useOwnerGetGoingEventList from '../hooks/useOwnerGetGoingEventList';
-import { getOwnerGoingEventListParamsAtom } from '../states';
-import EventCardItem from './EventCardItem';
+import useOwnerDeleteFundById from '../hooks/useOwnerDeleteFundById';
+import useOwnerGetFundList from '../hooks/useOwnerGetFundList';
+import { getOwnerFundListParamsAtom } from '../states';
+import FundCardItem from './FundCardItem';
 
-const GoingEventListPage = () => {
+const HostingFundListPage = () => {
   const theme = useTheme();
-  const [params, setParams] = useRecoilState(getOwnerGoingEventListParamsAtom);
-  const { data, isLoading } = useOwnerGetGoingEventList();
+  const [params, setParams] = useRecoilState(getOwnerFundListParamsAtom);
+  const { data, reload, isLoading } = useOwnerGetFundList();
+  const { fetchApi: deleteFund, isLoading: isDeleting } =
+    useOwnerDeleteFundById();
+
+  const onDeleteFund = async (id: string) => {
+    await deleteFund({ fundId: id });
+    reload();
+  };
 
   if (isLoading || !data?.data) {
     return <LoadingIndicator />;
@@ -28,19 +36,27 @@ const GoingEventListPage = () => {
         }}
       >
         {data?.data.items.map(item => (
-          <EventCardItem
+          <FundCardItem
             key={item.id}
             data={item}
             actions={[
               <Link
                 key="edit-btn"
-                href={`/events/${item.id}`}
+                href={`/funds/hosting/${item.id}`}
                 style={{ width: '100%' }}
               >
                 <Button fullWidth variant="outlined">
-                  Xem chi tiết
+                  Chỉnh sửa
                 </Button>
               </Link>,
+              <IconButton
+                key="delete-btn"
+                color="error"
+                disabled={isDeleting}
+                onClick={() => onDeleteFund(item.id)}
+              >
+                <DeleteOutlineIcon />
+              </IconButton>,
             ]}
           />
         ))}
@@ -62,4 +78,4 @@ const GoingEventListPage = () => {
   );
 };
 
-export default GoingEventListPage;
+export default HostingFundListPage;
