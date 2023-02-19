@@ -32,6 +32,8 @@ export default class RecruimentService {
         recruitmentOwnerId: recruitmentOwnerId,
       },
     });
+    await tenantPrisma.$disconnect();
+
     return newRecruitment;
   };
 

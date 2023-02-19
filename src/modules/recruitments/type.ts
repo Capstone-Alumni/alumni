@@ -9,8 +9,8 @@ export type CreateRecruitmentProps = {
   description: string;
   type: string; // parttime, full time, etc ..
   salary: string;
-  startAt: string;
-  expiredAt: string;
+  startAt: string | null;
+  expiredAt: string | null;
 };
 
 export type UpdateRecruitmentProps = {
