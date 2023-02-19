@@ -100,14 +100,14 @@ export default class AdminFundService {
 
   static getById = async (
     tenantPrisma: PrismaClient,
-    { user, FundId }: { user: User; FundId: string },
+    { user, fundId }: { user: User; fundId: string },
   ) => {
     const whereFilter = await buildFundWhereFilter(tenantPrisma, user);
 
     const Fund = await tenantPrisma.fund.findUnique({
       where: {
         ...whereFilter,
-        id: FundId,
+        id: fundId,
       },
     });
 
@@ -116,14 +116,14 @@ export default class AdminFundService {
 
   static approve = async (
     tenantPrisma: PrismaClient,
-    { user, FundId }: { user: User; FundId: string },
+    { user, fundId }: { user: User; fundId: string },
   ) => {
     const whereFilter = await buildFundWhereFilter(tenantPrisma, user);
 
     await tenantPrisma.fund.updateMany({
       where: {
         ...whereFilter,
-        id: FundId,
+        id: fundId,
       },
       data: {
         approvedStatus: 1,
@@ -135,14 +135,14 @@ export default class AdminFundService {
 
   static reject = async (
     tenantPrisma: PrismaClient,
-    { user, FundId }: { user: User; FundId: string },
+    { user, fundId }: { user: User; fundId: string },
   ) => {
     const whereFilter = await buildFundWhereFilter(tenantPrisma, user);
 
     await tenantPrisma.fund.updateMany({
       where: {
         ...whereFilter,
-        id: FundId,
+        id: fundId,
       },
       data: {
         approvedStatus: 0,
