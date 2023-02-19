@@ -3,6 +3,7 @@ import {
   GetAdminEventListParams,
   GetOwnerEventListParams,
   GetOwnerGoingEventListParams,
+  GetOwnerInterestEventListParams,
   GetPublicEventListParams,
   GetPublicEventParticipantListParams,
 } from './types';
@@ -51,7 +52,7 @@ export const getOwnerGoingEventListParamsAtom =
   });
 
 export const getOwnerInterestEventListParamsAtom =
-  atom<GetOwnerGoingEventListParams>({
+  atom<GetOwnerInterestEventListParams>({
     key: 'getOwnerInterestEventListParamsAtom',
     default: {
       limit: 10,
