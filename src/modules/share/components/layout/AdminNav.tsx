@@ -27,6 +27,12 @@ const NEWS_NAV_ITEM = {
   icon: 'fluent:news-16-filled',
   link: '/admin/news',
 };
+const FUND_NAV_ITEM = {
+  id: 'event',
+  title: 'Quỹ',
+  icon: 'ri:refund-2-line',
+  link: '/admin/funds',
+};
 const EVENT_NAV_ITEM = {
   id: 'event',
   title: 'Sự kiện',
@@ -145,6 +151,7 @@ const generateNavItems = (
       return [
         ACCESS_NAV_ITEM,
         NEWS_NAV_ITEM,
+        FUND_NAV_ITEM,
         EVENT_NAV_ITEM,
         GRADE_NAV_ITEM,
         USER_NAV_ITEM,

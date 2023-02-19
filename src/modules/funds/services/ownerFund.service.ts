@@ -137,7 +137,7 @@ export default class OwnerFundService {
     };
 
     if (data.currentBalance !== fund.currentBalance) {
-      updateData.balanceUpdated = new Date();
+      updateData.balanceUpdatedAt = new Date();
     }
 
     const newFund = await tenantPrisma.fund.update({

@@ -4,11 +4,11 @@ import * as yup from 'yup';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 import { Fund } from '../types';
 import TextInput from '@share/components/form/TextInput';
-import { Box, Button, useTheme } from '@mui/material';
+import { Box, Button, InputAdornment, useTheme } from '@mui/material';
 import Checkbox from '@share/components/form/Checkbox';
 import DateTimeInput from '@share/components/form/DateTimeInput';
-import SelectInput from '@share/components/form/SelectInput';
-import { Typography } from '@mui/material';
+// import SelectInput from '@share/components/form/SelectInput';
+// import { Typography } from '@mui/material';
 import { useState } from 'react';
 
 export type FundFormValues = {
@@ -16,18 +16,20 @@ export type FundFormValues = {
   description?: string;
   isOffline: boolean;
   location?: string;
-  registrationTime?: Date;
   startTime: Date;
   endTime?: Date;
   isEnded?: boolean;
+  targetBalance: number;
+  currentBalance: number;
   publicity: AccessLevel;
-  publicParticipant: boolean;
 };
 
 const validationSchema = yup.object({
   title: yup.string().required(),
   startTime: yup.date().required(),
   publicity: yup.string().required(),
+  targetBalance: yup.number().required(),
+  currentBalance: yup.number().required(),
 });
 
 const FundForm = ({
@@ -49,16 +51,14 @@ const FundForm = ({
       description: initialData?.description,
       isOffline: initialData?.isOffline ?? false,
       location: initialData?.location,
-      registrationTime: initialData?.registrationTime
-        ? new Date(initialData.registrationTime)
-        : new Date(),
       startTime: initialData?.startTime
         ? new Date(initialData.startTime)
         : new Date(),
       endTime: initialData?.endTime ? new Date(initialData.endTime) : null,
       isEnded: initialData?.isEnded,
-      publicity: initialData?.publicity ?? 'ALUMNI',
-      publicParticipant: initialData?.publicParticipant ?? false,
+      targetBalance: initialData?.targetBalance ?? 0,
+      currentBalance: initialData?.currentBalance ?? 0,
+      publicity: 'SCHOOL_ADMIN',
     },
   });
 
@@ -85,8 +85,46 @@ const FundForm = ({
       <TextInput
         control={control}
         name="title"
-        inputProps={{ label: 'Tên sự kiện', fullWidth: true }}
+        inputProps={{ label: 'Tên quỹ', fullWidth: true }}
       />
+
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          gap: theme.spacing(2),
+        }}
+      >
+        <TextInput
+          control={control}
+          name="targetBalance"
+          inputProps={{
+            label: 'Số tiền mục tiêu',
+            fullWidth: true,
+            type: 'number',
+            InputProps: {
+              endAdornment: (
+                <InputAdornment position="end">000 VNĐ</InputAdornment>
+              ),
+            },
+          }}
+        />
+        <TextInput
+          control={control}
+          name="currentBalance"
+          inputProps={{
+            label: 'Số tiền hiện tại',
+            fullWidth: true,
+            type: 'number',
+            InputProps: {
+              endAdornment: (
+                <InputAdornment position="end">000 VNĐ</InputAdornment>
+              ),
+            },
+          }}
+        />
+      </Box>
 
       <TextInput
         control={control}
@@ -103,18 +141,9 @@ const FundForm = ({
         <Checkbox
           control={control}
           name="isOffline"
-          inputProps={{ label: 'Sự kiện tổ chức offline' }}
+          inputProps={{ label: 'Tổ chức gây quỹ offline' }}
         />
       </Box>
-
-      <DateTimeInput
-        control={control}
-        name="registrationTime"
-        inputProps={{
-          fullWidth: true,
-          label: 'Thời gian mở đăng ký',
-        }}
-      />
 
       <DateTimeInput
         control={control}
@@ -141,7 +170,7 @@ const FundForm = ({
         />
       </Box>
 
-      <Box sx={{ width: '100%' }}>
+      {/* <Box sx={{ width: '100%' }}>
         <SelectInput
           control={control}
           name="publicity"
@@ -179,12 +208,12 @@ const FundForm = ({
           kiểm duyệt. Sau khi được bạn đại diện chấp nhận, người khác mới có thể
           nhìn thấy và tham gia sự kiện của bạn.
         </Typography>
-      </Box>
+      </Box> */}
 
       <Button
         variant="contained"
         disabled={isSaving}
-        onClick={handleSubmit(onSubmit)}
+        onClick={handleSubmit(onSubmitWithStatus)}
       >
         Lưu
       </Button>

@@ -1,6 +1,7 @@
 'use client';
 
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Button, Typography, useTheme } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { useRecoilState } from 'recoil';
 import useAdminApproveFundById from '../hooks/useAdminApproveFundById';
@@ -8,6 +9,7 @@ import useAdminGetFundList from '../hooks/useAdminGetFundList';
 import useAdminRejectFundById from '../hooks/useAdminRejectFundById';
 import { getAdminFundListParamsAtom } from '../states';
 import AdminFundListTable from './AdminFundListTable';
+import Link from 'next/link';
 
 const AdminFundListPage = () => {
   const theme = useTheme();
@@ -45,7 +47,13 @@ const AdminFundListPage = () => {
           alignItems: 'center',
         }}
       >
-        <Typography variant="h3">Sự kiện</Typography>
+        <Typography variant="h3">Gây quỹ</Typography>
+
+        <Link href="/admin/funds/create">
+          <Button variant="contained" startIcon={<AddIcon />} role="link">
+            Thêm quỹ mới
+          </Button>
+        </Link>
       </Box>
 
       <Box

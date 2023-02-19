@@ -11,7 +11,7 @@ export default class PublicEventController {
   ) => {
     const prisma = await getPrismaClient(req.tenantId);
     const { page, limit } = req.query;
-    const { id: userId } = req.user;
+    const { id: userId } = req.user || {};
 
     const listData = await PublicEventService.getList(prisma, {
       userId: userId,

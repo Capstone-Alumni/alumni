@@ -2,7 +2,7 @@
 
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import { Box, Button, IconButton, Pagination, useTheme } from '@mui/material';
+import { Button, Grid, IconButton, Pagination, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
@@ -37,12 +37,10 @@ const DiscoverEventListPage = () => {
 
   return (
     <>
-      <Box
+      <Grid
+        container
+        spacing={2}
         sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          gap: theme.spacing(2),
           mb: 2,
         }}
       >
@@ -86,7 +84,7 @@ const DiscoverEventListPage = () => {
             />
           );
         })}
-      </Box>
+      </Grid>
       <Pagination
         sx={{
           margin: 'auto',

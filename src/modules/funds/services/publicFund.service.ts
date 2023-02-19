@@ -44,7 +44,7 @@ export default class PublicFundService {
     tenantPrisma: PrismaClient,
     { fundId, userId }: { fundId: string; userId: string },
   ) => {
-    const Fund = await tenantPrisma.fund.findFirst({
+    const fund = await tenantPrisma.fund.findFirst({
       where: {
         id: fundId,
         approvedStatus: 1,
@@ -61,7 +61,7 @@ export default class PublicFundService {
 
     await tenantPrisma.$disconnect();
 
-    return Fund;
+    return fund;
   };
 
   static saveFund = async (

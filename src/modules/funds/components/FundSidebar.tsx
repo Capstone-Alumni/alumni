@@ -6,6 +6,7 @@ import { Box, styled, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { User } from 'next-auth';
 
 const StyledNavWrapper = styled(Box)(({ theme }) => ({
   minWidth: '16rem',
@@ -54,19 +55,21 @@ const FUND_NAV_ITEMS = [
     id: 'interest',
     title: 'Lưu',
     icon: 'material-symbols:bookmark',
-    link: '/funds/interest',
-  },
-  {
-    id: 'hosting',
-    title: 'Của tôi',
-    icon: 'material-symbols:person-pin',
-    link: '/funds/hosting',
+    link: '/funds/saved',
   },
 ];
 
-const FundSidebar = () => {
+const FUND_HOSTING_NAV_ITEM = {
+  id: 'hosting',
+  title: 'Của tôi',
+  icon: 'material-symbols:person-pin',
+  link: '/funds/hosting',
+};
+
+const FundSidebar = ({ user }: { user: User }) => {
   const theme = useTheme();
   const pathname = usePathname();
+  const isAlumni = user.accessLevel === 'ALUMNI';
 
   return (
     <StyledNavWrapper>
@@ -91,23 +94,61 @@ const FundSidebar = () => {
                 <Typography fontWeight={600}>{item.title}</Typography>
                 <Box sx={{ flex: 1 }} />
                 {/* <Icon
-                      height={24}
-                      icon={
-                        isActive
-                          ? 'material-symbols:keyboard-arrow-right'
-                          : 'material-symbols:keyboard-arrow-down-rounded'
-                      }
-                    /> */}
+                    height={24}
+                    icon={
+                      isActive
+                        ? 'material-symbols:keyboard-arrow-right'
+                        : 'material-symbols:keyboard-arrow-down-rounded'
+                    }
+                  /> */}
               </StyledNavItem>
             </Link>
           );
         })}
 
-        <Link href="/funds/create" style={{ width: '100%' }}>
-          <Button variant="contained" fullWidth startIcon={<AddIcon />}>
-            tạo quỹ
-          </Button>
-        </Link>
+        {isAlumni ? null : (
+          <Link
+            href={FUND_HOSTING_NAV_ITEM.link}
+            style={{ color: 'inherit', width: '100%' }}
+          >
+            <StyledNavItem
+              sx={{
+                backgroundColor:
+                  FUND_HOSTING_NAV_ITEM.link &&
+                  pathname?.startsWith(FUND_HOSTING_NAV_ITEM.link)
+                    ? theme.palette.primary.lighter
+                    : undefined,
+                color:
+                  FUND_HOSTING_NAV_ITEM.link &&
+                  pathname?.startsWith(FUND_HOSTING_NAV_ITEM.link)
+                    ? theme.palette.primary.main
+                    : undefined,
+              }}
+            >
+              <Icon height={24} icon={FUND_HOSTING_NAV_ITEM.icon} />
+              <Typography fontWeight={600}>
+                {FUND_HOSTING_NAV_ITEM.title}
+              </Typography>
+              <Box sx={{ flex: 1 }} />
+              {/* <Icon
+                height={24}
+                icon={
+                  isActive
+                    ? 'material-symbols:keyboard-arrow-right'
+                    : 'material-symbols:keyboard-arrow-down-rounded'
+                }
+              /> */}
+            </StyledNavItem>
+          </Link>
+        )}
+
+        {isAlumni ? null : (
+          <Link href="/funds/create" style={{ width: '100%' }}>
+            <Button variant="contained" fullWidth startIcon={<AddIcon />}>
+              tạo quỹ
+            </Button>
+          </Link>
+        )}
       </StyledNav>
     </StyledNavWrapper>
   );

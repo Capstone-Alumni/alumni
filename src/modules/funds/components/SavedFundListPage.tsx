@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Button, IconButton, Pagination, useTheme } from '@mui/material';
+import { Button, Grid, IconButton, Pagination, useTheme } from '@mui/material';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import Link from 'next/link';
@@ -27,12 +27,10 @@ const SavedFundListPage = () => {
 
   return (
     <>
-      <Box
+      <Grid
+        container
+        spacing={2}
         sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          gap: theme.spacing(2),
           mb: 2,
         }}
       >
@@ -43,7 +41,7 @@ const SavedFundListPage = () => {
             actions={[
               <Link
                 key="edit-btn"
-                href={`/events/${item.id}`}
+                href={`/funds/${item.id}`}
                 style={{ width: '100%', marginRight: theme.spacing(1) }}
               >
                 <Button fullWidth variant="outlined">
@@ -60,7 +58,7 @@ const SavedFundListPage = () => {
             ]}
           />
         ))}
-      </Box>
+      </Grid>
       <Pagination
         sx={{
           margin: 'auto',

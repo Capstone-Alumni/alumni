@@ -1,7 +1,7 @@
 'use client';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Box, Button, IconButton, Pagination, useTheme } from '@mui/material';
+import { Button, Grid, IconButton, Pagination, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
@@ -28,12 +28,10 @@ const HostingFundListPage = () => {
 
   return (
     <>
-      <Box
+      <Grid
+        container
+        spacing={2}
         sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          gap: theme.spacing(2),
           mb: 2,
         }}
       >
@@ -44,7 +42,7 @@ const HostingFundListPage = () => {
             actions={[
               <Link
                 key="edit-btn"
-                href={`/Funds/hosting/${item.id}`}
+                href={`/funds/hosting/${item.id}`}
                 style={{ width: '100%' }}
               >
                 <Button fullWidth variant="outlined">
@@ -62,7 +60,7 @@ const HostingFundListPage = () => {
             ]}
           />
         ))}
-      </Box>
+      </Grid>
       <Pagination
         sx={{
           margin: 'auto',

@@ -1,6 +1,7 @@
 'use client';
 
-import { Box, Button, Pagination, useTheme } from '@mui/material';
+import { Grid } from '@mui/material';
+import { Button, Pagination, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
@@ -19,12 +20,10 @@ const GoingEventListPage = () => {
 
   return (
     <>
-      <Box
+      <Grid
+        container
+        spacing={2}
         sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          gap: theme.spacing(2),
           mb: 2,
         }}
       >
@@ -45,7 +44,7 @@ const GoingEventListPage = () => {
             ]}
           />
         ))}
-      </Box>
+      </Grid>
       <Pagination
         sx={{
           margin: 'auto',

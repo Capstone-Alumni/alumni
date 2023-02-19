@@ -11,7 +11,7 @@ export default class PublicFundController {
   ) => {
     const prisma = await getPrismaClient(req.tenantId);
     const { page, limit } = req.query;
-    const { id: userId } = req.user;
+    const { id: userId } = req.user || {};
 
     const listData = await PublicFundService.getList(prisma, {
       userId: userId,

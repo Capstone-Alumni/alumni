@@ -7,7 +7,6 @@ import LoadingIndicator from '@share/components/LoadingIndicator';
 import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import usePublicGetFundById from '../hooks/usePublicGetFundById';
-import Image from 'next/image';
 import usePublicInterestFundById from '../hooks/usePublicSaveFundById';
 import usePublicUninterestFundById from '../hooks/usePublicUnsaveFundById';
 
@@ -29,7 +28,7 @@ const FundDetailPage = () => {
   }, []);
 
   const isSaved = useMemo(() => {
-    return data?.data?.fundSaveds?.length && data?.data?.fundSaveds?.length > 0;
+    return data?.data?.fundSaved?.length && data?.data?.fundSaved?.length > 0;
   }, [data?.data]);
 
   const FundStatus = useMemo(() => {
@@ -76,7 +75,7 @@ const FundDetailPage = () => {
 
   return (
     <Box>
-      <Box
+      {/* <Box
         sx={{
           position: 'relative',
           width: '100%',
@@ -90,7 +89,7 @@ const FundDetailPage = () => {
           fill
           style={{ objectFit: 'cover' }}
         />
-      </Box>
+      </Box> */}
 
       <Typography variant="h3" sx={{ mb: 1 }}>
         {fundData.title}
@@ -143,20 +142,28 @@ const FundDetailPage = () => {
               )}
             </Grid>
 
+            {fundData.location ? (
+              <>
+                <Grid item xs={3}>
+                  <Typography>Nơi tổ chức</Typography>
+                </Grid>
+                <Grid item xs={9}>
+                  <Typography
+                    component="span"
+                    fontWeight={600}
+                    sx={{ color: theme.palette.warning.main }}
+                  >
+                    {fundData.location}
+                  </Typography>
+                </Grid>
+              </>
+            ) : null}
+
             <Grid item xs={3}>
               <Typography>Tình trạng</Typography>
             </Grid>
             <Grid item xs={9}>
               <Typography>{FundStatus}</Typography>
-            </Grid>
-
-            <Grid item xs={3}>
-              <Typography>Mở đăng ký</Typography>
-            </Grid>
-            <Grid item xs={9}>
-              <Typography>
-                {new Date(fundData.registrationTime).toDateString()}
-              </Typography>
             </Grid>
 
             <Grid item xs={3}>
@@ -183,10 +190,10 @@ const FundDetailPage = () => {
           </Grid>
         </Box>
 
-        <Box>
+        <Box sx={{ minWidth: theme.spacing(12) }}>
           <Button
             fullWidth
-            variant="outlined"
+            variant={isSaved ? 'contained' : 'outlined'}
             startIcon={<BookmarkBorderIcon />}
             disabled={isSavingFund || isUnsavingFund}
             onClick={isSaved ? onUnsaveFund : onSaveFund}

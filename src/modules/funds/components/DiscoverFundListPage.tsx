@@ -2,7 +2,7 @@
 
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import { Box, Button, IconButton, Pagination, useTheme } from '@mui/material';
+import { Button, Grid, IconButton, Pagination, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
@@ -37,17 +37,15 @@ const DiscoverFundListPage = () => {
 
   return (
     <>
-      <Box
+      <Grid
+        container
+        spacing={2}
         sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          gap: theme.spacing(2),
           mb: 2,
         }}
       >
         {data?.data.items.map(item => {
-          const isSaved = item.fundSaveds.length > 0;
+          const isSaved = item.fundSaved.length > 0;
 
           return (
             <FundCardItem
@@ -56,7 +54,7 @@ const DiscoverFundListPage = () => {
               actions={[
                 <Link
                   key="edit-btn"
-                  href={`/Funds/${item.id}`}
+                  href={`/funds/${item.id}`}
                   style={{ width: '100%', marginRight: theme.spacing(1) }}
                 >
                   <Button fullWidth variant="outlined">
@@ -85,7 +83,7 @@ const DiscoverFundListPage = () => {
             />
           );
         })}
-      </Box>
+      </Grid>
       <Pagination
         sx={{
           margin: 'auto',

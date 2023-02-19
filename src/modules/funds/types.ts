@@ -13,9 +13,11 @@ export type Fund = {
   startTime: string | Date;
   endTime: string | Date;
   isEnded: boolean;
+  targetBalance: number;
+  currentBalance: number;
+  balanceUpdated: number;
   approvedStatus: -1 | 0 | 1;
   publicity: AccessLevel;
-  publicParticipant: boolean;
   userId: string;
   hostInformation?: {
     id: string;
@@ -23,7 +25,7 @@ export type Fund = {
     email: string;
     fullName: string;
   };
-  fundSaveds: FundSaved[];
+  fundSaved: FundSaved[];
 };
 
 export type FundSaved = {

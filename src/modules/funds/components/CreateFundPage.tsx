@@ -14,7 +14,7 @@ const CreateFundPage = () => {
   return (
     <Box>
       <Typography variant="h6" sx={{ mb: 2 }}>
-        Tổ chức sự kiện
+        Tạo yêu cầu gây quỹ
       </Typography>
       <FundForm onSubmit={onCreateFund} />
     </Box>

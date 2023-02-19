@@ -28,7 +28,7 @@ const AdminFundListTable = ({
         <Table aria-label="Fund table">
           <TableHead>
             <TableRow>
-              <TableCell align="left">Tên sự kiện</TableCell>
+              <TableCell align="left">Tên quỹ</TableCell>
               <TableCell align="left">Người gửi yêu cầu</TableCell>
               <TableCell align="left">Trạng thái</TableCell>
               <TableCell align="left">Ngày được tạo</TableCell>
