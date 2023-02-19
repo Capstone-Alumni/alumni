@@ -1,0 +1,83 @@
+'use client';
+
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { Box, Button, IconButton, Pagination, useTheme } from '@mui/material';
+import LoadingIndicator from '@share/components/LoadingIndicator';
+import Link from 'next/link';
+import { useRecoilState } from 'recoil';
+import useOwnerDeleteFundById from '../hooks/useOwnerDeleteFundById';
+import useOwnerGetFundList from '../hooks/useOwnerGetFundList';
+import { getOwnerFundListParamsAtom } from '../states';
+import FundCardItem from './FundCardItem';
+
+const HostingFundListPage = () => {
+  const theme = useTheme();
+  const [params, setParams] = useRecoilState(getOwnerFundListParamsAtom);
+  const { data, reload, isLoading } = useOwnerGetFundList();
+  const { fetchApi: deleteFund, isLoading: isDeleting } =
+    useOwnerDeleteFundById();
+
+  const onDeleteFund = async (id: string) => {
+    await deleteFund({ fundId: id });
+    reload();
+  };
+
+  if (isLoading || !data?.data) {
+    return <LoadingIndicator />;
+  }
+
+  return (
+    <>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          gap: theme.spacing(2),
+          mb: 2,
+        }}
+      >
+        {data?.data.items.map(item => (
+          <FundCardItem
+            key={item.id}
+            data={item}
+            actions={[
+              <Link
+                key="edit-btn"
+                href={`/Funds/hosting/${item.id}`}
+                style={{ width: '100%' }}
+              >
+                <Button fullWidth variant="outlined">
+                  Chỉnh sửa
+                </Button>
+              </Link>,
+              <IconButton
+                key="delete-btn"
+                color="error"
+                disabled={isDeleting}
+                onClick={() => onDeleteFund(item.id)}
+              >
+                <DeleteOutlineIcon />
+              </IconButton>,
+            ]}
+          />
+        ))}
+      </Box>
+      <Pagination
+        sx={{
+          margin: 'auto',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+        color="primary"
+        count={Math.ceil(data?.data.totalItems / data?.data.itemPerPage)}
+        page={params.page}
+        onChange={(_, nextPage) => {
+          setParams(prevParams => ({ ...prevParams, page: nextPage }));
+        }}
+      />
+    </>
+  );
+};
+
+export default HostingFundListPage;
