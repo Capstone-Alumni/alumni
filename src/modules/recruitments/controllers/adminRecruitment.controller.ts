@@ -14,6 +14,11 @@ export default class AdminRecruitmentController {
         req.query;
       const listRecruitment = await AdminRecruitmentService.getList(prisma, {
         companyName: companyName ? (companyName as string) : '',
+        job: companyName ? (job as string) : '',
+        salary: companyName ? (salary as string) : '',
+        position: companyName ? (position as string) : '',
+        type: companyName ? (type as string) : '',
+
         page: page ? parseInt(page as string, 10) : 1,
         limit: limit ? parseInt(limit as string, 10) : 20,
       });

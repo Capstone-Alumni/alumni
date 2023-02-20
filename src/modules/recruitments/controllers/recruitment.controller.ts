@@ -144,24 +144,4 @@ export default class RecruitmentController {
       });
     }
   };
-
-  static getById = async (
-    req: NextApiRequestWithTenant,
-    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
-  ) => {
-    try {
-      const prisma = await getPrismaClient(req.tenantId);
-      const { id } = req.query;
-      const recruitment = await RecruimentService.getById(prisma, id as string);
-      return res.status(200).json({
-        status: true,
-        data: recruitment,
-      });
-    } catch (error: any) {
-      return res.status(400).json({
-        status: false,
-        message: error.message,
-      });
-    }
-  };
 }
