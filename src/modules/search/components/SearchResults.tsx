@@ -22,8 +22,7 @@ import LoadingIndicator from '@share/components/LoadingIndicator';
 // ----------------------------------------------------------------------
 
 const Wrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(1),
-  // borderRadius: theme.spacing(2),
+  padding: '0.5rem 1rem',
   cursor: 'pointer',
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.black, 0.05),
@@ -149,10 +148,10 @@ const SeachPage = () => {
             <Stack spacing={4}>
               <Pagination
                 page={page}
-                count={
+                count={Math.ceil(
                   usersProfileResponse?.data?.data.totalItems /
-                  usersProfileResponse?.data?.data.itemPerPage
-                }
+                    usersProfileResponse?.data?.data.itemPerPage,
+                )}
                 color="primary"
                 onChange={handleChangePage}
               />

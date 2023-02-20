@@ -5,7 +5,7 @@ import { Box, Grid, styled, useTheme } from '@mui/material';
 import { Card, Stack, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 // @types
-import ProfileInfoRow from './InfoRow';
+import ProfileInfoRow from './InfoRowCustom';
 import { isAllowToViewValue } from 'src/utils/mappingPublicity';
 import { useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
@@ -35,36 +35,18 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
       <Grid item xs={12} md={12}>
         <Card sx={{ p: 3, overflow: 'visible' }}>
           <ProfileCover userProfileId={userInformation?.userId} />
-          <Stack sx={{ margin: '1.5rem 0 0.5rem 0' }}>
+          <Stack sx={{ margin: '1.25rem 0 0rem 0' }}>
             <Box
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
                 marginBottom: theme.spacing(5),
               }}
-            >
-              <Typography
-                variant="h5"
-                style={{
-                  display: 'flex',
-                  fontWeight: 'bold',
-                  alignItems: 'center',
-                }}
-              >
-                <PersonIcon
-                  fontSize="large"
-                  style={{
-                    color: theme.palette.primary.main,
-                    marginRight: theme.spacing(1),
-                  }}
-                />
-                Thông tin liên hệ
-              </Typography>
-            </Box>
+            />
           </Stack>
           <div>
             <Box style={{ paddingLeft: theme.spacing(2) }}>
-              <Box style={{ display: 'flex' }}>
+              <Box style={{ display: 'flex', alignItems: 'center' }}>
                 <Box style={{ flex: 1 }}>
                   <ProfileInfoRow
                     title="Bio"
@@ -91,6 +73,9 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                       <ProfileInfoRow
                         title="Email liên lạc"
                         content={userInformation.userEmail}
+                        isPrivacy
+                        userInformationData={userInformation}
+                        name="emailPublicity"
                       />
                     )}
                   {isAllowToViewValue(
@@ -102,6 +87,9 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                       <ProfileInfoRow
                         title="Điện thoại"
                         content={userInformation.phone}
+                        isPrivacy
+                        userInformationData={userInformation}
+                        name="phonePublicity"
                       />
                     )}
                   {isAllowToViewValue(
@@ -127,6 +115,9 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                             {userInformation.facebookUrl}
                           </Linkify>
                         }
+                        isPrivacy
+                        name="facebookPublicity"
+                        userInformationData={userInformation}
                       />
                     )}
                   {isAllowToViewValue(
@@ -143,6 +134,9 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                             userInformation.dateOfBirth,
                           ).toLocaleDateString('en-GB')
                         }
+                        isPrivacy
+                        userInformationData={userInformation}
+                        name="dateOfBirthPublicity"
                       />
                     )}
                   <ProfileInfoRow

@@ -5,6 +5,10 @@ export const isAllowToViewValue = (
   profileInfomation: Information,
   permissionToSee?: ScopePublicity,
 ): boolean => {
+  if (currentUserInfomation.userId === profileInfomation.userId) {
+    return true;
+  }
+
   if (!permissionToSee) {
     return false;
   }

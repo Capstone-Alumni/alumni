@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-
 import { styled } from '@mui/material';
 import { Box, Container } from '@mui/material';
 
@@ -34,8 +32,6 @@ const TabsWrapperStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 const UserProfile = () => {
-  const [currentTab, setCurrentTab] = useState('profile');
-
   const pathname = usePathname();
   const userProfileId = pathname?.slice(pathname?.lastIndexOf('/') + 1);
 
@@ -43,24 +39,20 @@ const UserProfile = () => {
   const userCareersResponse = useGetUserCareersQuery(userProfileId);
   const userEducationsResponse = useGetUserEducationsQuery(userProfileId);
 
-  const handleChangeTab = (newValue: string) => {
-    setCurrentTab(newValue);
-  };
-
   if (!userProfileId) {
     redirect('/403_error');
   }
 
   return userProfileId ? (
     <Container maxWidth={'lg'}>
-      <Box>
-        <Profile
-          userProfileId={userProfileId}
-          userInformation={userInformationResponse}
-          userCareers={userCareersResponse}
-          userEducations={userEducationsResponse}
-        />
-      </Box>
+      {/* <Box> */}
+      <Profile
+        userProfileId={userProfileId}
+        userInformation={userInformationResponse}
+        userCareers={userCareersResponse}
+        userEducations={userEducationsResponse}
+      />
+      {/* </Box> */}
     </Container>
   ) : (
     <></>

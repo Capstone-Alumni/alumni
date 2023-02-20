@@ -15,13 +15,12 @@ const Search = styled('div')(({ theme }) => ({
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
-    borderWidth: '2px',
+    borderWidth: '1px',
     borderColor: alpha(theme.palette.primary.main, 0.85),
   },
   marginLeft: 0,
   width: '100%',
   [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
     width: 'auto',
   },
 }));

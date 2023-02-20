@@ -28,7 +28,7 @@ const Seach = () => {
       maxWidth="md"
       sx={{ width: '100%', margin: 'auto' }}
     >
-      <Box sx={{ width: '100%' }}>
+      <Box sx={{ width: '100%', margin: '0 0 0 1.25rem' }}>
         <form onSubmit={handleSubmit}>
           <SearchInput
             placeholder="Tìm kiếm bạn học"

@@ -1,4 +1,4 @@
-import { Box, TextField, Typography, useTheme } from '@mui/material';
+import { Box, Button, TextField, Typography, useTheme } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import deepPurple from '@mui/material/colors/deepPurple';
 import React from 'react';
@@ -7,7 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-const WorkForm = ({ defaultValues, onSave }: any) => {
+const WorkForm = ({ defaultValues, onSave, onClose }: any) => {
   const theme = useTheme();
   const {
     register,
@@ -69,7 +69,7 @@ const WorkForm = ({ defaultValues, onSave }: any) => {
           type: 'text',
           placeholder: 'yyyy-yyyy',
         },
-      ].map(item => {
+      ].map((item) => {
         return item.name !== 'startDate' && item.name !== 'endDate' ? (
           <Controller
             key={item.name}
@@ -111,7 +111,7 @@ const WorkForm = ({ defaultValues, onSave }: any) => {
                   onChange={(event: any) => {
                     onChange(event);
                   }}
-                  renderInput={params => (
+                  renderInput={(params) => (
                     <TextField
                       margin="normal"
                       {...register(item.name, { required: false })}
@@ -126,10 +126,14 @@ const WorkForm = ({ defaultValues, onSave }: any) => {
           />
         );
       })}
-
-      <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-        Lưu
-      </LoadingButton>
+      <Box sx={{ marginTop: '0.75rem', gap: '0.5rem', display: 'flex' }}>
+        <Button variant="outlined" onClick={onClose}>
+          Huỷ
+        </Button>
+        <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+          Lưu
+        </LoadingButton>
+      </Box>
     </Box>
   );
 };

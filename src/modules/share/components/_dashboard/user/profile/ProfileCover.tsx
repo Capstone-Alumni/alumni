@@ -16,8 +16,8 @@ import { RootState } from 'src/redux/store';
 // ----------------------------------------------------------------------
 
 const InfoStyle = styled('div')(({ theme }) => ({
-  left: 0,
-  top: '-30%',
+  left: '1rem',
+  top: '-5rem',
   zIndex: 99999,
   position: 'absolute',
   [theme.breakpoints.up('md')]: {

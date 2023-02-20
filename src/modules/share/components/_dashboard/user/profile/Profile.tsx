@@ -41,50 +41,46 @@ export default function Profile({
   };
 
   return !!currentUser?.data?.userId && !!userProfileId ? (
-    <Grid container spacing={3}>
+    <Grid container spacing={3} sx={{ height: '100vh' }}>
       <Box
         display="flex"
         sx={{
-          margin: '1.5rem 0 7rem 1.5rem',
+          margin: '1.5rem 0 2rem 1.5rem',
           justifyContent: 'space-between',
           flexDirection: 'row',
           alignItems: 'center',
           width: '100%',
         }}
-      >
-        {currentUser.data.userId === userProfileId && (
-          <>
-            <Box display="flex" sx={{ alignItems: 'center' }}>
-              <Typography variant="subtitle2">
-                Ai có thể xem thông tin của bạn? &nbsp;
-              </Typography>
-              <FormDialogs
-                editType="visibility"
-                userInformation={userInformationData}
-              >
-                <IconButton aria-label="edit-publicity">
-                  <VisibilityIcon />
-                </IconButton>
-              </FormDialogs>
-            </Box>
-            <Button
-              variant="outlined"
-              startIcon={openEdit ? <BackIcon /> : <EditIcon />}
-              onClick={handleToggleEdit}
-            >
-              {openEdit ? 'Quay lại' : 'Chỉnh sửa thông tin'}
-            </Button>
-          </>
-        )}
-      </Box>
+      ></Box>
       {!openEdit ? (
         <>
           {userInformation?.error ? (
             <Typography>Có lỗi xảy ra! Vui lòng thử lại sau ít phút</Typography>
           ) : (
-            <Box display="flex" sx={{ width: '100%', marginLeft: '1.5rem' }}>
-              <ProfileAbout userInformation={userInformationData} />
-            </Box>
+            <>
+              <Box
+                display="flex"
+                sx={{
+                  justifyContent: 'flex-end',
+                  alignItems: 'flex-end',
+                  width: '100%',
+                  marginBottom: '1rem',
+                }}
+              >
+                {currentUser.data.userId === userProfileId && (
+                  <Button
+                    variant="outlined"
+                    startIcon={openEdit ? <BackIcon /> : <EditIcon />}
+                    onClick={handleToggleEdit}
+                  >
+                    {openEdit ? 'Quay lại' : 'Chỉnh sửa thông tin'}
+                  </Button>
+                )}
+              </Box>
+              <Box display="flex" sx={{ width: '100%', marginLeft: '1.5rem' }}>
+                <ProfileAbout userInformation={userInformationData} />
+              </Box>
+            </>
           )}
           {currentUser.data && userInformationData && (
             <>
@@ -102,6 +98,7 @@ export default function Profile({
                     <UserCareers
                       editable={false}
                       userCareers={userCareers?.data?.data?.items}
+                      userInformationData={userInformationData}
                     />
                   </Grid>
                 )
@@ -120,6 +117,7 @@ export default function Profile({
                     <UserEducation
                       editable={false}
                       userEducations={userEducations?.data?.data?.items}
+                      userInformationData={userInformationData}
                     />
                   </Grid>
                 )

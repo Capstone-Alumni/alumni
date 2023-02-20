@@ -30,6 +30,7 @@ export default function UserEditWrapper({
       {!userCareers.error && !userCareers.isLoading && (
         <EditUserCareers
           editable={true}
+          userInformationData={userInformation.data.data}
           userCareers={userCareers.data.data.items}
           userProfileId={userProfileId}
         />
@@ -38,6 +39,7 @@ export default function UserEditWrapper({
       {!userEducations.error && !userEducations.isLoading && (
         <EditUserEducation
           editable={true}
+          userInformationData={userInformation.data.data}
           userEducations={userEducations.data.data.items}
           userProfileId={userProfileId}
         />
