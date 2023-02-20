@@ -5,6 +5,7 @@ import { useGetNewsByIdForPublicQuery } from 'src/redux/slices/newsSlice';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import NewsContentPage from './NewsContentPage';
 import EveryOneReadPage from './EveryOneReadPage';
+import CommentSection from './CommentSection';
 
 const PublicNewsDetails = () => {
   const pathname = usePathname();
@@ -21,6 +22,7 @@ const PublicNewsDetails = () => {
       {data ? (
         <>
           <NewsContentPage data={data.data} />
+          <CommentSection />
           <Box>
             <EveryOneReadPage />
           </Box>

@@ -2,6 +2,56 @@ import { buildAccessLevelFilter } from './../../share/helpers/prismaWhereFilterB
 import { PrismaClient } from '@prisma/client';
 import { User } from 'next-auth';
 
+const getSameClassFilter = (classId: string) => ({
+  hostInformation: {
+    alumClassId: classId,
+  },
+});
+
+const getSameGradeFilter = (gradeId: string) => ({
+  hostInformation: {
+    alumClass: {
+      gradeId: gradeId,
+    },
+  },
+});
+
+const buildEventWhereFilter = async (
+  tenantPrisma: PrismaClient,
+  user: User,
+) => {
+  const userInformation = await tenantPrisma.information.findUnique({
+    where: {
+      userId: user.id,
+    },
+    include: {
+      alumClass: true,
+    },
+  });
+
+  if (!userInformation) {
+    throw new Error('user not exist');
+  }
+
+  const publicityFilter = buildAccessLevelFilter('publicity', user.accessLevel);
+  let gradeClassFilter = {};
+  if (user.accessLevel === 'CLASS_MOD') {
+    gradeClassFilter = getSameClassFilter(userInformation.alumClassId || '');
+  }
+  if (user.accessLevel === 'GRADE_MOD') {
+    gradeClassFilter = getSameGradeFilter(
+      userInformation.alumClass?.gradeId || '',
+    );
+  }
+
+  const whereFilter = {
+    ...publicityFilter,
+    ...gradeClassFilter,
+  };
+
+  return whereFilter;
+};
+
 export default class AdminEventService {
   static getList = async (
     tenantPrisma: PrismaClient,
@@ -9,36 +59,37 @@ export default class AdminEventService {
       user,
       page,
       limit,
-      archived,
       approved,
     }: {
       user: User;
       page: number;
       limit: number;
-      archived: boolean;
-      approved: boolean;
+      approved: number | undefined;
     },
   ) => {
-    const publicityFilter = buildAccessLevelFilter(
-      'publicity',
-      user.accessLevel,
-    );
-    const whereFilter = {
-      ...publicityFilter,
-      archived: archived,
-      isApproved: approved,
-    };
+    const whereFilter = await buildEventWhereFilter(tenantPrisma, user);
 
     const [totalItems, items] = await tenantPrisma.$transaction([
       tenantPrisma.event.count({
-        where: whereFilter,
+        where: {
+          ...whereFilter,
+
+          approvedStatus: approved ? approved : undefined,
+        },
       }),
       tenantPrisma.event.findMany({
         skip: (page - 1) * limit,
         take: limit,
-        where: whereFilter,
+        where: {
+          ...whereFilter,
+
+          approvedStatus: approved ? approved : undefined,
+        },
         orderBy: {
           createdAt: 'desc',
+        },
+        include: {
+          hostInformation: true,
         },
       }),
     ]);
@@ -56,13 +107,11 @@ export default class AdminEventService {
     tenantPrisma: PrismaClient,
     { user, eventId }: { user: User; eventId: string },
   ) => {
-    const publicityFilter = buildAccessLevelFilter(
-      'publicity',
-      user.accessLevel,
-    );
+    const whereFilter = await buildEventWhereFilter(tenantPrisma, user);
+
     const event = await tenantPrisma.event.findUnique({
       where: {
-        ...publicityFilter,
+        ...whereFilter,
         id: eventId,
       },
     });
@@ -74,43 +123,37 @@ export default class AdminEventService {
     tenantPrisma: PrismaClient,
     { user, eventId }: { user: User; eventId: string },
   ) => {
-    const publicityFilter = buildAccessLevelFilter(
-      'publicity',
-      user.accessLevel,
-    );
+    const whereFilter = await buildEventWhereFilter(tenantPrisma, user);
 
-    const event = await tenantPrisma.event.update({
+    await tenantPrisma.event.updateMany({
       where: {
-        ...publicityFilter,
+        ...whereFilter,
         id: eventId,
       },
       data: {
-        isApproved: true,
+        approvedStatus: 1,
       },
     });
 
-    return event;
+    return null;
   };
 
   static reject = async (
     tenantPrisma: PrismaClient,
     { user, eventId }: { user: User; eventId: string },
   ) => {
-    const publicityFilter = buildAccessLevelFilter(
-      'publicity',
-      user.accessLevel,
-    );
+    const whereFilter = await buildEventWhereFilter(tenantPrisma, user);
 
-    const event = await tenantPrisma.event.update({
+    await tenantPrisma.event.updateMany({
       where: {
-        ...publicityFilter,
+        ...whereFilter,
         id: eventId,
       },
       data: {
-        archived: true,
+        approvedStatus: 0,
       },
     });
 
-    return event;
+    return null;
   };
 }

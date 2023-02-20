@@ -6,13 +6,14 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import Link from 'next/link';
 import Logo from '../Logo';
 import { Divider, useScrollTrigger, useTheme } from '@mui/material';
-import SearchInput from '../SearchInput';
 import { NavItem } from './NavItem';
 import HeaderUserOptions from './HeaderUserOption';
-import React from 'react';
+import React, { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Props {
   /**
@@ -21,10 +22,11 @@ interface Props {
    */
   window?: () => Window;
   children: React.ReactElement;
+  hasAnimation: boolean;
 }
 
 function ElevationScroll(props: Props) {
-  const { children, window } = props;
+  const { children, window, hasAnimation } = props;
   // Note that you normally won't need to set the window ref as useScrollTrigger
   // will default to window.
   // This is only being set here because the demo is in an iframe.
@@ -35,17 +37,32 @@ function ElevationScroll(props: Props) {
   });
 
   return React.cloneElement(children, {
-    elevation: trigger ? 4 : 0,
-    color: trigger ? 'default' : 'transparent',
+    elevation: trigger || !hasAnimation ? 4 : 0,
+    sx: {
+      backgroundColor: trigger || !hasAnimation ? '#fff' : 'transparent',
+      color: trigger || !hasAnimation ? 'inherit' : '#fff',
+    },
   });
 }
 
-const Header = ({ user, tenant }: { user?: any; tenant?: any }) => {
+const Header = ({
+  user,
+  tenant,
+  hasAnimation,
+}: {
+  user?: any;
+  tenant?: any;
+  hasAnimation: boolean;
+}) => {
   const theme = useTheme();
+  const searchParams = useSearchParams();
+  const name = searchParams.get('name');
+  const [search, setSearch] = useState<string>(name ?? '');
+  const router = useRouter();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <ElevationScroll>
+      <ElevationScroll hasAnimation={hasAnimation}>
         <AppBar color="inherit">
           <Toolbar>
             <IconButton
@@ -74,15 +91,30 @@ const Header = ({ user, tenant }: { user?: any; tenant?: any }) => {
               }}
             >
               <NavItem label="Tin tức" href="/news" />
-              {user ? <NavItem label="Sự kiện" href="/events" /> : null}
+              <NavItem label="Sự kiện" href="/events/discover" />
+              <NavItem label="Gây quỹ" href="/funds/discover" />
+              {user ? (
+                <>
+                  <NavItem label="Tìm bạn" href="/find" />
+                </>
+              ) : null}
             </Box>
 
             <Box sx={{ flex: 1 }} />
 
-            {user ? (
-              <Box sx={{ mr: theme.spacing(2) }}>
-                <SearchInput placeholder="Tìm kiếm bạn học" />
-              </Box>
+            {user && user.accessLevel !== 'ALUMNI' ? (
+              <Link
+                href="/admin/access_request"
+                style={{ color: 'inherit', marginRight: theme.spacing(2) }}
+              >
+                <Button
+                  startIcon={<AdminPanelSettingsIcon />}
+                  variant="contained"
+                  color="warning"
+                >
+                  Bảng điều khiển
+                </Button>
+              </Link>
             ) : null}
 
             {user ? (

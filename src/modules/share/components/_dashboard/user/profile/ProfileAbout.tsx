@@ -9,7 +9,8 @@ import ProfileInfoRow from './InfoRow';
 import { isAllowToViewValue } from 'src/utils/mappingPublicity';
 import { useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
-
+import Linkify from 'react-linkify';
+import ProfileCover from './ProfileCover';
 // ----------------------------------------------------------------------
 
 const IconStyle = styled(Icon)(({ theme }) => ({
@@ -32,13 +33,14 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={12}>
-        <Card sx={{ p: 3 }}>
+        <Card sx={{ p: 3, overflow: 'visible' }}>
+          <ProfileCover userProfileId={userInformation.userId} />
           <Stack sx={{ margin: '1.5rem 0 0.5rem 0' }}>
             <Box
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                marginBottom: theme.spacing(2),
+                marginBottom: theme.spacing(5),
               }}
             >
               <Typography
@@ -81,7 +83,7 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                     }
                   />
                   {isAllowToViewValue(
-                    currentUser.data.information,
+                    currentUser.data,
                     userInformation,
                     userInformation?.emailPublicity,
                   ) &&
@@ -92,7 +94,7 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                       />
                     )}
                   {isAllowToViewValue(
-                    currentUser.data.information,
+                    currentUser.data,
                     userInformation,
                     userInformation?.phonePublicity,
                   ) &&
@@ -103,18 +105,32 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                       />
                     )}
                   {isAllowToViewValue(
-                    currentUser.data.information,
+                    currentUser.data,
                     userInformation,
                     userInformation?.facebookPublicity,
                   ) &&
                     Boolean(userInformation?.facebookUrl) && (
                       <ProfileInfoRow
                         title="Facebook"
-                        content={userInformation.facebookUrl}
+                        content={
+                          <Linkify
+                            componentDecorator={(
+                              decoratedHref,
+                              decoratedText,
+                              key,
+                            ) => (
+                              <a target="blank" href={decoratedHref} key={key}>
+                                {decoratedText}
+                              </a>
+                            )}
+                          >
+                            {userInformation.facebookUrl}
+                          </Linkify>
+                        }
                       />
                     )}
                   {isAllowToViewValue(
-                    currentUser.data.information,
+                    currentUser.data,
                     userInformation,
                     userInformation?.dateOfBirthPublicity,
                   ) &&

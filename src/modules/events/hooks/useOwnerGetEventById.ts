@@ -1,16 +1,19 @@
 import { AxiosError } from 'axios';
 import useApi from 'src/modules/share/hooks/useApi';
+import { Event } from '../types';
 
 type GetOwnerGetEventByIdParams = {
   eventId: string;
 };
 
-type GetOwnerGetEventByIdResponse = unknown;
+type GetOwnerGetEventByIdResponse = {
+  data: Event;
+};
 
 type GetOwnerGetEventByIdError = AxiosError;
 
 const useOwnerGetEventById = () => {
-  const { fetchApi, isLoading } = useApi<
+  const { fetchApi, data, isLoading } = useApi<
     GetOwnerGetEventByIdParams,
     GetOwnerGetEventByIdResponse,
     GetOwnerGetEventByIdError
@@ -21,6 +24,7 @@ const useOwnerGetEventById = () => {
 
   return {
     isLoading,
+    data,
     fetchApi,
   };
 };

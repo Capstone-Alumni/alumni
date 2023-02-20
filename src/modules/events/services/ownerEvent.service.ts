@@ -114,26 +114,29 @@ export default class OwnerEventService {
       publicParticipant?: boolean;
     },
   ) => {
-    const event = await tenantPrisma.event.updateMany({
+    const event = await tenantPrisma.event.findUnique({
       where: {
-        AND: [
-          {
-            id: eventId,
-          },
-          {
-            userId: userId,
-          },
-        ],
+        id: eventId,
+      },
+    });
+
+    if (!event || event.userId !== userId) {
+      throw new Error('403 denied');
+    }
+
+    const newEvent = await tenantPrisma.event.update({
+      where: {
+        id: eventId,
       },
       data: {
         ...data,
-        isApproved: false,
+        approvedStatus: -1,
       },
     });
 
     await tenantPrisma.$disconnect();
 
-    return event;
+    return newEvent;
   };
 
   static deleteById = async (
@@ -160,5 +163,75 @@ export default class OwnerEventService {
     await tenantPrisma.$disconnect();
 
     return event;
+  };
+
+  static getGoingList = async (
+    tenantPrisma: PrismaClient,
+    { userId, page, limit }: { userId: string; page: number; limit: number },
+  ) => {
+    const whereFilter = {
+      userId: userId,
+      archived: false,
+    };
+
+    const [totalItems, items] = await tenantPrisma.$transaction([
+      tenantPrisma.eventParticipant.count({
+        where: whereFilter,
+      }),
+      tenantPrisma.eventParticipant.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereFilter,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        include: {
+          event: true,
+        },
+      }),
+    ]);
+
+    await tenantPrisma.$disconnect();
+
+    return {
+      totalItems: totalItems,
+      items: items.map(item => item.event),
+      itemPerPage: limit,
+    };
+  };
+
+  static getInterestList = async (
+    tenantPrisma: PrismaClient,
+    { userId, page, limit }: { userId: string; page: number; limit: number },
+  ) => {
+    const whereFilter = {
+      userId: userId,
+      archived: false,
+    };
+
+    const [totalItems, items] = await tenantPrisma.$transaction([
+      tenantPrisma.eventInterest.count({
+        where: whereFilter,
+      }),
+      tenantPrisma.eventInterest.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereFilter,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        include: {
+          event: true,
+        },
+      }),
+    ]);
+
+    await tenantPrisma.$disconnect();
+
+    return {
+      totalItems: totalItems,
+      items: items.map(item => item.event),
+      itemPerPage: limit,
+    };
   };
 }

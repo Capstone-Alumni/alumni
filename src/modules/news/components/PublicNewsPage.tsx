@@ -46,80 +46,88 @@ const PublicNewsPage = () => {
               margin: 'auto',
             }}
           >
-            <Typography
-              variant="h3"
-              sx={{
-                marginTop: 4,
-                fontFamily: 'Poppins-SVN,sans-serif',
-              }}
-            >
-              Mới <br /> nhất
-            </Typography>
-            <Box
-              className="first-two-news"
-              sx={{
-                display: 'flex',
-                gap: '16px',
-                marginTop: 4,
-              }}
-            >
-              {newestNews.data.items.slice(0, 2).map((item: any) => (
-                <PublicNewsCardItems
-                  key={item.id}
-                  item={item}
+            {newestNews.data.totalItems > 0 ? (
+              <>
+                <Typography
+                  variant="h3"
                   sx={{
-                    width: '45%',
-                    height: '300px',
-                    imgWidth: 500,
-                    imgHeight: 300,
-                    typoVariant: 'h5',
-                    marginImg: 2,
+                    marginTop: 4,
+                    fontFamily: 'Poppins-SVN,sans-serif',
                   }}
-                />
-              ))}
-            </Box>
-            <Box
-              className="next-four-news"
-              sx={{
-                display: 'flex',
-                gap: '40px',
-                marginTop: 4,
-              }}
-            >
-              {newestNews.data.items.slice(2, 6).map((item: any) => (
-                <PublicNewsCardItems
-                  key={item.id}
-                  item={item}
+                >
+                  Mới <br /> nhất
+                </Typography>
+                <Box
+                  className="first-two-news"
                   sx={{
-                    width: '20%',
-                    height: '150px',
-                    imgWidth: 250,
-                    imgHeight: 150,
-                    typoVariant: 'h6',
-                    marginImg: 2,
+                    display: 'flex',
+                    gap: '16px',
+                    marginTop: 4,
                   }}
-                />
-              ))}
-            </Box>
+                >
+                  {newestNews.data.items.slice(0, 2).map((item: any) => (
+                    <PublicNewsCardItems
+                      key={item.id}
+                      item={item}
+                      sx={{
+                        width: '45%',
+                        height: '250px',
+                        imgWidth: 500,
+                        imgHeight: 250,
+                        typoVariant: 'h5',
+                        marginImg: 2,
+                      }}
+                    />
+                  ))}
+                </Box>
+                <Box
+                  className="next-four-news"
+                  sx={{
+                    display: 'flex',
+                    gap: '40px',
+                    marginTop: 4,
+                  }}
+                >
+                  {newestNews.data.items.slice(2, 6).map((item: any) => (
+                    <PublicNewsCardItems
+                      key={item.id}
+                      item={item}
+                      sx={{
+                        width: '20%',
+                        height: '150px',
+                        imgWidth: 250,
+                        imgHeight: 150,
+                        typoVariant: 'h6',
+                        marginImg: 2,
+                      }}
+                    />
+                  ))}
+                </Box>
+              </>
+            ) : (
+              <Typography textAlign="center" variant="h6">
+                Hiện tại chưa có tin tức nào
+              </Typography>
+            )}
           </Box>
-          <Box
-            sx={{
-              width: '80%',
-              margin: 'auto',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <Typography
-              variant="h3"
+          {olderNews && olderNews.data.items.length > 0 ? (
+            <Box
               sx={{
-                marginTop: 4,
-                fontFamily: 'Poppins-SVN,sans-serif',
+                width: '80%',
+                margin: 'auto',
+                display: 'flex',
+                flexDirection: 'column',
               }}
             >
-              Những tin cũ hơn
-            </Typography>
-            {olderNews ? (
+              <Typography
+                variant="h3"
+                sx={{
+                  marginTop: 4,
+                  fontFamily: 'Poppins-SVN,sans-serif',
+                }}
+              >
+                Những tin cũ hơn
+              </Typography>
               <>
                 <Box
                   className="older-news"
@@ -157,8 +165,8 @@ const PublicNewsPage = () => {
                   onChange={onChangePage}
                 />
               </>
-            ) : null}
-          </Box>
+            </Box>
+          ) : null}
         </>
       ) : null}
     </>

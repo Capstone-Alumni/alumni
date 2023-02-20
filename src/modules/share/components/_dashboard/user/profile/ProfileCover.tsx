@@ -1,5 +1,5 @@
 // material
-import { alpha, styled } from '@mui/material';
+import { styled } from '@mui/material';
 import { Box, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
 // @types
@@ -15,42 +15,16 @@ import { RootState } from 'src/redux/store';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('div')(({ theme }) => ({
-  height: '100%',
-  '&:before': {
-    top: 0,
-    zIndex: 9,
-    width: '100%',
-    content: "''",
-    height: '100%',
-    position: 'absolute',
-    backdropFilter: 'blur(0px)',
-    WebkitBackdropFilter: 'blur(0px)', // Fix on Mobile
-    backgroundColor: alpha(theme.palette.primary.darker, 0.01),
-  },
-}));
-
 const InfoStyle = styled('div')(({ theme }) => ({
   left: 0,
-  right: 0,
-  zIndex: 99,
+  top: '-30%',
+  zIndex: 99999,
   position: 'absolute',
-  marginTop: theme.spacing(5),
   [theme.breakpoints.up('md')]: {
     right: 'auto',
     display: 'flex',
     alignItems: 'center',
-    left: theme.spacing(3),
-    bottom: theme.spacing(3),
   },
-}));
-
-const CoverImgStyle = styled('img')(({ theme }) => ({
-  zIndex: 8,
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  position: 'absolute',
 }));
 
 // ----------------------------------------------------------------------
@@ -65,6 +39,7 @@ type ProfileCoverProps = {
 
 export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
   const { data } = useGetUserInformationQuery(userProfileId);
+
   const currentUser = useAppSelector((state: RootState) => state.currentUser);
   const [updateUserInformation] = useUpdateUserInformationMutation();
 
@@ -119,10 +94,8 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
         <>
           <InfoStyle>
             <UploadAvatar
-              disabled={
-                currentUser?.data?.information?.userId !== userProfileId
-              }
-              file={data?.data?.information?.avatarUrl || avatarUrlDefault}
+              disabled={currentUser?.data?.userId !== userProfileId}
+              file={data?.data?.avatarUrl || avatarUrlDefault}
               maxSize={3145728}
               onDrop={(e, _) => handleDrop(e, 'avatar')}
             />
@@ -130,34 +103,29 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
               sx={{
                 ml: { md: 2 },
                 mt: { xs: 1, md: 0 },
-                color: 'common.white',
                 textAlign: { xs: 'center', md: 'left' },
               }}
             >
-              <Typography variant="h4">
-                {currentUser?.data?.information?.fullName}
-              </Typography>
+              <Typography variant="h5">{data?.data?.fullName}</Typography>
             </Box>
           </InfoStyle>
         </>
       )}
-      <label htmlFor="uploadWallpaper">
+      {/* <label htmlFor="uploadWallpaper">
         <div>
           <CoverImgStyle
             alt="profile cover"
-            src={data?.data?.information?.coverImageUrl || wallpaperUrlDefault}
+            src={data?.data?.coverImageUrl || wallpaperUrlDefault}
           />
         </div>
         <RootStyle
           style={{
             cursor: `${
-              currentUser?.data?.information?.userId === userProfileId
-                ? 'pointer'
-                : 'auto'
+              currentUser?.data?.userId === userProfileId ? 'pointer' : 'auto'
             }`,
           }}
         >
-          {currentUser?.data?.information?.userId === userProfileId && (
+          {currentUser?.data?.userId === userProfileId && (
             <input
               type="file"
               id="uploadWallpaper"
@@ -167,7 +135,7 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
             />
           )}
         </RootStyle>
-      </label>
+      </label> */}
     </>
   );
 }

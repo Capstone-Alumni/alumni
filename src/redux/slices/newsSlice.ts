@@ -24,6 +24,18 @@ export const newsSliceApi = createApi({
         method: 'GET',
       }),
     }),
+    createNews: builer.mutation({
+      query: ({ title, content, newsImageUrl }) => ({
+        url: 'api/news',
+        method: 'POST',
+        body: {
+          title,
+          content,
+          newsImageUrl,
+        },
+      }),
+      invalidatesTags: ['News'],
+    }),
     updateNewsById: builer.mutation({
       query: ({ newsId, title, content, isPublic, newsImageUrl }) => ({
         url: `api/news/${newsId}`,
@@ -60,4 +72,5 @@ export const {
   useUpdateNewsByIdMutation,
   useGetNewsForPublicQuery,
   useGetNewsByIdForPublicQuery,
+  useCreateNewsMutation,
 } = newsSliceApi;

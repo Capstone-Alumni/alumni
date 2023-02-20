@@ -2,7 +2,10 @@ import { atom } from 'recoil';
 import {
   GetAdminEventListParams,
   GetOwnerEventListParams,
+  GetOwnerGoingEventListParams,
+  GetOwnerInterestEventListParams,
   GetPublicEventListParams,
+  GetPublicEventParticipantListParams,
 } from './types';
 
 export const getAdminEventListParamsAtom = atom<GetAdminEventListParams>({
@@ -10,15 +13,14 @@ export const getAdminEventListParamsAtom = atom<GetAdminEventListParams>({
   default: {
     limit: 10,
     page: 1,
-    archived: false,
-    approved: false,
+    approved: undefined,
   },
 });
 
 export const getOwnerEventListParamsAtom = atom<GetOwnerEventListParams>({
   key: 'getOwnerEventListParams',
   default: {
-    limit: 10,
+    limit: 12,
     page: 1,
   },
 });
@@ -30,3 +32,30 @@ export const getPublicEventListParamsAtom = atom<GetPublicEventListParams>({
     page: 1,
   },
 });
+
+export const getPublicEventParticipantListParamsAtom =
+  atom<GetPublicEventParticipantListParams>({
+    key: 'getPublicEventParticipantListParams',
+    default: {
+      limit: 10,
+      page: 1,
+    },
+  });
+
+export const getOwnerGoingEventListParamsAtom =
+  atom<GetOwnerGoingEventListParams>({
+    key: 'getOwnerGoingEventListParamsAtom',
+    default: {
+      limit: 10,
+      page: 1,
+    },
+  });
+
+export const getOwnerInterestEventListParamsAtom =
+  atom<GetOwnerInterestEventListParams>({
+    key: 'getOwnerInterestEventListParamsAtom',
+    default: {
+      limit: 10,
+      page: 1,
+    },
+  });

@@ -13,17 +13,37 @@ export type Event = {
   startTime: string | Date;
   endTime: string | Date;
   isEnded: boolean;
-  isApproved: boolean;
+  approvedStatus: -1 | 0 | 1;
   publicity: AccessLevel;
   publicParticipant: boolean;
   userId: string;
+  hostInformation?: {
+    id: string;
+    userId: string;
+    email: string;
+    fullName: string;
+  };
+  eventParticipants: EventParticipant[];
+  eventInterests: EventInterest[];
+};
+
+export type EventParticipant = {
+  id: string;
+  userId: string;
+  eventId: string;
+  participantInformation: any;
+};
+
+export type EventInterest = {
+  id: string;
+  userId: string;
+  eventId: string;
 };
 
 export type GetAdminEventListParams = {
   page: number;
   limit: number;
-  archived: boolean;
-  approved: boolean;
+  approved: number | undefined;
 };
 
 export type GetOwnerEventListParams = {
@@ -31,7 +51,22 @@ export type GetOwnerEventListParams = {
   limit: number;
 };
 
+export type GetOwnerGoingEventListParams = {
+  page: number;
+  limit: number;
+};
+
+export type GetOwnerInterestEventListParams = {
+  page: number;
+  limit: number;
+};
+
 export type GetPublicEventListParams = {
+  page: number;
+  limit: number;
+};
+
+export type GetPublicEventParticipantListParams = {
   page: number;
   limit: number;
 };

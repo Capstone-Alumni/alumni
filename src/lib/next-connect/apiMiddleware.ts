@@ -18,6 +18,8 @@ export const verifySchoolAdmin = async (
     throw new Error('denied');
   }
 
+  req.user = session.user;
+
   next();
 };
 
@@ -36,6 +38,8 @@ export const verifyAdminOrMod = async (
     throw new Error('denied');
   }
 
+  req.user = session.user;
+
   next();
 };
 
@@ -52,7 +56,18 @@ export const isAuthenticatedUser = async (
 
   req.user = session?.user;
 
-  console.log(req.user);
+  next();
+};
 
+export const extractUser = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  next: NextHandler,
+) => {
+  const session = await unstable_getServerSession(req, res, nextAuthOptions);
+
+  if (session) {
+    req.user = session?.user;
+  }
   next();
 };
