@@ -32,10 +32,6 @@ const AdminNewsListPage = () => {
     params,
   });
 
-  const navigateToNewsForm = () => {
-    router.replace('');
-  };
-
   return (
     <Box
       sx={{
