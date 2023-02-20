@@ -93,7 +93,7 @@ const NewsCommentInput = ({
               multiline
               rows={4}
               fullWidth
-              disabled={!user}
+              disabled={!user || user.accessStatus !== 'APPROVED'}
               label={user ? 'Bình luận' : 'Đăng nhập để bình luận'}
               {...field}
             />

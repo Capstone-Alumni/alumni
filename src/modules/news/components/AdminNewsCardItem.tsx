@@ -30,7 +30,7 @@ const AdminNewsCardItem = ({ item }: { item: News }) => {
     <Card
       sx={{
         display: 'flex',
-        height: '200px',
+        height: '30%',
         gap: '24px',
         mb: 2,
       }}

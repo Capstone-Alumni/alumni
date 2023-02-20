@@ -133,69 +133,79 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
         sx={{
           width: '100%',
           display: 'flex',
+          flexDirection: 'column',
         }}
       >
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+          }}
+        >
+          <Controller
+            control={control}
+            name="title"
+            render={({ field }) => {
+              const { value } = field;
+              if (value.length > 0) {
+                setHasValueTitle(true);
+              } else {
+                setHasValueTitle(false);
+              }
+              return (
+                <TextField
+                  sx={{
+                    width: '90%',
+                  }}
+                  fullWidth
+                  label="Tiêu đề"
+                  {...field}
+                />
+              );
+            }}
+          />
+          <Tooltip title="Tải ảnh đại diện cho tin">
+            <Box ml={2}>
+              <UploadImage
+                file={imageUrl}
+                maxSize={3145728}
+                icon
+                sx={{
+                  width: '50px',
+                  height: '50px',
+                  cursor: 'pointer',
+                }}
+                onDrop={(e, _) => handleDrop(e, 'newsImage')}
+              />
+            </Box>
+          </Tooltip>
+        </Box>
         <Controller
           control={control}
-          name="title"
-          render={({ field }) => {
-            const { value } = field;
+          name="content"
+          render={({ field: { value, onChange } }) => {
             if (value.length > 0) {
-              setHasValueTitle(true);
+              setHasValueContent(true);
             } else {
-              setHasValueTitle(false);
+              setHasValueContent(false);
             }
             return (
-              <TextField
+              <Editor
+                id="content"
                 sx={{
+                  height: 500,
+                  overflow: 'auto',
                   width: '90%',
+                  marginTop: 3,
                 }}
-                fullWidth
-                label="Tiêu đề"
-                {...field}
+                placeholder={'Nội dung'}
+                value={value}
+                onChange={onChange}
               />
             );
           }}
         />
-        <Tooltip title="Tải ảnh đại diện cho tin">
-          <Box ml={2}>
-            <UploadImage
-              file={imageUrl}
-              maxSize={3145728}
-              icon
-              sx={{
-                width: '50px',
-                height: '50px',
-                cursor: 'pointer',
-              }}
-              onDrop={(e, _) => handleDrop(e, 'newsImage')}
-            />
-          </Box>
-        </Tooltip>
       </Box>
-      <Controller
-        control={control}
-        name="content"
-        render={({ field: { value, onChange } }) => {
-          if (value.length > 0) {
-            setHasValueContent(true);
-          } else {
-            setHasValueContent(false);
-          }
-          return (
-            <Editor
-              id="content"
-              sx={{
-                height: 500,
-                overflow: 'auto',
-              }}
-              placeholder={'Nội dung'}
-              value={value}
-              onChange={onChange}
-            />
-          );
-        }}
-      />
 
       <Box
         sx={{

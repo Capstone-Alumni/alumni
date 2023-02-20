@@ -1,20 +1,16 @@
 'use client';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
 import { getImageOfNews } from '@share/utils/getFirstImageOfNews';
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { News } from '../types';
 import PublicNewsCardItemImage from './PublicNewsCardItemImage';
 
-const PublicNewsCardItems = ({ item, sx }: { item: any; sx?: any }) => {
+const PublicNewsCardItems = ({ item, sx }: { item: News; sx?: any }) => {
   const srcImg = item.newsImageUrl
     ? item.newsImageUrl
     : getImageOfNews(item.content);
-  const router = useRouter();
-  const readNewsDetails = (event: React.ChangeEvent<unknown>) => {
-    event.preventDefault();
-    router.replace(`/news/${item.id}`);
-  };
+
   return (
     <Box
       sx={{
@@ -22,16 +18,33 @@ const PublicNewsCardItems = ({ item, sx }: { item: any; sx?: any }) => {
       }}
     >
       <PublicNewsCardItemImage srcImg={srcImg} sx={sx} />
-      <Typography
+      <Box
         sx={{
-          marginTop: sx.marginImg,
-          cursor: 'pointer',
+          maxHeight: '100px',
+          textOverflow: 'ellipsis',
+          overflow: 'hidden',
         }}
-        onClick={readNewsDetails}
-        variant={sx.typoVariant}
       >
-        {item.title}
-      </Typography>
+        <Link
+          sx={{
+            color: 'inherit',
+            '&:focus, &:hover, &:visited, &:link, &:active': {
+              textDecoration: 'none',
+            },
+          }}
+          href={`/news/${item.id}`}
+        >
+          <Typography
+            sx={{
+              marginTop: sx.marginImg,
+              cursor: 'pointer',
+            }}
+            variant={sx.typoVariant}
+          >
+            {item.title}
+          </Typography>
+        </Link>
+      </Box>
     </Box>
   );
 };

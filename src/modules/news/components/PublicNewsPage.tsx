@@ -136,6 +136,7 @@ const PublicNewsPage = () => {
                     gap: '60px',
                     marginTop: 4,
                     height: '250px',
+                    marginBottom: 4,
                   }}
                 >
                   {olderNews.data.items.map((item: any) => (
