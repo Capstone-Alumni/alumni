@@ -17,6 +17,8 @@ import Avatar from '@share/components/MyAvatar';
 import { isAllowToViewValue } from 'src/utils/mappingPublicity';
 import { useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
+import { useState } from 'react';
+import LoadingIndicator from '@share/components/LoadingIndicator';
 // ----------------------------------------------------------------------
 
 const Wrapper = styled('div')(({ theme }) => ({
@@ -32,7 +34,12 @@ const SeachPage = () => {
   const searchParams = useSearchParams();
   const name = searchParams.get('name');
   const router = useRouter();
-  const usersProfileResponse = useGetUsersProfileQuery(name);
+  const [page, setPage] = useState(1);
+  const usersProfileResponse = useGetUsersProfileQuery({
+    name: name || '',
+    page,
+    limit: 5,
+  });
   const currentUser = useAppSelector((state: RootState) => state.currentUser);
 
   const handleDirectToProfile = (userId: string) => {
@@ -49,7 +56,9 @@ const SeachPage = () => {
         <Grid container spacing={3} maxWidth="md" sx={{ margin: 'auto' }}>
           <Grid item xs={12} md={12}>
             <Stack sx={{ margin: '0 0 1rem 0' }}>
-              <Typography variant="h6">Kết quả tìm kiếm</Typography>
+              <Typography variant="h6">
+                {Boolean(name) ? 'Kết quả tìm kiếm' : 'Người bạn có thể quen'}
+              </Typography>
             </Stack>
             {usersProfileResponse?.data?.data?.items?.map((user: any) => {
               return (
@@ -113,26 +122,44 @@ const SeachPage = () => {
     }
   };
 
+  const handleChangePage = (event: any, value: any) => {
+    setPage(value);
+    // usersProfileResponse.refetch({});
+  };
+
   return (
     <>
-      {usersProfileResponse.isLoading && <p>Loading</p>}
-      {handleRenderUsersProfile()}
-      <Grid
-        container
-        spacing={3}
-        maxWidth="md"
-        sx={{
-          marginTop: '3rem',
-          margin: 'auto',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Stack spacing={4}>
-          <Pagination count={10} color="primary" />
-        </Stack>
-      </Grid>
+      {usersProfileResponse.isLoading ? (
+        <LoadingIndicator />
+      ) : (
+        <>
+          {handleRenderUsersProfile()}
+          <Grid
+            container
+            spacing={3}
+            maxWidth="md"
+            sx={{
+              marginTop: '3rem',
+              margin: 'auto',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Stack spacing={4}>
+              <Pagination
+                page={page}
+                count={
+                  usersProfileResponse?.data?.data.totalItems /
+                  usersProfileResponse?.data?.data.itemPerPage
+                }
+                color="primary"
+                onChange={handleChangePage}
+              />
+            </Stack>
+          </Grid>
+        </>
+      )}
     </>
   );
 };

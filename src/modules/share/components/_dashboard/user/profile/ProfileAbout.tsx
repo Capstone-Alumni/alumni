@@ -34,7 +34,7 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
     <Grid container spacing={3}>
       <Grid item xs={12} md={12}>
         <Card sx={{ p: 3, overflow: 'visible' }}>
-          <ProfileCover userProfileId={userInformation.userId} />
+          <ProfileCover userProfileId={userInformation?.userId} />
           <Stack sx={{ margin: '1.5rem 0 0.5rem 0' }}>
             <Box
               style={{

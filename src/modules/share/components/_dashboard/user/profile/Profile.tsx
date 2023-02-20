@@ -13,6 +13,7 @@ import BackIcon from '@mui/icons-material/ArrowBack';
 import { useState } from 'react';
 import UserEditWrapper from './UserEditWrapper';
 import FormDialogs from '@share/components/material-ui/dialog/FormDialogs';
+import LoadingIndicator from '@share/components/LoadingIndicator';
 
 // ----------------------------------------------------------------------
 
@@ -157,8 +158,6 @@ export default function Profile({
       )}
     </Grid>
   ) : (
-    <>
-      <p>Loading</p>
-    </>
+    <LoadingIndicator />
   );
 }
