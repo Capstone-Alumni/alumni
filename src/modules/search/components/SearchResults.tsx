@@ -14,7 +14,6 @@ import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { useGetUsersProfileQuery } from 'src/redux/slices/searchProfiles';
 import Avatar from '@share/components/MyAvatar';
-import { isAllowToViewValue } from 'src/utils/mappingPublicity';
 import { useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
 import { useState } from 'react';
@@ -56,7 +55,7 @@ const SeachPage = () => {
           <Grid item xs={12} md={12}>
             <Stack sx={{ margin: '0 0 1rem 0' }}>
               <Typography variant="h6">
-                {Boolean(name) ? 'Kết quả tìm kiếm' : 'Người bạn có thể quen'}
+                {name ? 'Kết quả tìm kiếm' : 'Người bạn có thể quen'}
               </Typography>
             </Stack>
             {usersProfileResponse?.data?.data?.items?.map((user: any) => {
@@ -86,26 +85,17 @@ const SeachPage = () => {
                           flexDirection="column"
                           sx={{ justifyContent: 'space-between' }}
                         >
-                          {isAllowToViewValue(
-                            currentUser.data,
-                            user,
-                            user.emailPublicity,
-                          ) && (
-                            <Typography variant="caption">
-                              <strong>Email: </strong>
-                              {user?.userEmail ?? 'Chưa cập nhật'}
-                            </Typography>
-                          )}
-                          {user?.gradeName && (
+                          {user?.alumClass && (
                             <Typography variant="caption">
                               <strong>Khối: </strong>
-                              {user?.gradeName}
+                              {user?.alumClass.grade.code} -{' '}
+                              {user?.alumClass.grade.name}
                             </Typography>
                           )}
-                          {user?.className && (
+                          {user?.alumClass && (
                             <Typography variant="caption">
                               <strong>Lớp: </strong>
-                              {user?.className}
+                              {user?.alumClass.name}
                             </Typography>
                           )}
                         </Box>

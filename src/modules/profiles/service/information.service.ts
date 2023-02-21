@@ -67,6 +67,13 @@ export default class InformationService {
           where: {
             fullName: { contains: name, mode: 'insensitive' },
           },
+          include: {
+            alumClass: {
+              include: {
+                grade: true,
+              },
+            },
+          },
         }),
       ]);
     return {
