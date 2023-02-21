@@ -76,6 +76,7 @@ interface UploadAvatarProps extends DropzoneOptions {
   file: CustomFile | string | null;
   caption?: ReactNode;
   sx?: SxProps<Theme>;
+  icon?: boolean;
 }
 
 export default function UploadAvatar({
@@ -84,6 +85,7 @@ export default function UploadAvatar({
   caption,
   sx,
   disabled,
+  icon,
   ...other
 }: UploadAvatarProps) {
   const {
@@ -170,11 +172,13 @@ export default function UploadAvatar({
                 <Box
                   component={Icon}
                   icon={roundAddAPhoto}
-                  sx={{ width: 24, height: 24, mb: 1 }}
+                  sx={{ width: 24, height: 24, mb: icon ? 0 : 1 }}
                 />
-                <Typography variant="caption">
-                  {file ? 'Update photo' : 'Upload photo'}
-                </Typography>
+                {!icon ? (
+                  <Typography variant="caption">
+                    {file ? 'Update photo' : 'Upload photo'}
+                  </Typography>
+                ) : null}
               </PlaceholderStyle>
             )}
           </DropZoneStyle>

@@ -10,6 +10,7 @@ export type News = {
   archived: boolean;
   newsCategories?: string[];
   isPublic: boolean;
+  newsImageUrl?: string;
 };
 
 export type GetNewsListDataParams = {
@@ -25,16 +26,44 @@ export type GetNewsListData = {
   itemPerPage: number;
 };
 
+export type GetListNewComment = {
+  page?: number;
+  limit?: number;
+};
+
+export type CreateOrUpdateNewComment = {
+  commentContent: string;
+};
+
+type CommenterInfor = {
+  id: string;
+  fullName: string;
+  avatarUrl: string;
+};
+
+export type NewsComment = {
+  archived: boolean;
+  commentContent: string;
+  commenterId: string;
+  commenterInfo: CommenterInfor;
+  commenterInfoId: string;
+  createdAt: string;
+  id: string;
+  newsId: string;
+  updatedAt: string;
+};
 /** ========================== BE ================================= */
 
 export type CreateNewsProps = {
   title: string;
   content: string;
+  newsImageUrl?: string;
 };
 
 export type UpdateNewsProps = {
   title?: string;
   content?: string;
+  newsImageUrl?: string;
 };
 
 export type GetListNewParams = {

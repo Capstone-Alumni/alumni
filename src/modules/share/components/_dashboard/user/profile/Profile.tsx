@@ -41,17 +41,7 @@ export default function Profile({
   };
 
   return !!currentUser?.data?.userId && !!userProfileId ? (
-    <Grid container spacing={3} sx={{ height: '100vh' }}>
-      <Box
-        display="flex"
-        sx={{
-          margin: '1.5rem 0 2rem 1.5rem',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          alignItems: 'center',
-          width: '100%',
-        }}
-      ></Box>
+    <Grid container spacing={3}>
       {!openEdit ? (
         <>
           {userInformation?.error ? (

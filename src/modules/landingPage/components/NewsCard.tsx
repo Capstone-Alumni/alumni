@@ -24,8 +24,6 @@ const NewsCard = ({
 }) => {
   const theme = useTheme();
 
-  const srcImg = getImageOfNews(item.content);
-
   return (
     <Card
       sx={{
@@ -39,7 +37,9 @@ const NewsCard = ({
         sx={{
           height: theme.spacing(23),
           padding: theme.spacing(2),
-          backgroundImage: srcImg,
+          backgroundImage: `url(${
+            item.newsImageUrl ? item.newsImageUrl : getImageOfNews(item.content)
+          })`,
         }}
       />
       {/* {!srcImg.startsWith('/logo') ? (
@@ -67,7 +67,9 @@ const NewsCard = ({
           gap: theme.spacing(1),
         }}
       >
-        <Typography fontSize={20}>{item.title}</Typography>
+        <Typography fontSize={20} fontWeight={600}>
+          {item.title}
+        </Typography>
         {/* <Typography variant="body2">{item.content}</Typography> */}
 
         <Box sx={{ flex: 1 }} />

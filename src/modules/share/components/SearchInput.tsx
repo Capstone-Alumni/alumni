@@ -56,6 +56,7 @@ export default function SearchInput({
   placeholder,
   value,
   onChange,
+  ...props
 }: InputProps) {
   return (
     <Search>
@@ -67,6 +68,7 @@ export default function SearchInput({
         placeholder={placeholder || 'Search…'}
         inputProps={{ 'aria-label': 'search' }}
         onChange={onChange}
+        {...props}
       />
     </Search>
   );

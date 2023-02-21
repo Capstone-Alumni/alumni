@@ -44,15 +44,13 @@ const UserProfile = () => {
   }
 
   return userProfileId ? (
-    <Container maxWidth={'lg'}>
-      {/* <Box> */}
+    <Container maxWidth={'lg'} sx={{ marginTop: '4rem' }}>
       <Profile
         userProfileId={userProfileId}
         userInformation={userInformationResponse}
         userCareers={userCareersResponse}
         userEducations={userEducationsResponse}
       />
-      {/* </Box> */}
     </Container>
   ) : (
     <></>

@@ -6,7 +6,7 @@ import {
   UpdateClassInfoByIdServiceProps,
 } from '../types';
 
-export default class GradeService {
+export default class ClassService {
   static create = async (
     tenantPrisma: PrismaClient,
     { name, gradeId }: CreateClassServiceProps,
@@ -25,7 +25,7 @@ export default class GradeService {
       throw new Error('grade not exist');
     }
 
-    const newClass = await tenantPrisma.class.create({
+    const newClass = await tenantPrisma.alumClass.create({
       data: {
         name: name,
         grade: {
@@ -35,6 +35,8 @@ export default class GradeService {
         },
       },
     });
+
+    await tenantPrisma.$disconnect();
 
     return newClass;
   };
@@ -54,15 +56,17 @@ export default class GradeService {
     };
 
     const [totalClassItem, classItems] = await tenantPrisma.$transaction([
-      tenantPrisma.class.count({
+      tenantPrisma.alumClass.count({
         where: whereFilter,
       }),
-      tenantPrisma.class.findMany({
+      tenantPrisma.alumClass.findMany({
         skip: (page - 1) * limit,
         take: limit,
         where: whereFilter,
       }),
     ]);
+
+    await tenantPrisma.$disconnect();
 
     return {
       totalItems: totalClassItem,
@@ -72,11 +76,13 @@ export default class GradeService {
   };
 
   static getById = async (tenantPrisma: PrismaClient, id: string) => {
-    const grade = await tenantPrisma.class.findUnique({
+    const grade = await tenantPrisma.alumClass.findUnique({
       where: {
         id: id,
       },
     });
+
+    await tenantPrisma.$disconnect();
 
     return grade;
   };
@@ -86,7 +92,7 @@ export default class GradeService {
     id: string,
     data: UpdateClassInfoByIdServiceProps,
   ) => {
-    const classUpdated = await tenantPrisma.class.update({
+    const classUpdated = await tenantPrisma.alumClass.update({
       where: {
         id: id,
       },
@@ -97,7 +103,7 @@ export default class GradeService {
   };
 
   static deleteById = async (tenantPrisma: PrismaClient, id: string) => {
-    const classDeleted = await tenantPrisma.class.update({
+    const classDeleted = await tenantPrisma.alumClass.update({
       where: {
         id: id,
       },

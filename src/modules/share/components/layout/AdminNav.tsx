@@ -27,11 +27,17 @@ const NEWS_NAV_ITEM = {
   icon: 'fluent:news-16-filled',
   link: '/admin/news',
 };
-const EVENT_NAV_ITEM = {
-  id: 'grade_class_4',
+const FUND_NAV_ITEM = {
+  id: 'event',
   title: 'Quỹ',
+  icon: 'ri:refund-2-line',
+  link: '/admin/funds',
+};
+const EVENT_NAV_ITEM = {
+  id: 'event',
+  title: 'Sự kiện',
   icon: 'ic:baseline-event',
-  link: '/admin/events',
+  link: '/admin/event',
 };
 
 const GRADE_NAV_ITEM = {
@@ -145,6 +151,7 @@ const generateNavItems = (
       return [
         ACCESS_NAV_ITEM,
         NEWS_NAV_ITEM,
+        FUND_NAV_ITEM,
         EVENT_NAV_ITEM,
         GRADE_NAV_ITEM,
         USER_NAV_ITEM,

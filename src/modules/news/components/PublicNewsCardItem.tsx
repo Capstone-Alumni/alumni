@@ -1,65 +1,50 @@
 'use client';
 
-import { Box, Card, Typography } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
 import { getImageOfNews } from '@share/utils/getFirstImageOfNews';
-import Image from 'next/image';
-import parse from 'html-react-parser';
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { News } from '../types';
+import PublicNewsCardItemImage from './PublicNewsCardItemImage';
 
-const PublicNewsCardItems = ({
-  item,
-  sx,
-  relativeImg = false,
-}: {
-  item: any;
-  sx?: any;
-  relativeImg?: boolean;
-}) => {
-  const srcImg = getImageOfNews(item.content);
-  const router = useRouter();
-  const readNewsDetails = (event: React.ChangeEvent<unknown>) => {
-    event.preventDefault();
-    router.replace(`/news/${item.id}`);
-  };
+const PublicNewsCardItems = ({ item, sx }: { item: News; sx?: any }) => {
+  const srcImg = item.newsImageUrl
+    ? item.newsImageUrl
+    : getImageOfNews(item.content);
+
   return (
     <Box
       sx={{
         width: sx.width,
       }}
     >
-      <Card
+      <PublicNewsCardItemImage srcImg={srcImg} sx={sx} />
+      <Box
         sx={{
-          height: sx.height,
+          maxHeight: '100px',
+          textOverflow: 'ellipsis',
+          overflow: 'hidden',
         }}
       >
-        {!srcImg.startsWith('/logo') ? (
-          <div
-            style={{
-              height: '100%',
+        <Link
+          sx={{
+            color: 'inherit',
+            '&:focus, &:hover, &:visited, &:link, &:active': {
+              textDecoration: 'none',
+            },
+          }}
+          href={`/news/${item.id}`}
+        >
+          <Typography
+            sx={{
+              marginTop: sx.marginImg,
+              cursor: 'pointer',
             }}
+            variant={sx.typoVariant}
           >
-            {parse(srcImg)}
-          </div>
-        ) : (
-          <Image
-            src={srcImg}
-            alt="logo"
-            width={sx.imgWidth}
-            height={sx.imgHeight}
-          />
-        )}
-      </Card>
-      <Typography
-        sx={{
-          marginTop: sx.marginImg,
-          cursor: 'pointer',
-        }}
-        onClick={readNewsDetails}
-        variant={sx.typoVariant}
-      >
-        {item.title}
-      </Typography>
+            {item.title}
+          </Typography>
+        </Link>
+      </Box>
     </Box>
   );
 };

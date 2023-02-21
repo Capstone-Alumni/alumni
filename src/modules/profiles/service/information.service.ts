@@ -37,6 +37,9 @@ export default class InformationService {
   ) => {
     const userInformation = await tenantPrisma.information.findUnique({
       where: { userId: id },
+      include: {
+        alumClass: true,
+      }
     });
 
     return omit(userInformation, ['password']);

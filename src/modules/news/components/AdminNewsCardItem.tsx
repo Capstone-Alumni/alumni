@@ -9,7 +9,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+// import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ReactHtmlParser from 'html-react-parser';
 import Switch from '@mui/material/Switch';
 import { News } from '../types';
@@ -30,7 +30,7 @@ const AdminNewsCardItem = ({ item }: { item: News }) => {
     <Card
       sx={{
         display: 'flex',
-        height: '200px',
+        height: '30%',
         gap: '24px',
         mb: 2,
       }}
@@ -113,7 +113,6 @@ const AdminNewsCardItem = ({ item }: { item: News }) => {
             marginTop: 3,
           }}
         >
-          <AccessTimeIcon color="disabled" />
           <Typography
             sx={{
               fontFamily: 'Inter',

@@ -64,23 +64,14 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                         : 'Chưa cập nhật'
                     }
                   />
-                  {isAllowToViewValue(
-                    currentUser.data,
-                    userInformation,
-                    userInformation?.emailPublicity,
-                  ) &&
-                    Boolean(userInformation?.userEmail) && (
-                      <ProfileInfoRow
-                        title="Email liên lạc"
-                        content={userInformation.userEmail}
-                        isPrivacy
-                        userInformationData={userInformation}
-                        name="emailPublicity"
-                        isAllowToView={
-                          userInformation?.userId === currentUser.data?.userId
-                        }
-                      />
-                    )}
+                  <ProfileInfoRow
+                    title="Email liên lạc"
+                    content={
+                      userInformation?.email
+                        ? userInformation.email
+                        : 'Chưa cập nhật'
+                    }
+                  />
                   {isAllowToViewValue(
                     currentUser.data,
                     userInformation,
@@ -151,22 +142,22 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                         }
                       />
                     )}
-                  <ProfileInfoRow
+                  {/* <ProfileInfoRow
                     title="Khối"
                     content={
                       userInformation?.gradeName
                         ? userInformation.gradeName
                         : 'Chưa cập nhật'
                     }
-                  />
-                  <ProfileInfoRow
+                  /> */}
+                  {/* <ProfileInfoRow
                     title="Lớp"
                     content={
-                      userInformation?.className
+                      userInformation?.
                         ? userInformation.className
                         : 'Chưa cập nhật'
                     }
-                  />
+                  /> */}
                 </Box>
               </Box>
             </Box>

@@ -16,6 +16,7 @@ export const newsSliceApi = createApi({
         params: params,
         method: 'GET',
       }),
+      providesTags: ['News'],
     }),
     getNewsByIdForSchoolAdmin: builer.query({
       query: (newsId: string) => ({
@@ -23,14 +24,27 @@ export const newsSliceApi = createApi({
         method: 'GET',
       }),
     }),
+    createNews: builer.mutation({
+      query: ({ title, content, newsImageUrl }) => ({
+        url: 'api/news',
+        method: 'POST',
+        body: {
+          title,
+          content,
+          newsImageUrl,
+        },
+      }),
+      invalidatesTags: ['News'],
+    }),
     updateNewsById: builer.mutation({
-      query: ({ newsId, title, content, isPublic }) => ({
+      query: ({ newsId, title, content, isPublic, newsImageUrl }) => ({
         url: `api/news/${newsId}`,
         method: 'PUT',
         body: {
           title,
           content,
           isPublic,
+          newsImageUrl,
         },
       }),
       invalidatesTags: ['News'],
@@ -41,6 +55,7 @@ export const newsSliceApi = createApi({
         params: params,
         method: 'GET',
       }),
+      providesTags: ['News'],
     }),
     getNewsByIdForPublic: builer.query({
       query: (newsId: string) => ({
@@ -57,4 +72,5 @@ export const {
   useUpdateNewsByIdMutation,
   useGetNewsForPublicQuery,
   useGetNewsByIdForPublicQuery,
+  useCreateNewsMutation,
 } = newsSliceApi;
