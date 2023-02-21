@@ -25,7 +25,9 @@ const Wrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
+  cursor: 'pointer',
   gap: theme.spacing(1),
+  padding: '0.25rem',
   borderRadius: theme.spacing(4),
   paddingRight: theme.spacing(1),
   '&:hover': {
@@ -37,8 +39,6 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
   const theme = useTheme();
   const router = useRouter();
   const currentUser = useAppSelector((state: RootState) => state.currentUser);
-
-  console.log(user);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -59,7 +59,9 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
         onClick={handleClick}
       >
         <MyAvatar src={currentUser?.data?.avatarUrl ?? null} />
-        <Typography>{user?.email}</Typography>
+        <Typography variant="subtitle2" fontWeight={'bold'}>
+          {user?.email}
+        </Typography>
       </Wrapper>
       <Menu
         id="header-user-menu"

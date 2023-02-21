@@ -12,19 +12,21 @@ import React, { useState } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ProfileInfoRow from './InfoRow';
 import { toast } from 'react-toastify';
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import FormDialogs from '@share/components/material-ui/dialog/FormDialogs';
 import SchoolIcon from '@mui/icons-material/School';
 import EducationForm from './EducationForm';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useUpdateUserEducationsMutation } from 'src/redux/slices/userProfileSlice';
-import BasicSelect from '@share/components/Select';
+import { isAllowToViewValue } from 'src/utils/mappingPublicity';
 
 const UserEducation = ({
   editable,
   userEducations,
   userProfileId,
   userInformationData,
+  currentUser,
 }: any) => {
   const theme = useTheme();
 
@@ -129,11 +131,23 @@ const UserEducation = ({
                   </IconButton>
                 ) : null}
               </Box>
-              <BasicSelect
-                userId={userInformationData?.userId}
-                name="educationPublicity"
-                value={userInformationData?.educationPublicity}
-              />
+              {currentUser?.data?.userId === userInformationData?.userId && (
+                <FormDialogs
+                  children={
+                    <Box
+                      sx={{
+                        height: '24px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <VisibilityIcon />
+                    </Box>
+                  }
+                  name="educationPublicity"
+                  userInformation={userInformationData}
+                  editType="visibility"
+                />
+              )}
             </Box>
           </Stack>
           <div>

@@ -13,26 +13,27 @@ import { toast } from 'react-toastify';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ProfileInfoRow from './InfoRow';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import FormDialogs from '@share/components/material-ui/dialog/FormDialogs';
 
 import WorkIcon from '@mui/icons-material/Work';
 import WorkForm from './WorkForm';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useUpdateUserCareersMutation } from 'src/redux/slices/userProfileSlice';
-import BasicSelect from '@share/components/Select';
+import { isAllowToViewValue } from 'src/utils/mappingPublicity';
 
 const UserCareers = ({
   editable,
   userCareers,
   userProfileId,
   userInformationData,
+  currentUser,
 }: any) => {
   const theme = useTheme();
-
   const [openAddForm, setOpenAddForm] = useState(false);
   const [selectedEditId, setSelectedEditId] = useState(null);
   const [updateUserCareers] = useUpdateUserCareersMutation();
-
   const workData = userCareers;
 
   const onAddWork = async (values: any) => {
@@ -126,11 +127,23 @@ const UserCareers = ({
                   </IconButton>
                 ) : null}
               </Box>
-              <BasicSelect
-                userId={userInformationData?.userId}
-                name="careerPublicity"
-                value={userInformationData?.careerPublicity}
-              />
+              {currentUser?.data?.userId === userInformationData?.userId && (
+                <FormDialogs
+                  children={
+                    <Box
+                      sx={{
+                        height: '24px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <VisibilityIcon />
+                    </Box>
+                  }
+                  name="careerPublicity"
+                  userInformation={userInformationData}
+                  editType="visibility"
+                />
+              )}
             </Box>
           </Stack>
           <div>

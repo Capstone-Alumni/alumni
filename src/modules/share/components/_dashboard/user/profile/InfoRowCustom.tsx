@@ -1,12 +1,14 @@
 import { Box, Grid, Typography, useTheme } from '@mui/material';
-import BasicSelect from '@share/components/Select';
+import FormDialogs from '@share/components/material-ui/dialog/FormDialogs';
 import React from 'react';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const ProfileInfoRow = ({
   title,
   content,
   userInformationData,
   isPrivacy = false,
+  isAllowToView = false,
   name,
 }: any) => {
   const theme = useTheme();
@@ -27,18 +29,37 @@ const ProfileInfoRow = ({
       >
         <Box
           sx={{
-            maxWidth: `${isPrivacy ? '150px' : '300px'}`,
-            width: `${isPrivacy ? '150px' : '300px'}`,
+            maxWidth: `${isPrivacy ? '2000px' : '300px'}`,
+            width: `${isPrivacy ? '200px' : '300px'}`,
           }}
         >
-          <Typography>{content ? content : 'Chưa cập nhập'}</Typography>
+          <Typography sx={{ whiteSpace: 'initial', wordWrap: 'break-word' }}>
+            {content ? content : 'Chưa cập nhập'}
+          </Typography>
         </Box>
-        {isPrivacy && (
-          <Box sx={{ width: '150px', marginRight: '1rem' }}>
-            <BasicSelect
-              userId={userInformationData?.userId}
-              name={name}
-              value={userInformationData[name]}
+        {isPrivacy && isAllowToView && (
+          <Box
+            sx={{
+              width: '150px',
+              marginRight: '1rem',
+              alignItems: 'center',
+              display: 'flex',
+            }}
+          >
+            <FormDialogs
+              children={
+                <Box
+                  sx={{
+                    height: '24px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <VisibilityIcon />
+                </Box>
+              }
+              name={name as string}
+              userInformation={userInformationData}
+              editType="visibility"
             />
           </Box>
         )}

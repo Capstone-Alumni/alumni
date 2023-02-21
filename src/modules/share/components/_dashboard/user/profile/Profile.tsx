@@ -99,6 +99,7 @@ export default function Profile({
                       editable={false}
                       userCareers={userCareers?.data?.data?.items}
                       userInformationData={userInformationData}
+                      currentUser={currentUser}
                     />
                   </Grid>
                 )
@@ -118,6 +119,7 @@ export default function Profile({
                       editable={false}
                       userEducations={userEducations?.data?.data?.items}
                       userInformationData={userInformationData}
+                      currentUser={currentUser}
                     />
                   </Grid>
                 )
@@ -133,6 +135,7 @@ export default function Profile({
               userInformation={userInformation}
               userCareers={userCareers}
               userEducations={userEducations}
+              currentUser={currentUser}
             />
           </Box>
           <Box

@@ -51,7 +51,7 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                   <ProfileInfoRow
                     title="Bio"
                     content={
-                      userInformation?.bio
+                      Boolean(userInformation?.bio)
                         ? userInformation.bio
                         : 'Chưa cập nhật'
                     }
@@ -76,6 +76,9 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                         isPrivacy
                         userInformationData={userInformation}
                         name="emailPublicity"
+                        isAllowToView={
+                          userInformation?.userId === currentUser.data?.userId
+                        }
                       />
                     )}
                   {isAllowToViewValue(
@@ -90,6 +93,9 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                         isPrivacy
                         userInformationData={userInformation}
                         name="phonePublicity"
+                        isAllowToView={
+                          userInformation?.userId === currentUser.data?.userId
+                        }
                       />
                     )}
                   {isAllowToViewValue(
@@ -118,6 +124,9 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                         isPrivacy
                         name="facebookPublicity"
                         userInformationData={userInformation}
+                        isAllowToView={
+                          userInformation?.userId === currentUser.data?.userId
+                        }
                       />
                     )}
                   {isAllowToViewValue(
@@ -137,6 +146,9 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                         isPrivacy
                         userInformationData={userInformation}
                         name="dateOfBirthPublicity"
+                        isAllowToView={
+                          userInformation?.userId === currentUser.data?.userId
+                        }
                       />
                     )}
                   <ProfileInfoRow

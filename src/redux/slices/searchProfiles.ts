@@ -37,4 +37,4 @@ export const searchProfilesApi = createApi({
 
 // Export hooks for usage in function components, which are
 // auto-generated based on the defined endpoints
-export const { useGetUsersProfileQuery } = searchProfilesApi;
+export const { useGetUsersProfileQuery, reducerPath } = searchProfilesApi;

@@ -22,6 +22,8 @@ import { LoadingButton } from '@mui/lab';
 import { useUpdateUserInformationMutation } from 'src/redux/slices/userProfileSlice';
 import axiosInstance from 'src/utils/axios';
 import { Information } from '@prisma/client';
+import { useAppDispatch } from 'src/redux/hooks';
+import { reducerPath } from 'src/redux/slices/searchProfiles';
 
 type UserInfoProps = {
   userInformation?: Information;
@@ -31,7 +33,7 @@ type UserInfoProps = {
 const UserInfo = ({ userInformation, userProfileId }: UserInfoProps) => {
   const theme = useTheme();
   const [updateUserInformation] = useUpdateUserInformationMutation();
-
+  const dispatch = useAppDispatch();
   const [classes, setClasses] = useState([]);
   const [grades, setGrades] = useState([]);
 
@@ -86,6 +88,10 @@ const UserInfo = ({ userInformation, userProfileId }: UserInfoProps) => {
           });
           setSubmitting(false);
           toast.success('Cập nhật thành công');
+          dispatch({
+            type: `${reducerPath}/invalidateTags`,
+            payload: ['Search'],
+          });
         }
       } catch (error: any) {
         toast.error('Có lỗi xảy ra, vui lòng thử lại');

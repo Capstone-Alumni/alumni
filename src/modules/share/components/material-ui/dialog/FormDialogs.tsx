@@ -2,14 +2,18 @@ import { useState } from 'react';
 // material
 import { Button, Dialog, Box } from '@mui/material';
 import EditVisibilityForm from '@share/components/_dashboard/user/profile/EditVisibilityForm';
-import { Information } from '@prisma/client';
+import { Information, ScopePublicity } from '@prisma/client';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import { mappingScopPublicity } from 'src/utils/mappingPublicity';
 
 // ----------------------------------------------------------------------
 interface FormDialogsProps {
   buttonContent?: string;
   children?: React.ReactNode;
   editType?: string;
-  userInformation: Information;
+  userInformation: any;
+  name: string;
 }
 
 export default function FormDialogs({
@@ -17,6 +21,7 @@ export default function FormDialogs({
   children,
   editType,
   userInformation,
+  name,
 }: FormDialogsProps) {
   const [open, setOpen] = useState(false);
 
@@ -31,7 +36,19 @@ export default function FormDialogs({
   return (
     <div>
       {children ? (
-        <Box onClick={handleClickOpen}>{children}</Box>
+        <Box onClick={handleClickOpen}>
+          <Tooltip
+            title={
+              name
+                ? mappingScopPublicity[userInformation[name] as ScopePublicity]
+                : 'Tuỷ chỉnh quyền riêng tư'
+            }
+          >
+            <IconButton sx={{ height: '24px', width: '24px' }}>
+              {children}
+            </IconButton>
+          </Tooltip>
+        </Box>
       ) : (
         <Button variant="contained" onClick={handleClickOpen}>
           {buttonContent}
@@ -43,6 +60,7 @@ export default function FormDialogs({
           <EditVisibilityForm
             onClose={handleClose}
             userInformation={userInformation}
+            name={name}
           />
         )}
       </Dialog>
