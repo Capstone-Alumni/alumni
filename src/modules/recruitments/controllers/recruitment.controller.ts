@@ -10,8 +10,12 @@ export default class RecruitmentController {
   ) => {
     try {
       const prisma = await getPrismaClient(req.tenantId);
-      const { id: userId } = req.user;
-      const created = await RecruimentService.create(prisma, userId, req.body);
+      const recruitmentOwnerId = req.user.id;
+      const created = await RecruimentService.create(
+        prisma,
+        recruitmentOwnerId,
+        req.body,
+      );
       return res.status(200).json({
         status: true,
         data: created,

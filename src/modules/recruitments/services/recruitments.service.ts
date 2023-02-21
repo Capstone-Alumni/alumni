@@ -26,12 +26,25 @@ export default class RecruimentService {
     recruitmentOwnerId: string,
     body: CreateRecruitmentProps,
   ) => {
-    const newRecruitment = await tenantPrisma.recruitment.create({
-      data: {
-        ...body,
-        recruitmentOwnerId: recruitmentOwnerId,
-      },
+    const recruitmentOwnerInfo = await tenantPrisma.information.findFirst({
+      where: { userId: recruitmentOwnerId },
     });
+    const newRecruitment = recruitmentOwnerInfo
+      ? await tenantPrisma.recruitment.create({
+          data: {
+            ...body,
+            recruitmentOwnerId: recruitmentOwnerId,
+            recruitmentOwnerInfo: {
+              connect: { id: recruitmentOwnerInfo?.id },
+            },
+          },
+        })
+      : await tenantPrisma.recruitment.create({
+          data: {
+            ...body,
+            recruitmentOwnerId: recruitmentOwnerId,
+          },
+        });
     return newRecruitment;
   };
 
