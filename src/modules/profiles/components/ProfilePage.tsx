@@ -1,59 +1,30 @@
 'use client';
 
-import { styled } from '@mui/material';
-import { Box, Container } from '@mui/material';
-
-import { Profile } from '../../share/components/_dashboard/user/profile';
-import { redirect, usePathname } from 'next/navigation';
-import {
-  useGetUserCareersQuery,
-  useGetUserEducationsQuery,
-  useGetUserInformationQuery,
-} from 'src/redux/slices/userProfileSlice';
-
-// ----------------------------------------------------------------------
-
-const TabsWrapperStyle = styled('div')(({ theme }) => ({
-  zIndex: 9,
-  bottom: 0,
-  width: '100%',
-  display: 'flex',
-  position: 'absolute',
-  backgroundColor: theme.palette.background.paper,
-  [theme.breakpoints.up('sm')]: {
-    justifyContent: 'center',
-  },
-  [theme.breakpoints.up('md')]: {
-    justifyContent: 'flex-end',
-    paddingRight: theme.spacing(3),
-  },
-}));
-
-// ----------------------------------------------------------------------
+import ProfileSidebar from './ProfileSidebar';
+import ProfileInformationTab from './information/ProfileInformationTab';
+import { Box, Stack } from '@mui/material';
+import ProfileCareerTab from './career/ProfileCareerTab';
+import ProfileEducationTab from './education/ProfileEducationTab';
+import { useSearchParams } from 'next/navigation';
 
 const UserProfile = () => {
-  const pathname = usePathname();
-  const userProfileId = pathname?.slice(pathname?.lastIndexOf('/') + 1);
+  const searchParams = useSearchParams();
+  const currentProfileTab = searchParams.get('profile_tab');
 
-  const userInformationResponse = useGetUserInformationQuery(userProfileId);
-  const userCareersResponse = useGetUserCareersQuery(userProfileId);
-  const userEducationsResponse = useGetUserEducationsQuery(userProfileId);
+  return (
+    <div style={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>
+      <ProfileSidebar />
 
-  if (!userProfileId) {
-    redirect('/403_error');
-  }
-
-  return userProfileId ? (
-    <Container maxWidth={'lg'} sx={{ marginTop: '4rem' }}>
-      <Profile
-        userProfileId={userProfileId}
-        userInformation={userInformationResponse}
-        userCareers={userCareersResponse}
-        userEducations={userEducationsResponse}
-      />
-    </Container>
-  ) : (
-    <></>
+      <Box sx={{ width: '100%' }}>
+        {currentProfileTab === 'information' ? (
+          <Stack gap={2}>
+            <ProfileInformationTab />
+            <ProfileCareerTab />
+            <ProfileEducationTab />
+          </Stack>
+        ) : null}
+      </Box>
+    </div>
   );
 };
 

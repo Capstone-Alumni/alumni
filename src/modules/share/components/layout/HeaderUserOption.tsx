@@ -83,7 +83,10 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
           'aria-labelledby': 'header-user-option',
         }}
       >
-        <Link href={`/profile/${user.id}`} style={{ color: 'inherit' }}>
+        <Link
+          href={`/profile/${user.id}?profile_tab=information`}
+          style={{ color: 'inherit' }}
+        >
           <MenuItem>
             <ListItemIcon>
               <PersonOutlineIcon />
