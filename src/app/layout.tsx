@@ -7,6 +7,9 @@ import GetInitialUserInformation from '@share/helpers/GetInitialUserInformation'
 import SetCurrentTenant from '@share/helpers/SetCurrentTenant';
 import { getTenantDataSSR } from '@share/helpers/SSRAuthorization';
 
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 export default async function RootLayout({
   children,
 }: {
