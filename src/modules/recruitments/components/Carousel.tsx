@@ -15,6 +15,8 @@ const SliderWrapper = styled(Slider)(({ theme }) => ({
 const ImageWrapper = styled('div')(({ theme }) => ({
   height: '40vh',
   width: '100%',
+  borderRadius: theme.spacing(2),
+  overflow: 'hidden',
   '& img': {
     width: '100%',
     height: '100%',

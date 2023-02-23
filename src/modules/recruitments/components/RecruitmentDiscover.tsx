@@ -3,9 +3,9 @@
 import { Box, useTheme } from '@mui/material';
 import React from 'react';
 import Carousel from './Carousel';
-import CompaniesSlider from './CompaniesSlider';
+import Companies from './Companies';
 
-const RecruitmentsPage = () => {
+const RecruitmentDiscover = () => {
   const theme = useTheme();
   return (
     <Box
@@ -14,10 +14,10 @@ const RecruitmentsPage = () => {
         marginRight: `-${theme.spacing(2)}`,
       }}
     >
-      <Carousel />
-      <CompaniesSlider />
+      {/* <Carousel /> */}
+      <Companies />
     </Box>
   );
 };
 
-export default RecruitmentsPage;
+export default RecruitmentDiscover;
