@@ -47,20 +47,19 @@ const ProfileInfoRow = ({
             }}
           >
             <FormDialogs
-              children={
-                <Box
-                  sx={{
-                    height: '24px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <VisibilityIcon />
-                </Box>
-              }
               name={name as string}
               userInformation={userInformationData}
               editType="visibility"
-            />
+            >
+              <Box
+                sx={{
+                  height: '24px',
+                  cursor: 'pointer',
+                }}
+              >
+                <VisibilityIcon />
+              </Box>
+            </FormDialogs>
           </Box>
         )}
       </Grid>
