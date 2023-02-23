@@ -1,10 +1,9 @@
 import * as Yup from 'yup';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { toast } from 'react-toastify';
 // material
 import {
-  Autocomplete,
   Box,
   Card,
   Grid,
@@ -22,6 +21,8 @@ import { LoadingButton } from '@mui/lab';
 import { useUpdateUserInformationMutation } from 'src/redux/slices/userProfileSlice';
 import axiosInstance from 'src/utils/axios';
 import { Information } from '@prisma/client';
+import { useAppDispatch } from 'src/redux/hooks';
+import { reducerPath } from 'src/redux/slices/searchProfiles';
 
 type UserInfoProps = {
   userInformation?: Information;
@@ -31,13 +32,13 @@ type UserInfoProps = {
 const UserInfo = ({ userInformation, userProfileId }: UserInfoProps) => {
   const theme = useTheme();
   const [updateUserInformation] = useUpdateUserInformationMutation();
-
+  const dispatch = useAppDispatch();
   const [classes, setClasses] = useState([]);
   const [grades, setGrades] = useState([]);
 
   const NewUserSchema = Yup.object().shape({
     bio: Yup.string(),
-    userEmail: Yup.string(),
+    email: Yup.string(),
     fullName: Yup.string(),
     facebookUrl: Yup.string(),
     class: Yup.object()
@@ -60,32 +61,36 @@ const UserInfo = ({ userInformation, userProfileId }: UserInfoProps) => {
       userId: userInformation?.userId || '',
       bio: userInformation?.bio || '',
       fullName: userInformation?.fullName || '',
-      userEmail: userInformation?.userEmail || '',
+      email: userInformation?.email || '',
       facebookUrl: userInformation?.facebookUrl || '',
       phone: userInformation?.phone || '',
-      class: {
-        className: userInformation?.className || null,
-      },
-      grade: {
-        gradeName: userInformation?.gradeName || null,
-        gradeCode: userInformation?.gradeCode || null,
-      },
+      // class: {
+      //   className: userInformation?.className || null,
+      // },
+      // grade: {
+      //   gradeName: userInformation?.gradeName || null,
+      //   gradeCode: userInformation?.gradeCode || null,
+      // },
       dateOfBirth: userInformation?.dateOfBirth || null,
     },
     validationSchema: NewUserSchema,
     onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
       try {
-        const { class: _, grade, ...data } = values;
+        const { ...data } = values;
         if (userProfileId) {
           await updateUserInformation({
             ...data,
             userId: userProfileId,
-            gradeCode: grade.gradeCode,
-            gradeName: grade.gradeName,
-            className: _.className,
+            // gradeCode: grade.gradeCode,
+            // gradeName: grade.gradeName,
+            // className: _.className,
           });
           setSubmitting(false);
           toast.success('Cập nhật thành công');
+          dispatch({
+            type: `${reducerPath}/invalidateTags`,
+            payload: ['Search'],
+          });
         }
       } catch (error: any) {
         toast.error('Có lỗi xảy ra, vui lòng thử lại');
@@ -106,18 +111,18 @@ const UserInfo = ({ userInformation, userProfileId }: UserInfoProps) => {
     getFieldProps,
   } = formik;
 
-  useEffect(() => {
-    if (!(grades.length > 0)) {
-      handleGetGrades();
-      return;
-    }
+  // useEffect(() => {
+  //   if (!(grades.length > 0)) {
+  //     handleGetGrades();
+  //     return;
+  //   }
 
-    if (values?.grade?.gradeCode) {
-      handleGetClasses(values.grade.gradeCode);
-      return;
-    }
-    setClasses([]);
-  }, [values.grade]);
+  //   if (values?.grade?.gradeCode) {
+  //     handleGetClasses(values.grade.gradeCode);
+  //     return;
+  //   }
+  //   setClasses([]);
+  // }, [values.grade]);
 
   const handleGetClasses = async (gradeId: string | null) => {
     const res = await axiosInstance({
@@ -222,9 +227,9 @@ const UserInfo = ({ userInformation, userProfileId }: UserInfoProps) => {
                       <TextField
                         fullWidth
                         label="Địa chỉ Email"
-                        {...getFieldProps('userEmail')}
-                        error={Boolean(touched.userEmail && errors.userEmail)}
-                        helperText={touched.userEmail && errors.userEmail}
+                        {...getFieldProps('email')}
+                        error={Boolean(touched.email && errors.email)}
+                        helperText={touched.email && errors.email}
                       />
                     </Stack>
 
@@ -243,7 +248,7 @@ const UserInfo = ({ userInformation, userProfileId }: UserInfoProps) => {
                       />
                     </Stack>
 
-                    {grades && (
+                    {/* {grades && (
                       <>
                         {' '}
                         <Stack
@@ -307,7 +312,7 @@ const UserInfo = ({ userInformation, userProfileId }: UserInfoProps) => {
                           )}
                         </Stack>
                       </>
-                    )}
+                    )} */}
 
                     <Stack
                       direction={{ xs: 'column', sm: 'row' }}

@@ -2,10 +2,9 @@ import { Information } from '@prisma/client';
 import { Icon } from '@iconify/react';
 // material
 import { Box, Grid, styled, useTheme } from '@mui/material';
-import { Card, Stack, Typography } from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
+import { Card, Stack } from '@mui/material';
 // @types
-import ProfileInfoRow from './InfoRow';
+import ProfileInfoRow from './InfoRowCustom';
 import { isAllowToViewValue } from 'src/utils/mappingPublicity';
 import { useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
@@ -34,37 +33,19 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
     <Grid container spacing={3}>
       <Grid item xs={12} md={12}>
         <Card sx={{ p: 3, overflow: 'visible' }}>
-          <ProfileCover userProfileId={userInformation.userId} />
-          <Stack sx={{ margin: '1.5rem 0 0.5rem 0' }}>
+          <ProfileCover userProfileId={userInformation?.userId} />
+          <Stack sx={{ margin: '1.25rem 0 0rem 0' }}>
             <Box
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
                 marginBottom: theme.spacing(5),
               }}
-            >
-              <Typography
-                variant="h5"
-                style={{
-                  display: 'flex',
-                  fontWeight: 'bold',
-                  alignItems: 'center',
-                }}
-              >
-                <PersonIcon
-                  fontSize="large"
-                  style={{
-                    color: theme.palette.primary.main,
-                    marginRight: theme.spacing(1),
-                  }}
-                />
-                Thông tin liên hệ
-              </Typography>
-            </Box>
+            />
           </Stack>
           <div>
             <Box style={{ paddingLeft: theme.spacing(2) }}>
-              <Box style={{ display: 'flex' }}>
+              <Box style={{ display: 'flex', alignItems: 'center' }}>
                 <Box style={{ flex: 1 }}>
                   <ProfileInfoRow
                     title="Bio"
@@ -82,17 +63,14 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                         : 'Chưa cập nhật'
                     }
                   />
-                  {isAllowToViewValue(
-                    currentUser.data,
-                    userInformation,
-                    userInformation?.emailPublicity,
-                  ) &&
-                    Boolean(userInformation?.userEmail) && (
-                      <ProfileInfoRow
-                        title="Email liên lạc"
-                        content={userInformation.userEmail}
-                      />
-                    )}
+                  <ProfileInfoRow
+                    title="Email liên lạc"
+                    content={
+                      userInformation?.email
+                        ? userInformation.email
+                        : 'Chưa cập nhật'
+                    }
+                  />
                   {isAllowToViewValue(
                     currentUser.data,
                     userInformation,
@@ -102,6 +80,12 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                       <ProfileInfoRow
                         title="Điện thoại"
                         content={userInformation.phone}
+                        isPrivacy
+                        userInformationData={userInformation}
+                        name="phonePublicity"
+                        isAllowToView={
+                          userInformation?.userId === currentUser.data?.userId
+                        }
                       />
                     )}
                   {isAllowToViewValue(
@@ -127,6 +111,12 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                             {userInformation.facebookUrl}
                           </Linkify>
                         }
+                        isPrivacy
+                        name="facebookPublicity"
+                        userInformationData={userInformation}
+                        isAllowToView={
+                          userInformation?.userId === currentUser.data?.userId
+                        }
                       />
                     )}
                   {isAllowToViewValue(
@@ -143,24 +133,30 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                             userInformation.dateOfBirth,
                           ).toLocaleDateString('en-GB')
                         }
+                        isPrivacy
+                        userInformationData={userInformation}
+                        name="dateOfBirthPublicity"
+                        isAllowToView={
+                          userInformation?.userId === currentUser.data?.userId
+                        }
                       />
                     )}
-                  <ProfileInfoRow
+                  {/* <ProfileInfoRow
                     title="Khối"
                     content={
                       userInformation?.gradeName
                         ? userInformation.gradeName
                         : 'Chưa cập nhật'
                     }
-                  />
-                  <ProfileInfoRow
+                  /> */}
+                  {/* <ProfileInfoRow
                     title="Lớp"
                     content={
-                      userInformation?.className
+                      userInformation?.
                         ? userInformation.className
                         : 'Chưa cập nhật'
                     }
-                  />
+                  /> */}
                 </Box>
               </Box>
             </Box>

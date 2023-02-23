@@ -11,12 +11,14 @@ interface UserEditWrapperProps {
   userInformation?: any;
   userCareers?: any;
   userEducations?: any;
+  currentUser?: any;
 }
 export default function UserEditWrapper({
   userProfileId,
   userInformation,
   userCareers,
   userEducations,
+  currentUser,
 }: UserEditWrapperProps) {
   return (
     <>
@@ -27,21 +29,27 @@ export default function UserEditWrapper({
         />
       )}
       <br />
-      {!userCareers.error && !userCareers.isLoading && (
+      {currentUser?.data && !userCareers.error && !userCareers.isLoading && (
         <EditUserCareers
           editable={true}
+          userInformationData={userInformation.data.data}
           userCareers={userCareers.data.data.items}
           userProfileId={userProfileId}
+          currentUser={currentUser}
         />
       )}
       <br />
-      {!userEducations.error && !userEducations.isLoading && (
-        <EditUserEducation
-          editable={true}
-          userEducations={userEducations.data.data.items}
-          userProfileId={userProfileId}
-        />
-      )}
+      {currentUser?.data &&
+        !userEducations.error &&
+        !userEducations.isLoading && (
+          <EditUserEducation
+            editable={true}
+            userInformationData={userInformation.data.data}
+            userEducations={userEducations.data.data.items}
+            userProfileId={userProfileId}
+            currentUser={currentUser}
+          />
+        )}
     </>
   );
 }

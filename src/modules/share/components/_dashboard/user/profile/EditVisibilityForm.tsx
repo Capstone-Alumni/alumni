@@ -15,41 +15,32 @@ import {
 import { LoadingButton } from '@mui/lab';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { Information, ScopePublicity } from '@prisma/client';
+import { ScopePublicity } from '@prisma/client';
 import { useUpdateUserInformationMutation } from 'src/redux/slices/userProfileSlice';
+import { mappingScopPublicityToFieldName } from 'src/utils/mappingPublicity';
 // ----------------------------------------------------------------------
 interface EditProfileFormProps {
   onClose: () => void;
-  userInformation: Information;
+  userInformation: any;
+  name: string;
 }
 
 export default function EditVisibilityForm({
   onClose,
   userInformation,
+  name,
 }: EditProfileFormProps) {
   const [updateUserInformation, { isLoading: isUpdating }] =
     useUpdateUserInformationMutation();
 
   const [visibility, setVisibility] = useState({
-    emailPublicity: 'PRIVATE' as ScopePublicity,
-    phonePublicity: 'PRIVATE' as ScopePublicity,
-    facebookPublicity: 'PRIVATE' as ScopePublicity,
-    dateOfBirthPublicity: 'PRIVATE' as ScopePublicity,
-    careerPublicity: 'PRIVATE' as ScopePublicity,
-    educationPublicity: 'PRIVATE' as ScopePublicity,
+    [name]: 'PRIVATE' as ScopePublicity,
   });
 
   useEffect(() => {
     if (userInformation) {
       setVisibility({
-        emailPublicity: userInformation.emailPublicity as ScopePublicity,
-        phonePublicity: userInformation.phonePublicity as ScopePublicity,
-        facebookPublicity: userInformation.facebookPublicity as ScopePublicity,
-        dateOfBirthPublicity:
-          userInformation.dateOfBirthPublicity as ScopePublicity,
-        careerPublicity: userInformation.careerPublicity as ScopePublicity,
-        educationPublicity:
-          userInformation.educationPublicity as ScopePublicity,
+        [name]: userInformation[name] as ScopePublicity,
       });
     }
   }, [userInformation]);
@@ -110,162 +101,17 @@ export default function EditVisibilityForm({
               }}
             >
               <Typography variant="subtitle1" sx={{ minWidth: '120px' }}>
-                Your email
+                {mappingScopPublicityToFieldName[name]}
               </Typography>
               <Autocomplete
                 disablePortal
                 id="combo-box-publicity"
                 options={visibilityPublicity}
                 value={handleMappingVisibility(
-                  visibility.emailPublicity as ScopePublicity,
+                  visibility[name] as ScopePublicity,
                 )}
                 onChange={(_, value) => {
-                  handleOnChange(value, 'emailPublicity');
-                }}
-                sx={{ width: 300 }}
-                renderInput={params => (
-                  <TextField {...params} label="Ai có thể xem" size="small" />
-                )}
-              />
-            </Box>
-          </Stack>
-          <Stack sx={{ py: '0.25rem' }}>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'row',
-                gap: '1rem',
-              }}
-            >
-              <Typography variant="subtitle1" sx={{ minWidth: '120px' }}>
-                Số điện thoại
-              </Typography>
-              <Autocomplete
-                disablePortal
-                id="combo-box-publicity"
-                options={visibilityPublicity}
-                value={handleMappingVisibility(
-                  visibility.phonePublicity as ScopePublicity,
-                )}
-                onChange={(_, value) => {
-                  handleOnChange(value, 'phonePublicity');
-                }}
-                sx={{ width: 300 }}
-                renderInput={params => (
-                  <TextField {...params} label="Ai có thể xem" size="small" />
-                )}
-              />
-            </Box>
-          </Stack>
-          <Stack sx={{ py: '0.25rem' }}>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'row',
-                gap: '1rem',
-              }}
-            >
-              <Typography variant="subtitle1" sx={{ minWidth: '120px' }}>
-                Facebook
-              </Typography>
-              <Autocomplete
-                disablePortal
-                id="combo-box-publicity"
-                options={visibilityPublicity}
-                value={handleMappingVisibility(
-                  visibility.facebookPublicity as ScopePublicity,
-                )}
-                onChange={(_, value) => {
-                  handleOnChange(value, 'facebookPublicity');
-                }}
-                sx={{ width: 300 }}
-                renderInput={params => (
-                  <TextField {...params} label="Ai có thể xem" size="small" />
-                )}
-              />
-            </Box>
-          </Stack>
-          <Stack sx={{ py: '0.25rem' }}>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'row',
-                gap: '1rem',
-              }}
-            >
-              <Typography variant="subtitle1" sx={{ minWidth: '120px' }}>
-                Ngày sinh
-              </Typography>
-              <Autocomplete
-                disablePortal
-                id="combo-box-publicity"
-                options={visibilityPublicity}
-                value={handleMappingVisibility(
-                  visibility.dateOfBirthPublicity as ScopePublicity,
-                )}
-                onChange={(_, value) => {
-                  handleOnChange(value, 'dateOfBirthPublicity');
-                }}
-                sx={{ width: 300 }}
-                renderInput={params => (
-                  <TextField {...params} label="Ai có thể xem" size="small" />
-                )}
-              />
-            </Box>
-          </Stack>
-          <Stack sx={{ py: '0.25rem' }}>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'row',
-                gap: '1rem',
-              }}
-            >
-              <Typography variant="subtitle1" sx={{ minWidth: '120px' }}>
-                Công việc
-              </Typography>
-              <Autocomplete
-                disablePortal
-                id="combo-box-publicity"
-                options={visibilityPublicity}
-                value={handleMappingVisibility(
-                  visibility.careerPublicity as ScopePublicity,
-                )}
-                onChange={(_, value) => {
-                  handleOnChange(value, 'careerPublicity');
-                }}
-                sx={{ width: 300 }}
-                renderInput={params => (
-                  <TextField {...params} label="Ai có thể xem" size="small" />
-                )}
-              />
-            </Box>
-          </Stack>
-          <Stack sx={{ py: '0.25rem' }}>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'row',
-                gap: '1rem',
-              }}
-            >
-              <Typography variant="subtitle1" sx={{ minWidth: '120px' }}>
-                Học vấn
-              </Typography>
-              <Autocomplete
-                disablePortal
-                id="combo-box-publicity"
-                options={visibilityPublicity}
-                value={handleMappingVisibility(
-                  visibility.educationPublicity as ScopePublicity,
-                )}
-                onChange={(_, value) => {
-                  handleOnChange(value, 'educationPublicity');
+                  handleOnChange(value, name);
                 }}
                 sx={{ width: 300 }}
                 renderInput={params => (

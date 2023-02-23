@@ -12,14 +12,21 @@ import React, { useState } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ProfileInfoRow from './InfoRow';
 import { toast } from 'react-toastify';
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import FormDialogs from '@share/components/material-ui/dialog/FormDialogs';
 import SchoolIcon from '@mui/icons-material/School';
 import EducationForm from './EducationForm';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useUpdateUserEducationsMutation } from 'src/redux/slices/userProfileSlice';
 
-const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
+const UserEducation = ({
+  editable,
+  userEducations,
+  userProfileId,
+  userInformationData,
+  currentUser,
+}: any) => {
   const theme = useTheme();
 
   const [openAddForm, setOpenAddForm] = useState(false);
@@ -27,6 +34,10 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
   const [updateUserEducations] = useUpdateUserEducationsMutation();
 
   const educationData = userEducations;
+
+  const onCloseForm = () => {
+    setOpenAddForm(false);
+  };
 
   const onAddWork = async (values: any) => {
     const data = [...educationData, values];
@@ -87,31 +98,54 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
                 marginBottom: theme.spacing(2),
               }}
             >
-              <Typography
-                variant="h5"
+              <Box
                 style={{
                   display: 'flex',
-                  fontWeight: 'bold',
-                  alignItems: 'center',
                 }}
               >
-                <SchoolIcon
-                  fontSize="large"
+                {' '}
+                <Typography
+                  variant="h5"
                   style={{
-                    color: theme.palette.primary.main,
-                    marginRight: theme.spacing(1),
+                    display: 'flex',
+                    fontWeight: 'bold',
+                    alignItems: 'center',
                   }}
-                />
-                Học vấn
-              </Typography>
-              {editable ? (
-                <IconButton
-                  aria-label="edit-personla-info"
-                  onClick={() => setOpenAddForm(true)}
                 >
-                  <AddCircleIcon />
-                </IconButton>
-              ) : null}
+                  <SchoolIcon
+                    fontSize="large"
+                    style={{
+                      color: theme.palette.primary.main,
+                      marginRight: theme.spacing(1),
+                    }}
+                  />
+                  Học vấn
+                </Typography>
+                {editable ? (
+                  <IconButton
+                    aria-label="edit-personla-info"
+                    onClick={() => setOpenAddForm(true)}
+                  >
+                    <AddCircleIcon />
+                  </IconButton>
+                ) : null}
+              </Box>
+              {currentUser?.data?.userId === userInformationData?.userId && (
+                <FormDialogs
+                  name="educationPublicity"
+                  userInformation={userInformationData}
+                  editType="visibility"
+                >
+                  <Box
+                    sx={{
+                      height: '24px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <VisibilityIcon />
+                  </Box>
+                </FormDialogs>
+              )}
             </Box>
           </Stack>
           <div>
@@ -119,6 +153,7 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
               <EducationForm
                 defaultValues={{ startDate: null, endDate: null }}
                 onSave={(values: any) => onAddWork(values)}
+                onClose={onCloseForm}
               />
             ) : null}
 
@@ -130,6 +165,7 @@ const UserEducation = ({ editable, userEducations, userProfileId }: any) => {
                       <EducationForm
                         defaultValues={item}
                         onSave={(values: any) => onUpdateWork(item.id, values)}
+                        onClose={onCloseForm}
                       />
                     ) : (
                       <Box style={{ display: 'flex' }}>

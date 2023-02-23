@@ -26,7 +26,9 @@ const Wrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
+  cursor: 'pointer',
   gap: theme.spacing(1),
+  padding: '0.25rem',
   borderRadius: theme.spacing(4),
   paddingLeft: theme.spacing(2),
   backgroundColor: alpha(theme.palette.primary.main, 0.1),
@@ -65,7 +67,7 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
             alignItems: 'center',
           }}
         >
-          <Typography variant="body2">{user?.email}</Typography>
+          <Typography variant="subtitle2">{user?.email}</Typography>
           <Typography variant="caption" color="warning">
             {getRoleName(user.accessLevel)}
           </Typography>
@@ -81,18 +83,10 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
           'aria-labelledby': 'header-user-option',
         }}
       >
-        {/* {user.accessLevel !== 'ALUMNI' ? (
-          <Link href="/admin/access_request" style={{ color: 'inherit' }}>
-            <MenuItem>
-              <ListItemIcon>
-                <AdminPanelSettingsIcon />
-              </ListItemIcon>
-              <ListItemText>Bảng điều khiển</ListItemText>
-            </MenuItem>
-          </Link>
-        ) : null} */}
-
-        <Link href={`/profile/${user.id}`} style={{ color: 'inherit' }}>
+        <Link
+          href={`/profile/${user.id}?profile_tab=information`}
+          style={{ color: 'inherit' }}
+        >
           <MenuItem>
             <ListItemIcon>
               <PersonOutlineIcon />

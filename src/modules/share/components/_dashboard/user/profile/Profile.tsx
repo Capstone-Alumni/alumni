@@ -1,6 +1,5 @@
 // material
-import { Box, Button, Grid, IconButton, Typography } from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
 import { isAllowToViewValue } from 'src/utils/mappingPublicity';
@@ -12,7 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import BackIcon from '@mui/icons-material/ArrowBack';
 import { useState } from 'react';
 import UserEditWrapper from './UserEditWrapper';
-import FormDialogs from '@share/components/material-ui/dialog/FormDialogs';
+import LoadingIndicator from '@share/components/LoadingIndicator';
 
 // ----------------------------------------------------------------------
 
@@ -41,49 +40,35 @@ export default function Profile({
 
   return !!currentUser?.data?.userId && !!userProfileId ? (
     <Grid container spacing={3}>
-      <Box
-        display="flex"
-        sx={{
-          margin: '1.5rem 0 7rem 1.5rem',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          alignItems: 'center',
-          width: '100%',
-        }}
-      >
-        {currentUser.data.userId === userProfileId && (
-          <>
-            <Box display="flex" sx={{ alignItems: 'center' }}>
-              <Typography variant="subtitle2">
-                Ai có thể xem thông tin của bạn? &nbsp;
-              </Typography>
-              <FormDialogs
-                editType="visibility"
-                userInformation={userInformationData}
-              >
-                <IconButton aria-label="edit-publicity">
-                  <VisibilityIcon />
-                </IconButton>
-              </FormDialogs>
-            </Box>
-            <Button
-              variant="outlined"
-              startIcon={openEdit ? <BackIcon /> : <EditIcon />}
-              onClick={handleToggleEdit}
-            >
-              {openEdit ? 'Quay lại' : 'Chỉnh sửa thông tin'}
-            </Button>
-          </>
-        )}
-      </Box>
       {!openEdit ? (
         <>
           {userInformation?.error ? (
             <Typography>Có lỗi xảy ra! Vui lòng thử lại sau ít phút</Typography>
           ) : (
-            <Box display="flex" sx={{ width: '100%', marginLeft: '1.5rem' }}>
-              <ProfileAbout userInformation={userInformationData} />
-            </Box>
+            <>
+              <Box
+                display="flex"
+                sx={{
+                  justifyContent: 'flex-end',
+                  alignItems: 'flex-end',
+                  width: '100%',
+                  marginBottom: '1rem',
+                }}
+              >
+                {currentUser.data.userId === userProfileId && (
+                  <Button
+                    variant="outlined"
+                    startIcon={openEdit ? <BackIcon /> : <EditIcon />}
+                    onClick={handleToggleEdit}
+                  >
+                    {openEdit ? 'Quay lại' : 'Chỉnh sửa thông tin'}
+                  </Button>
+                )}
+              </Box>
+              <Box display="flex" sx={{ width: '100%', marginLeft: '1.5rem' }}>
+                <ProfileAbout userInformation={userInformationData} />
+              </Box>
+            </>
           )}
           {currentUser.data && userInformationData && (
             <>
@@ -101,6 +86,8 @@ export default function Profile({
                     <UserCareers
                       editable={false}
                       userCareers={userCareers?.data?.data?.items}
+                      userInformationData={userInformationData}
+                      currentUser={currentUser}
                     />
                   </Grid>
                 )
@@ -119,6 +106,8 @@ export default function Profile({
                     <UserEducation
                       editable={false}
                       userEducations={userEducations?.data?.data?.items}
+                      userInformationData={userInformationData}
+                      currentUser={currentUser}
                     />
                   </Grid>
                 )
@@ -134,6 +123,7 @@ export default function Profile({
               userInformation={userInformation}
               userCareers={userCareers}
               userEducations={userEducations}
+              currentUser={currentUser}
             />
           </Box>
           <Box
@@ -157,8 +147,6 @@ export default function Profile({
       )}
     </Grid>
   ) : (
-    <>
-      <p>Loading</p>
-    </>
+    <LoadingIndicator />
   );
 }

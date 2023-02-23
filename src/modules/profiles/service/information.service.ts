@@ -1,4 +1,3 @@
-import { omit } from 'lodash';
 import {
   GetUsersInformationListServiceParams,
   UpdateInformationProps,
@@ -37,9 +36,16 @@ export default class InformationService {
   ) => {
     const userInformation = await tenantPrisma.information.findUnique({
       where: { userId: id },
+      include: {
+        alumClass: {
+          include: {
+            grade: true,
+          },
+        },
+      },
     });
 
-    return omit(userInformation, ['password']);
+    return userInformation;
   };
 
   static getUsersInformationByName = async (
@@ -60,6 +66,13 @@ export default class InformationService {
           take: limit,
           where: {
             fullName: { contains: name, mode: 'insensitive' },
+          },
+          include: {
+            alumClass: {
+              include: {
+                grade: true,
+              },
+            },
           },
         }),
       ]);

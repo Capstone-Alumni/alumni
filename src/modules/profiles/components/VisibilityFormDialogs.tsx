@@ -1,29 +1,32 @@
 import { useState } from 'react';
 // material
-import { Button, Dialog, Box } from '@mui/material';
+import { Box, Button, Dialog } from '@mui/material';
 import EditVisibilityForm from '@share/components/_dashboard/user/profile/EditVisibilityForm';
-import { Information, ScopePublicity } from '@prisma/client';
+import { ScopePublicity } from '@prisma/client';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import { mappingScopPublicity } from 'src/utils/mappingPublicity';
+import { useCanEditProfile } from '../helpers/canEditProfile';
+import { useGetUserInformationQuery } from '@redux/slices/userProfileSlice';
 
 // ----------------------------------------------------------------------
 interface FormDialogsProps {
   buttonContent?: string;
   children?: React.ReactNode;
   editType?: string;
-  userInformation: any;
   name: string;
 }
 
-export default function FormDialogs({
+export default function VisibilityFormDialogs({
   buttonContent = 'DEFAULT',
   children,
   editType,
-  userInformation,
   name,
 }: FormDialogsProps) {
   const [open, setOpen] = useState(false);
+  const { userProfileId } = useCanEditProfile();
+  const userInformationResponse = useGetUserInformationQuery(userProfileId);
+  const userInformation = userInformationResponse?.data?.data;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -39,7 +42,7 @@ export default function FormDialogs({
         <Box onClick={handleClickOpen}>
           <Tooltip
             title={
-              name
+              name && userInformation
                 ? mappingScopPublicity[userInformation[name] as ScopePublicity]
                 : 'Tuỷ chỉnh quyền riêng tư'
             }

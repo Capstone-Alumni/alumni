@@ -8,7 +8,7 @@ export type UpdateInformationProps = {
   bio?: string;
   avatarUrl?: string;
   coverImageUrl?: string;
-  userEmail?: string;
+  email: string;
   emailPublicity?: ScopePublicity;
   phone?: string;
   phonePublicity?: ScopePublicity;

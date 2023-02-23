@@ -13,6 +13,8 @@ import { toast } from 'react-toastify';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ProfileInfoRow from './InfoRow';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import FormDialogs from '@share/components/material-ui/dialog/FormDialogs';
 
 import WorkIcon from '@mui/icons-material/Work';
 import WorkForm from './WorkForm';
@@ -20,13 +22,17 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useUpdateUserCareersMutation } from 'src/redux/slices/userProfileSlice';
 
-const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
+const UserCareers = ({
+  editable,
+  userCareers,
+  userProfileId,
+  userInformationData,
+  currentUser,
+}: any) => {
   const theme = useTheme();
-
   const [openAddForm, setOpenAddForm] = useState(false);
   const [selectedEditId, setSelectedEditId] = useState(null);
   const [updateUserCareers] = useUpdateUserCareersMutation();
-
   const workData = userCareers;
 
   const onAddWork = async (values: any) => {
@@ -39,6 +45,10 @@ const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
     } catch (error) {
       toast.error('Có lỗi xảy ra, vui lòng thử lại');
     }
+  };
+
+  const onCloseForm = () => {
+    setOpenAddForm(false);
   };
 
   const onDeleteWork = async (id: string) => {
@@ -85,31 +95,53 @@ const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
                 marginBottom: theme.spacing(2),
               }}
             >
-              <Typography
-                variant="h5"
+              <Box
                 style={{
                   display: 'flex',
-                  fontWeight: 'bold',
-                  alignItems: 'center',
                 }}
               >
-                <WorkIcon
-                  fontSize="large"
+                <Typography
+                  variant="h5"
                   style={{
-                    color: theme.palette.primary.main,
-                    marginRight: theme.spacing(1),
+                    display: 'flex',
+                    fontWeight: 'bold',
+                    alignItems: 'center',
                   }}
-                />
-                Công việc
-              </Typography>
-              {editable ? (
-                <IconButton
-                  aria-label="edit-personla-info"
-                  onClick={() => setOpenAddForm(true)}
                 >
-                  <AddCircleIcon />
-                </IconButton>
-              ) : null}
+                  <WorkIcon
+                    fontSize="large"
+                    style={{
+                      color: theme.palette.primary.main,
+                      marginRight: theme.spacing(1),
+                    }}
+                  />
+                  Công việc
+                </Typography>
+                {editable ? (
+                  <IconButton
+                    aria-label="edit-personla-info"
+                    onClick={() => setOpenAddForm(true)}
+                  >
+                    <AddCircleIcon />
+                  </IconButton>
+                ) : null}
+              </Box>
+              {currentUser?.data?.userId === userInformationData?.userId && (
+                <FormDialogs
+                  name="careerPublicity"
+                  userInformation={userInformationData}
+                  editType="visibility"
+                >
+                  <Box
+                    sx={{
+                      height: '24px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <VisibilityIcon />
+                  </Box>
+                </FormDialogs>
+              )}
             </Box>
           </Stack>
           <div>
@@ -117,6 +149,7 @@ const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
               <WorkForm
                 defaultValues={{ startDate: null, endDate: null }}
                 onSave={(values: any) => onAddWork(values)}
+                onClose={onCloseForm}
               />
             ) : null}
 
@@ -128,6 +161,7 @@ const UserCareers = ({ editable, userCareers, userProfileId }: any) => {
                       <WorkForm
                         defaultValues={item}
                         onSave={(values: any) => onUpdateWork(item.id, values)}
+                        onClose={onCloseForm}
                       />
                     ) : (
                       <Box style={{ display: 'flex' }}>
