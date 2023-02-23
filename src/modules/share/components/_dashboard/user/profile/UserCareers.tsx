@@ -21,7 +21,6 @@ import WorkForm from './WorkForm';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useUpdateUserCareersMutation } from 'src/redux/slices/userProfileSlice';
-import { isAllowToViewValue } from 'src/utils/mappingPublicity';
 
 const UserCareers = ({
   editable,
@@ -55,7 +54,7 @@ const UserCareers = ({
   const onDeleteWork = async (id: string) => {
     const currentData = [...workData];
 
-    const deleteIndex = currentData.findIndex((item) => item.id === id);
+    const deleteIndex = currentData.findIndex(item => item.id === id);
     currentData.splice(deleteIndex, 1);
 
     try {
@@ -69,7 +68,7 @@ const UserCareers = ({
   const onUpdateWork = async (id: any, values: any) => {
     const currentData = [...workData];
 
-    const updateIndex = currentData.findIndex((item) => item.id === id);
+    const updateIndex = currentData.findIndex(item => item.id === id);
 
     currentData[updateIndex] = values;
 
@@ -129,20 +128,19 @@ const UserCareers = ({
               </Box>
               {currentUser?.data?.userId === userInformationData?.userId && (
                 <FormDialogs
-                  children={
-                    <Box
-                      sx={{
-                        height: '24px',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <VisibilityIcon />
-                    </Box>
-                  }
                   name="careerPublicity"
                   userInformation={userInformationData}
                   editType="visibility"
-                />
+                >
+                  <Box
+                    sx={{
+                      height: '24px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <VisibilityIcon />
+                  </Box>
+                </FormDialogs>
               )}
             </Box>
           </Stack>

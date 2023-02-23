@@ -1,6 +1,5 @@
 // material
-import { Box, Button, Grid, IconButton, Typography } from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { useAppSelector } from 'src/redux/hooks';
 import { RootState } from 'src/redux/store';
 import { isAllowToViewValue } from 'src/utils/mappingPublicity';
@@ -12,7 +11,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import BackIcon from '@mui/icons-material/ArrowBack';
 import { useState } from 'react';
 import UserEditWrapper from './UserEditWrapper';
-import FormDialogs from '@share/components/material-ui/dialog/FormDialogs';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 
 // ----------------------------------------------------------------------

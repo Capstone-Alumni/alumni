@@ -2,8 +2,7 @@ import { Information } from '@prisma/client';
 import { Icon } from '@iconify/react';
 // material
 import { Box, Grid, styled, useTheme } from '@mui/material';
-import { Card, Stack, Typography } from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
+import { Card, Stack } from '@mui/material';
 // @types
 import ProfileInfoRow from './InfoRowCustom';
 import { isAllowToViewValue } from 'src/utils/mappingPublicity';
@@ -51,7 +50,7 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                   <ProfileInfoRow
                     title="Bio"
                     content={
-                      Boolean(userInformation?.bio)
+                      userInformation?.bio
                         ? userInformation.bio
                         : 'Chưa cập nhật'
                     }

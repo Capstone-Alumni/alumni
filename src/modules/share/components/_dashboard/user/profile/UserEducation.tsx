@@ -19,7 +19,6 @@ import EducationForm from './EducationForm';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useUpdateUserEducationsMutation } from 'src/redux/slices/userProfileSlice';
-import { isAllowToViewValue } from 'src/utils/mappingPublicity';
 
 const UserEducation = ({
   editable,
@@ -57,7 +56,7 @@ const UserEducation = ({
   const onDeleteWork = async (id: string) => {
     const currentData = [...educationData];
 
-    const deleteIndex = currentData.findIndex((item) => item.id === id);
+    const deleteIndex = currentData.findIndex(item => item.id === id);
 
     currentData.splice(deleteIndex, 1);
 
@@ -72,7 +71,7 @@ const UserEducation = ({
   const onUpdateWork = async (id: any, values: any) => {
     const currentData = [...educationData];
 
-    const updateIndex = currentData.findIndex((item) => item.id === id);
+    const updateIndex = currentData.findIndex(item => item.id === id);
 
     currentData[updateIndex] = values;
 
@@ -133,20 +132,19 @@ const UserEducation = ({
               </Box>
               {currentUser?.data?.userId === userInformationData?.userId && (
                 <FormDialogs
-                  children={
-                    <Box
-                      sx={{
-                        height: '24px',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <VisibilityIcon />
-                    </Box>
-                  }
                   name="educationPublicity"
                   userInformation={userInformationData}
                   editType="visibility"
-                />
+                >
+                  <Box
+                    sx={{
+                      height: '24px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <VisibilityIcon />
+                  </Box>
+                </FormDialogs>
               )}
             </Box>
           </Stack>

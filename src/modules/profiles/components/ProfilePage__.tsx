@@ -1,7 +1,6 @@
 'use client';
 
 import { styled } from '@mui/material';
-import { Container } from '@mui/material';
 
 import Profile from './Profile';
 import { redirect, usePathname } from 'next/navigation';

@@ -15,12 +15,9 @@ import {
 import { LoadingButton } from '@mui/lab';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { Information, ScopePublicity } from '@prisma/client';
+import { ScopePublicity } from '@prisma/client';
 import { useUpdateUserInformationMutation } from 'src/redux/slices/userProfileSlice';
-import {
-  mappingScopPublicityToFieldName,
-  ScopPublicityToFieldName,
-} from 'src/utils/mappingPublicity';
+import { mappingScopPublicityToFieldName } from 'src/utils/mappingPublicity';
 // ----------------------------------------------------------------------
 interface EditProfileFormProps {
   onClose: () => void;
@@ -117,7 +114,7 @@ export default function EditVisibilityForm({
                   handleOnChange(value, name);
                 }}
                 sx={{ width: 300 }}
-                renderInput={(params) => (
+                renderInput={params => (
                   <TextField {...params} label="Ai có thể xem" size="small" />
                 )}
               />

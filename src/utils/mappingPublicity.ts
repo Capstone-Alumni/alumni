@@ -1,20 +1,20 @@
 import { Information, ScopePublicity } from '@prisma/client';
 
 export const mappingScopPublicity = {
-  'SCHOOL': 'Trường',
-  'GRADE': 'Khối',
-  'CLASS': 'Lớp',
-  'PRIVATE': 'Chỉ mình tôi',
-}
+  SCHOOL: 'Trường',
+  GRADE: 'Khối',
+  CLASS: 'Lớp',
+  PRIVATE: 'Chỉ mình tôi',
+};
 
 export type ScopPublicityToFieldName = {
-  emailPublicity: string,
-  phonePublicity: string,
-  facebookPublicity: string,
-  dateOfBirthPublicity: string,
-  careerPublicity: string,
-  educationPublicity: string,
-}
+  emailPublicity: string;
+  phonePublicity: string;
+  facebookPublicity: string;
+  dateOfBirthPublicity: string;
+  careerPublicity: string;
+  educationPublicity: string;
+};
 
 export const mappingScopPublicityToFieldName: any = {
   emailPublicity: 'Email',
@@ -23,8 +23,7 @@ export const mappingScopPublicityToFieldName: any = {
   dateOfBirthPublicity: 'Ngày sinh',
   careerPublicity: 'Công việc',
   educationPublicity: 'Học vấn',
-}
-
+};
 
 export const isAllowToViewValue = (
   currentUserInfomation: Information,
