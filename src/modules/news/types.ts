@@ -11,6 +11,14 @@ export type News = {
   newsCategories?: string[];
   isPublic: boolean;
   newsImageUrl?: string;
+  authorInfoId?: string;
+  authorInfo?: AuthorInfo;
+};
+
+type AuthorInfo = {
+  id: string;
+  fullName?: string;
+  avatarUrl?: string;
 };
 
 export type GetNewsListDataParams = {
