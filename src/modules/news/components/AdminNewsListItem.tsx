@@ -9,6 +9,8 @@ import {
 } from '@mui/material';
 import { News } from '../types';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
+import { useState } from 'react';
 
 const AdminNewsListItem = ({
   data,
@@ -19,6 +21,7 @@ const AdminNewsListItem = ({
   onPublic: (id: string, isPublic: boolean) => void;
   onDelete: (id: string) => void;
 }) => {
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
   return (
     <>
       <TableRow>
@@ -56,11 +59,17 @@ const AdminNewsListItem = ({
                 marginLeft: 4,
               }}
               color="error"
-              onClick={() => onDelete(data.id)}
+              onClick={() => setOpenDeleteModal(true)}
             />
           </Tooltip>
         </TableCell>
       </TableRow>
+      <ConfirmDeleteModal
+        open={openDeleteModal}
+        title="Bạn muốn xoá tin tức này?"
+        onClose={() => setOpenDeleteModal(false)}
+        onDelete={() => onDelete(data.id)}
+      />
     </>
   );
 };

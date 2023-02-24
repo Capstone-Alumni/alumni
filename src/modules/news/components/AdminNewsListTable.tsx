@@ -31,12 +31,12 @@ const AdminNewsListTable = ({
           <TableHead>
             <TableRow>
               <TableCell sx={{ maxWidth: '10rem' }} align="left">
-                Tên tin tuc
+                Tên tin tức
               </TableCell>
-              <TableCell align="left">Tac gia</TableCell>
+              <TableCell align="left">Tác giả</TableCell>
               <TableCell align="left">Ngày được tạo</TableCell>
-              <TableCell sx={{ maxWidth: '3rem' }}>Cong khai tin</TableCell>
-              <TableCell sx={{ maxWidth: '3rem' }}>Xoa tin</TableCell>
+              <TableCell sx={{ maxWidth: '3rem' }}>Công khai tin</TableCell>
+              <TableCell sx={{ maxWidth: '3rem' }}>Xóa tin</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
