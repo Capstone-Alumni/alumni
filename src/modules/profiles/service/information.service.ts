@@ -3,6 +3,9 @@ import {
   UpdateInformationProps,
 } from '../types';
 import { PrismaClient } from '@prisma/client';
+import { User } from 'next-auth';
+import { omit } from 'lodash/fp';
+import { canViewInformationDetail } from '../helpers/canViewInformationDetail';
 
 export default class InformationService {
   static updateInformationByUserId = async (
@@ -48,11 +51,19 @@ export default class InformationService {
     return userInformation;
   };
 
-  static getUsersInformationByName = async (
+  static getUserInformationList = async (
     tenantPrisma: PrismaClient,
+    user: User,
     params: GetUsersInformationListServiceParams,
   ) => {
     const { name, page, limit } = params;
+
+    const requesterInformation = await tenantPrisma.information.findUnique({
+      where: { userId: user.id },
+      include: {
+        alumClass: true,
+      },
+    });
 
     const [totalUsersInformation, usersInformationItems] =
       await tenantPrisma.$transaction([
@@ -76,9 +87,46 @@ export default class InformationService {
           },
         }),
       ]);
+
+    const filteredInformationItems = usersInformationItems.map(information => {
+      if (!information) {
+        return null;
+      }
+
+      if (
+        !canViewInformationDetail(
+          information.phonePublicity,
+          information?.alumClass || null,
+          requesterInformation?.alumClass || null,
+        )
+      ) {
+        omit('phone')(information);
+      }
+
+      if (
+        !canViewInformationDetail(
+          information.facebookPublicity,
+          information?.alumClass || null,
+          requesterInformation?.alumClass || null,
+        )
+      ) {
+        omit('facebookUrl')(information);
+      }
+
+      if (
+        !canViewInformationDetail(
+          information.dateOfBirthPublicity,
+          information?.alumClass || null,
+          requesterInformation?.alumClass || null,
+        )
+      ) {
+        omit('dateOfBirth')(information);
+      }
+    });
+
     return {
       totalItems: totalUsersInformation,
-      items: usersInformationItems,
+      items: filteredInformationItems,
       itemPerPage: limit,
     };
   };
