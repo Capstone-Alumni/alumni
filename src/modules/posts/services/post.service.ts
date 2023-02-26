@@ -16,6 +16,11 @@ class PostService {
           },
         },
       },
+      include: {
+        authorInformation: true,
+        postLikes: true,
+        postComments: true,
+      },
     });
 
     await tenantPrisma.$disconnect();
@@ -85,6 +90,11 @@ class PostService {
             },
           },
           postLikes: true,
+          postComments: {
+            include: {
+              authorInformation: true,
+            },
+          },
         },
       }),
     ]);

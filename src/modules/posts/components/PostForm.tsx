@@ -47,6 +47,7 @@ const PostForm = ({
     setIsSaving(true);
     await onSave(values);
     setIsSaving(false);
+    onClose?.();
   };
 
   return (

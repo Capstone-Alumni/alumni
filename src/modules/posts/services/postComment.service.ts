@@ -21,6 +21,9 @@ class PostCommentService {
           },
         },
       },
+      include: {
+        authorInformation: true,
+      },
     });
 
     await tenantPrisma.$disconnect();

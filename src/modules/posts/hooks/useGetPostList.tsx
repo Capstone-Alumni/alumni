@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getPostListParams, postListAtom } from '../state';
@@ -13,6 +13,7 @@ type GetPostListParams = {
 type GetPostListResponse = {
   data: {
     items: Post[];
+    totalItems: number;
   };
 };
 
@@ -24,11 +25,11 @@ const useGetPostList = () => {
   const resetParams = useResetRecoilState(getPostListParams);
   const isMounted = useRef(false);
 
-  const { fetchApi, isLoading } = useApi<
-    GetPostListParams,
-    GetPostListResponse,
-    GetPostListError
-  >(
+  const {
+    fetchApi,
+    data: apiData,
+    isLoading,
+  } = useApi<GetPostListParams, GetPostListResponse, GetPostListError>(
     'getPostList',
     params => ({
       method: 'GET',
@@ -43,12 +44,21 @@ const useGetPostList = () => {
   );
 
   useEffect(() => {
+    return refresh();
+  }, []);
+
+  useEffect(() => {
     if (isMounted.current) {
       fetchApi(params);
     } else {
       isMounted.current = true;
     }
   }, [params]);
+
+  const loadedAll = useMemo(
+    () => apiData?.data.totalItems === postList.length,
+    [apiData, postList],
+  );
 
   const loadMore = () => {
     setParams(prevParams => ({ ...prevParams, page: prevParams.page + 1 }));
@@ -65,6 +75,7 @@ const useGetPostList = () => {
     isLoading,
     refresh,
     loadMore,
+    loadedAll,
   };
 };
 

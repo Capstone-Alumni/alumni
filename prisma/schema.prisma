@@ -241,7 +241,7 @@ model Post {
   authorId          String         @map("author_id")
   authorInformation Information    @relation(fields: [authorId], references: [userId])
 
-  postCommments      PostComment[]
+  postComments      PostComment[]
   postLikes          PostLike[]
 }
 
