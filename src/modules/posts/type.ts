@@ -6,4 +6,12 @@ export type Post = {
   content: string;
   publicity: AccessLevel;
   authorInformation: Information;
+  postLikes: PostLike[];
+  createdAt: string | Date;
+};
+
+export type PostLike = {
+  id: string;
+  authorId: string;
+  postId: string;
 };

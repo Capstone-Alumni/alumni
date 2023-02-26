@@ -1,23 +1,36 @@
 'use client';
 
-import { Grid } from '@mui/material';
+import { Stack, useTheme } from '@mui/material';
 import AddPostButton from './AddPostButton';
 import ClassmateList from './ClassmateList';
 import PostList from './PostList';
+import PostSidebar from './PostSidebar';
 
 const PostListPage = () => {
+  const theme = useTheme();
+
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={12} md={9}>
+    <Stack
+      direction={{ sm: 'column', md: 'row' }}
+      justifyContent="space-between"
+    >
+      <PostSidebar />
+
+      <Stack
+        direction="column"
+        gap={2}
+        sx={{
+          width: '500px',
+          [theme.breakpoints.down('md')]: { width: '100%' },
+        }}
+      >
         <AddPostButton />
 
         <PostList />
-      </Grid>
+      </Stack>
 
-      <Grid item xs={12} sm={12} md={3}>
-        <ClassmateList />
-      </Grid>
-    </Grid>
+      <ClassmateList />
+    </Stack>
   );
 };
 

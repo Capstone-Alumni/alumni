@@ -2,41 +2,38 @@ import { NextApiRequestWithTenant } from '@lib/next-connect';
 import getPrismaClient from '@lib/prisma/prisma';
 import { NextApiResponse } from 'next';
 import { ApiErrorResponse, ApiSuccessResponse } from 'src/types';
-import PostService from '../services/post.service';
+import PostLikeService from '../services/postLike.service';
 
-class PostController {
-  static createPost = async (
+class PostLikeController {
+  static like = async (
     req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const prisma = await getPrismaClient(req.tenantId);
-    const { page, limit, approved } = req.query;
+    const { id } = req.query;
 
-    const listData = await PostService.createPost(prisma, req.user, req.body);
+    const data = await PostLikeService.like(prisma, req.user, id as string);
 
     return res.status(200).json({
-      data: listData,
+      data: data,
       status: true,
     });
   };
 
-  static getPostList = async (
+  static unlike = async (
     req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const prisma = await getPrismaClient(req.tenantId);
-    const { page, limit } = req.query;
+    const { id } = req.query;
 
-    const listData = await PostService.getPostList(prisma, req.user, {
-      page: page ? parseInt(page as string, 10) : 1,
-      limit: limit ? parseInt(limit as string, 10) : 1,
-    });
+    const data = await PostLikeService.unlike(prisma, req.user, id as string);
 
     return res.status(200).json({
-      data: listData,
+      data: data,
       status: true,
     });
   };
 }
 
-export default PostController;
+export default PostLikeController;
