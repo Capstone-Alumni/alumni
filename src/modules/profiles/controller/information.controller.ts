@@ -29,10 +29,11 @@ export default class InformationController {
     res: NextApiResponse,
   ) => {
     const { id } = req.query;
-    // TODO: handle authorization, wait for middleware on BE
     const prisma = await getPrismaClient(req.tenantId);
+
     const information = await InformationService.getInformationByUserId(
       prisma,
+      req.user,
       id as string,
     );
 
