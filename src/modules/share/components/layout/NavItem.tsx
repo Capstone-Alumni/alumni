@@ -29,11 +29,13 @@ const MuiNavItem = styled('div')(({ theme }) => ({
 }));
 
 export const NavItem = ({ label, href }: { label: string; href: string }) => {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? 'noName';
+
+  const pathnameShorter = pathname.slice(0, pathname.indexOf('/', 1));
 
   return (
     <Link href={href} style={{ color: 'inherit' }}>
-      <MuiNavItem className={pathname?.startsWith(href) ? 'active' : ''}>
+      <MuiNavItem className={href?.includes(pathnameShorter) ? 'active' : ''}>
         {label}
       </MuiNavItem>
     </Link>
