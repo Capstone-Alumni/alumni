@@ -2,7 +2,6 @@
 
 import { Box, useTheme } from '@mui/material';
 import React from 'react';
-import Carousel from './Carousel';
 import Companies from './Companies';
 
 const RecruitmentDiscover = () => {

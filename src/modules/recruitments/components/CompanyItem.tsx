@@ -2,20 +2,18 @@
 
 import React, { ReactNode } from 'react';
 import {
-  Box,
-  Typography,
-  styled,
   Card,
   CardActions,
   CardContent,
   CardMedia,
   Grid,
+  styled,
+  Typography,
   useTheme,
 } from '@mui/material';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
   width: '60%',

@@ -1,13 +1,13 @@
 'use client';
 
 import {
+  alpha,
   Button,
   Grid,
+  styled,
   Tab,
   Tabs,
   useTheme,
-  styled,
-  alpha,
 } from '@mui/material';
 import { Box, Typography } from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
@@ -16,9 +16,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import WorkIcon from '@mui/icons-material/Work';
 import LanguageIcon from '@mui/icons-material/Language';
-import LoadingIndicator from '@share/components/LoadingIndicator';
 import { usePathname } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 // import usePublicGetEventById from '../hooks/usePublicGetEventById';
 import Image from 'next/image';
 // import usePublicJoinEventById from '../hooks/usePublicJoinEventById';
@@ -213,7 +212,6 @@ const EventDetailPage = () => {
             sx={{ mb: 1 }}
             // onClick={onJoinEvent}
           >
-            {/* {isJoined ? 'Đã tham gia' : 'Tham gia'} */}
             // Tham gia
           </Button>
 
@@ -224,7 +222,6 @@ const EventDetailPage = () => {
             // disabled={isInterestingEvent || isUninterestingEvent}
             // onClick={isInterested ? onUninterestEvent : onInterestEvent}
           >
-            {/* {isInterested ? 'Huỷ lưu' : 'Lưu'} */}
             // Lưu
           </Button>
         </Box>
@@ -243,10 +240,7 @@ const EventDetailPage = () => {
 
       {tabKey === 'description' ? (
         <Box>
-          <Typography>
-            {/* {eventData?.description} */}
-            // description
-          </Typography>
+          <Typography>// description</Typography>
         </Box>
       ) : null}
 

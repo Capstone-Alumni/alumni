@@ -3,12 +3,12 @@
 import React from 'react';
 import {
   Box,
+  Button,
   Grid,
   IconButton,
-  useTheme,
   styled,
-  Button,
   Typography,
+  useTheme,
 } from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
@@ -114,6 +114,7 @@ const CompaniesSlider = () => {
     return data.map((company: any) => {
       return (
         <CompanyItem
+          key={company.id}
           companyDetails={company}
           isSlide
           actions={[
@@ -139,6 +140,7 @@ const CompaniesSlider = () => {
     return data.map((company: any) => {
       return (
         <CompanyItem
+          key={company.id}
           companyDetails={company}
           actions={[
             <Link
