@@ -9,6 +9,9 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  images: {
+    domains: ['bka.hcmut.edu.vn', 'encrypted-tbn0.gstatic.com'],
+  },
   eslint: {
     dirs: ['src'],
     ignorePatterns: [
