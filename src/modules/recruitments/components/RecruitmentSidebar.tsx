@@ -57,7 +57,7 @@ const EVENT_NAV_ITEMS = [
     id: 'interest',
     title: 'Quan tâm',
     icon: 'material-symbols:bookmark',
-    link: '/recruitments/interest',
+    link: '/recruitments/interested',
   },
   {
     id: 'hosting',
@@ -97,7 +97,7 @@ const RecruitmentSidebar = () => {
           );
         })}
 
-        <Link href="/events/create" style={{ width: '100%' }}>
+        <Link href="/recruitments/create" style={{ width: '100%' }}>
           <Button variant="contained" fullWidth startIcon={<AddIcon />}>
             tạo công việc
           </Button>

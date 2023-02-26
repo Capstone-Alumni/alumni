@@ -17,38 +17,23 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
-const Wrapper = styled(Box)(({ theme }) => ({
-  height: ' 220px',
-  borderRadius: '8px',
-  border: '1px solid #eaeaea',
-  marginRight: '1rem',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '1rem',
-  '& .MuiBox-root:nth-of-type(1)': {
-    height: '40%',
-    display: 'flex',
-    alignItems: 'center',
-    '& img': {
-      width: '60%',
-      height: '100%',
-      objectFit: 'contain',
-      margin: 'auto',
-    },
-  },
-  '& .MuiBox-root:nth-of-type(2)': {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-}));
-
 const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
   width: '60%',
   height: '100%',
   backgroundSize: 'contain',
   margin: 'auto',
+}));
+
+const StyledDiv = styled('div')(({ theme }) => ({
+  height: theme.spacing(8),
+}));
+
+const StyledTypography = styled(Typography)(({ theme }) => ({
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  display: '-webkit-box',
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: 'vertical',
 }));
 
 const Company = ({
@@ -105,7 +90,11 @@ const Company = ({
               </Typography>
             </Grid>
           </Grid>
-          <Typography variant="h6">{companyDetails.major}</Typography>
+          <StyledDiv>
+            <StyledTypography variant="h6">
+              {companyDetails.major}
+            </StyledTypography>
+          </StyledDiv>
           <Grid container>
             <Grid item xs={1}>
               <AccountBalanceIcon fontSize="small" sx={{ color: '#64748b' }} />

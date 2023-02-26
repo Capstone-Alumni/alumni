@@ -32,7 +32,8 @@ const data2 = [
     id: '2',
     imageUrl:
       'https://bka.hcmut.edu.vn/FileManager/Download/?filename=%5cimage_upload%5c4bf558a9-16f5-4513-80f5-86a454dc41b3.png',
-    major: 'Senior Go Engineer',
+    major:
+      'Fresher/Junior/Mefior/Senior/Lead Go Engineer dasd as ds ad as da sd as d',
     name: 'Arduin',
     resourcesNeed: 2,
     location: 'Can Tho',
