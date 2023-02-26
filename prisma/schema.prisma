@@ -81,7 +81,7 @@ model Information {
   Recruitment          Recruitment[]
   
   posts                Post[]
-  postCommments         PostCommment[]
+  postComments         PostComment[]
   postLikes             PostLike[]
 
   @@map("informations")
@@ -241,23 +241,25 @@ model Post {
   authorId          String         @map("author_id")
   authorInformation Information    @relation(fields: [authorId], references: [userId])
 
-  postCommments      PostCommment[]
+  postCommments      PostComment[]
   postLikes          PostLike[]
 }
 
-model PostCommment {
+model PostComment {
   id        String   @id @default(cuid())
   archived  Boolean  @default(false)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  content String[]
+  content String
 
   authorId String @map("author_id")
   postId   String @map("post_id")
 
   authorInformation Information @relation(fields: [authorId], references: [userId])
   post              Post        @relation(fields: [postId], references: [id])
+
+  @@map("post_comments")
 }
 
 model PostLike {
@@ -273,6 +275,8 @@ model PostLike {
   post              Post        @relation(fields: [postId], references: [id])
 
   @@unique([authorId, postId])
+
+  @@map("post_likes")
 }
 
 model NewsComment {

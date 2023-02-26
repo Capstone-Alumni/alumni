@@ -65,9 +65,7 @@ class PostService {
 
     const [totalItems, items] = await tenantPrisma.$transaction([
       tenantPrisma.post.count({
-        where: {
-          AND: [],
-        },
+        where: whereFilter,
       }),
       tenantPrisma.post.findMany({
         skip: (page - 1) * limit,

@@ -10,7 +10,6 @@ class PostController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const prisma = await getPrismaClient(req.tenantId);
-    const { page, limit, approved } = req.query;
 
     const listData = await PostService.createPost(prisma, req.user, req.body);
 
