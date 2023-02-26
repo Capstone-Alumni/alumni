@@ -79,6 +79,10 @@ model Information {
   fund                 Fund[]
   fundSaved            FundSaved[]
   Recruitment          Recruitment[]
+  
+  posts                Post[]
+  postCommments         PostCommment[]
+  postLikes             PostLike[]
 
   @@map("informations")
 }
@@ -225,6 +229,50 @@ model FundSaved {
   @@map("fund_saved")
 }
 
+model Post {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  content   String
+  publicity AccessLevel @default(ALUMNI)
+
+  authorId          String         @map("author_id")
+  authorInformation Information    @relation(fields: [authorId], references: [userId])
+
+  postCommments      PostCommment[]
+  postLikes          PostLike[]
+}
+
+model PostCommment {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  content String[]
+
+  authorId String @map("author_id")
+  postId   String @map("post_id")
+
+  authorInformation Information @relation(fields: [authorId], references: [userId])
+  post              Post        @relation(fields: [postId], references: [id])
+}
+
+model PostLike {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  authorId String @map("author_id")
+  postId   String @map("post_id")
+
+  authorInformation Information @relation(fields: [authorId], references: [userId])
+  post              Post        @relation(fields: [postId], references: [id])
+}
+
 model NewsComment {
   id              String   @id @default(cuid())
   archived        Boolean  @default(false)
@@ -253,7 +301,7 @@ model Recruitment {
   position               String
   title                  String
   description            String?
-  type                   String?      
+  type                   String?
   startAt                DateTime?    @map("start_at")
   expiredAt              DateTime?    @map("expired_at")
   salary                 String       @default("negotiate")
