@@ -2,29 +2,45 @@
 
 import { Box, Button, Typography, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { useRouter } from 'next/navigation';
-import AdminNewsCards from './AdminNewsCards';
 import LoadingIndicator from '@share/components/LoadingIndicator';
-import { useGetNewsForSchoolAdminQuery } from 'src/redux/slices/newsSlice';
+import {
+  useDeleteNewsMutation,
+  useGetNewsForSchoolAdminQuery,
+  useUpdateNewsByIdMutation,
+} from 'src/redux/slices/newsSlice';
 import { useState } from 'react';
 import Link from 'next/link';
+import AdminNewsListTable from './AdminNewsListTable';
 
 const AdminNewsListPage = () => {
   const theme = useTheme();
-  const router = useRouter();
 
   const [params, setParams] = useState({
     page: 1,
-    limit: 3,
+    limit: 10,
     title: '',
     content: '',
   });
+  const [updateNewsPublic] = useUpdateNewsByIdMutation();
 
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    event.preventDefault();
+  const [deleteNews] = useDeleteNewsMutation();
+
+  const handlePublicNews = async (newsId: string, isNewsPublic: boolean) => {
+    await updateNewsPublic({
+      newsId,
+      isPublic: !isNewsPublic,
+    });
+  };
+  const handleChange = (value: number) => {
     setParams({
       ...params,
       page: value,
+    });
+  };
+
+  const handleDeleteNews = async (newsId: string) => {
+    await deleteNews({
+      newsId,
     });
   };
 
@@ -62,17 +78,24 @@ const AdminNewsListPage = () => {
       {isLoading ? <LoadingIndicator /> : null}
 
       {newsListData ? (
-        <Box
-          sx={{
-            width: '100%',
-          }}
-        >
-          <AdminNewsCards
-            data={newsListData.data}
-            page={params.page}
-            onChange={handleChange}
-          />
-        </Box>
+        // <Box
+        //   sx={{
+        //     width: '100%',
+        //   }}
+        // >
+        //   <AdminNewsCards
+        //     data={newsListData.data}
+        //     page={params.page}
+        //     onChange={handleChange}
+        //   />
+        // </Box>
+        <AdminNewsListTable
+          data={newsListData.data}
+          page={params.page}
+          onChangePage={handleChange}
+          onPublic={handlePublicNews}
+          onDelete={handleDeleteNews}
+        />
       ) : null}
     </Box>
   );

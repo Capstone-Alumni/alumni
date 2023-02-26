@@ -192,7 +192,7 @@ const NewsCommentItem = ({
       ) : null}
       <ConfirmDeleteModal
         open={openDeleteModal}
-        title="Bạn muốn xoá binh luan này?"
+        title="Bạn muốn xoá bình luận này?"
         onClose={() => setOpenDeleteModal(false)}
         onDelete={() => onDelete(item.id)}
       />
