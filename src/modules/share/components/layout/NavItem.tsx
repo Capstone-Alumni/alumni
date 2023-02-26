@@ -31,7 +31,11 @@ const MuiNavItem = styled('div')(({ theme }) => ({
 export const NavItem = ({ label, href }: { label: string; href: string }) => {
   const pathname = usePathname() ?? 'noName';
 
-  const pathnameShorter = pathname.slice(0, pathname.indexOf('/', 1));
+  let pathnameShorter = pathname.slice(0, pathname.indexOf('/', 1));
+
+  if (pathnameShorter === '') {
+    pathnameShorter = 'noName';
+  }
 
   return (
     <Link href={href} style={{ color: 'inherit' }}>
