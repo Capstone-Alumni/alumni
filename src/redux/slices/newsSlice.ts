@@ -63,6 +63,13 @@ export const newsSliceApi = createApi({
         method: 'GET',
       }),
     }),
+    deleteNews: builer.mutation({
+      query: ({ newsId }) => ({
+        url: `/api/news/${newsId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['News'],
+    }),
   }),
 });
 
@@ -73,4 +80,5 @@ export const {
   useGetNewsForPublicQuery,
   useGetNewsByIdForPublicQuery,
   useCreateNewsMutation,
+  useDeleteNewsMutation,
 } = newsSliceApi;
