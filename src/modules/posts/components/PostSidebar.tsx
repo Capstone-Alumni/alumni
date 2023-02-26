@@ -1,9 +1,11 @@
 'use client';
 
-import { Icon } from '@iconify/react';
 import { Typography } from '@mui/material';
 import { Box, styled, useTheme } from '@mui/material';
-import { usePathname } from 'next/navigation';
+import HomeWorkIcon from '@mui/icons-material/HomeWork';
+import GroupIcon from '@mui/icons-material/Group';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
+import PublicIcon from '@mui/icons-material/Public';
 
 const StyledNavWrapper = styled(Box)(({ theme }) => ({
   minWidth: '16rem',
@@ -45,28 +47,27 @@ const POST_NAV_ITEMS = [
   {
     id: 'school',
     title: 'Tất cả',
-    icon: 'material-symbols:globe-asia-sharp',
+    icon: <PublicIcon />,
   },
   {
     id: 'school',
     title: 'Toàn trường',
-    icon: 'carbon:checkmark-filled',
+    icon: <HomeWorkIcon />,
   },
   {
     id: 'grade',
     title: 'Niên khoá của tôi',
-    icon: 'material-symbols:bookmark',
+    icon: <Diversity3Icon />,
   },
   {
     id: 'class',
     title: 'Lớp của tôi',
-    icon: 'material-symbols:person-pin',
+    icon: <GroupIcon />,
   },
 ];
 
 const PostSidebar = () => {
   const theme = useTheme();
-  const pathname = usePathname();
 
   return (
     <StyledNavWrapper>
@@ -84,17 +85,9 @@ const PostSidebar = () => {
                 color: isActive ? theme.palette.primary.main : undefined,
               }}
             >
-              <Icon height={24} icon={item.icon} />
+              {item.icon}
               <Typography fontWeight={600}>{item.title}</Typography>
               <Box sx={{ flex: 1 }} />
-              {/* <Icon
-                      height={24}
-                      icon={
-                        isActive
-                          ? 'material-symbols:keyboard-arrow-right'
-                          : 'material-symbols:keyboard-arrow-down-rounded'
-                      }
-                    /> */}
             </StyledNavItem>
           );
         })}
