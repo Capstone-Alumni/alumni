@@ -202,27 +202,18 @@ const EventDetailPage = () => {
           <Button
             fullWidth
             variant="contained"
-            // disabled={
-            //   eventStatus === 'not-open' ||
-            //   eventStatus === 'ended' ||
-            //   isJoined ||
-            //   joiningEvent
-            // }
             startIcon={<AppRegistrationIcon />}
             sx={{ mb: 1 }}
-            // onClick={onJoinEvent}
           >
-            // Tham gia
+            Tham gia
           </Button>
 
           <Button
             fullWidth
             variant="outlined"
             startIcon={<BookmarkBorderIcon />}
-            // disabled={isInterestingEvent || isUninterestingEvent}
-            // onClick={isInterested ? onUninterestEvent : onInterestEvent}
           >
-            // Lưu
+            Lưu
           </Button>
         </Box>
       </Box>
@@ -233,18 +224,14 @@ const EventDetailPage = () => {
         aria-label="wrapped tabs"
       >
         <Tab value="description" label="Mô tả" />
-        {/* {eventData?.publicParticipant ? ( */}
         <Tab value="participant" label="Người tham dự" />
-        {/* ) : null} */}
       </Tabs>
 
       {tabKey === 'description' ? (
         <Box>
-          <Typography>// description</Typography>
+          <Typography> description</Typography>
         </Box>
       ) : null}
-
-      {/* {tabKey === 'participant' ? <EventParticipantListTab /> : null} */}
     </Box>
   );
 };
