@@ -1,9 +1,21 @@
 'use client';
 
-import { Button, Grid, Tab, Tabs, useTheme } from '@mui/material';
+import {
+  Button,
+  Grid,
+  Tab,
+  Tabs,
+  useTheme,
+  styled,
+  alpha,
+} from '@mui/material';
 import { Box, Typography } from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import WorkIcon from '@mui/icons-material/Work';
+import LanguageIcon from '@mui/icons-material/Language';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
@@ -13,6 +25,17 @@ import Image from 'next/image';
 // import EventParticipantListTab from './EventParticipantListTab';
 // import usePublicInterestEventById from '../hooks/usePublicInterestEventById';
 // import usePublicUninterestEventById from '../hooks/usePublicUninterestEventById';
+
+const StyledGeneralInfomation = styled(Box)(({ theme }) => ({
+  flex: 1,
+  borderRadius: theme.spacing(1),
+  padding: '1rem',
+  backgroundColor: alpha(theme.palette.primary.main, 0.1),
+}));
+
+const StyledGridInfo = styled(Grid)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+}));
 
 const EventDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
@@ -112,11 +135,6 @@ const EventDetailPage = () => {
         />
       </Box>
 
-      <Typography variant="h3" sx={{ mb: 1 }}>
-        {/* {eventData.title} */}
-        // title
-      </Typography>
-
       <Box
         sx={{
           display: 'flex',
@@ -125,96 +143,61 @@ const EventDetailPage = () => {
           mb: 2,
         }}
       >
-        <Box sx={{ flex: 1 }}>
-          <Grid container spacing={1}>
-            <Grid item xs={3}>
-              <Typography>Người tổ chức</Typography>
-            </Grid>
-            <Grid item xs={9}>
-              <Typography>
-                {/* {eventData.hostInformation?.fullName} */}
-                // fullName
-              </Typography>
-            </Grid>
-
-            <Grid item xs={3}>
-              <Typography>Email</Typography>
-            </Grid>
-            <Grid item xs={9}>
-              <Typography>
-                {/* {eventData.hostInformation?.email} */}
-                // email
-              </Typography>
-            </Grid>
-
-            <Grid item xs={3}>
-              <Typography>Hình thức</Typography>
-            </Grid>
-            <Grid item xs={9}>
-              {/* {eventData.isOffline ? (
-                <Typography
-                  component="span"
-                  fontWeight={600}
-                  sx={{ color: theme.palette.warning.main }}
-                >
-                  Offline
-                </Typography>
-              ) : ( */}
-              <Typography
-                component="span"
-                fontWeight={600}
-                sx={{ color: theme.palette.success.main }}
-              >
-                Online
-              </Typography>
-              {/* )} */}
-            </Grid>
-
-            <Grid item xs={3}>
-              <Typography>Tình trạng</Typography>
-            </Grid>
-            <Grid item xs={9}>
-              <Typography>
-                {/* {eventStatus} */}
-                // eventStatus
-              </Typography>
-            </Grid>
-
-            <Grid item xs={3}>
-              <Typography>Mở đăng ký</Typography>
-            </Grid>
-            <Grid item xs={9}>
-              <Typography>
-                {/* {new Date(eventData.registrationTime).toDateString()} */}
-                // registrationTime
-              </Typography>
-            </Grid>
-
-            <Grid item xs={3}>
-              <Typography>Bắt đâu diễn ra</Typography>
-            </Grid>
-            <Grid item xs={9}>
-              <Typography>
-                {/* {new Date(eventData.startTime).toDateString()} */}
-                // startTime
-              </Typography>
-            </Grid>
-
-            {/* {eventData?.endTime ? ( */}
-            <>
-              <Grid item xs={3}>
-                <Typography>Kết thúc</Typography>
+        <StyledGeneralInfomation>
+          <Typography fontWeight={600} variant="h6">
+            Thông tin chung
+          </Typography>
+          <br />
+          <Grid container spacing={0}>
+            <StyledGridInfo item xs={6}>
+              <Grid container spacing={0}>
+                <Grid item xs={2}>
+                  <WorkIcon fontSize="large" />
+                </Grid>
+                <Grid item xs={10}>
+                  <Typography fontWeight={600}>Ngành ngề</Typography>
+                  <Typography>Kĩ sư Backend</Typography>
+                </Grid>
               </Grid>
-              <Grid item xs={9}>
-                <Typography>
-                  {/* {new Date(eventData.endTime).toDateString()} */}
-                  // endTime
-                </Typography>
+            </StyledGridInfo>
+            <StyledGridInfo item xs={6}>
+              <Grid container spacing={0}>
+                <Grid item xs={2}>
+                  <LanguageIcon fontSize="large" />
+                </Grid>
+                <Grid item xs={10}>
+                  <Typography fontWeight={600}>Website</Typography>
+                  <Typography>fpt.edu.vn</Typography>
+                </Grid>
               </Grid>
-            </>
-            {/* ) : null} */}
+            </StyledGridInfo>
+            <StyledGridInfo item xs={6}>
+              <Grid container spacing={0}>
+                <Grid item xs={2}>
+                  <AttachMoneyIcon fontSize="large" />
+                </Grid>
+                <Grid item xs={10}>
+                  <Typography fontWeight={600}>Mức lương</Typography>
+                  <Typography>Thương lượng</Typography>
+                </Grid>
+              </Grid>
+            </StyledGridInfo>
+            <StyledGridInfo item xs={6}>
+              <Grid container spacing={0}>
+                <Grid item xs={2}>
+                  <LocationOnIcon fontSize="large" />
+                </Grid>
+                <Grid item xs={10}>
+                  <Typography fontWeight={600}>Địa chỉ</Typography>
+                  <Typography>
+                    124 Huỳnh Tấn Phát, phường Tân Thuận Tây, quận 7, TP. Hồ Chí
+                    Minh
+                  </Typography>
+                </Grid>
+              </Grid>
+            </StyledGridInfo>
           </Grid>
-        </Box>
+        </StyledGeneralInfomation>
 
         <Box>
           <Button
