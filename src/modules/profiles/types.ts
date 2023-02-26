@@ -1,4 +1,13 @@
 import { ScopePublicity } from '@prisma/client';
+import { Class } from '../gradeAndClass/types';
+
+export type Information = {
+  id: string;
+  userId: string;
+  email: string;
+  fullName: string;
+  alumClass?: Class;
+};
 
 export type GetInformationParams = {
   id: string;
