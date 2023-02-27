@@ -29,10 +29,11 @@ export default class InformationController {
     res: NextApiResponse,
   ) => {
     const { id } = req.query;
-    // TODO: handle authorization, wait for middleware on BE
     const prisma = await getPrismaClient(req.tenantId);
+
     const information = await InformationService.getInformationByUserId(
       prisma,
+      req.user,
       id as string,
     );
 
@@ -41,23 +42,28 @@ export default class InformationController {
       data: information,
     });
   };
-  static getUsersInfomationByName = async (
+
+  static getUserInfomationList = async (
     req: NextApiRequestWithTenant,
     res: NextApiResponse,
   ) => {
-    const { name, page, limit } = req.query;
-    // TODO: handle authorization, wait for middleware on BE
+    const { name, classId, page, limit } = req.query;
     const prisma = await getPrismaClient(req.tenantId);
-    const usersInformationList =
-      await InformationService.getUsersInformationByName(prisma, {
+
+    const userInformationList = await InformationService.getUserInformationList(
+      prisma,
+      req.user,
+      {
         name: name ? (name as string) : '',
+        classId: classId ? (classId as string) : '',
         page: page ? parseInt(page as string, 10) : 1,
         limit: limit ? parseInt(limit as string, 10) : 20,
-      });
+      },
+    );
 
     return res.status(200).json({
       status: true,
-      data: usersInformationList,
+      data: userInformationList,
     });
   };
 }

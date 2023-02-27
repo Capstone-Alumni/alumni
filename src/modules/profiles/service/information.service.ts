@@ -2,7 +2,69 @@ import {
   GetUsersInformationListServiceParams,
   UpdateInformationProps,
 } from '../types';
-import { PrismaClient } from '@prisma/client';
+import {
+  AlumClass,
+  Grade,
+  Information,
+  Prisma,
+  PrismaClient,
+} from '@prisma/client';
+import { User } from 'next-auth';
+import { omit } from 'lodash/fp';
+import { canViewInformationDetail } from '../helpers/canViewInformationDetail';
+
+type InformationIncludeClass = Information & {
+  alumClass:
+    | (AlumClass & {
+        grade: Grade;
+      })
+    | null;
+};
+
+const filterInformation = (
+  information: InformationIncludeClass | null,
+  requesterInformation: InformationIncludeClass | null,
+) => {
+  if (!information) {
+    return null;
+  }
+
+  if (information.userId === requesterInformation?.userId) {
+    return information;
+  }
+
+  if (
+    !canViewInformationDetail(
+      information.phonePublicity,
+      information?.alumClass || null,
+      requesterInformation?.alumClass || null,
+    )
+  ) {
+    omit('phone')(information);
+  }
+
+  if (
+    !canViewInformationDetail(
+      information.facebookPublicity,
+      information?.alumClass || null,
+      requesterInformation?.alumClass || null,
+    )
+  ) {
+    omit('facebookUrl')(information);
+  }
+
+  if (
+    !canViewInformationDetail(
+      information.dateOfBirthPublicity,
+      information?.alumClass || null,
+      requesterInformation?.alumClass || null,
+    )
+  ) {
+    omit('dateOfBirth')(information);
+  }
+
+  return information;
+};
 
 export default class InformationService {
   static updateInformationByUserId = async (
@@ -10,15 +72,6 @@ export default class InformationService {
     id: string,
     body: UpdateInformationProps,
   ) => {
-    //TODO: sync users table from platform's database
-    // then u can turn on this flag
-
-    // const user = await tenantPrisma.user.findUnique({
-    //   where: { id },
-    // });
-    // if (!user) {
-    //   throw new Error('User not found');
-    // }
     const informationUpdated = await tenantPrisma.information.upsert({
       where: { userId: id },
       update: body,
@@ -32,8 +85,20 @@ export default class InformationService {
 
   static getInformationByUserId = async (
     tenantPrisma: PrismaClient,
+    user: User,
     id: string,
   ) => {
+    const requesterInformation = await tenantPrisma.information.findUnique({
+      where: { userId: user.id },
+      include: {
+        alumClass: {
+          include: {
+            grade: true,
+          },
+        },
+      },
+    });
+
     const userInformation = await tenantPrisma.information.findUnique({
       where: { userId: id },
       include: {
@@ -45,28 +110,47 @@ export default class InformationService {
       },
     });
 
-    return userInformation;
+    return filterInformation(userInformation, requesterInformation);
   };
 
-  static getUsersInformationByName = async (
+  static getUserInformationList = async (
     tenantPrisma: PrismaClient,
+    user: User,
     params: GetUsersInformationListServiceParams,
   ) => {
-    const { name, page, limit } = params;
+    const { name, page, limit, classId } = params;
+
+    const requesterInformation = await tenantPrisma.information.findUnique({
+      where: { userId: user.id },
+      include: {
+        alumClass: {
+          include: {
+            grade: true,
+          },
+        },
+      },
+    });
+
+    const whereFilter: Prisma.InformationWhereInput = {
+      fullName: { contains: name, mode: 'insensitive' },
+      NOT: {
+        userId: user.id,
+      },
+    };
+
+    if (classId) {
+      whereFilter.alumClassId = classId;
+    }
 
     const [totalUsersInformation, usersInformationItems] =
       await tenantPrisma.$transaction([
         tenantPrisma.information.count({
-          where: {
-            fullName: { contains: name, mode: 'insensitive' },
-          },
+          where: whereFilter,
         }),
         tenantPrisma.information.findMany({
           skip: (page - 1) * limit,
           take: limit,
-          where: {
-            fullName: { contains: name, mode: 'insensitive' },
-          },
+          where: whereFilter,
           include: {
             alumClass: {
               include: {
@@ -76,9 +160,14 @@ export default class InformationService {
           },
         }),
       ]);
+
+    const filteredInformationItems = usersInformationItems.map(information =>
+      filterInformation(information, requesterInformation),
+    );
+
     return {
       totalItems: totalUsersInformation,
-      items: usersInformationItems,
+      items: filteredInformationItems,
       itemPerPage: limit,
     };
   };

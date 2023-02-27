@@ -96,6 +96,7 @@ const Header = ({
               <NavItem label="Gây quỹ" href="/funds/discover" />
               {user ? (
                 <>
+                  <NavItem label="Bài đăng" href="/posts" />
                   <NavItem label="Tìm bạn" href="/find" />
                 </>
               ) : null}

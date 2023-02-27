@@ -25,7 +25,7 @@ export const searchProfilesApi = createApi({
       { name: any; page: number; limit: number }
     >({
       query: ({ name = '', page = 1, limit = 1 }) => ({
-        url: 'api/users/search',
+        url: 'api/users',
         method: 'GET',
         params: {
           name,

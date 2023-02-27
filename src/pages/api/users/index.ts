@@ -1,4 +1,5 @@
 import { extractTenantId } from '@lib/next-connect';
+import { extractUser } from '@lib/next-connect/apiMiddleware';
 import onErrorAPIHandler from '@lib/next-connect/onErrorAPIHandler';
 import onNoMatchAPIHandler from '@lib/next-connect/onNoMatchAPIHandler';
 import nc from 'next-connect';
@@ -9,6 +10,6 @@ const handler = nc({
   onNoMatch: onNoMatchAPIHandler,
 }).use(extractTenantId);
 
-handler.get(InformationController.getUsersInfomationByName);
+handler.get(extractUser, InformationController.getUserInfomationList);
 
 export default handler;
