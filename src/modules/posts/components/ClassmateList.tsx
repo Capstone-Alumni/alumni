@@ -29,7 +29,7 @@ const ClassmateList = () => {
           Bạn cùng lớp
         </Typography>
         <Link href="/find">
-          <Typography fontWeight={600}>Tìm thêm</Typography>
+          <Typography fontWeight={600}>Xem thêm</Typography>
         </Link>
       </Stack>
 
