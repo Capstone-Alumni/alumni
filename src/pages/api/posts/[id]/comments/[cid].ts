@@ -13,6 +13,6 @@ const handler = nc({
 
 handler
   .put(isAuthenticatedUser, PostCommentController.getCommentList)
-  .delete(isAuthenticatedUser, PostCommentController.createComment);
+  .delete(isAuthenticatedUser, PostCommentController.deleteComment);
 
 export default handler;

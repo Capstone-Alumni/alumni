@@ -97,9 +97,12 @@ class PostCommentService {
     user: User,
     { commentId }: { commentId: string },
   ) => {
-    const comment = await tenantPrisma.postComment.delete({
+    const comment = await tenantPrisma.postComment.update({
       where: {
         id: commentId,
+      },
+      data: {
+        archived: true,
       },
     });
 
