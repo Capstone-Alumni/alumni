@@ -39,6 +39,21 @@ class PostController {
       status: true,
     });
   };
+
+  static deletePost = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    const prisma = await getPrismaClient(req.tenantId);
+    const { id } = req.query;
+
+    const data = await PostService.deletePost(prisma, req.user, id as string);
+
+    return res.status(200).json({
+      data: data,
+      status: true,
+    });
+  };
 }
 
 export default PostController;

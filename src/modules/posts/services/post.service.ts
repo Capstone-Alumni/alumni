@@ -135,6 +135,25 @@ class PostService {
       itemPerPage: limit,
     };
   };
+
+  static deletePost = async (
+    tenantPrisma: PrismaClient,
+    user: User,
+    postId: string,
+  ) => {
+    const post = await tenantPrisma.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        archived: true,
+      },
+    });
+
+    await tenantPrisma.$disconnect();
+
+    return post;
+  };
 }
 
 export default PostService;
