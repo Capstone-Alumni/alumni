@@ -2,7 +2,13 @@ import {
   GetUsersInformationListServiceParams,
   UpdateInformationProps,
 } from '../types';
-import { AlumClass, Grade, Information, PrismaClient } from '@prisma/client';
+import {
+  AlumClass,
+  Grade,
+  Information,
+  Prisma,
+  PrismaClient,
+} from '@prisma/client';
 import { User } from 'next-auth';
 import { omit } from 'lodash/fp';
 import { canViewInformationDetail } from '../helpers/canViewInformationDetail';
@@ -112,7 +118,7 @@ export default class InformationService {
     user: User,
     params: GetUsersInformationListServiceParams,
   ) => {
-    const { name, page, limit } = params;
+    const { name, page, limit, classId } = params;
 
     const requesterInformation = await tenantPrisma.information.findUnique({
       where: { userId: user.id },
@@ -125,19 +131,26 @@ export default class InformationService {
       },
     });
 
+    const whereFilter: Prisma.InformationWhereInput = {
+      fullName: { contains: name, mode: 'insensitive' },
+      NOT: {
+        userId: user.id,
+      },
+    };
+
+    if (classId) {
+      whereFilter.alumClassId = classId;
+    }
+
     const [totalUsersInformation, usersInformationItems] =
       await tenantPrisma.$transaction([
         tenantPrisma.information.count({
-          where: {
-            fullName: { contains: name, mode: 'insensitive' },
-          },
+          where: whereFilter,
         }),
         tenantPrisma.information.findMany({
           skip: (page - 1) * limit,
           take: limit,
-          where: {
-            fullName: { contains: name, mode: 'insensitive' },
-          },
+          where: whereFilter,
           include: {
             alumClass: {
               include: {
