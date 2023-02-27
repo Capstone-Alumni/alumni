@@ -78,7 +78,8 @@ const PostCardItem = ({ data }: { data: Post }) => {
           </Avatar>
         }
         action={
-          data.authorInformation.userId === session?.user.id ? (
+          data.authorInformation.userId === session?.user.id ||
+          session?.user.accessLevel === 'SCHOOL_ADMIN' ? (
             <ActionButton
               actions={[
                 {
