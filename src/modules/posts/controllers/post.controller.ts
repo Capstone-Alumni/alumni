@@ -24,9 +24,12 @@ class PostController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const prisma = await getPrismaClient(req.tenantId);
-    const { page, limit } = req.query;
+    const { page, limit, all, myClass, myGrade } = req.query;
 
     const listData = await PostService.getPostList(prisma, req.user, {
+      all: !!all,
+      myGrade: !!myGrade,
+      myClass: !!myClass,
       page: page ? parseInt(page as string, 10) : 1,
       limit: limit ? parseInt(limit as string, 10) : 1,
     });

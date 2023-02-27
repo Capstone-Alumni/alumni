@@ -2,10 +2,11 @@
 
 import { Typography } from '@mui/material';
 import { Box, styled, useTheme } from '@mui/material';
-import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import GroupIcon from '@mui/icons-material/Group';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 import PublicIcon from '@mui/icons-material/Public';
+import { useRecoilState, useResetRecoilState } from 'recoil';
+import { getPostListParams, postListAtom } from '../state';
 
 const StyledNavWrapper = styled(Box)(({ theme }) => ({
   minWidth: '16rem',
@@ -50,11 +51,6 @@ const POST_NAV_ITEMS = [
     icon: <PublicIcon />,
   },
   {
-    id: 'school',
-    title: 'Toàn trường',
-    icon: <HomeWorkIcon />,
-  },
-  {
     id: 'grade',
     title: 'Niên khoá của tôi',
     icon: <Diversity3Icon />,
@@ -68,29 +64,88 @@ const POST_NAV_ITEMS = [
 
 const PostSidebar = () => {
   const theme = useTheme();
+  const [params, setParams] = useRecoilState(getPostListParams);
+  const resetPostList = useResetRecoilState(postListAtom);
+
+  const { all, myGrade, myClass } = params;
 
   return (
     <StyledNavWrapper>
       <StyledNav>
-        {POST_NAV_ITEMS.map(item => {
-          const isActive = false;
+        <StyledNavItem
+          onClick={() => {
+            resetPostList();
+            setParams({
+              page: 1,
+              limit: 4,
+              all: true,
+              myGrade: false,
+              myClass: false,
+            });
+          }}
+          sx={
+            all
+              ? {
+                  backgroundColor: theme.palette.primary.lighter,
+                  color: theme.palette.primary.main,
+                }
+              : undefined
+          }
+        >
+          <PublicIcon />
+          <Typography fontWeight={600}>Tất cả</Typography>
+          <Box sx={{ flex: 1 }} />
+        </StyledNavItem>
 
-          return (
-            <StyledNavItem
-              key={item.id}
-              sx={{
-                backgroundColor: isActive
-                  ? theme.palette.primary.lighter
-                  : undefined,
-                color: isActive ? theme.palette.primary.main : undefined,
-              }}
-            >
-              {item.icon}
-              <Typography fontWeight={600}>{item.title}</Typography>
-              <Box sx={{ flex: 1 }} />
-            </StyledNavItem>
-          );
-        })}
+        <StyledNavItem
+          onClick={() => {
+            resetPostList();
+            setParams({
+              page: 1,
+              limit: 4,
+              all: false,
+              myGrade: true,
+              myClass: false,
+            });
+          }}
+          sx={
+            myGrade
+              ? {
+                  backgroundColor: theme.palette.primary.lighter,
+                  color: theme.palette.primary.main,
+                }
+              : undefined
+          }
+        >
+          <Diversity3Icon />
+          <Typography fontWeight={600}>Niên khoá của tôi</Typography>
+          <Box sx={{ flex: 1 }} />
+        </StyledNavItem>
+
+        <StyledNavItem
+          onClick={() => {
+            resetPostList();
+            setParams({
+              page: 1,
+              limit: 4,
+              all: false,
+              myGrade: false,
+              myClass: true,
+            });
+          }}
+          sx={
+            myClass
+              ? {
+                  backgroundColor: theme.palette.primary.lighter,
+                  color: theme.palette.primary.main,
+                }
+              : undefined
+          }
+        >
+          <GroupIcon />
+          <Typography fontWeight={600}>Lớp của tôi</Typography>
+          <Box sx={{ flex: 1 }} />
+        </StyledNavItem>
       </StyledNav>
     </StyledNavWrapper>
   );

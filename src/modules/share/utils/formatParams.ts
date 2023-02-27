@@ -6,7 +6,7 @@
 const formatSearchParams = (params: object) => {
   let paramsString = '';
   Object.entries(params).forEach(([key, value]) => {
-    if (value !== '' && value !== null && value !== undefined) {
+    if (value !== '' && value !== null && value !== undefined && value) {
       paramsString += `${paramsString.length > 0 ? '&' : '?'}${key}=${value}`;
     }
   });

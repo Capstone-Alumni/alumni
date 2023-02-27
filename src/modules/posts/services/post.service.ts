@@ -31,7 +31,19 @@ class PostService {
   static getPostList = async (
     tenantPrisma: PrismaClient,
     user: User,
-    { page, limit }: { page: number; limit: number },
+    {
+      all,
+      myGrade,
+      myClass,
+      page,
+      limit,
+    }: {
+      all: boolean;
+      myClass: boolean;
+      myGrade: boolean;
+      page: number;
+      limit: number;
+    },
   ) => {
     const userInformation = await tenantPrisma.information.findUnique({
       where: {
@@ -49,6 +61,22 @@ class PostService {
     const whereFilter: Prisma.PostWhereInput = {
       AND: [
         { archived: false },
+        myClass
+          ? {
+              authorInformation: {
+                alumClassId: userInformation.alumClassId,
+              },
+            }
+          : { archived: false },
+        myGrade
+          ? {
+              authorInformation: {
+                alumClass: {
+                  gradeId: userInformation.alumClass?.gradeId,
+                },
+              },
+            }
+          : { archived: false },
         {
           OR: [
             { publicity: 'ALUMNI', authorId: user.id },
