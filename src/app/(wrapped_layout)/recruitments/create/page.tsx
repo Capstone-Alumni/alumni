@@ -1,8 +1,8 @@
 import { verifyUser } from '@share/helpers/SSRAuthorization';
-import CreateEventPage from 'src/modules/events/components/CreateEventPage';
+import CreateJobPage from 'src/modules/recruitments/components/CreateJobPage';
 
 export default async function Page() {
   await verifyUser();
 
-  return <CreateEventPage />;
+  return <CreateJobPage />;
 }
