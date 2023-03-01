@@ -32,7 +32,7 @@ const filterInformation = (
   if (information.userId === requesterInformation?.userId) {
     return information;
   }
-
+  let result = { ...information } as any;
   if (
     !canViewInformationDetail(
       information.phonePublicity,
@@ -40,7 +40,7 @@ const filterInformation = (
       requesterInformation?.alumClass || null,
     )
   ) {
-    omit('phone')(information);
+    result = omit('phone')(result);
   }
 
   if (
@@ -50,7 +50,7 @@ const filterInformation = (
       requesterInformation?.alumClass || null,
     )
   ) {
-    omit('facebookUrl')(information);
+    result = omit('facebookUrl')(result);
   }
 
   if (
@@ -60,10 +60,10 @@ const filterInformation = (
       requesterInformation?.alumClass || null,
     )
   ) {
-    omit('dateOfBirth')(information);
+    result = omit('dateOfBirth')(result);
   }
 
-  return information;
+  return result;
 };
 
 export default class InformationService {
@@ -109,6 +109,10 @@ export default class InformationService {
         },
       },
     });
+    console.log(
+      '🚀 ~ file: information.service.ts:112 ~ InformationService ~ userInformation:',
+      userInformation,
+    );
 
     return filterInformation(userInformation, requesterInformation);
   };
