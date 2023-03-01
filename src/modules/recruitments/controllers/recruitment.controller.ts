@@ -35,7 +35,7 @@ export default class RecruitmentController {
     try {
       const prisma = await getPrismaClient(req.tenantId);
       const { id } = req.query;
-      const updated = await RecruimentService.create(
+      const updated = await RecruimentService.update(
         prisma,
         id as string,
         req.body,

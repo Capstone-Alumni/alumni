@@ -1,9 +1,12 @@
 import { PrismaClient } from '@prisma/client';
+import { UpdateApplication } from '../type';
 
 export default class ApplicationService {
   static apply = async (
     tenantPrisma: PrismaClient,
-    { recruitmentId, userId }: { recruitmentId: string; userId: string },
+    recruitmentId: string,
+    userId: string,
+    body: { resumeUrl: string },
   ) => {
     const recruitment = await tenantPrisma.recruitment.findFirst({
       where: {
@@ -13,16 +16,22 @@ export default class ApplicationService {
     if (!recruitment) {
       throw new Error('Recruitment is not Existed');
     }
-    const applicationOwner =
+    const isExistedApplication =
       await tenantPrisma.recruitmentApplication.findFirst({
-        where: { applicationOwnerId: userId, recruitmentId: recruitmentId },
+        where: {
+          AND: [
+            { applicationOwnerId: userId },
+            { recruitmentId: recruitmentId },
+          ],
+        },
       });
-    if (applicationOwner) {
-      return applicationOwner;
+    if (isExistedApplication) {
+      throw new Error('Your application had been submitted');
     }
 
     const apply = await tenantPrisma.recruitmentApplication.create({
       data: {
+        ...body,
         recruitment: {
           connect: {
             id: recruitmentId,
@@ -43,7 +52,7 @@ export default class ApplicationService {
     tenantPrisma: PrismaClient,
     applicationId: string,
     userId: string,
-    body: { resumeUrl: string },
+    body: UpdateApplication,
   ) => {
     const isApplicationExisted =
       await tenantPrisma.recruitmentApplication.findFirst({
@@ -52,7 +61,7 @@ export default class ApplicationService {
     if (!isApplicationExisted) {
       throw new Error('Application is not existed');
     } else if (isApplicationExisted.applicationOwnerId !== userId) {
-      throw new Error('Not allowed to edit this application');
+      throw new Error('You are not allowed to update');
     }
 
     const updated = await tenantPrisma.recruitmentApplication.update({
@@ -78,7 +87,7 @@ export default class ApplicationService {
       throw new Error('application is not existed');
     } else if (!isSchoolAdmin) {
       if (application && application.applicationOwnerId !== userId) {
-        throw new Error('Not allowed to delete this comment');
+        throw new Error('You are not allowed to delete this application');
       }
     }
     const deleted = await tenantPrisma.recruitmentApplication.update({
@@ -115,7 +124,13 @@ export default class ApplicationService {
           createdAt: 'desc',
         },
         include: {
-          applicationOwnerInfo: true,
+          applicationOwnerInfo: {
+            select: {
+              fullName: true,
+              email: true,
+              phone: true,
+            },
+          },
         },
       }),
     ]);

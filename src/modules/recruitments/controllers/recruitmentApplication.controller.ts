@@ -14,11 +14,12 @@ export default class ApplicationController {
       const prisma = await getPrismaClient(req.tenantId);
       const { id: userId } = req.user;
       const { id } = req.query;
-
-      const apply = await ApplicationService.apply(prisma, {
-        recruitmentId: id as string,
-        userId: userId,
-      });
+      const apply = await ApplicationService.apply(
+        prisma,
+        id as string,
+        userId as string,
+        req.body,
+      );
       return res.status(200).json({
         data: apply,
         status: true,
@@ -37,13 +38,12 @@ export default class ApplicationController {
   ) => {
     try {
       prisma = await getPrismaClient(req.tenantId);
-      const { id: applicationId } = req.query;
+      const { applicationId } = req.query;
       const { id: userId } = req.user;
-
-      const updated = ApplicationService.update(
+      const updated = await ApplicationService.update(
         prisma,
         applicationId as string,
-        userId as string,
+        userId,
         req.body,
       );
 
@@ -73,7 +73,7 @@ export default class ApplicationController {
       const isSchoolAdmin = session?.user.accessLevel === 'SCHOOL_ADMIN';
 
       const prisma = await getPrismaClient(req.tenantId);
-      const { id: applicationId } = req.query;
+      const { applicationId } = req.query;
       const { id: userId } = req.user;
       const deleted = await ApplicationService.delete(
         prisma,

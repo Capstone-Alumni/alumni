@@ -3,6 +3,7 @@ import { isAuthenticatedUser } from '@lib/next-connect/apiMiddleware';
 import onErrorAPIHandler from '@lib/next-connect/onErrorAPIHandler';
 import onNoMatchAPIHandler from '@lib/next-connect/onNoMatchAPIHandler';
 import nc from 'next-connect';
+import AdminRecruitmentController from 'src/modules/recruitments/controllers/adminRecruitment.controller';
 import RecruitmentController from 'src/modules/recruitments/controllers/recruitment.controller';
 
 const handler = nc({
@@ -11,7 +12,8 @@ const handler = nc({
 }).use(extractTenantId);
 
 handler
-  .post(isAuthenticatedUser, RecruitmentController.create)
-  .get(isAuthenticatedUser, RecruitmentController.getListByApproved);
+  .get(isAuthenticatedUser, AdminRecruitmentController.getById)
+  .delete(isAuthenticatedUser, RecruitmentController.delete)
+  .put(isAuthenticatedUser, RecruitmentController.update);
 
 export default handler;

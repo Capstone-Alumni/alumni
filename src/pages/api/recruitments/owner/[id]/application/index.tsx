@@ -3,15 +3,12 @@ import { isAuthenticatedUser } from '@lib/next-connect/apiMiddleware';
 import onErrorAPIHandler from '@lib/next-connect/onErrorAPIHandler';
 import onNoMatchAPIHandler from '@lib/next-connect/onNoMatchAPIHandler';
 import nc from 'next-connect';
-import RecruitmentController from 'src/modules/recruitments/controllers/recruitment.controller';
+import ApplicationController from '../../../../../../modules/recruitments/controllers/recruitmentApplication.controller';
 
 const handler = nc({
   onError: onErrorAPIHandler,
   onNoMatch: onNoMatchAPIHandler,
 }).use(extractTenantId);
 
-handler
-  .post(isAuthenticatedUser, RecruitmentController.create)
-  .get(isAuthenticatedUser, RecruitmentController.getListByApproved);
-
+handler.get(isAuthenticatedUser, ApplicationController.getAppliedList);
 export default handler;

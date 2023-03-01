@@ -36,3 +36,5 @@ export type GetListRecruitmentParams = {
   type?: string;
   salary?: string;
 };
+
+export type UpdateApplication = { resumeUrl?: string };
