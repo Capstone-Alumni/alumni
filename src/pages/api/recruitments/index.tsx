@@ -10,8 +10,6 @@ const handler = nc({
   onNoMatch: onNoMatchAPIHandler,
 }).use(extractTenantId);
 
-handler
-  .post(isAuthenticatedUser, RecruitmentController.create)
-  .get(isAuthenticatedUser, RecruitmentController.getListByApproved);
+handler.post(isAuthenticatedUser, RecruitmentController.create);
 
 export default handler;
