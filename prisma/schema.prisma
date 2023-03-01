@@ -334,7 +334,7 @@ model RecruitmentApplication {
   applicationOwnerId   String
   applicationOwnerInfo Information @relation(fields: [applicationOwnerId], references: [userId])
 
-  @@map("recruitment_application")
+  @@map("recruitment_applications")
 }
 
 enum AccessLevel {
