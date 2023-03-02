@@ -155,10 +155,10 @@ export default function EditorToolbar({ id, isSimple, ...other }: any) {
           </div>
         )}
 
-        <div className="ql-formats">
+        {/* <div className="ql-formats">
           <button type="button" className="ql-direction" value="rtl" />
           <select className="ql-align" />
-        </div>
+        </div> */}
 
         <div className="ql-formats">
           <button type="button" className="ql-link" />
@@ -166,10 +166,10 @@ export default function EditorToolbar({ id, isSimple, ...other }: any) {
           <button type="button" className="ql-video" />
         </div>
 
-        <div className="ql-formats">
+        {/* <div className="ql-formats">
           {!isSimple && <button type="button" className="ql-formula" />}
           <button type="button" className="ql-clean" />
-        </div>
+        </div> */}
 
         {!isSimple && (
           <div className="ql-formats">

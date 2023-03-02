@@ -9,6 +9,7 @@ import { getTenantDataSSR } from '@share/helpers/SSRAuthorization';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import 'quill/dist/quill.snow.css';
 
 export default async function RootLayout({
   children,

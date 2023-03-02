@@ -10,7 +10,6 @@ import {
   useTheme,
 } from '@mui/material';
 import Editor from '@share/components/editor';
-import 'quill/dist/quill.snow.css';
 import { CreateNewsProps, News, UpdateNewsProps } from '../types';
 import { useRouter } from 'next/navigation';
 import { UploadAvatar as UploadImage } from '@share/components/upload';
@@ -169,7 +168,6 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
               <UploadImage
                 file={imageUrl}
                 maxSize={3145728}
-                icon
                 sx={{
                   width: '50px',
                   height: '50px',

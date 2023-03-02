@@ -1,7 +1,9 @@
+'use-client';
+
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
 // @mui
-import { styled } from '@mui/material/styles';
+import { styled, SxProps } from '@mui/material/styles';
 import { Box } from '@mui/material';
 //
 import EditorToolbar, {
@@ -9,6 +11,11 @@ import EditorToolbar, {
   redoChange,
   undoChange,
 } from './EditorToolbar';
+import { Typography } from '@mui/material';
+import { useMemo, useRef } from 'react';
+import { setStorage } from '@lib/firebase/methods/setStorage';
+import { toast } from 'react-toastify';
+import uniqid from 'uniqid';
 
 // ----------------------------------------------------------------------
 
@@ -47,7 +54,7 @@ Editor.propTypes = {
   sx: PropTypes.object,
 };
 
-type EditorProps = {
+export type EditorProps = {
   id: string;
   value: string;
   onChange: any;
@@ -56,6 +63,7 @@ type EditorProps = {
   simple?: boolean;
   sx?: any;
   placeholder?: string;
+  containerSx?: SxProps;
 };
 
 export default function Editor({
@@ -67,28 +75,78 @@ export default function Editor({
   helperText,
   placeholder,
   sx,
+  containerSx,
   ...other
 }: EditorProps) {
-  const modules = {
-    toolbar: {
-      container: `#${id}`,
-      handlers: {
-        undo: undoChange,
-        redo: redoChange,
-      },
-    },
-    history: {
-      delay: 500,
-      maxStack: 100,
-      userOnly: true,
-    },
-    clipboard: {
-      matchVisual: false,
-    },
+  const quillRef = useRef<null | ReactQuill>(null);
+
+  const handleDrop = async (acceptedFiles: File[]) => {
+    const { uploadAvatar } = setStorage();
+    if (!acceptedFiles?.[0]) {
+      return null;
+    }
+    const file = acceptedFiles[0];
+    const toastId = new Date().getMilliseconds();
+
+    try {
+      toast.loading('Đang xử lý ảnh...', {
+        toastId,
+      });
+      const url = await uploadAvatar(uniqid(), file);
+
+      toast.dismiss(toastId);
+      toast.success('Đã xử lý xong');
+
+      return url;
+    } catch (error) {
+      toast.dismiss(toastId);
+      toast.error('Có lỗi xảy ra, vui lòng thử lại');
+    }
+
+    return null;
   };
 
+  const imageChange = async () => {
+    const input = document.createElement('input');
+
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+    input.onchange = async () => {
+      const files: any = input && input.files ? input.files : [];
+
+      const url = await handleDrop(files);
+
+      const quillObj = quillRef.current?.getEditor();
+      const range = quillObj?.getSelection();
+      quillObj?.editor.insertEmbed(range?.index, 'image', url);
+    };
+  };
+
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: `#${id}`,
+        handlers: {
+          undo: undoChange,
+          redo: redoChange,
+          image: imageChange,
+        },
+      },
+      history: {
+        delay: 500,
+        maxStack: 100,
+        userOnly: true,
+      },
+      clipboard: {
+        matchVisual: false,
+      },
+    }),
+    [],
+  );
+
   return (
-    <div>
+    <Box sx={containerSx}>
       <RootStyle
         sx={{
           ...(error && {
@@ -99,6 +157,7 @@ export default function Editor({
       >
         <EditorToolbar id={id} isSimple={simple} />
         <ReactQuill
+          ref={quillRef}
           value={value}
           onChange={onChange}
           modules={modules}
@@ -107,8 +166,9 @@ export default function Editor({
           {...other}
         />
       </RootStyle>
-
-      {helperText && helperText}
-    </div>
+      <Typography color={error ? 'error' : 'none'}>
+        {helperText && helperText}
+      </Typography>
+    </Box>
   );
 }
