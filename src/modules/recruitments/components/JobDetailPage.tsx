@@ -17,13 +17,10 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import WorkIcon from '@mui/icons-material/Work';
 import LanguageIcon from '@mui/icons-material/Language';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
-// import usePublicGetEventById from '../hooks/usePublicGetEventById';
+import { useEffect, useState } from 'react';
+import usePublicGetJobById from '../hooks/usePublicGetJobById';
 import Image from 'next/image';
-// import usePublicJoinEventById from '../hooks/usePublicJoinEventById';
-// import EventParticipantListTab from './EventParticipantListTab';
-// import usePublicInterestEventById from '../hooks/usePublicInterestEventById';
-// import usePublicUninterestEventById from '../hooks/usePublicUninterestEventById';
+import LoadingIndicator from '@share/components/LoadingIndicator';
 
 const StyledGeneralInfomation = styled(Box)(({ theme }) => ({
   flex: 1,
@@ -36,85 +33,24 @@ const StyledGridInfo = styled(Grid)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
-const EventDetailPage = () => {
+const JobDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
   const theme = useTheme();
   const pathname = usePathname();
 
-  const eventId = pathname?.split('/')[2] || '';
+  const jobId = pathname?.split('/')[3] || '';
 
-  //   const { data, fetchApi, isLoading } = usePublicGetEventById();
-  //   const { fetchApi: joinEvent, isLoading: joiningEvent } =
-  //     usePublicJoinEventById();
-  //   const { fetchApi: interestEvent, isLoading: isInterestingEvent } =
-  //     usePublicInterestEventById();
-  //   const { fetchApi: uninterestEvent, isLoading: isUninterestingEvent } =
-  //     usePublicUninterestEventById();
+  const { data, fetchApi, isLoading } = usePublicGetJobById();
 
-  //   useEffect(() => {
-  //     fetchApi({ eventId: eventId });
-  //   }, []);
+  useEffect(() => {
+    fetchApi({ jobId });
+  }, []);
 
-  //   const isInterested = useMemo(() => {
-  //     return (
-  //       data?.data?.eventInterests?.length &&
-  //       data?.data?.eventInterests?.length > 0
-  //     );
-  //   }, [data?.data]);
+  if (isLoading || !data?.data) {
+    return <LoadingIndicator />;
+  }
 
-  //   const isJoined = useMemo(() => {
-  //     return (
-  //       data?.data?.eventParticipants?.length &&
-  //       data?.data?.eventParticipants?.length > 0
-  //     );
-  //   }, [data?.data]);
-
-  //   const eventStatus = useMemo(() => {
-  //     if (!data?.data) {
-  //       return 'not-open';
-  //     }
-
-  //     const { data: eventData } = data;
-
-  //     if (new Date(eventData.registrationTime) > new Date()) {
-  //       return 'not-open';
-  //     }
-
-  //     if (new Date(eventData.startTime) > new Date()) {
-  //       return 'opened';
-  //     }
-
-  //     if (eventData.endTime && new Date(eventData.endTime) > new Date()) {
-  //       return 'running';
-  //     }
-
-  //     if (!eventData.endTime && !eventData.isEnded) {
-  //       return 'running';
-  //     }
-
-  //     return 'ended';
-  //   }, [data?.data]);
-
-  //   const onJoinEvent = async () => {
-  //     await joinEvent({ eventId: eventId });
-  //     fetchApi({ eventId: eventId });
-  //   };
-
-  //   const onInterestEvent = async () => {
-  //     await interestEvent({ eventId: eventId });
-  //     fetchApi({ eventId: eventId });
-  //   };
-
-  //   const onUninterestEvent = async () => {
-  //     await uninterestEvent({ eventId: eventId });
-  //     fetchApi({ eventId: eventId });
-  //   };
-
-  //   if (isLoading || !data?.data) {
-  //     return <LoadingIndicator />;
-  //   }
-
-  //   const { data: eventData } = data;
+  const { data: jobData } = data;
 
   return (
     <Box>
@@ -128,7 +64,7 @@ const EventDetailPage = () => {
       >
         <Image
           src="/side_background.png"
-          alt="event-image"
+          alt="Job-image"
           fill
           style={{ objectFit: 'cover' }}
         />
@@ -155,7 +91,7 @@ const EventDetailPage = () => {
                 </Grid>
                 <Grid item xs={10}>
                   <Typography fontWeight={600}>Ngành ngề</Typography>
-                  <Typography>Kĩ sư Backend</Typography>
+                  <Typography>{jobData.job}</Typography>
                 </Grid>
               </Grid>
             </StyledGridInfo>
@@ -166,7 +102,7 @@ const EventDetailPage = () => {
                 </Grid>
                 <Grid item xs={10}>
                   <Typography fontWeight={600}>Website</Typography>
-                  <Typography>fpt.edu.vn</Typography>
+                  <Typography>{jobData.website}</Typography>
                 </Grid>
               </Grid>
             </StyledGridInfo>
@@ -177,7 +113,7 @@ const EventDetailPage = () => {
                 </Grid>
                 <Grid item xs={10}>
                   <Typography fontWeight={600}>Mức lương</Typography>
-                  <Typography>Thương lượng</Typography>
+                  <Typography>{jobData.salary || 'Thương lượng'}</Typography>
                 </Grid>
               </Grid>
             </StyledGridInfo>
@@ -188,10 +124,7 @@ const EventDetailPage = () => {
                 </Grid>
                 <Grid item xs={10}>
                   <Typography fontWeight={600}>Địa chỉ</Typography>
-                  <Typography>
-                    124 Huỳnh Tấn Phát, phường Tân Thuận Tây, quận 7, TP. Hồ Chí
-                    Minh
-                  </Typography>
+                  <Typography>{jobData.address}</Typography>
                 </Grid>
               </Grid>
             </StyledGridInfo>
@@ -207,14 +140,6 @@ const EventDetailPage = () => {
           >
             Tham gia
           </Button>
-
-          <Button
-            fullWidth
-            variant="outlined"
-            startIcon={<BookmarkBorderIcon />}
-          >
-            Lưu
-          </Button>
         </Box>
       </Box>
 
@@ -224,16 +149,15 @@ const EventDetailPage = () => {
         aria-label="wrapped tabs"
       >
         <Tab value="description" label="Mô tả" />
-        <Tab value="participant" label="Người tham dự" />
       </Tabs>
 
       {tabKey === 'description' ? (
         <Box>
-          <Typography> description</Typography>
+          <Typography>{jobData.description}</Typography>
         </Box>
       ) : null}
     </Box>
   );
 };
 
-export default EventDetailPage;
+export default JobDetailPage;

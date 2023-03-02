@@ -3,7 +3,7 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { useRecoilState } from 'recoil';
-import useAdminApproveEventById from '../hooks/useAdminApproveEventById';
+import useAdminApproveEventById from '../hooks/useAdminApproveJobById';
 import useAdminGetEventList from '../hooks/useAdminGetJobList';
 import useAdminRejectEventById from '../hooks/useAdminRejectJobById';
 import { getAdminJobListParamsAtom } from '../states';

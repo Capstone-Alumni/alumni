@@ -4,7 +4,7 @@ import { Box, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import usePublicGetEventList from 'src/modules/recruitments/hooks/usePublicGetEventList';
+import usePublicGetEventList from 'src/modules/recruitments/hooks/usePublicGetJobList';
 import { getAdminJobListParamsAtom } from '../states';
 import Companies from './Companies';
 
