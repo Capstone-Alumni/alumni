@@ -66,7 +66,7 @@ const PostForm = ({
         <MyAvatar />
 
         <Typography fontWeight={600}>
-          {currentUserInformation.data.fullName}
+          {currentUserInformation?.data.fullName}
         </Typography>
       </Stack>
 
