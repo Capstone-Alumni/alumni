@@ -12,6 +12,7 @@ export type Class = {
   description: string | null;
   createdAt: string | Date;
   gradeId: string;
+  grade?: Grade;
 };
 
 export type GetGradeListData = {

@@ -1,4 +1,5 @@
 import { AccessLevel } from '@prisma/client';
+import { Information } from '../profiles/types';
 
 export type Event = {
   id: string;
@@ -31,7 +32,8 @@ export type EventParticipant = {
   id: string;
   userId: string;
   eventId: string;
-  participantInformation: any;
+  participantInformation: Information;
+  createdAt: Date | string;
 };
 
 export type EventInterest = {

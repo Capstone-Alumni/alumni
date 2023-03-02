@@ -10,6 +10,7 @@ import DateTimeInput from '@share/components/form/DateTimeInput';
 import SelectInput from '@share/components/form/SelectInput';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
+import RichTextInput from '@share/components/form/RichTextInput';
 
 export type EventFormValues = {
   title: string;
@@ -46,7 +47,7 @@ const EventForm = ({
     resolver,
     defaultValues: {
       title: initialData?.title ?? '',
-      description: initialData?.description,
+      description: initialData?.description ?? '',
       isOffline: initialData?.isOffline ?? false,
       location: initialData?.location,
       registrationTime: initialData?.registrationTime
@@ -88,12 +89,6 @@ const EventForm = ({
         inputProps={{ label: 'Tên sự kiện', fullWidth: true }}
       />
 
-      <TextInput
-        control={control}
-        name="description"
-        inputProps={{ label: 'Mô tả', multiline: true, fullWidth: true }}
-      />
-
       <Box sx={{ width: '100%' }}>
         <TextInput
           control={control}
@@ -106,6 +101,12 @@ const EventForm = ({
           inputProps={{ label: 'Sự kiện tổ chức offline' }}
         />
       </Box>
+
+      <RichTextInput
+        control={control}
+        name="description"
+        inputProps={{ placeholder: 'Mô tả' }}
+      />
 
       <DateTimeInput
         control={control}
@@ -184,7 +185,7 @@ const EventForm = ({
       <Button
         variant="contained"
         disabled={isSaving}
-        onClick={handleSubmit(onSubmit)}
+        onClick={handleSubmit(onSubmitWithStatus)}
       >
         Lưu
       </Button>

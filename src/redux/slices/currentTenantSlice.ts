@@ -23,6 +23,9 @@ export interface CurrentTenantState {
   subdomain: string;
   tenantId: string;
   theme: string;
+  background1?: string;
+  background2?: string;
+  background3?: string;
 }
 
 const initialState: CurrentTenantState = {

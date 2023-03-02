@@ -20,7 +20,9 @@ const Checkbox = ({ control, name, inputProps }: TextInputProps) => {
       name={name}
       render={({ field }) => (
         <FormControlLabel
-          control={<MuiCheckbox {...field} {...inputProps} />}
+          control={
+            <MuiCheckbox {...field} {...inputProps} checked={field.value} />
+          }
           label={inputProps?.label}
         />
       )}

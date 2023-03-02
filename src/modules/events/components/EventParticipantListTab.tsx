@@ -1,12 +1,23 @@
 'use client';
 
-import { Box, Pagination, Typography } from '@mui/material';
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { usePathname } from 'next/navigation';
 import { useRecoilState } from 'recoil';
 import usePublicGetEventParticipantList from '../hooks/usePublicGetEventParticipantList';
 import { getPublicEventParticipantListParamsAtom } from '../states';
 import MyAvatar from '@share/components/MyAvatar';
+import DataTablePagination from '@share/components/DataTablePagination';
 
 const EventParticipantListTab = () => {
   const pathname = usePathname();
@@ -28,50 +39,57 @@ const EventParticipantListTab = () => {
         px: 1,
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          gap: 1,
-          mb: 2,
-        }}
-      >
-        {data.data.items.map(item => (
-          <Box
-            key={item.id}
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              gap: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <MyAvatar />
-            <Typography>{item.participantInformation.fullName}</Typography>
-            {/* <Box>
-            <Typography variant="body2">
-              {item.participantInformation.email}
-            </Typography>
-          </Box> */}
-          </Box>
-        ))}
-      </Box>
+      <TableContainer component={Paper}>
+        <Table aria-label="event participant table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="left">Tên</TableCell>
+              <TableCell align="center">Niên khoá</TableCell>
+              <TableCell align="center">Lớp</TableCell>
+              <TableCell align="left">Ngày đăng ký</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.data.items.map(row => (
+              <TableRow key={row.id}>
+                <TableCell align="left">
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      gap: 1,
+                      alignItems: 'center',
+                    }}
+                  >
+                    <MyAvatar />
+                    <Typography>
+                      {row.participantInformation.fullName}
+                    </Typography>
+                  </Box>
+                </TableCell>
+                <TableCell align="center">
+                  {row.participantInformation.alumClass?.grade?.code}
+                </TableCell>
+                <TableCell align="center">
+                  {row.participantInformation.alumClass?.name}
+                </TableCell>
+                <TableCell>{new Date(row.createdAt).toDateString()}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
 
-      <Pagination
-        sx={{
-          margin: 'auto',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-        color="primary"
-        count={Math.ceil(data?.data.totalItems / data?.data.itemPerPage)}
-        page={params.page}
-        onChange={(_, nextPage) => {
-          setParams(prevParams => ({ ...prevParams, page: nextPage }));
-        }}
-      />
+          <DataTablePagination
+            colSpan={6}
+            currentPage={params.page}
+            totalPage={Math.ceil(
+              data?.data.totalItems / data?.data.itemPerPage,
+            )}
+            onChangePage={nextPage => {
+              setParams(prevParams => ({ ...prevParams, page: nextPage }));
+            }}
+          />
+        </Table>
+      </TableContainer>
     </Box>
   );
 };
