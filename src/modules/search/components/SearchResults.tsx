@@ -75,7 +75,7 @@ const SeachPage = () => {
                         }}
                       >
                         <Link
-                          href={`/profile/${user.id}?profile_tab=information`}
+                          href={`/profile/${user.userId}?profile_tab=information`}
                           style={{ color: 'inherit', fontWeight: 'bold' }}
                         >
                           {user.fullName}

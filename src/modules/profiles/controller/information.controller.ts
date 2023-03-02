@@ -10,10 +10,6 @@ export default class InformationController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id } = req.query;
-    console.log(
-      '🚀 ~ file: information.controller.ts:13 ~ InformationController ~ id:',
-      id,
-    );
     // TODO: handle authorization, wait for middleware on BE
     const prisma = await getPrismaClient(req.tenantId);
     const informationUpdated =

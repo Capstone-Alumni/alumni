@@ -72,7 +72,10 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
             {getRoleName(user.accessLevel)}
           </Typography>
         </Box>
-        <MyAvatar />
+        <MyAvatar
+          src={currentUser.data.avatarUrl}
+          alt={currentUser.data.fullName}
+        />
       </Wrapper>
       <Menu
         id="header-user-menu"

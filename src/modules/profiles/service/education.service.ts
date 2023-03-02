@@ -2,8 +2,11 @@ import { getPageAndLimitFromParams } from 'src/utils';
 import { PrismaClient } from '@prisma/client';
 import {
   CreateOrUpdateEducationServiceProps,
+  InformationIncludeClass,
   QueryParamGetEducationByUserId,
 } from '../types';
+import { canViewInformationDetail } from '../helpers/canViewInformationDetail';
+import { User } from 'next-auth';
 
 // const isUserExisted = async (id: string) => {
 //   const whereFilter = {
@@ -29,6 +32,25 @@ const isEducationExisted = async (tenantPrisma: PrismaClient, id: string) => {
   if (!education) {
     throw new Error('Education information is not existed');
   }
+};
+
+const canViewEducation = (
+  information: InformationIncludeClass | null,
+  requesterInformation: InformationIncludeClass | null,
+) => {
+  if (information?.userId === requesterInformation?.userId) {
+    return true;
+  }
+  if (
+    !canViewInformationDetail(
+      information?.educationPublicity || 'PRIVATE',
+      information?.alumClass || null,
+      requesterInformation?.alumClass || null,
+    )
+  ) {
+    return false;
+  }
+  return true;
 };
 
 export default class EducationServices {
@@ -129,10 +151,40 @@ export default class EducationServices {
   static getEducationsByUserId = async (
     tenantPrisma: PrismaClient,
     userId: string,
+    user: User,
     params: QueryParamGetEducationByUserId,
   ) => {
     //await isUserExisted(userId);
 
+    const requesterInformation = await tenantPrisma.information.findUnique({
+      where: { userId: user.id },
+      include: {
+        alumClass: {
+          include: {
+            grade: true,
+          },
+        },
+      },
+    });
+
+    const userInformation = await tenantPrisma.information.findUnique({
+      where: { userId: userId },
+      include: {
+        alumClass: {
+          include: {
+            grade: true,
+          },
+        },
+      },
+    });
+
+    if (!canViewEducation(userInformation, requesterInformation)) {
+      return {
+        totalItems: 0,
+        items: {},
+        itemPerPage: 0,
+      };
+    }
     const { page, limit } = getPageAndLimitFromParams(params);
     const { school, degree, startDate, endDate } = params;
     const whereFilter = {

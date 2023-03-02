@@ -68,14 +68,14 @@ export default function EditVisibilityForm({
   };
 
   const onSubmitForm = async () => {
-    const inforUpdatePaylod = {
+    const inforUpdatePayload = {
       email: userInformation.email,
       ...visibility,
     };
     try {
       await updateUserInformation({
         userId: userInformation.userId,
-        ...inforUpdatePaylod,
+        ...inforUpdatePayload,
       });
       onClose();
       toast.success('Cập nhật thành công');

@@ -11,7 +11,7 @@ const handler = nc({
 }).use(extractTenantId, extractUser);
 
 handler
-  .get(CareerController.getById)
+  .get(extractUser, CareerController.getById)
   .put(CareerController.updateCareerById)
   .delete(CareerController.deleteById);
 

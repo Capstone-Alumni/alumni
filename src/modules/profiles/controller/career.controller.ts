@@ -29,8 +29,10 @@ export default class CareerController {
   ) => {
     const { id, jobTitle, company, page, limit } = req.query;
     const prisma = await getPrismaClient(req.tenantId);
+    const requestUser = req.user;
     const careerList = await CareerService.getListByUserId(
       prisma,
+      requestUser,
       id as string,
       {
         jobTitle: jobTitle ? (jobTitle as string) : '',

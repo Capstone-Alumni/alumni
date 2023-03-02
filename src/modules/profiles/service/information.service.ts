@@ -1,25 +1,12 @@
 import {
   GetUsersInformationListServiceParams,
+  InformationIncludeClass,
   UpdateInformationProps,
 } from '../types';
-import {
-  AlumClass,
-  Grade,
-  Information,
-  Prisma,
-  PrismaClient,
-} from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { User } from 'next-auth';
 import { omit } from 'lodash/fp';
 import { canViewInformationDetail } from '../helpers/canViewInformationDetail';
-
-type InformationIncludeClass = Information & {
-  alumClass:
-    | (AlumClass & {
-        grade: Grade;
-      })
-    | null;
-};
 
 const filterInformation = (
   information: InformationIncludeClass | null,
@@ -109,10 +96,6 @@ export default class InformationService {
         },
       },
     });
-    console.log(
-      '🚀 ~ file: information.service.ts:112 ~ InformationService ~ userInformation:',
-      userInformation,
-    );
 
     return filterInformation(userInformation, requesterInformation);
   };
