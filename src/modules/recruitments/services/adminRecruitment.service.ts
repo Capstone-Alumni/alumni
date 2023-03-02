@@ -39,6 +39,9 @@ export default class AdminRecruitmentService {
         take: limit,
         where: whereFilter,
         orderBy: [{ createdAt: 'desc' }],
+        include: {
+          recruitmentOwnerInfo: true,
+        },
       }),
     ]);
     return {

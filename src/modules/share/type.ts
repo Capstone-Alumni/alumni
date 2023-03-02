@@ -59,6 +59,7 @@ export type Profile = {
 };
 
 export type UserInformation = {
+  fullName: string;
   id: string;
   userId: string;
   bio: string;

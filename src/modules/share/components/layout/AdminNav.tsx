@@ -40,6 +40,13 @@ const EVENT_NAV_ITEM = {
   link: '/admin/event',
 };
 
+const RECRUITMENTS_NAV_ITEM = {
+  id: 'recruitments',
+  title: 'Tuyển dụng',
+  icon: 'ic:baseline-event',
+  link: '/admin/recruitments',
+};
+
 const GRADE_NAV_ITEM = {
   id: 'grade_class',
   title: 'Niên khoá và Lớp',
@@ -155,6 +162,7 @@ const generateNavItems = (
         EVENT_NAV_ITEM,
         GRADE_NAV_ITEM,
         USER_NAV_ITEM,
+        RECRUITMENTS_NAV_ITEM,
       ];
   }
 };
@@ -182,7 +190,7 @@ const AdminNav = ({ user, tenant }: { user?: any; tenant: any }) => {
           </StyledHeader>
 
           <StyledNav>
-            {generateNavItems(user.accessLevel).map(item => {
+            {generateNavItems(user.accessLevel).map((item) => {
               const isActive = item.link && pathname?.startsWith(item.link);
               return (
                 <Link
