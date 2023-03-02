@@ -190,7 +190,7 @@ const AdminNav = ({ user, tenant }: { user?: any; tenant: any }) => {
           </StyledHeader>
 
           <StyledNav>
-            {generateNavItems(user.accessLevel).map((item) => {
+            {generateNavItems(user.accessLevel).map(item => {
               const isActive = item.link && pathname?.startsWith(item.link);
               return (
                 <Link

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getAdminJobListParamsAtom } from '../states';
-import { Job, GetAdminJobListParams } from '../types';
+import { GetAdminJobListParams, Job } from '../types';
 
 export type AdminGetJobListData = {
   totalItems: number;
@@ -27,7 +27,7 @@ const useAdminGetJobList = () => {
     AdminGetJobListParams,
     AdminGetJobListResponse,
     AdminGetJobListError
-  >('adminGetJobList', (params) => ({
+  >('adminGetJobList', params => ({
     method: 'GET',
     url: '/api/recruitments/admin',
     params,

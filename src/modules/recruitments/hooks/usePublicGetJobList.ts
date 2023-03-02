@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getPublicJobListParamsAtom } from '../states';
-import { Job, GetPublicJobListParams } from '../types';
+import { GetPublicJobListParams, Job } from '../types';
 
 type PublicGetJobListParams = GetPublicJobListParams;
 
@@ -25,7 +25,7 @@ const usePublicGetJobList = () => {
     PublicGetJobListParams,
     PublicGetJobListResponse,
     PublicGetJobListError
-  >('publicGetJobList', (params) => ({
+  >('publicGetJobList', params => ({
     method: 'GET',
     url: '/api/recruitments/public',
     params,

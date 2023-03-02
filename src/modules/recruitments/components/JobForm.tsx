@@ -1,13 +1,10 @@
-import { AccessLevel } from '@prisma/client';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 import { Job } from '../types';
 import TextInput from '@share/components/form/TextInput';
 import { Box, Button, useTheme } from '@mui/material';
-import Checkbox from '@share/components/form/Checkbox';
 import DateTimeInput from '@share/components/form/DateTimeInput';
-import SelectInput from '@share/components/form/SelectInput';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 

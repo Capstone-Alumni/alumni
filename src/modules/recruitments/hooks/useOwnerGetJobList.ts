@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getOwnerJobListParamsAtom } from '../states';
-import { Job, GetOwnerJobListParams } from '../types';
+import { GetOwnerJobListParams, Job } from '../types';
 
 type OwnerGetJobListParams = GetOwnerJobListParams;
 
@@ -25,7 +25,7 @@ const useOwnerGetJobList = () => {
     OwnerGetJobListParams,
     OwnerGetJobListResponse,
     OwnerGetJobListError
-  >('ownerGetJobList', (params) => ({
+  >('ownerGetJobList', params => ({
     method: 'GET',
     url: '/api/recruitments/owner',
     params,

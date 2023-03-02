@@ -1,9 +1,9 @@
 import { atom } from 'recoil';
 import {
   GetAdminJobListParams,
-  GetOwnerJobListParams,
   GetOwnerGoingJobListParams,
   GetOwnerInterestJobListParams,
+  GetOwnerJobListParams,
   GetPublicJobListParams,
   GetPublicJobParticipantListParams,
 } from './types';

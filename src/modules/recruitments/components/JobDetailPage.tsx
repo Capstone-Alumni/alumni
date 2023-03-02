@@ -10,7 +10,6 @@ import {
   useTheme,
 } from '@mui/material';
 import { Box, Typography } from '@mui/material';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
