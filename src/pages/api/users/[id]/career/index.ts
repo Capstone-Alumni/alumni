@@ -12,7 +12,7 @@ const handler = nc({
 
 handler
   .use(extractTenantId)
-  .get(CareerController.getListByUserId)
+  .get(extractUser, CareerController.getListByUserId)
   .post(CareerController.createCareer)
   .put(CareerController.updateCareers);
 

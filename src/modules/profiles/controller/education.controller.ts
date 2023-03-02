@@ -100,9 +100,11 @@ export default class EducationController {
     const params = omit(req.query, ['id']);
     const { id: userId } = req.query;
     const prisma = await getPrismaClient(req.tenantId);
+    const user = req.user;
     const userEducations = await EducationServices.getEducationsByUserId(
       prisma,
       userId as string,
+      user,
       params as unknown as QueryParamGetEducationByUserId,
     );
 

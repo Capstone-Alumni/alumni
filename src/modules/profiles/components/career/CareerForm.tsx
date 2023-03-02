@@ -74,6 +74,7 @@ const CareerForm = ({ defaultValues, onSave, onClose }: any) => {
                 control={control}
                 name={item.name}
                 inputProps={{ label: item.label, fullWidth: true }}
+                key={item.id}
               />
             );
           case 'date':
@@ -85,6 +86,7 @@ const CareerForm = ({ defaultValues, onSave, onClose }: any) => {
                   fullWidth: true,
                   label: item.label,
                 }}
+                key={item.id}
               />
             );
           default:
