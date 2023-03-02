@@ -103,7 +103,7 @@ const NewsCommentItem = ({
               underline="none"
               href={`/profile/${
                 item.commenterInfo ? item.commenterInfo.id : ''
-              }`}
+              }?profile_tab=information`}
               color="inherit"
             >
               <Typography

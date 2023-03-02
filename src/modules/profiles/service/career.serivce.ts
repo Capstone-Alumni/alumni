@@ -1,7 +1,10 @@
 import { PrismaClient } from '@prisma/client';
+import { User } from 'next-auth';
+import { canViewInformationDetail } from '../helpers/canViewInformationDetail';
 import {
   CreateCareerServiceProps,
   GetCareerListServiceParams,
+  InformationIncludeClass,
   UpdateCareerInfoByIdServiceProps,
 } from '../types';
 
@@ -14,6 +17,26 @@ import {
 //     throw new Error('user not exist');
 //   }
 // };
+
+const canViewCareers = (
+  information: InformationIncludeClass | null,
+  requesterInformation: InformationIncludeClass | null,
+) => {
+  if (information?.userId === requesterInformation?.userId) {
+    return true;
+  }
+  if (
+    !canViewInformationDetail(
+      information?.careerPublicity || 'PRIVATE',
+      information?.alumClass || null,
+      requesterInformation?.alumClass || null,
+    )
+  ) {
+    return false;
+  }
+  return true;
+};
+
 export default class CareerService {
   static create = async (
     tenantPrisma: PrismaClient,
@@ -59,9 +82,40 @@ export default class CareerService {
 
   static getListByUserId = async (
     tenantPrisma: PrismaClient,
+    requestUser: User,
     userId: string,
     params: GetCareerListServiceParams,
   ) => {
+    const requesterInformation = await tenantPrisma.information.findUnique({
+      where: { userId: requestUser.id },
+      include: {
+        alumClass: {
+          include: {
+            grade: true,
+          },
+        },
+      },
+    });
+
+    const userInformation = await tenantPrisma.information.findUnique({
+      where: { userId: userId },
+      include: {
+        alumClass: {
+          include: {
+            grade: true,
+          },
+        },
+      },
+    });
+
+    if (!canViewCareers(userInformation, requesterInformation)) {
+      return {
+        totalItems: 0,
+        items: {},
+        itemPerPage: 0,
+      };
+    }
+
     const { jobTitle, company, page, limit } = params;
 
     const whereFilter = {

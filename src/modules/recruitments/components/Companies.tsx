@@ -15,64 +15,7 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import Link from 'next/link';
 import CompanyItem from './CompanyItem';
 import Slider from 'react-slick';
-
-const data2 = [
-  {
-    id: '1',
-    imageUrl:
-      'https://bka.hcmut.edu.vn/FileManager/Download/?filename=%5cimage_upload%5c4bf558a9-16f5-4513-80f5-86a454dc41b3.png',
-    major: 'Thực tập sinh nhóm ngành CNTT',
-    name: 'FPT Software',
-    resourcesNeed: 2,
-    location: 'Can Tho',
-    expireAt: '15/11/2022',
-    salary: 'Thương lượng',
-  },
-  {
-    id: '2',
-    imageUrl:
-      'https://bka.hcmut.edu.vn/FileManager/Download/?filename=%5cimage_upload%5c4bf558a9-16f5-4513-80f5-86a454dc41b3.png',
-    major:
-      'Fresher/Junior/Mefior/Senior/Lead Go Engineer dasd as ds ad as da sd as d',
-    name: 'Arduin',
-    resourcesNeed: 2,
-    location: 'Can Tho',
-    expireAt: '15/11/2022',
-    salary: 'Thương lượng',
-  },
-  {
-    id: '8',
-    imageUrl:
-      'https://bka.hcmut.edu.vn/FileManager/Download/?filename=%5cimage_upload%5c4bf558a9-16f5-4513-80f5-86a454dc41b3.png',
-    major: 'Senior Go Engineer',
-    name: 'Arduin',
-    resourcesNeed: 2,
-    location: 'Can Tho',
-    expireAt: '15/11/2022',
-    salary: 'Thương lượng',
-  },
-  {
-    id: '3',
-    imageUrl:
-      'https://bka.hcmut.edu.vn/FileManager/Download/?filename=%5cimage_upload%5ce6475845-00ab-4b0d-931e-8fe744c5db11.png',
-    major: 'BA Technical Lead',
-    name: 'National Australia Bank',
-    resourcesNeed: 2,
-    location: 'Can Tho',
-    expireAt: '15/11/2022',
-    salary: 'Thương lượng',
-  },
-  {
-    id: '4',
-    imageUrl: '/side_background.png',
-    major: 'Medior ReactJS',
-    name: 'NAB Innovation Centre Vietnam',
-    resourcesNeed: 2,
-    location: 'Can Tho',
-    expireAt: '15/11/2022',
-    salary: 'Thương lượng',
-  },
-];
+import { Job } from '../types';
 
 const FlexWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -94,7 +37,7 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
   width: '100%',
 }));
 
-const CompaniesSlider = () => {
+const CompaniesSlider = ({ data }: { data: Job[] }) => {
   const theme = useTheme();
 
   const settings = {
@@ -110,7 +53,7 @@ const CompaniesSlider = () => {
     // cssEase: 'linear',
   };
 
-  const handleRenderSlideCompanies = (data: any) => {
+  const handleRenderSlideCompanies = () => {
     return data.map((company: any) => {
       return (
         <CompanyItem
@@ -136,7 +79,7 @@ const CompaniesSlider = () => {
     });
   };
 
-  const handleRenderCompanies = (data: any) => {
+  const handleRenderCompanies = () => {
     return data.map((company: any) => {
       return (
         <CompanyItem
@@ -170,20 +113,20 @@ const CompaniesSlider = () => {
         mt: 1,
       }}
     >
-      <Typography variant="h5">Việc làm nổi bật</Typography>
+      {/* <Typography variant="h5">Việc làm nổi bật</Typography>
       <Spacer />
       <Grid container>
         <StyledSlider {...settings}>
-          {handleRenderSlideCompanies(data2)}
+          {handleRenderSlideCompanies()}
         </StyledSlider>
       </Grid>
-      <Spacer />
-      <Typography variant="h5" sx={{ margin: '1rem 0' }}>
+      <Spacer /> */}
+      <Typography variant="h5" sx={{ margin: '0' }}>
         Việc làm hot
       </Typography>
       <Spacer />
       <Grid container spacing={2}>
-        {handleRenderCompanies(data2)}
+        {handleRenderCompanies()}
       </Grid>
       {/* <br />
       <Typography variant="h5">Ngành nghề</Typography>

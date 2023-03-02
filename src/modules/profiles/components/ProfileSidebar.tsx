@@ -16,7 +16,10 @@ import { setStorage } from 'src/firebase/methods/setStorage';
 import { generateUniqSerial } from 'src/utils';
 import { toast } from 'react-toastify';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { useGetUserInformationQuery } from '@redux/slices/userProfileSlice';
+import {
+  useGetUserInformationQuery,
+  useUpdateUserInformationMutation,
+} from '@redux/slices/userProfileSlice';
 
 const avatarUrlDefault =
   'https://firebasestorage.googleapis.com/v0/b/alumni-pf.appspot.com/o/users%2F6a5e-9e80-43e-cf66%2Favatar%2Favatar_default.jpeg?alt=media&token=8579e2f1-42b1-41ed-a641-833bbcc84194';
@@ -96,6 +99,7 @@ const ProfileSidebar = () => {
   const searchParams = useSearchParams();
   const currentProfileTab = searchParams.get('profile_tab');
   const { canEditProfile, userProfileId } = useCanEditProfile();
+  const [updateUserInformation] = useUpdateUserInformationMutation();
 
   const { data } = useGetUserInformationQuery(userProfileId);
 
@@ -108,12 +112,15 @@ const ProfileSidebar = () => {
         toastId: type,
       });
       const url = await uploadAvatar(generateUniqSerial(), file);
-      // userProfileId &&
-      //   (await updateUserInformation({
-      //     avatarUrl: url,
-      //     userId: userProfileId,
-      //   }));
-      // update profile
+      const uploadAvatarPayload = {
+        email: data.data.email,
+        avatarUrl: url,
+      };
+      userProfileId &&
+        (await updateUserInformation({
+          ...uploadAvatarPayload,
+          userId: userProfileId,
+        }));
       toast.dismiss(type);
       toast.success('Cập nhật thành công');
     } catch (error: any) {

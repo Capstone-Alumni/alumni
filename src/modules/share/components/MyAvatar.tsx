@@ -14,8 +14,8 @@ export default function MyAvatar({ ...other }: MAvatarProps) {
 
   return (
     <MAvatar
-      src={user?.photoURL}
-      alt={user?.displayName}
+      src={other.src}
+      alt={other.alt}
       color={user?.photoURL ? 'default' : createAvatar(user?.displayName).color}
       {...other}
     >

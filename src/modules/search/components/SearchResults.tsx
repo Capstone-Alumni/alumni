@@ -41,7 +41,7 @@ const SeachPage = () => {
   const currentUser = useAppSelector((state: RootState) => state.currentUser);
 
   const handleDirectToProfile = (userId: string) => {
-    router.push(`/profile/${userId}`);
+    router.push(`/profile/${userId}?profile_tab=information`);
   };
 
   const handleRenderUsersProfile = () => {
@@ -75,7 +75,7 @@ const SeachPage = () => {
                         }}
                       >
                         <Link
-                          href={`/profile/${user.id}`}
+                          href={`/profile/${user.userId}?profile_tab=information`}
                           style={{ color: 'inherit', fontWeight: 'bold' }}
                         >
                           {user.fullName}
