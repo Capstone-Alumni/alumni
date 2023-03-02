@@ -18,7 +18,7 @@ export default async function Page() {
       <Header user={session?.user} tenant={data} hasAnimation />
       <IntroductionSection tenant={data} />
       <AboutSection tenant={data} />
-      <ClassSection />
+      <ClassSection tenant={data} />
       <NewsSection />
       <Footer tenant={data} />
     </>

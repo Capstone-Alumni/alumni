@@ -22,7 +22,7 @@ export default async function RootLayout({
       <head>
         <title>{data.name}</title>
         <meta content="initial-scale=1, width=device-width" name="viewport" />
-        <link rel="shortcut icon" href="/logo.png" />
+        <link rel="shortcut icon" href={data.logo ?? '/logo.png'} />
       </head>
       <body style={{ margin: 0, minHeight: '100vh' }}>
         <CSRProvider theme={data.theme}>

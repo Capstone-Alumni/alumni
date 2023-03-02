@@ -1,9 +1,10 @@
 'use client';
 
 import { Box, Container, Typography, useTheme } from '@mui/material';
+import { Tenant } from '@redux/slices/currentTenantSlice';
 import Logo from '../Logo';
 
-const Footer = ({ tenant }: { tenant?: any }) => {
+const Footer = ({ tenant }: { tenant?: Tenant }) => {
   const theme = useTheme();
 
   return (
@@ -56,7 +57,7 @@ const Footer = ({ tenant }: { tenant?: any }) => {
                 gap: theme.spacing(1),
               }}
             >
-              <Logo sx={{ zIndex: 1 }} />
+              <Logo url={tenant?.logo} sx={{ zIndex: 1 }} />
               <Typography variant="h6">{tenant?.name}</Typography>
             </Box>
             {/* <Typography color="GrayText" variant="body2" gutterBottom>

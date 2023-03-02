@@ -10,6 +10,9 @@ export type Tenant = {
   subdomain: string;
   tenantId: string;
   theme: string;
+  background1?: string;
+  background2?: string;
+  background3?: string;
 };
 
 export interface CurrentTenantState {

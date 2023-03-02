@@ -10,22 +10,20 @@ import { Box, Paper, Typography } from '@mui/material';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
-  width: 144,
-  height: 144,
   margin: 'auto',
-  borderRadius: '50%',
+  borderRadius: '0.5rem',
   padding: theme.spacing(1),
   border: `1px dashed ${theme.palette.grey[500_32]}`,
 }));
 
 const DropZoneStyle = styled('div')({
   zIndex: 0,
-  width: '100%',
-  height: '100%',
+  height: 144,
+  minWidth: 144,
   outline: 'none',
   display: 'flex',
   overflow: 'hidden',
-  borderRadius: '50%',
+  borderRadius: '0.5rem',
   position: 'relative',
   alignItems: 'center',
   justifyContent: 'center',
@@ -60,20 +58,20 @@ interface CustomFile extends File {
   preview?: string;
 }
 
-export interface UploadAvatarProps extends DropzoneOptions {
+export interface UploadBackgroundProps extends DropzoneOptions {
   error?: boolean;
   file: CustomFile | string | null;
   caption?: ReactNode;
   sx?: SxProps<Theme>;
 }
 
-export default function UploadAvatar({
+export default function UploadBackground({
   error,
   file,
   caption,
   sx,
   ...other
-}: UploadAvatarProps) {
+}: UploadBackgroundProps) {
   const {
     getRootProps,
     getInputProps,
@@ -136,7 +134,7 @@ export default function UploadAvatar({
           {file && (
             <Box
               component="img"
-              alt="avatar"
+              alt="BackUploadBackground"
               src={isString(file) ? file : file.preview}
               sx={{ zIndex: 8, objectFit: 'cover' }}
             />

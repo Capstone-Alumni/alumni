@@ -1,16 +1,18 @@
 'use client';
 
 import { Box, Container, Typography, useTheme } from '@mui/material';
+import { Tenant } from '@redux/slices/currentTenantSlice';
 
-const IntroductionSection = ({ tenant }: { tenant: any }) => {
+const IntroductionSection = ({ tenant }: { tenant: Tenant }) => {
   const theme = useTheme();
 
   return (
     <Box
       sx={{
         paddingX: theme.spacing(2),
-        background:
-          'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("/side_background.png")',
+        background: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${
+          tenant.background1 ?? '/side_background.png'
+        })`,
         backgroundPosition: 'center',
         backgroundSize: 'cover',
         backgroundColor: 'yellow',

@@ -8,14 +8,15 @@ export default function Logo({
   sx,
   height,
   width,
-}: BoxProps & { height?: number; width?: number }) {
+  url,
+}: BoxProps & { height?: number; width?: number; url?: string }) {
   return (
     <Box sx={sx}>
       <Image
         height={height || 40}
         width={width || 40}
         alt="platform-logo"
-        src="/logo.png"
+        src={url ?? '/logo.png'}
       />
     </Box>
     // <Box sx={{ width: 40, height: 40, ...sx }}>
