@@ -54,16 +54,16 @@ const EVENT_NAV_ITEMS = [
     link: '/recruitments/discover',
   },
   {
-    id: 'interest',
-    title: 'Quan tâm',
-    icon: 'material-symbols:bookmark',
-    link: '/recruitments/interested',
-  },
-  {
     id: 'hosting',
     title: 'Đơn đã nộp',
     icon: 'material-symbols:person-pin',
     link: '/recruitments/applied',
+  },
+  {
+    id: 'job_posted',
+    title: 'Công việc đã đăng',
+    icon: 'material-symbols:person-pin',
+    link: '/recruitments/posted_jobs',
   },
 ];
 
