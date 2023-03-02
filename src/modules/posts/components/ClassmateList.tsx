@@ -13,11 +13,11 @@ const ClassmateList = () => {
   const { fetchApi, data } = useGetInformationSameClassList();
 
   useEffect(() => {
-    if (currentUserInformation.data.alumClassId) {
+    if (currentUserInformation?.data.alumClassId) {
       fetchApi({
         page: 1,
         limit: 10,
-        classId: currentUserInformation.data.alumClassId,
+        classId: currentUserInformation?.data.alumClassId,
       });
     }
   }, [currentUserInformation?.data.alumClassId]);
