@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
 // @types
 import { UploadAvatar } from '@share/components/upload';
-import { setStorage } from 'src/firebase/methods/setStorage';
+import { setStorage } from '@lib/firebase/methods/setStorage';
 import { generateUniqSerial } from 'src/utils';
 import {
   useGetUserInformationQuery,

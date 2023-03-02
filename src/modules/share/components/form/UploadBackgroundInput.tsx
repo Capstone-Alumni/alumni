@@ -1,5 +1,5 @@
 import { setStorage } from '@lib/firebase/methods/setStorage';
-import { Control, Controller } from 'react-hook-form';
+import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import UploadBackground, {
   UploadBackgroundProps,
@@ -7,21 +7,21 @@ import UploadBackground, {
 import uniqid from 'uniqid';
 import { Box, FormLabel, SxProps } from '@mui/material';
 
-type TextInputProps = {
-  control: Control;
-  name: string;
+type TextInputProps<T extends FieldValues> = {
+  control: Control<T>;
+  name: FieldPath<T>;
   inputProps?: Omit<UploadBackgroundProps, 'file'> & {
     label?: string;
   };
   containerSx?: SxProps;
 };
 
-const UploadBackgroundInput = ({
+const UploadBackgroundInput = <T extends FieldValues>({
   control,
   name,
   inputProps,
   containerSx,
-}: TextInputProps) => {
+}: TextInputProps<T>) => {
   const handleDrop = async (acceptedFiles: File[]) => {
     const { uploadBackground } = setStorage();
     const file = acceptedFiles[0];

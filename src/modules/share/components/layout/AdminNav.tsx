@@ -28,7 +28,7 @@ const NEWS_NAV_ITEM = {
   link: '/admin/news',
 };
 const FUND_NAV_ITEM = {
-  id: 'event',
+  id: 'fund',
   title: 'Quỹ',
   icon: 'ri:refund-2-line',
   link: '/admin/funds',

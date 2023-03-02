@@ -12,7 +12,7 @@ import {
 import Link from 'next/link';
 import { UploadAvatar } from '@share/components/upload';
 import { useCanEditProfile } from '../helpers/canEditProfile';
-import { setStorage } from 'src/firebase/methods/setStorage';
+import { setStorage } from '@lib/firebase/methods/setStorage';
 import { generateUniqSerial } from 'src/utils';
 import { toast } from 'react-toastify';
 import { usePathname, useSearchParams } from 'next/navigation';
