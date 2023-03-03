@@ -1,4 +1,4 @@
-import { unstable_getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import FundSidebar from 'src/modules/funds/components/FundSidebar';
 import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
 
@@ -7,7 +7,7 @@ export default async function AuthorizedLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await unstable_getServerSession(nextAuthOptions);
+  const session = await getServerSession(nextAuthOptions);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>

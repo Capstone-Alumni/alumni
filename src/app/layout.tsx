@@ -10,7 +10,7 @@ import { getTenantDataSSR } from '@share/helpers/SSRAuthorization';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'quill/dist/quill.snow.css';
-import { unstable_getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
 
 export default async function RootLayout({
@@ -19,7 +19,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const data = await getTenantDataSSR();
-  const session = await unstable_getServerSession(nextAuthOptions);
+  const session = await getServerSession(nextAuthOptions);
 
   return (
     <html lang="en">

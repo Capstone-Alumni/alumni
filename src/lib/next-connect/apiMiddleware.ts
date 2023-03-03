@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { unstable_getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import { NextHandler } from 'next-connect';
 import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
 
@@ -8,7 +8,7 @@ export const verifySchoolAdmin = async (
   res: NextApiResponse,
   next: NextHandler,
 ) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
+  const session = await getServerSession(req, res, nextAuthOptions);
 
   if (!session) {
     throw new Error('unauthorized');
@@ -28,7 +28,7 @@ export const verifyAdminOrMod = async (
   res: NextApiResponse,
   next: NextHandler,
 ) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
+  const session = await getServerSession(req, res, nextAuthOptions);
 
   if (!session) {
     throw new Error('unauthorized');
@@ -48,7 +48,7 @@ export const isAuthenticatedUser = async (
   res: NextApiResponse,
   next: NextHandler,
 ) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
+  const session = await getServerSession(req, res, nextAuthOptions);
 
   if (!session) {
     throw new Error('unauthorized');
@@ -64,7 +64,7 @@ export const extractUser = async (
   res: NextApiResponse,
   next: NextHandler,
 ) => {
-  const session = await unstable_getServerSession(req, res, nextAuthOptions);
+  const session = await getServerSession(req, res, nextAuthOptions);
 
   if (session) {
     req.user = session?.user;
