@@ -5,21 +5,19 @@ import createAvatar from 'src/modules/share/utils/createAvatar';
 
 // ----------------------------------------------------------------------
 
-export default function MyAvatar({ ...other }: MAvatarProps) {
-  //TODO: get user from whatever store and pass to the user constant
-  const user = {
-    photoURL: '',
-    displayName: 'Default',
-  };
-
+export default function MyAvatar({
+  displayName = 'Default',
+  photoUrl = '',
+  ...other
+}: MAvatarProps & { displayName?: string; photoUrl?: string }) {
   return (
     <MAvatar
-      src={user?.photoURL}
-      alt={user?.displayName}
-      color={user?.photoURL ? 'default' : createAvatar(user?.displayName).color}
+      src={photoUrl}
+      alt={displayName}
+      color={photoUrl ? 'default' : createAvatar(displayName).color}
       {...other}
     >
-      {createAvatar(user?.displayName).name}
+      {createAvatar(displayName).name}
     </MAvatar>
   );
 }

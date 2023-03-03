@@ -130,7 +130,7 @@ const ProfileEducationTab = () => {
         <Box sx={{ ml: 5 }}>
           {educationListData && educationListData.length > 0 ? (
             educationListData?.map((item: any, index: any) => (
-              <>
+              <div key={item.id}>
                 {selectedEditId === item.id ? (
                   <EducationForm
                     defaultValues={item}
@@ -191,7 +191,7 @@ const ProfileEducationTab = () => {
                     }}
                   />
                 ) : null}
-              </>
+              </div>
             ))
           ) : (
             <Typography>Không có thông tin</Typography>

@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { useCanEditProfile } from '../helpers/canEditProfile';
-import { toast } from 'react-toastify';
 import { usePathname, useSearchParams } from 'next/navigation';
 import {
   useGetUserInformationQuery,
@@ -89,16 +88,13 @@ const ProfileSidebar = () => {
   });
 
   const handleChangeAvatar = async (url: string) => {
-    try {
-      userProfileId &&
-        (await updateUserInformation({
-          avatarUrl: url,
-          userId: userProfileId,
-        }));
-      toast.success('Cập nhật thành công');
-    } catch (error: any) {
-      toast.error('Có lỗi xảy ra, vui lòng thử lại');
+    if (!userProfileId) {
+      return;
     }
+    await updateUserInformation({
+      avatarUrl: url,
+      userId: userProfileId,
+    });
   };
 
   return (
