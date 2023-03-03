@@ -70,9 +70,6 @@ const CompaniesSlider = ({ data }: { data: Job[] }) => {
                 Tìm hiểu thêm
               </Button>
             </Link>,
-            <IconButton key="save-btn">
-              <BookmarkBorderIcon />
-            </IconButton>,
           ]}
         />
       );
@@ -95,9 +92,6 @@ const CompaniesSlider = ({ data }: { data: Job[] }) => {
                 Tìm hiểu thêm
               </Button>
             </Link>,
-            <IconButton key="save-btn">
-              <BookmarkBorderIcon />
-            </IconButton>,
           ]}
         />
       );
@@ -128,14 +122,6 @@ const CompaniesSlider = ({ data }: { data: Job[] }) => {
       <Grid container spacing={2}>
         {handleRenderCompanies()}
       </Grid>
-      {/* <br />
-      <Typography variant="h5">Ngành nghề</Typography>
-      <br />
-      <FlexWrapper>{handleRenderCompanies(data2)}</FlexWrapper>
-      <br />
-      <Typography variant="h5">Công ty mới nhất</Typography>
-      <br />
-      <FlexWrapper>{handleRenderCompanies(data2)}</FlexWrapper> */}
     </Grid>
   );
 };

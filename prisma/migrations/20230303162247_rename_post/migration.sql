@@ -1,0 +1,35 @@
+SELECT template.run_migration('
+-- DropForeignKey
+ALTER TABLE "Post" DROP CONSTRAINT "Post_author_id_fkey";
+
+-- DropForeignKey
+ALTER TABLE "post_comments" DROP CONSTRAINT "post_comments_post_id_fkey";
+
+-- DropForeignKey
+ALTER TABLE "post_likes" DROP CONSTRAINT "post_likes_post_id_fkey";
+
+-- DropTable
+DROP TABLE "Post";
+
+-- CreateTable
+CREATE TABLE "post" (
+    "id" TEXT NOT NULL,
+    "archived" BOOLEAN NOT NULL DEFAULT false,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "content" TEXT NOT NULL,
+    "publicity" "AccessLevel" NOT NULL DEFAULT 'ALUMNI',
+    "author_id" TEXT NOT NULL,
+
+    CONSTRAINT "post_pkey" PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "post" ADD CONSTRAINT "post_author_id_fkey" FOREIGN KEY ("author_id") REFERENCES "informations"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "post_comments" ADD CONSTRAINT "post_comments_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "post"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "post_likes" ADD CONSTRAINT "post_likes_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "post"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+')

@@ -1,6 +1,13 @@
 import { Icon } from '@iconify/react';
-import { IconButton, TableCell, TableRow, Typography } from '@mui/material';
+import {
+  Button,
+  IconButton,
+  TableCell,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import { Job } from '../types';
+import AdminJobPreview from './AdminJobPreview';
 
 const AdminEventListItem = ({
   data,
@@ -22,15 +29,33 @@ const AdminEventListItem = ({
         </TableCell>
         <TableCell align="left">
           <Typography>
-            {data.archived
-              ? 'Đã từ chối'
-              : data.isApproved
-              ? 'Đã xác nhận'
-              : 'Đang chờ xác nhận'}
+            {Boolean(data.archived) ? (
+              <Button variant="outlined" size="small" color="error">
+                Đã từ chối
+              </Button>
+            ) : data.isApproved ? (
+              <Button variant="outlined" size="small" color="success">
+                Đã chấp thuận
+              </Button>
+            ) : (
+              <Button variant="outlined" size="small" color="warning">
+                Đang chờ xác nhận
+              </Button>
+            )}
           </Typography>
         </TableCell>
         <TableCell align="left">
           <Typography>{new Date(data.createdAt).toDateString()}</Typography>
+        </TableCell>
+        <TableCell align="center" sx={{ maxWidth: '3rem' }}>
+          <AdminJobPreview
+            children={
+              <IconButton>
+                <Icon height={24} icon="uil:eye" />
+              </IconButton>
+            }
+            data={data}
+          />
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <IconButton onClick={() => onApprove(data.id)}>

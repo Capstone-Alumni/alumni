@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, useTheme } from '@mui/material';
+import { Box, useTheme, Pagination } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import React from 'react';
 import { useRecoilState } from 'recoil';
@@ -23,6 +23,21 @@ const RecruitmentDiscover = () => {
       {isLoading ? <LoadingIndicator /> : null}
       {/* <Carousel /> */}
       {data?.data && <Companies data={data?.data.items} />}
+      <Pagination
+        sx={{
+          margin: 'auto',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+        color="primary"
+        count={Math.ceil(
+          (data?.data.totalItems || 0) / (data?.data.itemPerPage || 1),
+        )}
+        page={params.page}
+        onChange={(_, nextPage) => {
+          setParams((prevParams) => ({ ...prevParams, page: nextPage }));
+        }}
+      />
     </Box>
   );
 };

@@ -14,6 +14,7 @@ type TextInputProps<T extends FieldValues> = {
     label?: string;
   };
   containerSx?: SxProps;
+  isPreview?: boolean;
 };
 
 const UploadBackgroundInput = <T extends FieldValues>({
@@ -21,6 +22,7 @@ const UploadBackgroundInput = <T extends FieldValues>({
   name,
   inputProps,
   containerSx,
+  isPreview,
 }: TextInputProps<T>) => {
   const handleDrop = async (acceptedFiles: File[]) => {
     const { uploadBackground } = setStorage();
@@ -51,17 +53,25 @@ const UploadBackgroundInput = <T extends FieldValues>({
       <Controller
         control={control}
         name={name}
-        render={({ field }) => (
-          <UploadBackground
-            // {...field}
-            {...inputProps}
-            file={field.value}
-            onDrop={async files => {
-              const url = await handleDrop(files);
-              field.onChange(url);
-            }}
-          />
-        )}
+        render={({ field }) =>
+          isPreview ? (
+            <img
+              src={field.value}
+              height="auto"
+              style={{ objectFit: 'contain', width: 'auto' }}
+            />
+          ) : (
+            <UploadBackground
+              // {...field}
+              {...inputProps}
+              file={field.value}
+              onDrop={async (files) => {
+                const url = await handleDrop(files);
+                field.onChange(url);
+              }}
+            />
+          )
+        }
       />
     </Box>
   );

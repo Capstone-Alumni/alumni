@@ -19,7 +19,7 @@ const defaultCompanyImage =
   'https://bka.hcmut.edu.vn/FileManager/Download/?filename=%5cimage_upload%5ce6475845-00ab-4b0d-931e-8fe744c5db11.png';
 
 const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
-  width: '60%',
+  width: '80%',
   height: '100%',
   backgroundSize: 'contain',
   margin: 'auto',
@@ -75,10 +75,10 @@ const Company = ({
         <StyledCardMedia
           title="news image"
           sx={{
-            height: theme.spacing(18),
-            padding: theme.spacing(2),
+            height: theme.spacing(20),
+            padding: theme.spacing(1),
             backgroundImage: `url(${
-              companyDetails.imageUrl || defaultCompanyImage
+              companyDetails.companyImageUrl || defaultCompanyImage
             })`,
           }}
         />

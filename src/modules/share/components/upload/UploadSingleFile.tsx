@@ -1,19 +1,19 @@
-import { DropzoneOptions, useDropzone } from 'react-dropzone';
+import { isString } from 'lodash';
+import { useDropzone, DropzoneOptions } from 'react-dropzone';
 // material
 import {
   alpha,
-  Box,
-  Paper,
   styled,
-  SxProps,
+  Box,
   Theme,
   Typography,
+  Paper,
+  SxProps,
 } from '@mui/material';
 // utils
 import { fData } from '../../utils/formatNumber';
 //
 import { UploadIllustration } from '../../../../assets';
-import { Link } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -45,7 +45,7 @@ interface CustomFile extends File {
   preview?: string;
 }
 
-export interface UploadSingleFileProps extends DropzoneOptions {
+interface UploadSingleFileProps extends DropzoneOptions {
   error?: boolean;
   file: CustomFile | string | null;
   sx?: SxProps<Theme>;
@@ -76,7 +76,7 @@ export default function UploadSingleFile({
         px: 2,
         mt: 3,
         borderColor: 'error.light',
-        bgcolor: theme => alpha(theme.palette.error.main, 0.08),
+        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08),
       }}
     >
       {fileRejections.map(({ file, errors }) => {
@@ -86,7 +86,7 @@ export default function UploadSingleFile({
             <Typography variant="subtitle2" noWrap>
               {path} - {fData(size)}
             </Typography>
-            {errors.map(e => (
+            {errors.map((e) => (
               <Typography key={e.code} variant="caption" component="p">
                 - {e.message}
               </Typography>
@@ -108,6 +108,7 @@ export default function UploadSingleFile({
             borderColor: 'error.light',
             bgcolor: 'error.lighter',
           }),
+          ...(file && { padding: '12% 0' }),
         }}
       >
         <input {...getInputProps()} />
@@ -116,28 +117,38 @@ export default function UploadSingleFile({
 
         <Box sx={{ p: 3, ml: { md: 2 } }}>
           <Typography gutterBottom variant="h5">
-            Thả hoặc chọn file
+            Drop or Select file
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Thả file vảo đây hoặc&nbsp;
+            Drop files here or click&nbsp;
             <Typography
               variant="body2"
               component="span"
               sx={{ color: 'primary.main', textDecoration: 'underline' }}
             >
-              tải lên
+              browse
             </Typography>
-            &nbsp;từ máy tính của bạn
+            &nbsp;thorough your machine
           </Typography>
         </Box>
-      </DropZoneStyle>
 
-      {file && (
-        <Link href={file as string} target="_blank">
-          {file as string}
-        </Link>
-      )}
+        {file && (
+          <Box
+            component="img"
+            alt="file preview"
+            src={isString(file) ? file : file.preview}
+            sx={{
+              top: 8,
+              borderRadius: 1,
+              objectFit: 'cover',
+              position: 'absolute',
+              width: 'calc(100% - 16px)',
+              height: 'calc(100% - 16px)',
+            }}
+          />
+        )}
+      </DropZoneStyle>
 
       {fileRejections.length > 0 && <ShowRejectionItems />}
     </Box>

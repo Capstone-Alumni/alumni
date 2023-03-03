@@ -62,7 +62,7 @@ const JobDetailPage = () => {
         }}
       >
         <Image
-          src="/side_background.png"
+          src={jobData.companyImageUrl}
           alt="Job-image"
           fill
           style={{ objectFit: 'cover' }}
@@ -152,7 +152,9 @@ const JobDetailPage = () => {
 
       {tabKey === 'description' ? (
         <Box>
-          <Typography>{jobData.description}</Typography>
+          <Typography sx={{ whiteSpace: 'break-spaces' }}>
+            {jobData.description}
+          </Typography>
         </Box>
       ) : null}
     </Box>
