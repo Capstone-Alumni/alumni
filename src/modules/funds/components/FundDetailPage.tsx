@@ -196,6 +196,20 @@ const FundDetailPage = () => {
               </>
             ) : null}
           </Grid>
+
+          <Tabs
+            value={tabKey}
+            onChange={(_, key) => setTabKey(key)}
+            aria-label="wrapped tabs"
+          >
+            <Tab value="description" label="Mô tả" />
+          </Tabs>
+
+          {tabKey === 'description' ? (
+            <Box sx={{ my: 2 }}>
+              <EditorPreview value={fundData?.description || ''} />
+            </Box>
+          ) : null}
         </Box>
 
         <Box sx={{ minWidth: theme.spacing(12) }}>
@@ -271,20 +285,6 @@ const FundDetailPage = () => {
           </Link>
         </Box>
       </Box>
-
-      <Tabs
-        value={tabKey}
-        onChange={(_, key) => setTabKey(key)}
-        aria-label="wrapped tabs"
-      >
-        <Tab value="description" label="Mô tả" />
-      </Tabs>
-
-      {tabKey === 'description' ? (
-        <Box sx={{ my: 2 }}>
-          <EditorPreview value={fundData?.description || ''} />
-        </Box>
-      ) : null}
     </Box>
   );
 };
