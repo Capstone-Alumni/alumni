@@ -26,6 +26,7 @@ export type Fund = {
     fullName: string;
   };
   fundSaved: FundSaved[];
+  statementFile?: string;
 };
 
 export type FundSaved = {

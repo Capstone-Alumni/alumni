@@ -11,6 +11,7 @@ import DateTimeInput from '@share/components/form/DateTimeInput';
 // import { Typography } from '@mui/material';
 import { useState } from 'react';
 import RichTextInput from '@share/components/form/RichTextInput';
+import UploadFileInput from '@share/components/form/UploadFileInput';
 
 export type FundFormValues = {
   title: string;
@@ -23,6 +24,7 @@ export type FundFormValues = {
   targetBalance: number;
   currentBalance: number;
   publicity: AccessLevel;
+  statementFile?: string;
 };
 
 const validationSchema = yup.object({
@@ -59,6 +61,7 @@ const FundForm = ({
       isEnded: initialData?.isEnded,
       targetBalance: initialData?.targetBalance ?? 0,
       currentBalance: initialData?.currentBalance ?? 0,
+      statementFile: initialData?.statementFile ?? null,
       publicity: 'SCHOOL_ADMIN',
     },
   });
@@ -210,6 +213,15 @@ const FundForm = ({
           nhìn thấy và tham gia sự kiện của bạn.
         </Typography>
       </Box> */}
+
+      <UploadFileInput
+        control={control}
+        name="statementFile"
+        inputProps={{
+          label: 'File sao kê',
+        }}
+        containerSx={{ width: '100%' }}
+      />
 
       <Button
         variant="contained"

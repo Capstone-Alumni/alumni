@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Grid, Tab, Tabs, useTheme } from '@mui/material';
+import { Button, Grid, Link, Tab, Tabs, useTheme } from '@mui/material';
 import { Box, Typography } from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import LoadingIndicator from '@share/components/LoadingIndicator';
@@ -195,9 +195,20 @@ const FundDetailPage = () => {
             startIcon={<BookmarkBorderIcon />}
             disabled={isSavingFund || isUnsavingFund}
             onClick={isSaved ? onUnsaveFund : onSaveFund}
+            sx={{ mb: 1 }}
           >
             {isSaved ? 'Huỷ lưu' : 'Lưu'}
           </Button>
+          <Link href={fundData?.statementFile} target="_blank">
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={<BookmarkBorderIcon />}
+              disabled={!fundData?.statementFile}
+            >
+              File sao kê
+            </Button>
+          </Link>
         </Box>
       </Box>
 
