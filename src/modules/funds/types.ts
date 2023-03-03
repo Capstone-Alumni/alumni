@@ -15,7 +15,7 @@ export type Fund = {
   isEnded: boolean;
   targetBalance: number;
   currentBalance: number;
-  balanceUpdated: number;
+  balanceUpdatedAt: Date | string;
   approvedStatus: -1 | 0 | 1;
   publicity: AccessLevel;
   userId: string;
