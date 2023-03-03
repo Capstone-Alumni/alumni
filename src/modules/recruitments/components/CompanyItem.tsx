@@ -15,6 +15,9 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
+const defaultCompanyImage =
+  'https://bka.hcmut.edu.vn/FileManager/Download/?filename=%5cimage_upload%5ce6475845-00ab-4b0d-931e-8fe744c5db11.png';
+
 const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
   width: '60%',
   height: '100%',
@@ -74,23 +77,27 @@ const Company = ({
           sx={{
             height: theme.spacing(18),
             padding: theme.spacing(2),
-            backgroundImage: `url(${companyDetails.imageUrl})`,
+            backgroundImage: `url(${
+              companyDetails.imageUrl || defaultCompanyImage
+            })`,
           }}
         />
         <CardContent>
-          <Grid container>
-            <Grid item xs={1}>
-              <CalendarTodayIcon fontSize="small" sx={{ color: '#64748b' }} />
+          {companyDetails.expireAt && (
+            <Grid container>
+              <Grid item xs={1}>
+                <CalendarTodayIcon fontSize="small" sx={{ color: '#64748b' }} />
+              </Grid>
+              <Grid item xs={11}>
+                <Typography variant="body2">
+                  &nbsp;&nbsp;{companyDetails.expireAt}
+                </Typography>
+              </Grid>
             </Grid>
-            <Grid item xs={11}>
-              <Typography variant="body2">
-                &nbsp;&nbsp;{companyDetails.expireAt}
-              </Typography>
-            </Grid>
-          </Grid>
+          )}
           <StyledDiv>
             <StyledTypography variant="h6">
-              {companyDetails.major}
+              {companyDetails.position}
             </StyledTypography>
           </StyledDiv>
           <Grid container>
@@ -99,7 +106,7 @@ const Company = ({
             </Grid>
             <Grid item xs={11}>
               <Typography variant="body2">
-                &nbsp;&nbsp;{companyDetails.name}
+                &nbsp;&nbsp;{companyDetails.companyName}
               </Typography>
             </Grid>
             <Grid item xs={1}>
@@ -107,7 +114,7 @@ const Company = ({
             </Grid>
             <Grid item xs={11}>
               <Typography variant="body2">
-                &nbsp;&nbsp;{companyDetails.location}
+                &nbsp;&nbsp;{companyDetails.address}
               </Typography>
             </Grid>
           </Grid>

@@ -1,18 +1,14 @@
-import CareerController from '../../../../../../modules/profiles/controller/career.controller';
 import { extractTenantId } from '@lib/next-connect';
+import { isAuthenticatedUser } from '@lib/next-connect/apiMiddleware';
 import onErrorAPIHandler from '@lib/next-connect/onErrorAPIHandler';
 import onNoMatchAPIHandler from '@lib/next-connect/onNoMatchAPIHandler';
 import nc from 'next-connect';
-import { extractUser } from '@lib/next-connect/apiMiddleware';
+import ApplicationController from '../../../../../../modules/recruitments/controllers/recruitmentApplication.controller';
 
 const handler = nc({
   onError: onErrorAPIHandler,
   onNoMatch: onNoMatchAPIHandler,
-}).use(extractTenantId, extractUser);
+}).use(extractTenantId);
 
-handler
-  .get(extractUser, CareerController.getById)
-  .put(CareerController.updateCareerById)
-  .delete(CareerController.deleteById);
-
+handler.get(isAuthenticatedUser, ApplicationController.getAppliedList);
 export default handler;

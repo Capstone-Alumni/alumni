@@ -1,20 +1,22 @@
 //BE
 export type CreateRecruitmentProps = {
   companyName: string;
-  website: string;
+  companyImageUrl?: string;
+  website?: string;
   job: string;
   address: string;
   position: string;
   title: string;
-  description: string;
-  type: string; // parttime, full time, etc ..
+  description?: string;
+  type?: string; // parttime, full time, etc ..
   salary: string;
-  startAt: string | null;
-  expiredAt: string | null;
+  startAt?: string | null;
+  expiredAt?: string | null;
 };
 
 export type UpdateRecruitmentProps = {
   companyName?: string;
+  companyImageUrl?: string;
   website?: string;
   job?: string;
   address?: string;
@@ -36,3 +38,5 @@ export type GetListRecruitmentParams = {
   type?: string;
   salary?: string;
 };
+
+export type UpdateApplication = { resumeUrl?: string };

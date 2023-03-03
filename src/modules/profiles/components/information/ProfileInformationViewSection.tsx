@@ -60,6 +60,26 @@ const ProfileInformationSection = ({
               userInformation?.email ? userInformation.email : 'Chưa cập nhật'
             }
           />
+          {Boolean(userInformation?.alumClass) && (
+            <ProfileInfoRow
+              title="Niên khóa"
+              content={
+                userInformation?.alumClass.grade.name
+                  ? userInformation.alumClass.grade.name
+                  : 'Chưa cập nhật'
+              }
+            />
+          )}
+          {Boolean(userInformation?.alumClass) && (
+            <ProfileInfoRow
+              title="Lớp"
+              content={
+                userInformation?.alumClass.name
+                  ? userInformation.alumClass.name
+                  : 'Chưa cập nhật'
+              }
+            />
+          )}
           {Boolean(userInformation?.phone) && (
             <ProfileInfoRow
               title="Điện thoại"
@@ -104,22 +124,6 @@ const ProfileInformationSection = ({
               name="dateOfBirthPublicity"
             />
           )}
-          {/* <ProfileInfoRow
-          title="Khối"
-          content={
-            userInformation?.gradeName
-              ? userInformation.gradeName
-              : 'Chưa cập nhật'
-          }
-        /> */}
-          {/* <ProfileInfoRow
-          title="Lớp"
-          content={
-            userInformation?.
-              ? userInformation.className
-              : 'Chưa cập nhật'
-          }
-        /> */}
         </Box>
       </CardContent>
     </Card>

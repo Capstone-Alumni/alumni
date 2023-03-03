@@ -103,7 +103,10 @@ const ProfileEducationTab = () => {
           <Typography variant="h5">Học vấn</Typography>
 
           {canEditProfile ? (
-            <VisibilityFormDialogs name="careerPublicity" editType="visibility">
+            <VisibilityFormDialogs
+              name="educationPublicity"
+              editType="visibility"
+            >
               <VisibilityIcon />
             </VisibilityFormDialogs>
           ) : null}
@@ -130,7 +133,7 @@ const ProfileEducationTab = () => {
         <Box sx={{ ml: 5 }}>
           {educationListData && educationListData.length > 0 ? (
             educationListData?.map((item: any, index: any) => (
-              <div key={item.id}>
+              <Box key={item.id}>
                 {selectedEditId === item.id ? (
                   <EducationForm
                     defaultValues={item}
@@ -191,7 +194,7 @@ const ProfileEducationTab = () => {
                     }}
                   />
                 ) : null}
-              </div>
+              </Box>
             ))
           ) : (
             <Typography>Không có thông tin</Typography>

@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { getPageAndLimitFromParams } from 'src/utils';
-import { GetListRecruitmentParams } from '../type';
+import { GetListRecruitmentParams } from '../types';
 
 export default class AdminRecruitmentService {
   static getById = async (
@@ -39,6 +39,9 @@ export default class AdminRecruitmentService {
         take: limit,
         where: whereFilter,
         orderBy: [{ createdAt: 'desc' }],
+        include: {
+          recruitmentOwnerInfo: true,
+        },
       }),
     ]);
     return {

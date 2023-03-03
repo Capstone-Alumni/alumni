@@ -11,7 +11,7 @@ const handler = nc({
 }).use(extractTenantId, extractUser);
 
 handler
-  .get(EducationController.getEducationsByUserId)
+  .get(extractUser, EducationController.getEducationsByUserId)
   .post(EducationController.create)
   .put(EducationController.createManyRecords);
 

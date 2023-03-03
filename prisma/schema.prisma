@@ -80,9 +80,10 @@ model Information {
   fundSaved            FundSaved[]
   Recruitment          Recruitment[]
 
-  posts        Post[]
-  postComments PostComment[]
-  postLikes    PostLike[]
+  posts                  Post[]
+  postComments           PostComment[]
+  postLikes              PostLike[]
+  RecruitmentApplication RecruitmentApplication[]
 
   @@map("informations")
 }
@@ -297,11 +298,12 @@ model NewsComment {
 }
 
 model Recruitment {
-  id                     String       @id @default(cuid())
-  archived               Boolean      @default(false)
-  createdAt              DateTime     @default(now()) @map("created_at")
-  updatedAt              DateTime     @default(now()) @updatedAt @map("updated_at")
-  companyName            String       @map("company_name")
+  id                     String                   @id @default(cuid())
+  archived               Boolean                  @default(false)
+  createdAt              DateTime                 @default(now()) @map("created_at")
+  updatedAt              DateTime                 @default(now()) @updatedAt @map("updated_at")
+  companyName            String                   @map("company_name")
+  companyImageUrl        String?                  @map("company_image_url")
   website                String?
   job                    String
   address                String
@@ -309,15 +311,33 @@ model Recruitment {
   title                  String
   description            String?
   type                   String?
-  startAt                DateTime?    @map("start_at")
-  expiredAt              DateTime?    @map("expired_at")
-  salary                 String       @default("negotiate")
-  isApproved             Boolean      @default(false)
-  recruitmentOwnerId     String?      @map("recruitment_owner_id")
-  recruitmentOwnerInfoId String?      @map("recruitment_owner_info_id")
-  recruitmentOwnerInfo   Information? @relation(fields: [recruitmentOwnerInfoId], references: [id])
+  startAt                DateTime?                @map("start_at")
+  expiredAt              DateTime?                @map("expired_at")
+  salary                 String                   @default("negotiate")
+  isApproved             Boolean                  @default(false)
+  recruitmentOwnerId     String?                  @map("recruitment_owner_id")
+  recruitmentOwnerInfoId String?                  @map("recruitment_owner_info_id")
+  recruitmentOwnerInfo   Information?             @relation(fields: [recruitmentOwnerInfoId], references: [id])
+  RecruitmentApplication RecruitmentApplication[]
 
   @@map("recruitments")
+}
+
+model RecruitmentApplication {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  resumeUrl String? @map("resume_url")
+
+  recruitmentId String
+  recruitment   Recruitment @relation(fields: [recruitmentId], references: [id])
+
+  applicationOwnerId   String
+  applicationOwnerInfo Information @relation(fields: [applicationOwnerId], references: [userId])
+
+  @@map("recruitment_applications")
 }
 
 enum AccessLevel {

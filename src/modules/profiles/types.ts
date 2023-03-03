@@ -1,4 +1,9 @@
-import { ScopePublicity } from '@prisma/client';
+import {
+  AlumClass,
+  Grade,
+  Information as Infor,
+  ScopePublicity,
+} from '@prisma/client';
 import { Class } from '../gradeAndClass/types';
 
 export type Information = {
@@ -98,4 +103,12 @@ export type UpdateCareerInfoByIdServiceProps = {
   company?: string;
   startDate?: string;
   endDate?: string;
+};
+
+export type InformationIncludeClass = Infor & {
+  alumClass:
+    | (AlumClass & {
+        grade: Grade;
+      })
+    | null;
 };

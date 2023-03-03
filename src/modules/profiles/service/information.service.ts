@@ -1,25 +1,12 @@
 import {
   GetUsersInformationListServiceParams,
+  InformationIncludeClass,
   UpdateInformationProps,
 } from '../types';
-import {
-  AlumClass,
-  Grade,
-  Information,
-  Prisma,
-  PrismaClient,
-} from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { User } from 'next-auth';
 import { omit } from 'lodash/fp';
 import { canViewInformationDetail } from '../helpers/canViewInformationDetail';
-
-type InformationIncludeClass = Information & {
-  alumClass:
-    | (AlumClass & {
-        grade: Grade;
-      })
-    | null;
-};
 
 const filterInformation = (
   information: InformationIncludeClass | null,
@@ -32,7 +19,7 @@ const filterInformation = (
   if (information.userId === requesterInformation?.userId) {
     return information;
   }
-
+  let result = { ...information } as any;
   if (
     !canViewInformationDetail(
       information.phonePublicity,
@@ -40,7 +27,7 @@ const filterInformation = (
       requesterInformation?.alumClass || null,
     )
   ) {
-    omit('phone')(information);
+    result = omit('phone')(result);
   }
 
   if (
@@ -50,7 +37,7 @@ const filterInformation = (
       requesterInformation?.alumClass || null,
     )
   ) {
-    omit('facebookUrl')(information);
+    result = omit('facebookUrl')(result);
   }
 
   if (
@@ -60,10 +47,10 @@ const filterInformation = (
       requesterInformation?.alumClass || null,
     )
   ) {
-    omit('dateOfBirth')(information);
+    result = omit('dateOfBirth')(result);
   }
 
-  return information;
+  return result;
 };
 
 export default class InformationService {

@@ -3,7 +3,7 @@ import {
   CreateRecruitmentProps,
   GetListRecruitmentParams,
   UpdateRecruitmentProps,
-} from '../type';
+} from '../types';
 import { getPageAndLimitFromParams } from '../../../utils';
 
 const isRecruitmentExisted = async (

@@ -96,10 +96,7 @@ const ProfileCareerTab = () => {
           <Typography variant="h5">Kinh nghiệm làm việc</Typography>
 
           {canEditProfile ? (
-            <VisibilityFormDialogs
-              name="educationPublicity"
-              editType="visibility"
-            >
+            <VisibilityFormDialogs name="careerPublicity" editType="visibility">
               <VisibilityIcon />
             </VisibilityFormDialogs>
           ) : null}
@@ -126,7 +123,7 @@ const ProfileCareerTab = () => {
         <Box sx={{ ml: 5 }}>
           {careerListData && careerListData.length > 0 ? (
             careerListData?.map((item: any, index: any) => (
-              <>
+              <Box key={item.id}>
                 {selectedEditId === item.id ? (
                   <CareerForm
                     defaultValues={item}
@@ -187,7 +184,7 @@ const ProfileCareerTab = () => {
                     }}
                   />
                 ) : null}
-              </>
+              </Box>
             ))
           ) : (
             <Typography>Không có công việc</Typography>
