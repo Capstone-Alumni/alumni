@@ -1,26 +1,27 @@
 import { setStorage } from '@lib/firebase/methods/setStorage';
-import { Control, Controller } from 'react-hook-form';
+import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import UploadAvatar, { UploadAvatarProps } from '../upload/UploadAvatar';
 import uniqid from 'uniqid';
 import { Box, FormLabel } from '@mui/material';
 import { SxProps } from '@mui/material';
 
-type TextInputProps = {
-  control: Control;
-  name: string;
+type TextInputProps<T extends FieldValues> = {
+  control: Control<T>;
+  name: FieldPath<T>;
   inputProps?: Omit<UploadAvatarProps, 'file'> & {
     label?: string;
+    onChange?: (url: string) => void;
   };
   containerSx?: SxProps;
 };
 
-const UploadAvatarInput = ({
+const UploadAvatarInput = <T extends FieldValues>({
   control,
   name,
   inputProps,
   containerSx,
-}: TextInputProps) => {
+}: TextInputProps<T>) => {
   const handleDrop = async (acceptedFiles: File[]) => {
     const { uploadAvatar } = setStorage();
     const file = acceptedFiles[0];
@@ -57,7 +58,12 @@ const UploadAvatarInput = ({
             file={field.value}
             onDrop={async files => {
               const url = await handleDrop(files);
-              field.onChange(url);
+              if (url) {
+                field.onChange(url);
+                if (inputProps?.onChange) {
+                  inputProps.onChange(url);
+                }
+              }
             }}
           />
         )}
