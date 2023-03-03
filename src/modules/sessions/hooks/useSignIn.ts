@@ -1,12 +1,12 @@
+import { useRecoilValue } from 'recoil';
 import { useRouter } from 'next/navigation';
 import { signIn as nextSignIn } from 'next-auth/react';
 import { SignInFormValues } from '../components/SignInForm';
-import { useAppSelector } from 'src/redux/hooks';
-import { currentTenantSubdomainSelector } from 'src/redux/slices/currentTenantSlice';
+import { currentTenantSubdomainSelector } from '@share/states';
 
 export default function useSignIn() {
   const router = useRouter();
-  const subdomain = useAppSelector(currentTenantSubdomainSelector);
+  const subdomain = useRecoilValue(currentTenantSubdomainSelector);
 
   const signIn = (provider: 'credentials', value?: SignInFormValues) => {
     switch (provider) {

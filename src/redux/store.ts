@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import counterReducer from './slices/counterSlice';
 import currentUserReducer from './slices/currentUserSlice';
-import currentTenantReducer from './slices/currentTenantSlice';
+// import currentTenantReducer from './slices/currentTenantSlice';
 import { userProfileApi } from './slices/userProfileSlice';
 import { searchProfilesApi } from './slices/searchProfiles';
 import { newsSliceApi } from './slices/newsSlice';
@@ -10,7 +10,7 @@ import { newsCommentSliceApi } from './slices/newsCommentSlice';
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
-    currentTenant: currentTenantReducer,
+    // currentTenant: currentTenantReducer,
     currentUser: currentUserReducer,
     [userProfileApi.reducerPath]: userProfileApi.reducer,
     [newsSliceApi.reducerPath]: newsSliceApi.reducer,

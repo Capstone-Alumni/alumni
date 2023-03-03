@@ -1,11 +1,11 @@
+import { useRecoilValue } from 'recoil';
 import useSWRMutation, { SWRMutationConfiguration } from 'swr/mutation';
 import axios from 'axios';
 import { useCallback, useEffect } from 'react';
 import formatSearchParams from '../utils/formatParams';
 import { noop } from 'lodash/fp';
 import { getSession } from 'next-auth/react';
-import { useAppSelector } from 'src/redux/hooks';
-import { currentTenantSubdomainSelector } from 'src/redux/slices/currentTenantSlice';
+import { currentTenantSubdomainSelector } from '@share/states';
 
 export type ApiConfig = {
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -40,7 +40,7 @@ const useApi = <Params, Data, Err>(
     retainOnUnmount: false,
   },
 ) => {
-  const subdomain = useAppSelector(currentTenantSubdomainSelector);
+  const subdomain = useRecoilValue(currentTenantSubdomainSelector);
 
   const {
     optimisticData,
