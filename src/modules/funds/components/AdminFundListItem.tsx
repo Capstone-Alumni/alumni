@@ -1,5 +1,13 @@
-import { Icon } from '@iconify/react';
-import { IconButton, TableCell, TableRow, Typography } from '@mui/material';
+import {
+  IconButton,
+  TableCell,
+  TableRow,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
+import CancelIcon from '@mui/icons-material/Cancel';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Fund } from '../types';
 
 const AdminFundListItem = ({
@@ -20,11 +28,23 @@ const AdminFundListItem = ({
         <TableCell align="left">
           <Typography>{data.hostInformation?.email}</Typography>
         </TableCell>
-        <TableCell align="left">
+        <TableCell align="center">
           <Typography>
-            {data.approvedStatus === -1 ? 'Đang chờ xác nhận' : null}
-            {data.approvedStatus === 0 ? 'Đã bị từ chối' : null}
-            {data.approvedStatus === 1 ? 'Đã được xác nhận' : null}
+            {data.approvedStatus === -1 ? (
+              <Tooltip title="Đang chờ xác nhận">
+                <MoreHorizIcon />
+              </Tooltip>
+            ) : null}
+            {data.approvedStatus === 0 ? (
+              <Tooltip title="Đã bị từ chối">
+                <CancelIcon color="error" />
+              </Tooltip>
+            ) : null}
+            {data.approvedStatus === 1 ? (
+              <Tooltip title="Đã được xác nhận">
+                <DoneOutlineIcon color="success" />
+              </Tooltip>
+            ) : null}
           </Typography>
         </TableCell>
         <TableCell align="left">
@@ -32,12 +52,12 @@ const AdminFundListItem = ({
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <IconButton onClick={() => onApprove(data.id)}>
-            <Icon height={24} icon="uil:pen" />
+            <DoneOutlineIcon />
           </IconButton>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <IconButton onClick={() => onReject(data.id)}>
-            <Icon height={24} icon="uil:trash-alt" />
+            <CancelIcon />
           </IconButton>
         </TableCell>
       </TableRow>

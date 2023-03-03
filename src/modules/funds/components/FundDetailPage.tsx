@@ -9,6 +9,8 @@ import { useEffect, useMemo, useState } from 'react';
 import usePublicGetFundById from '../hooks/usePublicGetFundById';
 import usePublicInterestFundById from '../hooks/usePublicSaveFundById';
 import usePublicUninterestFundById from '../hooks/usePublicUnsaveFundById';
+import EditorPreview from '@share/components/editor/EditorPreview';
+import { renderEventStatus } from 'src/modules/events/components/EventDetailPage';
 
 const FundDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
@@ -148,11 +150,7 @@ const FundDetailPage = () => {
                   <Typography>Nơi tổ chức</Typography>
                 </Grid>
                 <Grid item xs={9}>
-                  <Typography
-                    component="span"
-                    fontWeight={600}
-                    sx={{ color: theme.palette.warning.main }}
-                  >
+                  <Typography component="span" fontWeight={600}>
                     {fundData.location}
                   </Typography>
                 </Grid>
@@ -163,7 +161,7 @@ const FundDetailPage = () => {
               <Typography>Tình trạng</Typography>
             </Grid>
             <Grid item xs={9}>
-              <Typography>{FundStatus}</Typography>
+              <Typography>{renderEventStatus(FundStatus)}</Typography>
             </Grid>
 
             <Grid item xs={3}>
@@ -212,8 +210,8 @@ const FundDetailPage = () => {
       </Tabs>
 
       {tabKey === 'description' ? (
-        <Box>
-          <Typography>{fundData?.description}</Typography>
+        <Box sx={{ my: 2 }}>
+          <EditorPreview value={fundData?.description || ''} />
         </Box>
       ) : null}
     </Box>

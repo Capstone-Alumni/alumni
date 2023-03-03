@@ -17,7 +17,7 @@ import EditorPreview from '@share/components/editor/EditorPreview';
 
 type EventStatus = 'not-open' | 'opened' | 'running' | 'ended';
 
-const renderEventStatus = (status: EventStatus) => {
+export const renderEventStatus = (status: EventStatus) => {
   switch (status) {
     case 'not-open':
       return 'Chưa mở đăng ký';

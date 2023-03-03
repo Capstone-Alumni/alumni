@@ -10,6 +10,7 @@ import DateTimeInput from '@share/components/form/DateTimeInput';
 // import SelectInput from '@share/components/form/SelectInput';
 // import { Typography } from '@mui/material';
 import { useState } from 'react';
+import RichTextInput from '@share/components/form/RichTextInput';
 
 export type FundFormValues = {
   title: string;
@@ -126,10 +127,10 @@ const FundForm = ({
         />
       </Box>
 
-      <TextInput
+      <RichTextInput
         control={control}
         name="description"
-        inputProps={{ label: 'Mô tả', multiline: true, fullWidth: true }}
+        inputProps={{ placeholder: 'Mô tả' }}
       />
 
       <Box sx={{ width: '100%' }}>
