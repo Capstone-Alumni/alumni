@@ -7,6 +7,7 @@ export type Information = {
   email: string;
   fullName: string;
   alumClass?: Class;
+  avatarUrl?: string;
 };
 
 export type GetInformationParams = {

@@ -5,6 +5,8 @@ import MyAvatar from '@share/components/MyAvatar';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
+import { useAppSelector } from '@redux/hooks';
+import { RootState } from '@redux/store';
 
 export type PostCommentFormValues = {
   content: string;
@@ -22,6 +24,9 @@ const PostCommentForm = ({
   onClose?: () => void;
 }) => {
   const theme = useTheme();
+  const currentUser: any = useAppSelector(
+    (state: RootState) => state.currentUser,
+  );
 
   const resolver = useYupValidateionResolver(validationSchema);
 
@@ -43,7 +48,11 @@ const PostCommentForm = ({
 
   return (
     <Stack direction="row" gap={1} alignItems="center">
-      <MyAvatar />
+      <MyAvatar
+        size="small"
+        displayName={currentUser?.data.fullName}
+        photoUrl={currentUser?.data.avatarUrl}
+      />
       <TextInput
         control={control}
         name="content"

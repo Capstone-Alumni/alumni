@@ -53,8 +53,6 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
     setAnchorEl(null);
   };
 
-  console.log(currentUser);
-
   return (
     <>
       <Wrapper
