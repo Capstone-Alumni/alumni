@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { UpdateApplication } from '../types';
+import { UpdateApplication } from '../type';
 
 export default class ApplicationService {
   static apply = async (
