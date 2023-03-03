@@ -1,4 +1,5 @@
 import { atom, selector } from 'recoil';
+import { Class } from '../gradeAndClass/types';
 
 export type Tenant = {
   id: string;
@@ -37,5 +38,25 @@ export const currentTenantThemeSelector = selector({
   get: ({ get }) => {
     const tenant = get(currentTenantDataAtom);
     return tenant?.theme;
+  },
+});
+
+export type UserInformation = {
+  id: string;
+  userId: string;
+  email: string;
+  fullName: string;
+  alumClass?: Class;
+  alumClassId?: string;
+  avatarUrl?: string;
+};
+
+export const currentUserInformationDataAtom = atom<UserInformation>({
+  key: 'currentUserInformation',
+  default: {
+    id: '',
+    userId: '',
+    email: '',
+    fullName: '',
   },
 });

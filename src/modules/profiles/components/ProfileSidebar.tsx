@@ -18,6 +18,7 @@ import {
 } from '@redux/slices/userProfileSlice';
 import UploadAvatarInput from '@share/components/form/UploadAvatarInput';
 import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
 
 const StyledNavWrapper = styled(Box)(({ theme }) => ({
   minWidth: '16rem',
@@ -81,7 +82,7 @@ const ProfileSidebar = () => {
   const { data } = useGetUserInformationQuery(userProfileId);
   const [updateUserInformation] = useUpdateUserInformationMutation();
 
-  const { control } = useForm({
+  const { control, setValue } = useForm({
     defaultValues: {
       avatar: data?.data?.avatarUrl,
     },
@@ -96,6 +97,10 @@ const ProfileSidebar = () => {
       userId: userProfileId,
     });
   };
+
+  useEffect(() => {
+    setValue('avatar', data?.data?.avatarUrl);
+  }, [data?.data?.avatarUrl]);
 
   return (
     <StyledNavWrapper>

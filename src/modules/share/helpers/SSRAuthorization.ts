@@ -1,4 +1,4 @@
-import { Tenant } from '@redux/slices/currentTenantSlice';
+import { Tenant } from '@share/states';
 import { getTenantData } from '@share/utils/getTenantData';
 import { unstable_getServerSession } from 'next-auth';
 import { cookies } from 'next/headers';

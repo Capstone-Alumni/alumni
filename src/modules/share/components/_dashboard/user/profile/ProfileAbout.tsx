@@ -6,10 +6,10 @@ import { Card, Stack } from '@mui/material';
 // @types
 import ProfileInfoRow from './InfoRowCustom';
 import { isAllowToViewValue } from 'src/utils/mappingPublicity';
-import { useAppSelector } from 'src/redux/hooks';
-import { RootState } from 'src/redux/store';
 import Linkify from 'react-linkify';
 import ProfileCover from './ProfileCover';
+import { useRecoilValue } from 'recoil';
+import { currentUserInformationDataAtom } from '@share/states';
 // ----------------------------------------------------------------------
 
 const IconStyle = styled(Icon)(({ theme }) => ({
@@ -27,7 +27,7 @@ type ProfileAboutProps = {
 
 const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
   const theme = useTheme();
-  const currentUser = useAppSelector((state: RootState) => state.currentUser);
+  const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
 
   return (
     <Grid container spacing={3}>
@@ -72,7 +72,7 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                     }
                   />
                   {isAllowToViewValue(
-                    currentUser.data,
+                    currentUserInformation,
                     userInformation,
                     userInformation?.phonePublicity,
                   ) &&
@@ -84,12 +84,13 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                         userInformationData={userInformation}
                         name="phonePublicity"
                         isAllowToView={
-                          userInformation?.userId === currentUser.data?.userId
+                          userInformation?.userId ===
+                          currentUserInformation.userId
                         }
                       />
                     )}
                   {isAllowToViewValue(
-                    currentUser.data,
+                    currentUserInformation,
                     userInformation,
                     userInformation?.facebookPublicity,
                   ) &&
@@ -115,12 +116,13 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                         name="facebookPublicity"
                         userInformationData={userInformation}
                         isAllowToView={
-                          userInformation?.userId === currentUser.data?.userId
+                          userInformation?.userId ===
+                          currentUserInformation.userId
                         }
                       />
                     )}
                   {isAllowToViewValue(
-                    currentUser.data,
+                    currentUserInformation,
                     userInformation,
                     userInformation?.dateOfBirthPublicity,
                   ) &&
@@ -137,7 +139,8 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                         userInformationData={userInformation}
                         name="dateOfBirthPublicity"
                         isAllowToView={
-                          userInformation?.userId === currentUser.data?.userId
+                          userInformation?.userId ===
+                          currentUserInformation.userId
                         }
                       />
                     )}

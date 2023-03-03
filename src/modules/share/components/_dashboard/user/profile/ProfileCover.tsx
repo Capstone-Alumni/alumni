@@ -10,8 +10,8 @@ import {
   useGetUserInformationQuery,
   useUpdateUserInformationMutation,
 } from 'src/redux/slices/userProfileSlice';
-import { useAppSelector } from 'src/redux/hooks';
-import { RootState } from 'src/redux/store';
+import { useRecoilValue } from 'recoil';
+import { currentUserInformationDataAtom } from '@share/states';
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +40,8 @@ type ProfileCoverProps = {
 export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
   const { data } = useGetUserInformationQuery(userProfileId);
 
-  const currentUser = useAppSelector((state: RootState) => state.currentUser);
+  const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
+
   const [updateUserInformation] = useUpdateUserInformationMutation();
 
   const handleDrop = async (acceptedFiles: any, type: string) => {
@@ -94,7 +95,7 @@ export default function ProfileCover({ userProfileId }: ProfileCoverProps) {
         <>
           <InfoStyle>
             <UploadAvatar
-              disabled={currentUser?.data?.userId !== userProfileId}
+              disabled={currentUserInformation.userId !== userProfileId}
               file={data?.data?.avatarUrl || avatarUrlDefault}
               maxSize={3145728}
               onDrop={(e, _) => handleDrop(e, 'avatar')}

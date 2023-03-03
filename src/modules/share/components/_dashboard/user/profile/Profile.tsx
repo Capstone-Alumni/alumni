@@ -1,7 +1,5 @@
 // material
 import { Box, Button, Grid, Typography } from '@mui/material';
-import { useAppSelector } from 'src/redux/hooks';
-import { RootState } from 'src/redux/store';
 import { isAllowToViewValue } from 'src/utils/mappingPublicity';
 //
 import ProfileAbout from './ProfileAbout';
@@ -12,6 +10,8 @@ import BackIcon from '@mui/icons-material/ArrowBack';
 import { useState } from 'react';
 import UserEditWrapper from './UserEditWrapper';
 import LoadingIndicator from '@share/components/LoadingIndicator';
+import { useRecoilValue } from 'recoil';
+import { currentUserInformationDataAtom } from '@share/states';
 
 // ----------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ export default function Profile({
 }: ProfileProps) {
   const [openEdit, setOpenEdit] = useState<boolean>(false);
 
-  const currentUser = useAppSelector((state: RootState) => state.currentUser);
+  const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
 
   const userInformationData = userInformation?.data?.data;
 
@@ -38,7 +38,7 @@ export default function Profile({
     setOpenEdit(!openEdit);
   };
 
-  return !!currentUser?.data?.userId && !!userProfileId ? (
+  return !!currentUserInformation.userId && !!userProfileId ? (
     <Grid container spacing={3}>
       {!openEdit ? (
         <>
@@ -55,7 +55,7 @@ export default function Profile({
                   marginBottom: '1rem',
                 }}
               >
-                {currentUser.data.userId === userProfileId && (
+                {currentUserInformation.userId === userProfileId && (
                   <Button
                     variant="outlined"
                     startIcon={openEdit ? <BackIcon /> : <EditIcon />}
@@ -70,7 +70,7 @@ export default function Profile({
               </Box>
             </>
           )}
-          {currentUser.data && userInformationData && (
+          {currentUserInformation && userInformationData && (
             <>
               {userCareers?.error ? (
                 <Typography>
@@ -78,7 +78,7 @@ export default function Profile({
                 </Typography>
               ) : (
                 isAllowToViewValue(
-                  currentUser.data,
+                  currentUserInformation,
                   userInformationData,
                   userInformationData.careerPublicity,
                 ) && (
@@ -87,7 +87,7 @@ export default function Profile({
                       editable={false}
                       userCareers={userCareers?.data?.data?.items}
                       userInformationData={userInformationData}
-                      currentUser={currentUser}
+                      currentUser={currentUserInformation}
                     />
                   </Grid>
                 )
@@ -98,7 +98,7 @@ export default function Profile({
                 </Typography>
               ) : (
                 isAllowToViewValue(
-                  currentUser.data,
+                  currentUserInformation,
                   userInformationData,
                   userInformationData.educationPublicity,
                 ) && (
@@ -107,7 +107,7 @@ export default function Profile({
                       editable={false}
                       userEducations={userEducations?.data?.data?.items}
                       userInformationData={userInformationData}
-                      currentUser={currentUser}
+                      currentUser={currentUserInformation}
                     />
                   </Grid>
                 )
@@ -123,7 +123,7 @@ export default function Profile({
               userInformation={userInformation}
               userCareers={userCareers}
               userEducations={userEducations}
-              currentUser={currentUser}
+              currentUser={currentUserInformation}
             />
           </Box>
           <Box

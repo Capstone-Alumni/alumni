@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import currentUserReducer from './slices/currentUserSlice';
 import { userProfileApi } from './slices/userProfileSlice';
 import { searchProfilesApi } from './slices/searchProfiles';
 import { newsSliceApi } from './slices/newsSlice';
@@ -7,7 +6,6 @@ import { newsCommentSliceApi } from './slices/newsCommentSlice';
 
 export const store = configureStore({
   reducer: {
-    currentUser: currentUserReducer,
     [userProfileApi.reducerPath]: userProfileApi.reducer,
     [newsSliceApi.reducerPath]: newsSliceApi.reducer,
     [newsCommentSliceApi.reducerPath]: newsCommentSliceApi.reducer,

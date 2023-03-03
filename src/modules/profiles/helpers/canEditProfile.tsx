@@ -1,13 +1,13 @@
-import { useAppSelector } from '@redux/hooks';
-import { RootState } from '@redux/store';
+import { currentUserInformationDataAtom } from '@share/states';
 import { usePathname } from 'next/navigation';
+import { useRecoilValue } from 'recoil';
 
 export const useCanEditProfile = () => {
-  const currentUser = useAppSelector((state: RootState) => state.currentUser);
+  const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
   const pathname = usePathname();
   const userProfileId = pathname?.slice(pathname?.lastIndexOf('/') + 1);
 
-  const canEditProfile = currentUser?.data?.userId === userProfileId;
+  const canEditProfile = currentUserInformation.userId === userProfileId;
 
   return {
     canEditProfile,

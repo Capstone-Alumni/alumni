@@ -14,10 +14,10 @@ import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { useGetUsersProfileQuery } from 'src/redux/slices/searchProfiles';
 import Avatar from '@share/components/MyAvatar';
-import { useAppSelector } from 'src/redux/hooks';
-import { RootState } from 'src/redux/store';
 import { useState } from 'react';
 import LoadingIndicator from '@share/components/LoadingIndicator';
+import { useRecoilValue } from 'recoil';
+import { currentUserInformationDataAtom } from '@share/states';
 // ----------------------------------------------------------------------
 
 const Wrapper = styled('div')(({ theme }) => ({
@@ -38,7 +38,7 @@ const SeachPage = () => {
     page,
     limit: 5,
   });
-  const currentUser = useAppSelector((state: RootState) => state.currentUser);
+  const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
 
   const handleDirectToProfile = (userId: string) => {
     router.push(`/profile/${userId}?profile_tab=information`);
@@ -48,7 +48,7 @@ const SeachPage = () => {
     if (
       !usersProfileResponse.isLoading &&
       usersProfileResponse?.data?.data &&
-      currentUser?.data
+      currentUserInformation
     ) {
       return (
         <Grid container spacing={3} maxWidth="md" sx={{ margin: 'auto' }}>

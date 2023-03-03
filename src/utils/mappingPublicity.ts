@@ -1,4 +1,5 @@
 import { Information, ScopePublicity } from '@prisma/client';
+import { UserInformation } from '@share/states';
 
 export const mappingScopPublicity = {
   SCHOOL: 'Trường',
@@ -26,7 +27,7 @@ export const mappingScopPublicityToFieldName: any = {
 };
 
 export const isAllowToViewValue = (
-  currentUserInfomation: Information,
+  currentUserInfomation: UserInformation,
   profileInfomation: Information,
   permissionToSee?: ScopePublicity,
 ): boolean => {
