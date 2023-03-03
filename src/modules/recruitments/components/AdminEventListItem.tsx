@@ -29,7 +29,7 @@ const AdminEventListItem = ({
         </TableCell>
         <TableCell align="left">
           <Typography>
-            {Boolean(data.archived) ? (
+            {data.archived ? (
               <Button variant="outlined" size="small" color="error">
                 Đã từ chối
               </Button>
@@ -48,14 +48,11 @@ const AdminEventListItem = ({
           <Typography>{new Date(data.createdAt).toDateString()}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
-          <AdminJobPreview
-            children={
-              <IconButton>
-                <Icon height={24} icon="uil:eye" />
-              </IconButton>
-            }
-            data={data}
-          />
+          <AdminJobPreview data={data}>
+            <IconButton>
+              <Icon height={24} icon="uil:eye" />
+            </IconButton>
+          </AdminJobPreview>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <IconButton onClick={() => onApprove(data.id)}>

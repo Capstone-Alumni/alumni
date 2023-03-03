@@ -4,9 +4,8 @@ import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationR
 import { Job } from '../types';
 import TextInput from '@share/components/form/TextInput';
 import { Box, Button, useTheme } from '@mui/material';
-import DateTimeInput from '@share/components/form/DateTimeInput';
 import { Typography } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import UploadBackgroundInput from '@share/components/form/UploadBackgroundInput';
 
 export type JobFormValues = {
@@ -175,7 +174,7 @@ const JobForm = ({
           }}
         />
       </Box>
-      {!Boolean(isPreview) && (
+      {!isPreview && (
         <>
           <Box sx={{ width: '100%' }}>
             <Typography variant="body2">

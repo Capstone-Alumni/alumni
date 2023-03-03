@@ -65,7 +65,7 @@ const UploadBackgroundInput = <T extends FieldValues>({
               // {...field}
               {...inputProps}
               file={field.value}
-              onDrop={async (files) => {
+              onDrop={async files => {
                 const url = await handleDrop(files);
                 field.onChange(url);
               }}

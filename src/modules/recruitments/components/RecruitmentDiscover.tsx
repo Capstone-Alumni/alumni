@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, useTheme, Pagination } from '@mui/material';
+import { Box, Pagination, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import React from 'react';
 import { useRecoilState } from 'recoil';
@@ -35,7 +35,7 @@ const RecruitmentDiscover = () => {
         )}
         page={params.page}
         onChange={(_, nextPage) => {
-          setParams((prevParams) => ({ ...prevParams, page: nextPage }));
+          setParams(prevParams => ({ ...prevParams, page: nextPage }));
         }}
       />
     </Box>

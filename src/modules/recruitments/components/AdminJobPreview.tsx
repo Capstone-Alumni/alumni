@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 // material
-import { Icon } from '@iconify/react';
-import { Dialog, IconButton } from '@mui/material';
+import { Dialog } from '@mui/material';
 import JobForm from './JobForm';
 import useOwnerGetJobById from '../hooks/useOwnerGetJobById';
 import { Job } from '../types';

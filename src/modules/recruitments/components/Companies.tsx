@@ -1,16 +1,7 @@
 'use client';
 
 import React from 'react';
-import {
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  styled,
-  Typography,
-  useTheme,
-} from '@mui/material';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import { Box, Button, Grid, styled, Typography, useTheme } from '@mui/material';
 
 import Link from 'next/link';
 import CompanyItem from './CompanyItem';
