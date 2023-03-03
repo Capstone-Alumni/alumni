@@ -58,34 +58,16 @@ const StyledNavItem = styled(Box)(({ theme }) => ({
 
 const EVENT_NAV_ITEMS = [
   {
-    id: 'information',
-    title: 'Thông tin',
-    icon: 'material-symbols:globe-asia-sharp',
-    link: 'information',
-  },
-  {
     id: 'posts',
     title: 'Bài đăng',
-    icon: 'material-symbols:globe-asia-sharp',
+    icon: 'fluent:status-16-filled',
     link: 'posts',
   },
   {
-    id: 'events',
-    title: 'Sự kiện',
-    icon: 'carbon:checkmark-filled',
-    link: 'events',
-  },
-  {
-    id: 'funds',
-    title: 'Gây quỹ',
-    icon: 'material-symbols:bookmark',
-    link: 'funds',
-  },
-  {
-    id: 'recruitment',
-    title: 'Tuyển dụng',
-    icon: 'material-symbols:person-pin',
-    link: 'recruitment',
+    id: 'information',
+    title: 'Thông tin',
+    icon: 'mingcute:profile-fill',
+    link: 'information',
   },
 ];
 
