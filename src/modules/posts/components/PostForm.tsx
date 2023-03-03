@@ -1,6 +1,4 @@
 import { Stack, Typography, useTheme } from '@mui/material';
-import { useAppSelector } from '@redux/hooks';
-import { RootState } from '@redux/store';
 import SelectInput from '@share/components/form/SelectInput';
 import MyAvatar from '@share/components/MyAvatar';
 import { useForm } from 'react-hook-form';
@@ -9,6 +7,8 @@ import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationR
 import { Button } from '@mui/material';
 import { useState } from 'react';
 import RichTextInput from '@share/components/form/RichTextInput';
+import { useRecoilValue } from 'recoil';
+import { currentUserInformationDataAtom } from '@share/states';
 
 export type PostFormValues = {
   content: string;
@@ -29,9 +29,7 @@ const PostForm = ({
 }) => {
   const [isSaving, setIsSaving] = useState(false);
   const theme = useTheme();
-  const currentUserInformation = useAppSelector(
-    (state: RootState) => state.currentUser,
-  );
+  const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
 
   const resolver = useYupValidateionResolver(validationSchema);
 
@@ -66,7 +64,7 @@ const PostForm = ({
         <MyAvatar />
 
         <Typography fontWeight={600}>
-          {currentUserInformation?.data.fullName}
+          {currentUserInformation.fullName}
         </Typography>
       </Stack>
 

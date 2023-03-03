@@ -1,12 +1,13 @@
 'use client';
 
-import { useAppDispatch } from '@redux/hooks';
-import { setTenant, Tenant } from '@redux/slices/currentTenantSlice';
+import { currentTenantDataAtom, Tenant } from '@share/states';
+import { useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
 
 const SetCurrentTenant = ({ tenantData }: { tenantData: Tenant }) => {
-  const dispatch = useAppDispatch();
+  const setCurrentTenantState = useSetRecoilState(currentTenantDataAtom);
 
-  dispatch(setTenant(tenantData));
+  useEffect(() => setCurrentTenantState(tenantData), []);
 
   return null;
 };

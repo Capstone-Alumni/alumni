@@ -1,4 +1,4 @@
-import { unstable_getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
 import Header from '@share/components/layout/Header';
 import Footer from '@share/components/layout/Footer';
@@ -9,7 +9,7 @@ import AboutSection from 'src/modules/landingPage/components/AboutSection';
 import { getTenantDataSSR } from '@share/helpers/SSRAuthorization';
 
 export default async function Page() {
-  const session = await unstable_getServerSession(nextAuthOptions);
+  const session = await getServerSession(nextAuthOptions);
 
   const data = await getTenantDataSSR();
 

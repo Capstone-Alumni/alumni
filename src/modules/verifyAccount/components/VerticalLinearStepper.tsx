@@ -11,11 +11,10 @@ import {
   useTheme,
 } from '@mui/material';
 import EndingStep from './EndingStep';
-import { useAppSelector } from 'src/redux/hooks';
-import { currentTenantSelector } from 'src/redux/slices/currentTenantSlice';
 import { useFormContext } from 'react-hook-form';
-import { useResetRecoilState } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { selectedClassAtom, selectedGradeAtom } from '../states';
+import { currentTenantDataAtom } from '@share/states';
 // ----------------------------------------------------------------------
 
 export type Step = {
@@ -36,7 +35,7 @@ const VeriticalLinearStepper = ({ steps }: VerifyAccountPageProps) => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
 
-  const tenant = useAppSelector(currentTenantSelector);
+  const tenant = useRecoilValue(currentTenantDataAtom);
 
   const isStepOptional = (step: number) => step === 1;
 

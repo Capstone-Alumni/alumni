@@ -1,21 +1,20 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
+import useGetCurrentUserInformation from '@share/hooks/useGetCurrentUserInformation';
+import { currentUserInformationDataAtom } from '@share/states';
+import { User } from 'next-auth';
 import { useEffect } from 'react';
-import { getCurrentUserInfo } from 'src/redux/slices/currentUserSlice';
+import { useRecoilValue } from 'recoil';
 
-const GetInitialUserInformation = () => {
-  const { data: session } = useSession();
+const GetInitialUserInformation = ({ user }: { user?: User }) => {
+  const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
+  const { fetchApi } = useGetCurrentUserInformation();
+
   useEffect(() => {
-    if (!session?.user.id) {
-      return;
+    if (user?.id && user?.id !== currentUserInformation.userId) {
+      fetchApi({ id: user.id });
     }
-    getCurrentUser(session?.user.id);
-  }, [session]);
-
-  const getCurrentUser = async (id: string) => {
-    await getCurrentUserInfo(id);
-  };
+  }, []);
 
   return null;
 };

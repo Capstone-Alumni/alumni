@@ -28,7 +28,7 @@ export default function ThemeConfig({
 }: ThemeConfigProps) {
   // const { themeMode, themeDirection } = useSettings();
   const themeMode = 'light';
-  const themeDirection = 'ltf';
+  const themeDirection = 'ltr';
   const isLight = themeMode === 'light';
   const palette = useMemo(() => {
     return getPalette(paletteName || 'purple');

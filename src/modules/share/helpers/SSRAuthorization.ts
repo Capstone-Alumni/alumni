@@ -1,6 +1,6 @@
-import { Tenant } from '@redux/slices/currentTenantSlice';
+import { Tenant } from '@share/states';
 import { getTenantData } from '@share/utils/getTenantData';
-import { unstable_getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
@@ -16,7 +16,7 @@ export const getTenantDataSSR = async (): Promise<Tenant> => {
 };
 
 export const verifyUser = async () => {
-  const session = await unstable_getServerSession(nextAuthOptions);
+  const session = await getServerSession(nextAuthOptions);
 
   if (!session) {
     redirect('/sign_in');
@@ -26,7 +26,7 @@ export const verifyUser = async () => {
 };
 
 export const verifyAdminOrMod = async () => {
-  const session = await unstable_getServerSession(nextAuthOptions);
+  const session = await getServerSession(nextAuthOptions);
 
   if (!session) {
     redirect('/sign_in');

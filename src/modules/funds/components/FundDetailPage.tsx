@@ -83,8 +83,6 @@ const FundDetailPage = () => {
 
   const { data: fundData } = data;
 
-  console.log(fundData);
-
   return (
     <Box>
       {/* <Box

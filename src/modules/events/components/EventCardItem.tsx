@@ -7,9 +7,9 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { useAppSelector } from '@redux/hooks';
-import { currentTenantSelector } from '@redux/slices/currentTenantSlice';
+import { currentTenantDataAtom } from '@share/states';
 import { ReactNode } from 'react';
+import { useRecoilValue } from 'recoil';
 import { Event } from '../types';
 
 const EventCardItem = ({
@@ -20,7 +20,7 @@ const EventCardItem = ({
   actions?: ReactNode[];
 }) => {
   const theme = useTheme();
-  const currentTenant = useAppSelector(currentTenantSelector);
+  const currentTenant = useRecoilValue(currentTenantDataAtom);
 
   return (
     <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>

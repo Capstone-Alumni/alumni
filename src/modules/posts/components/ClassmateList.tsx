@@ -1,26 +1,25 @@
 import { Stack, Typography } from '@mui/material';
-import { useAppSelector } from '@redux/hooks';
-import { RootState } from '@redux/store';
 import MyAvatar from '@share/components/MyAvatar';
+import { currentUserInformationDataAtom } from '@share/states';
 import Link from 'next/link';
 import { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
 import useGetInformationSameClassList from '../hooks/useGetInformationSameClassList';
 
 const ClassmateList = () => {
-  const currentUserInformation = useAppSelector(
-    (state: RootState) => state.currentUser,
-  );
+  const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
+
   const { fetchApi, data } = useGetInformationSameClassList();
 
   useEffect(() => {
-    if (currentUserInformation?.data.alumClassId) {
+    if (currentUserInformation?.alumClassId) {
       fetchApi({
         page: 1,
         limit: 10,
-        classId: currentUserInformation?.data.alumClassId,
+        classId: currentUserInformation?.alumClassId,
       });
     }
-  }, [currentUserInformation?.data.alumClassId]);
+  }, [currentUserInformation?.alumClassId]);
 
   return (
     <Stack direction="column" gap={1} sx={{ minWidth: '16rem', px: 2 }}>

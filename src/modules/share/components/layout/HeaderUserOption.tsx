@@ -17,10 +17,10 @@ import MyAvatar from '../MyAvatar';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAppSelector } from 'src/redux/hooks';
-import { RootState } from 'src/redux/store';
 import { Box } from '@mui/material';
 import getRoleName from '@share/utils/getRoleName';
+import { useRecoilValue } from 'recoil';
+import { currentUserInformationDataAtom } from '@share/states';
 
 const Wrapper = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -40,9 +40,8 @@ const Wrapper = styled('div')(({ theme }) => ({
 const HeaderUserOptions = ({ user }: { user: any }) => {
   const theme = useTheme();
   const router = useRouter();
-  const currentUser: any = useAppSelector(
-    (state: RootState) => state.currentUser,
-  );
+
+  const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -75,8 +74,8 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
           </Typography>
         </Box>
         <MyAvatar
-          displayName={currentUser?.data.fullName}
-          photoUrl={currentUser?.data.avatarUrl}
+          displayName={currentUserInformation.fullName}
+          photoUrl={currentUserInformation.avatarUrl}
         />
       </Wrapper>
       <Menu

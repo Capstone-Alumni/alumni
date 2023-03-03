@@ -2,7 +2,7 @@ import Header from '@share/components/layout/Header';
 import Body from '@share/components/layout/Body';
 import Footer from '@share/components/layout/Footer';
 import { getTenantDataSSR } from '@share/helpers/SSRAuthorization';
-import { unstable_getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
 
 export default async function AuthorizedLayout({
@@ -10,7 +10,7 @@ export default async function AuthorizedLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await unstable_getServerSession(nextAuthOptions);
+  const session = await getServerSession(nextAuthOptions);
   const data = await getTenantDataSSR();
 
   return (

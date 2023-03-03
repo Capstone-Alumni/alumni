@@ -11,15 +11,14 @@ import useUpdateMemberById from '../hooks/useUpdateMemberById';
 import useGetMemberList from '../hooks/useGetMemberList';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import MemberForm, { MemberFormValues } from './MemberForm';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { getMemberListParamsAtom } from '../state';
-import { useAppSelector } from 'src/redux/hooks';
-import { currentTenantSelector } from 'src/redux/slices/currentTenantSlice';
+import { currentTenantDataAtom } from '@share/states';
 
 const MemberListPage = () => {
   const theme = useTheme();
   const [openForm, setOpenForm] = useState(false);
-  const { id: tenantId } = useAppSelector(currentTenantSelector);
+  const { id: tenantId } = useRecoilValue(currentTenantDataAtom);
 
   const [params, setParams] = useRecoilState(getMemberListParamsAtom);
 

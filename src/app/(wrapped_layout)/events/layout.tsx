@@ -1,5 +1,5 @@
 import EventSidebar from 'src/modules/events/components/EventSidebar';
-import { unstable_getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
 
 export default async function AuthorizedLayout({
@@ -7,7 +7,7 @@ export default async function AuthorizedLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await unstable_getServerSession(nextAuthOptions);
+  const session = await getServerSession(nextAuthOptions);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>
