@@ -26,6 +26,7 @@ import ActionButton from '@share/components/ActionButton';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import { noop } from 'lodash/fp';
 import useDeletePost from '../hooks/useDeletePost';
+import EditorPreview from '@share/components/editor/EditorPreview';
 
 // interface ExpandMoreProps {
 //   expand: boolean;
@@ -123,9 +124,7 @@ const PostCardItem = ({ data }: { data: Post }) => {
       /> */}
 
       <CardContent>
-        <Typography paragraph color="text.secondary">
-          {data.content}
-        </Typography>
+        <EditorPreview value={data.content} />
       </CardContent>
 
       <CardActions disableSpacing sx={{ justifyContent: 'space-between' }}>

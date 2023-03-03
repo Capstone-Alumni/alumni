@@ -6,9 +6,9 @@ import MyAvatar from '@share/components/MyAvatar';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
-import TextInput from '@share/components/form/TextInput';
 import { Button } from '@mui/material';
 import { useState } from 'react';
+import RichTextInput from '@share/components/form/RichTextInput';
 
 export type PostFormValues = {
   content: string;
@@ -97,13 +97,11 @@ const PostForm = ({
         ]}
       />
 
-      <TextInput
+      <RichTextInput
         control={control}
         name="content"
         inputProps={{
-          label: 'Nội dung',
-          fullWidth: true,
-          multiline: true,
+          placeholder: 'Nội dung',
         }}
       />
 

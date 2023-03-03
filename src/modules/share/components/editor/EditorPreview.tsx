@@ -19,7 +19,6 @@ const RootStyle = styled(Box)(({ theme }) => ({
     fontFamily: theme.typography.fontFamily,
   },
   '& .ql-editor': {
-    minHeight: 200,
     padding: 0,
     '&.ql-blank::before': {
       fontStyle: 'normal',
