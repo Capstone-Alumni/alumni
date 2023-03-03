@@ -10,6 +10,9 @@ export type Tenant = {
   subdomain: string;
   tenantId: string;
   theme: string;
+  background1?: string;
+  background2?: string;
+  background3?: string;
 };
 
 export interface CurrentTenantState {
@@ -20,6 +23,9 @@ export interface CurrentTenantState {
   subdomain: string;
   tenantId: string;
   theme: string;
+  background1?: string;
+  background2?: string;
+  background3?: string;
 }
 
 const initialState: CurrentTenantState = {
@@ -43,6 +49,7 @@ const currentTenantSlice = createSlice({
       state.description = action.payload.description;
       state.subdomain = action.payload.subdomain;
       state.tenantId = action.payload.tenantId;
+      state.background1 = action.payload.background1;
     },
   },
 });

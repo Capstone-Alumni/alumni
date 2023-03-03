@@ -3,7 +3,7 @@ export type Grade = {
   id: string;
   code: string;
   name?: string;
-  createdAt: string;
+  createdAt: string | Date;
 };
 
 export type Class = {
@@ -12,6 +12,7 @@ export type Class = {
   description: string | null;
   createdAt: string | Date;
   gradeId: string;
+  grade?: Grade;
 };
 
 export type GetGradeListData = {

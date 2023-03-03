@@ -1,4 +1,3 @@
-import { isString } from 'lodash';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 // material
 import {
@@ -14,6 +13,7 @@ import {
 import { fData } from '../../utils/formatNumber';
 //
 import { UploadIllustration } from '../../../../assets';
+import { Link } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -45,7 +45,7 @@ interface CustomFile extends File {
   preview?: string;
 }
 
-interface UploadSingleFileProps extends DropzoneOptions {
+export interface UploadSingleFileProps extends DropzoneOptions {
   error?: boolean;
   file: CustomFile | string | null;
   sx?: SxProps<Theme>;
@@ -108,7 +108,6 @@ export default function UploadSingleFile({
             borderColor: 'error.light',
             bgcolor: 'error.lighter',
           }),
-          ...(file && { padding: '12% 0' }),
         }}
       >
         <input {...getInputProps()} />
@@ -117,38 +116,28 @@ export default function UploadSingleFile({
 
         <Box sx={{ p: 3, ml: { md: 2 } }}>
           <Typography gutterBottom variant="h5">
-            Drop or Select file
+            Thả hoặc chọn file
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Drop files here or click&nbsp;
+            Thả file vảo đây hoặc&nbsp;
             <Typography
               variant="body2"
               component="span"
               sx={{ color: 'primary.main', textDecoration: 'underline' }}
             >
-              browse
+              tải lên
             </Typography>
-            &nbsp;thorough your machine
+            &nbsp;từ máy tính của bạn
           </Typography>
         </Box>
-
-        {file && (
-          <Box
-            component="img"
-            alt="file preview"
-            src={isString(file) ? file : file.preview}
-            sx={{
-              top: 8,
-              borderRadius: 1,
-              objectFit: 'cover',
-              position: 'absolute',
-              width: 'calc(100% - 16px)',
-              height: 'calc(100% - 16px)',
-            }}
-          />
-        )}
       </DropZoneStyle>
+
+      {file && (
+        <Link href={file as string} target="_blank">
+          {file as string}
+        </Link>
+      )}
 
       {fileRejections.length > 0 && <ShowRejectionItems />}
     </Box>

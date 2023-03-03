@@ -1,9 +1,11 @@
 'use client';
 
-import { Box, Container, Typography, useTheme } from '@mui/material';
-import Image from 'next/image';
+import { CardMedia } from '@mui/material';
+import { Box, Card, Container, Typography, useTheme } from '@mui/material';
+import { Tenant } from '@redux/slices/currentTenantSlice';
+import EditorPreview from '@share/components/editor/EditorPreview';
 
-const AboutSection = ({ tenant }: { tenant: any }) => {
+const AboutSection = ({ tenant }: { tenant: Tenant }) => {
   const theme = useTheme();
 
   return (
@@ -44,19 +46,23 @@ const AboutSection = ({ tenant }: { tenant: any }) => {
                 {tenant.name}
               </Typography>
 
-              <Typography sx={{ whiteSpace: 'pre-wrap' }}>
-                {tenant.description}
-              </Typography>
+              <EditorPreview value={tenant.description ?? ''} />
             </Box>
 
-            <Box>
-              <Image
-                height={620}
-                width={480}
-                alt="tenant-background"
-                src="/side_background.png"
+            <Card raised sx={{ height: theme.spacing(70) }}>
+              <CardMedia
+                title="about-landing-page"
+                component="div"
+                sx={{
+                  height: theme.spacing(70),
+                  width: theme.spacing(55),
+                  backgroundImage: `url(${
+                    tenant.background2 ?? '/side_background.png'
+                  })`,
+                  backgroundSize: 'cover',
+                }}
               />
-            </Box>
+            </Card>
           </Box>
         </Box>
       </Container>

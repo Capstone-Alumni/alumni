@@ -67,6 +67,7 @@ export default class OwnerFundService {
       currentBalance,
       publicity,
       publicParticipant,
+      statementFile = '',
     }: {
       title: string;
       description?: string;
@@ -79,6 +80,7 @@ export default class OwnerFundService {
       currentBalance: number;
       publicity?: AccessLevel;
       publicParticipant?: boolean;
+      statementFile?: string;
     },
   ) => {
     const data = await tenantPrisma.fund.create({
@@ -95,6 +97,7 @@ export default class OwnerFundService {
         currentBalance,
         publicity,
         publicParticipant,
+        statementFile,
       },
     });
 
@@ -119,6 +122,7 @@ export default class OwnerFundService {
       currentBalance: number;
       publicity?: AccessLevel;
       publicParticipant?: boolean;
+      statementFile?: string;
     },
   ) => {
     const fund = await tenantPrisma.fund.findUnique({
@@ -133,7 +137,6 @@ export default class OwnerFundService {
 
     const updateData: any = {
       ...data,
-      approvedStatus: -1,
     };
 
     if (data.currentBalance !== fund.currentBalance) {

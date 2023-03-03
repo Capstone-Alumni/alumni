@@ -1,6 +1,14 @@
 'use client';
 
-import { Button, Grid, Tab, Tabs, useTheme } from '@mui/material';
+import {
+  Button,
+  CircularProgress,
+  Grid,
+  Link,
+  Tab,
+  Tabs,
+  useTheme,
+} from '@mui/material';
 import { Box, Typography } from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import LoadingIndicator from '@share/components/LoadingIndicator';
@@ -9,6 +17,8 @@ import { useEffect, useMemo, useState } from 'react';
 import usePublicGetFundById from '../hooks/usePublicGetFundById';
 import usePublicInterestFundById from '../hooks/usePublicSaveFundById';
 import usePublicUninterestFundById from '../hooks/usePublicUnsaveFundById';
+import EditorPreview from '@share/components/editor/EditorPreview';
+import { renderEventStatus } from 'src/modules/events/components/EventDetailPage';
 
 const FundDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
@@ -72,6 +82,8 @@ const FundDetailPage = () => {
   }
 
   const { data: fundData } = data;
+
+  console.log(fundData);
 
   return (
     <Box>
@@ -148,11 +160,7 @@ const FundDetailPage = () => {
                   <Typography>Nơi tổ chức</Typography>
                 </Grid>
                 <Grid item xs={9}>
-                  <Typography
-                    component="span"
-                    fontWeight={600}
-                    sx={{ color: theme.palette.warning.main }}
-                  >
+                  <Typography component="span" fontWeight={600}>
                     {fundData.location}
                   </Typography>
                 </Grid>
@@ -163,7 +171,7 @@ const FundDetailPage = () => {
               <Typography>Tình trạng</Typography>
             </Grid>
             <Grid item xs={9}>
-              <Typography>{FundStatus}</Typography>
+              <Typography>{renderEventStatus(FundStatus)}</Typography>
             </Grid>
 
             <Grid item xs={3}>
@@ -188,34 +196,95 @@ const FundDetailPage = () => {
               </>
             ) : null}
           </Grid>
+
+          <Tabs
+            value={tabKey}
+            onChange={(_, key) => setTabKey(key)}
+            aria-label="wrapped tabs"
+          >
+            <Tab value="description" label="Mô tả" />
+          </Tabs>
+
+          {tabKey === 'description' ? (
+            <Box sx={{ my: 2 }}>
+              <EditorPreview value={fundData?.description || ''} />
+            </Box>
+          ) : null}
         </Box>
 
         <Box sx={{ minWidth: theme.spacing(12) }}>
+          <Box sx={{ mb: 2 }}>
+            <Typography variant="h6" textAlign="center" sx={{ mb: 1 }}>
+              Số tiền gây quỹ
+            </Typography>
+
+            <Box
+              sx={{
+                position: 'relative',
+                width: 'fit-content',
+                textAlign: 'center',
+                margin: '0 auto',
+                p: 3,
+                mb: 1,
+              }}
+            >
+              <Typography fontSize="32px" fontWeight={600} sx={{ mb: 1 }}>
+                {(fundData.currentBalance * 100) / fundData.targetBalance || 0}%
+              </Typography>
+
+              <CircularProgress
+                value={
+                  (fundData.currentBalance * 100) / fundData.targetBalance || 0
+                }
+                variant="determinate"
+                size={100}
+                sx={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  bottom: 0,
+                  right: 0,
+                  margin: 'auto',
+                }}
+              />
+            </Box>
+
+            <Typography variant="h6" textAlign="center">
+              {fundData.currentBalance} / {fundData.targetBalance} (ngàn VND)
+              <br />
+              <Typography
+                variant="caption"
+                textAlign="center"
+                sx={{ m: 'auto' }}
+              >
+                Cập nhập: {new Date(fundData.balanceUpdatedAt).toDateString()}
+              </Typography>
+            </Typography>
+          </Box>
+
           <Button
             fullWidth
             variant={isSaved ? 'contained' : 'outlined'}
             startIcon={<BookmarkBorderIcon />}
             disabled={isSavingFund || isUnsavingFund}
             onClick={isSaved ? onUnsaveFund : onSaveFund}
+            sx={{ mb: 1 }}
           >
             {isSaved ? 'Huỷ lưu' : 'Lưu'}
           </Button>
+
+          <Link href={fundData?.statementFile} target="_blank">
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={<BookmarkBorderIcon />}
+              disabled={!fundData?.statementFile}
+            >
+              File sao kê
+            </Button>
+          </Link>
         </Box>
       </Box>
-
-      <Tabs
-        value={tabKey}
-        onChange={(_, key) => setTabKey(key)}
-        aria-label="wrapped tabs"
-      >
-        <Tab value="description" label="Mô tả" />
-      </Tabs>
-
-      {tabKey === 'description' ? (
-        <Box>
-          <Typography>{fundData?.description}</Typography>
-        </Box>
-      ) : null}
     </Box>
   );
 };

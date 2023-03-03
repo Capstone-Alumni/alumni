@@ -6,9 +6,7 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
@@ -26,6 +24,8 @@ import ActionButton from '@share/components/ActionButton';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import { noop } from 'lodash/fp';
 import useDeletePost from '../hooks/useDeletePost';
+import EditorPreview from '@share/components/editor/EditorPreview';
+import MyAvatar from '@share/components/MyAvatar';
 
 // interface ExpandMoreProps {
 //   expand: boolean;
@@ -73,9 +73,10 @@ const PostCardItem = ({ data }: { data: Post }) => {
     <Card sx={{ width: '100%' }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
+          <MyAvatar
+            displayName={data.authorInformation.fullName}
+            photoUrl={data.authorInformation.avatarUrl}
+          />
         }
         action={
           data.authorInformation.userId === session?.user.id ||
@@ -123,9 +124,7 @@ const PostCardItem = ({ data }: { data: Post }) => {
       /> */}
 
       <CardContent>
-        <Typography paragraph color="text.secondary">
-          {data.content}
-        </Typography>
+        <EditorPreview value={data.content} />
       </CardContent>
 
       <CardActions disableSpacing sx={{ justifyContent: 'space-between' }}>

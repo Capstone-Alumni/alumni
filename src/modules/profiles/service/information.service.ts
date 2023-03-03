@@ -59,13 +59,9 @@ export default class InformationService {
     id: string,
     body: UpdateInformationProps,
   ) => {
-    const informationUpdated = await tenantPrisma.information.upsert({
+    const informationUpdated = await tenantPrisma.information.update({
       where: { userId: id },
-      update: body,
-      create: {
-        ...body,
-        userId: id,
-      },
+      data: body,
     });
     return informationUpdated;
   };

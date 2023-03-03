@@ -13,6 +13,26 @@ import usePublicJoinEventById from '../hooks/usePublicJoinEventById';
 import EventParticipantListTab from './EventParticipantListTab';
 import usePublicInterestEventById from '../hooks/usePublicInterestEventById';
 import usePublicUninterestEventById from '../hooks/usePublicUninterestEventById';
+import EditorPreview from '@share/components/editor/EditorPreview';
+
+type EventStatus = 'not-open' | 'opened' | 'running' | 'ended';
+
+export const renderEventStatus = (status: EventStatus) => {
+  switch (status) {
+    case 'not-open':
+      return 'Chưa mở đăng ký';
+    case 'opened':
+      return 'Đã mở đăng ký';
+    case 'running':
+      return 'Đang diễn ra';
+    case 'ended':
+      return 'Đã kết thúc';
+    default:
+      // eslint-disable-next-line no-case-declarations
+      const check: never = status;
+      return check;
+  }
+};
 
 const EventDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
@@ -167,7 +187,7 @@ const EventDetailPage = () => {
               <Typography>Tình trạng</Typography>
             </Grid>
             <Grid item xs={9}>
-              <Typography>{eventStatus}</Typography>
+              <Typography>{renderEventStatus(eventStatus)}</Typography>
             </Grid>
 
             <Grid item xs={3}>
@@ -217,7 +237,7 @@ const EventDetailPage = () => {
             sx={{ mb: 1 }}
             onClick={onJoinEvent}
           >
-            {isJoined ? 'Đã tham gia' : 'Tham gia'}
+            {isJoined ? 'Đã đăng ký' : 'Đăng ký'}
           </Button>
 
           <Button
@@ -244,8 +264,8 @@ const EventDetailPage = () => {
       </Tabs>
 
       {tabKey === 'description' ? (
-        <Box>
-          <Typography>{eventData?.description}</Typography>
+        <Box sx={{ my: 2 }}>
+          <EditorPreview value={eventData?.description || ''} />
         </Box>
       ) : null}
 

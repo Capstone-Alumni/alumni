@@ -137,6 +137,7 @@ model Event {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   title             String
+  backgroundImage   String?
   description       String?
   isOffline         Boolean     @default(false) @map("is_offline")
   location          String?
@@ -206,6 +207,7 @@ model Fund {
   approvedStatus    Int         @default(-1) @map("approved_status")
   publicity         AccessLevel @default(ALUMNI)
   publicParticipant Boolean     @default(false) @map("public_participant")
+  statementFile     String?     @map("statement_file")
 
   userId          String      @map("user_id")
   hostInformation Information @relation(fields: [userId], references: [userId])

@@ -9,9 +9,10 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import { Tenant } from '@redux/slices/currentTenantSlice';
 import Link from 'next/link';
 
-const ClassSection = () => {
+const ClassSection = ({ tenant }: { tenant: Tenant }) => {
   const theme = useTheme();
 
   return (
@@ -55,7 +56,9 @@ const ClassSection = () => {
                 sx={{
                   height: theme.spacing(70),
                   width: theme.spacing(55),
-                  backgroundImage: 'url("/landing-page-class.png")',
+                  backgroundImage: `url(${
+                    tenant.background3 ?? '/landing-page-class.png'
+                  })`,
                 }}
               />
             </Card>

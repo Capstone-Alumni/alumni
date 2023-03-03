@@ -34,6 +34,7 @@ const NewsCard = ({
     >
       <CardMedia
         title="news image"
+        component="div"
         sx={{
           height: theme.spacing(23),
           padding: theme.spacing(2),

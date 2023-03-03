@@ -10,7 +10,11 @@ const nextConfig = {
     styledComponents: true,
   },
   images: {
-    domains: ['bka.hcmut.edu.vn', 'encrypted-tbn0.gstatic.com'],
+    domains: [
+      'bka.hcmut.edu.vn',
+      'encrypted-tbn0.gstatic.com',
+      'firebasestorage.googleapis.com',
+    ],
   },
   eslint: {
     dirs: ['src'],

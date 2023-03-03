@@ -40,7 +40,9 @@ const Wrapper = styled('div')(({ theme }) => ({
 const HeaderUserOptions = ({ user }: { user: any }) => {
   const theme = useTheme();
   const router = useRouter();
-  const currentUser = useAppSelector((state: RootState) => state.currentUser);
+  const currentUser: any = useAppSelector(
+    (state: RootState) => state.currentUser,
+  );
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -73,8 +75,8 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
           </Typography>
         </Box>
         <MyAvatar
-          src={currentUser.data.avatarUrl}
-          alt={currentUser.data.fullName}
+          displayName={currentUser?.data.fullName}
+          photoUrl={currentUser?.data.avatarUrl}
         />
       </Wrapper>
       <Menu

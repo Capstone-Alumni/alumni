@@ -140,7 +140,15 @@ export default class PublicEventService {
           createdAt: 'desc',
         },
         include: {
-          participantInformation: true,
+          participantInformation: {
+            include: {
+              alumClass: {
+                include: {
+                  grade: true,
+                },
+              },
+            },
+          },
         },
       }),
     ]);

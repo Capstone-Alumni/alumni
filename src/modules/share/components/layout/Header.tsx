@@ -12,8 +12,9 @@ import Logo from '../Logo';
 import { Divider, useScrollTrigger, useTheme } from '@mui/material';
 import { NavItem } from './NavItem';
 import HeaderUserOptions from './HeaderUserOption';
-import React, { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import React from 'react';
+import { Tenant } from '@redux/slices/currentTenantSlice';
+import { User } from 'next-auth';
 
 interface Props {
   /**
@@ -50,15 +51,15 @@ const Header = ({
   tenant,
   hasAnimation,
 }: {
-  user?: any;
-  tenant?: any;
+  user?: User;
+  tenant?: Tenant;
   hasAnimation: boolean;
 }) => {
   const theme = useTheme();
-  const searchParams = useSearchParams();
-  const name = searchParams.get('name');
-  const [search, setSearch] = useState<string>(name ?? '');
-  const router = useRouter();
+  // const searchParams = useSearchParams();
+  // const name = searchParams.get('name');
+  // const [search, setSearch] = useState<string>(name ?? '');
+  // const router = useRouter();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -71,7 +72,7 @@ const Header = ({
               color="inherit"
               aria-label="menu"
             >
-              <Logo />
+              <Logo url={tenant?.logo} />
             </IconButton>
             <Typography variant="h6" component="div" color="primary">
               {tenant?.name}

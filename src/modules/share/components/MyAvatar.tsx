@@ -2,24 +2,47 @@
 import { MAvatar } from './@material-extend';
 import { MAvatarProps } from './@material-extend/MAvatar';
 import createAvatar from 'src/modules/share/utils/createAvatar';
+import { useMemo } from 'react';
 
 // ----------------------------------------------------------------------
 
-export default function MyAvatar({ ...other }: MAvatarProps) {
-  //TODO: get user from whatever store and pass to the user constant
-  const user = {
-    photoURL: '',
-    displayName: 'Default',
-  };
+export default function MyAvatar({
+  displayName = 'Default',
+  photoUrl = '',
+  size = 'medium',
+  sx,
+  ...other
+}: MAvatarProps & {
+  displayName?: string;
+  photoUrl?: string;
+  size?: 'small' | 'medium' | 'large';
+}) {
+  const avatarSize = useMemo(() => {
+    switch (size) {
+      case 'small':
+        return 32;
+      case 'medium':
+        return 40;
+      case 'large':
+        return 56;
+      default:
+        null;
+    }
+  }, []);
 
   return (
     <MAvatar
-      src={other.src}
-      alt={other.alt}
-      color={user?.photoURL ? 'default' : createAvatar(user?.displayName).color}
+      src={photoUrl}
+      alt={displayName}
+      color={photoUrl ? 'default' : createAvatar(displayName).color}
       {...other}
+      sx={{
+        height: avatarSize,
+        width: avatarSize,
+        ...sx,
+      }}
     >
-      {createAvatar(user?.displayName).name}
+      {createAvatar(displayName).name}
     </MAvatar>
   );
 }

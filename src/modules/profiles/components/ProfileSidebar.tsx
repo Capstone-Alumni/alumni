@@ -10,19 +10,14 @@ import {
   useTheme,
 } from '@mui/material';
 import Link from 'next/link';
-import { UploadAvatar } from '@share/components/upload';
 import { useCanEditProfile } from '../helpers/canEditProfile';
-import { setStorage } from 'src/firebase/methods/setStorage';
-import { generateUniqSerial } from 'src/utils';
-import { toast } from 'react-toastify';
 import { usePathname, useSearchParams } from 'next/navigation';
 import {
   useGetUserInformationQuery,
   useUpdateUserInformationMutation,
 } from '@redux/slices/userProfileSlice';
-
-const avatarUrlDefault =
-  'https://firebasestorage.googleapis.com/v0/b/alumni-pf.appspot.com/o/users%2F6a5e-9e80-43e-cf66%2Favatar%2Favatar_default.jpeg?alt=media&token=8579e2f1-42b1-41ed-a641-833bbcc84194';
+import UploadAvatarInput from '@share/components/form/UploadAvatarInput';
+import { useForm } from 'react-hook-form';
 
 const StyledNavWrapper = styled(Box)(({ theme }) => ({
   minWidth: '16rem',
@@ -62,34 +57,16 @@ const StyledNavItem = styled(Box)(({ theme }) => ({
 
 const EVENT_NAV_ITEMS = [
   {
-    id: 'information',
-    title: 'Thông tin',
-    icon: 'material-symbols:globe-asia-sharp',
-    link: 'information',
-  },
-  {
     id: 'posts',
     title: 'Bài đăng',
-    icon: 'material-symbols:globe-asia-sharp',
+    icon: 'fluent:status-16-filled',
     link: 'posts',
   },
   {
-    id: 'events',
-    title: 'Sự kiện',
-    icon: 'carbon:checkmark-filled',
-    link: 'events',
-  },
-  {
-    id: 'funds',
-    title: 'Gây quỹ',
-    icon: 'material-symbols:bookmark',
-    link: 'funds',
-  },
-  {
-    id: 'recruitment',
-    title: 'Tuyển dụng',
-    icon: 'material-symbols:person-pin',
-    link: 'recruitment',
+    id: 'information',
+    title: 'Thông tin',
+    icon: 'mingcute:profile-fill',
+    link: 'information',
   },
 ];
 
@@ -97,47 +74,41 @@ const ProfileSidebar = () => {
   const theme = useTheme();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
   const currentProfileTab = searchParams.get('profile_tab');
   const { canEditProfile, userProfileId } = useCanEditProfile();
-  const [updateUserInformation] = useUpdateUserInformationMutation();
 
   const { data } = useGetUserInformationQuery(userProfileId);
+  const [updateUserInformation] = useUpdateUserInformationMutation();
 
-  const handleDrop = async (acceptedFiles: any, type: string) => {
-    const { uploadAvatar } = setStorage();
-    const file = acceptedFiles[0];
+  const { control } = useForm({
+    defaultValues: {
+      avatar: data?.data?.avatarUrl,
+    },
+  });
 
-    try {
-      toast.loading('Uploading...', {
-        toastId: type,
-      });
-      const url = await uploadAvatar(generateUniqSerial(), file);
-      const uploadAvatarPayload = {
-        email: data.data.email,
-        avatarUrl: url,
-      };
-      userProfileId &&
-        (await updateUserInformation({
-          ...uploadAvatarPayload,
-          userId: userProfileId,
-        }));
-      toast.dismiss(type);
-      toast.success('Cập nhật thành công');
-    } catch (error: any) {
-      toast.dismiss(type);
-      toast.error('Có lỗi xảy ra, vui lòng thử lại');
+  const handleChangeAvatar = async (url: string) => {
+    if (!userProfileId) {
+      return;
     }
+    await updateUserInformation({
+      avatarUrl: url,
+      userId: userProfileId,
+    });
   };
 
   return (
     <StyledNavWrapper>
       <Card sx={{ width: '100%' }}>
         <CardContent>
-          <UploadAvatar
-            disabled={!canEditProfile}
-            file={data?.data?.avatarUrl || avatarUrlDefault}
-            maxSize={3145728}
-            onDrop={(e, _) => handleDrop(e, 'avatar')}
+          <UploadAvatarInput
+            control={control}
+            name="avatar"
+            inputProps={{
+              disabled: !canEditProfile,
+              maxSize: 3145728,
+              onChange: handleChangeAvatar,
+            }}
           />
           <Typography variant="h5" textAlign="center">
             {data?.data?.fullName}

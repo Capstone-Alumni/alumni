@@ -22,7 +22,11 @@ const PostCommentListItem = ({
 
   return (
     <Stack key={comment.id} direction="row" gap={1}>
-      <MyAvatar />
+      <MyAvatar
+        size="small"
+        displayName={comment.authorInformation.fullName}
+        photoUrl={comment.authorInformation.avatarUrl}
+      />
       <Box
         sx={{
           paddingY: theme.spacing(1),
