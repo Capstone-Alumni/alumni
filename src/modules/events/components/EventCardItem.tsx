@@ -38,7 +38,7 @@ const EventCardItem = ({
             height: theme.spacing(18),
             padding: theme.spacing(2),
             backgroundImage: `url(${
-              currentTenant?.background1 ?? '/side_background.png'
+              data.backgroundImage ?? currentTenant?.background1
             })`,
           }}
         />

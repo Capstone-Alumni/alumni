@@ -58,6 +58,7 @@ export default class OwnerEventService {
     {
       title,
       description = '',
+      backgroundImage = '',
       isOffline,
       location = '',
       registrationTime,
@@ -68,6 +69,7 @@ export default class OwnerEventService {
     }: {
       title: string;
       description?: string;
+      backgroundImage?: string;
       isOffline?: boolean;
       location?: string;
       registrationTime?: Date;
@@ -81,6 +83,7 @@ export default class OwnerEventService {
       data: {
         userId: userId,
         title,
+        backgroundImage,
         description,
         isOffline,
         location,
@@ -103,6 +106,7 @@ export default class OwnerEventService {
     eventId: string,
     data: {
       title: string;
+      backgroundImage?: string;
       description?: string;
       isOffline?: boolean;
       location?: string;

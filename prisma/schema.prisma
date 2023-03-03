@@ -79,10 +79,10 @@ model Information {
   fund                 Fund[]
   fundSaved            FundSaved[]
   Recruitment          Recruitment[]
-  
-  posts                Post[]
-  postComments         PostComment[]
-  postLikes             PostLike[]
+
+  posts        Post[]
+  postComments PostComment[]
+  postLikes    PostLike[]
 
   @@map("informations")
 }
@@ -136,6 +136,7 @@ model Event {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   title             String
+  backgroundImage   String?
   description       String?
   isOffline         Boolean     @default(false) @map("is_offline")
   location          String?
@@ -238,11 +239,11 @@ model Post {
   content   String
   publicity AccessLevel @default(ALUMNI)
 
-  authorId          String         @map("author_id")
-  authorInformation Information    @relation(fields: [authorId], references: [userId])
+  authorId          String      @map("author_id")
+  authorInformation Information @relation(fields: [authorId], references: [userId])
 
-  postComments      PostComment[]
-  postLikes          PostLike[]
+  postComments PostComment[]
+  postLikes    PostLike[]
 }
 
 model PostComment {
@@ -275,7 +276,6 @@ model PostLike {
   post              Post        @relation(fields: [postId], references: [id])
 
   @@unique([authorId, postId])
-
   @@map("post_likes")
 }
 

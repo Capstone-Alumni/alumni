@@ -49,6 +49,7 @@ const currentTenantSlice = createSlice({
       state.description = action.payload.description;
       state.subdomain = action.payload.subdomain;
       state.tenantId = action.payload.tenantId;
+      state.background1 = action.payload.background1;
     },
   },
 });

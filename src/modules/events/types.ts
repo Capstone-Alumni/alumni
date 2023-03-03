@@ -8,6 +8,7 @@ export type Event = {
   updatedAt: string | Date;
   title: string;
   description?: string;
+  backgroundImage?: string;
   isOffline: boolean;
   location?: string;
   registrationTime: string | Date;

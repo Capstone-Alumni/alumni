@@ -11,9 +11,11 @@ import SelectInput from '@share/components/form/SelectInput';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 import RichTextInput from '@share/components/form/RichTextInput';
+import UploadBackgroundInput from '@share/components/form/UploadBackgroundInput';
 
 export type EventFormValues = {
   title: string;
+  backgroundImage: string;
   description?: string;
   isOffline: boolean;
   location?: string;
@@ -46,6 +48,7 @@ const EventForm = ({
   const { control, handleSubmit } = useForm({
     resolver,
     defaultValues: {
+      backgroundImage: initialData?.backgroundImage ?? '',
       title: initialData?.title ?? '',
       description: initialData?.description ?? '',
       isOffline: initialData?.isOffline ?? false,
@@ -83,6 +86,13 @@ const EventForm = ({
         borderRadius: `${theme.shape.borderRadius}px`,
       }}
     >
+      <UploadBackgroundInput
+        control={control}
+        name="backgroundImage"
+        inputProps={{ label: 'Hình nền sự kiện' }}
+        containerSx={{ width: '100%' }}
+      />
+
       <TextInput
         control={control}
         name="title"
