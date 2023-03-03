@@ -133,7 +133,6 @@ export default class OwnerFundService {
 
     const updateData: any = {
       ...data,
-      approvedStatus: -1,
     };
 
     if (data.currentBalance !== fund.currentBalance) {

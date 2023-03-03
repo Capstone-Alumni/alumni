@@ -134,7 +134,6 @@ export default class OwnerEventService {
       },
       data: {
         ...data,
-        approvedStatus: -1,
       },
     });
 
