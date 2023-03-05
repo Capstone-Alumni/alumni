@@ -1,7 +1,17 @@
 'use client';
 
 import React from 'react';
-import { Box, Button, Grid, styled, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  styled,
+  Typography,
+  useTheme,
+  Pagination,
+} from '@mui/material';
+import { useRecoilState } from 'recoil';
+import { getAdminJobListParamsAtom } from '../states';
 
 import Link from 'next/link';
 import CompanyItem from './CompanyItem';
@@ -28,47 +38,17 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
   width: '100%',
 }));
 
-const CompaniesSlider = ({ data }: { data: Job[] }) => {
+const CompaniesSlider = ({
+  data,
+}: {
+  data: { items: Job[]; totalItems: number; itemPerPage: number };
+}) => {
   const theme = useTheme();
 
-  const settings = {
-    dots: false,
-    infinite: true,
-    arrows: false,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 3,
-    centerPadding: '16px',
-    // autoplay: true,
-    // autoplaySpeed: 2000,
-    // cssEase: 'linear',
-  };
-
-  const handleRenderSlideCompanies = () => {
-    return data.map((company: any) => {
-      return (
-        <CompanyItem
-          key={company.id}
-          companyDetails={company}
-          isSlide
-          actions={[
-            <Link
-              key="edit-btn"
-              href={`/recruitments/job_details/${company.id}`}
-              style={{ width: '100%', marginRight: theme.spacing(1) }}
-            >
-              <Button fullWidth variant="outlined">
-                Tìm hiểu thêm
-              </Button>
-            </Link>,
-          ]}
-        />
-      );
-    });
-  };
+  const [params, setParams] = useRecoilState(getAdminJobListParamsAtom);
 
   const handleRenderCompanies = () => {
-    return data.map((company: any) => {
+    return data.items.map((company: any) => {
       return (
         <CompanyItem
           key={company.id}
@@ -98,14 +78,6 @@ const CompaniesSlider = ({ data }: { data: Job[] }) => {
         mt: 1,
       }}
     >
-      {/* <Typography variant="h5">Việc làm nổi bật</Typography>
-      <Spacer />
-      <Grid container>
-        <StyledSlider {...settings}>
-          {handleRenderSlideCompanies()}
-        </StyledSlider>
-      </Grid>
-      <Spacer /> */}
       <Typography variant="h5" sx={{ margin: '0' }}>
         Việc làm hot
       </Typography>
@@ -113,6 +85,19 @@ const CompaniesSlider = ({ data }: { data: Job[] }) => {
       <Grid container spacing={2}>
         {handleRenderCompanies()}
       </Grid>
+      <Pagination
+        sx={{
+          margin: '1rem auto',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+        color="primary"
+        count={Math.ceil((data?.totalItems || 0) / (data?.itemPerPage || 1))}
+        page={params.page}
+        onChange={(_, nextPage) => {
+          setParams((prevParams) => ({ ...prevParams, page: nextPage }));
+        }}
+      />
     </Grid>
   );
 };

@@ -7,6 +7,7 @@ import { useRecoilState } from 'recoil';
 import usePublicGetEventList from 'src/modules/recruitments/hooks/usePublicGetJobList';
 import { getAdminJobListParamsAtom } from '../states';
 import Companies from './Companies';
+import CompanyByCategories from './CompanyByCategories';
 
 const RecruitmentDiscover = () => {
   const theme = useTheme();
@@ -21,23 +22,12 @@ const RecruitmentDiscover = () => {
       }}
     >
       {isLoading ? <LoadingIndicator /> : null}
-      {/* <Carousel /> */}
-      {data?.data && <Companies data={data?.data.items} />}
-      <Pagination
-        sx={{
-          margin: 'auto',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-        color="primary"
-        count={Math.ceil(
-          (data?.data.totalItems || 0) / (data?.data.itemPerPage || 1),
-        )}
-        page={params.page}
-        onChange={(_, nextPage) => {
-          setParams(prevParams => ({ ...prevParams, page: nextPage }));
-        }}
-      />
+      {data?.data && (
+        <>
+          <Companies data={data?.data} />
+          <CompanyByCategories data={data?.data} />
+        </>
+      )}
     </Box>
   );
 };

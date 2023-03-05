@@ -75,8 +75,10 @@ const Company = ({
         <StyledCardMedia
           title="news image"
           sx={{
-            height: theme.spacing(20),
-            padding: theme.spacing(1),
+            height: theme.spacing(18),
+            padding: theme.spacing(0),
+            width: '100%',
+            margin: '0',
             backgroundImage: `url(${
               companyDetails.companyImageUrl || defaultCompanyImage
             })`,
