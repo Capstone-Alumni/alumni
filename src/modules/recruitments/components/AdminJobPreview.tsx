@@ -40,7 +40,11 @@ export default function AdminJobPreview({
   return (
     <div>
       <div onClick={handleClickOpen}>{children}</div>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        sx={{ width: '700px', margin: '0 auto' }}
+      >
         <JobForm isPreview initialData={jobData?.data} />
       </Dialog>
     </div>

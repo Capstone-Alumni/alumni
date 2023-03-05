@@ -150,7 +150,7 @@ export default function Editor({
       <RootStyle
         sx={{
           ...(error && {
-            border: theme => `solid 1px ${theme.palette.error.main}`,
+            border: (theme) => `solid 1px ${theme.palette.error.main}`,
           }),
           ...sx,
         }}

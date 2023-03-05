@@ -1,5 +1,6 @@
 'use client';
 
+import Linkify from 'react-linkify';
 import {
   alpha,
   Button,
@@ -20,6 +21,7 @@ import { useEffect, useState } from 'react';
 import usePublicGetJobById from '../hooks/usePublicGetJobById';
 import Image from 'next/image';
 import LoadingIndicator from '@share/components/LoadingIndicator';
+import EditorPreview from '@share/components/editor/EditorPreview';
 
 const StyledGeneralInfomation = styled(Box)(({ theme }) => ({
   flex: 1,
@@ -101,7 +103,15 @@ const JobDetailPage = () => {
                 </Grid>
                 <Grid item xs={10}>
                   <Typography fontWeight={600}>Website</Typography>
-                  <Typography>{jobData.website}</Typography>
+                  <Linkify
+                    componentDecorator={(decoratedHref, decoratedText, key) => (
+                      <a target="blank" href={decoratedHref} key={key}>
+                        {decoratedText}
+                      </a>
+                    )}
+                  >
+                    <Typography>{jobData.website}</Typography>
+                  </Linkify>
                 </Grid>
               </Grid>
             </StyledGridInfo>
@@ -137,7 +147,7 @@ const JobDetailPage = () => {
             startIcon={<AppRegistrationIcon />}
             sx={{ mb: 1 }}
           >
-            Tham gia
+            Gửi CV
           </Button>
         </Box>
       </Box>
@@ -151,10 +161,8 @@ const JobDetailPage = () => {
       </Tabs>
 
       {tabKey === 'description' ? (
-        <Box>
-          <Typography sx={{ whiteSpace: 'break-spaces' }}>
-            {jobData.description}
-          </Typography>
+        <Box sx={{ my: 2 }}>
+          <EditorPreview value={jobData?.description || ''} />
         </Box>
       ) : null}
     </Box>
