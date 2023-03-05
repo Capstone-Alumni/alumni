@@ -16,7 +16,7 @@ const StyledNavWrapper = styled(Box)(({ theme }) => ({
 }));
 
 const StyledNav = styled(Box)(({ theme }) => ({
-  position: 'fixed',
+  position: 'sticky',
   top: '5rem',
   left: '4rem',
   minWidth: '16rem',
@@ -74,7 +74,7 @@ const RecruitmentSidebar = () => {
   return (
     <StyledNavWrapper>
       <StyledNav>
-        {EVENT_NAV_ITEMS.map(item => {
+        {EVENT_NAV_ITEMS.map((item) => {
           const isActive = item.link && pathname?.startsWith(item.link);
           return (
             <Link

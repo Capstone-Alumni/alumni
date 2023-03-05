@@ -42,7 +42,7 @@ const HostingEventListPage = () => {
             actions={[
               <Link
                 key="edit-btn"
-                href={`/events/hosting/${item.id}`}
+                href={`/recruitments/posted_jobs/${item.id}`}
                 style={{ width: '100%' }}
               >
                 <Button fullWidth variant="outlined">

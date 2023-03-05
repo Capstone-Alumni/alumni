@@ -16,7 +16,10 @@ const StyledNavWrapper = styled(Box)(({ theme }) => ({
 }));
 
 const StyledNav = styled(Box)(({ theme }) => ({
-  width: '100%',
+  position: 'sticky',
+  top: '5rem',
+  left: '4rem',
+  minWidth: '16rem',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
@@ -77,7 +80,7 @@ const EventSidebar = () => {
   return (
     <StyledNavWrapper>
       <StyledNav>
-        {EVENT_NAV_ITEMS.map(item => {
+        {EVENT_NAV_ITEMS.map((item) => {
           const isActive = item.link && pathname?.startsWith(item.link);
           return (
             <Link

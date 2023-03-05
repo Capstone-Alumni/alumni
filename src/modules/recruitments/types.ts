@@ -31,6 +31,7 @@ export type Job = {
   archived: boolean;
   createdAt: string | Date;
   updatedAt: string | Date;
+  companyImageUrl: string;
   title: string;
   description: string;
   companyName: string;

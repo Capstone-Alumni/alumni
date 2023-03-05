@@ -32,19 +32,23 @@ const AdminEventListTable = ({
               <TableCell align="left">Người gửi yêu cầu</TableCell>
               <TableCell align="left">Trạng thái</TableCell>
               <TableCell align="left">Ngày được tạo</TableCell>
-              <TableCell sx={{ maxWidth: '3rem' }} />
-              <TableCell sx={{ maxWidth: '3rem' }} />
+              <TableCell sx={{ maxWidth: '2.5rem' }} />
+              <TableCell sx={{ maxWidth: '2.5rem' }} />
+              <TableCell sx={{ maxWidth: '2.5rem' }} />
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.items.map(row => (
-              <AdminEventListItem
-                key={row.id}
-                data={row}
-                onApprove={onApprove}
-                onReject={onReject}
-              />
-            ))}
+            {data.items.map(
+              row =>
+                !row.archived && (
+                  <AdminEventListItem
+                    key={row.id}
+                    data={row}
+                    onApprove={onApprove}
+                    onReject={onReject}
+                  />
+                ),
+            )}
           </TableBody>
 
           <DataTablePagination
