@@ -95,7 +95,7 @@ const CompaniesSlider = ({
         count={Math.ceil((data?.totalItems || 0) / (data?.itemPerPage || 1))}
         page={params.page}
         onChange={(_, nextPage) => {
-          setParams((prevParams) => ({ ...prevParams, page: nextPage }));
+          setParams(prevParams => ({ ...prevParams, page: nextPage }));
         }}
       />
     </Grid>
