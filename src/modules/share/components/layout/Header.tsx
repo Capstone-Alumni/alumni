@@ -13,8 +13,8 @@ import { Divider, useScrollTrigger, useTheme } from '@mui/material';
 import { NavItem } from './NavItem';
 import HeaderUserOptions from './HeaderUserOption';
 import React from 'react';
-import { Tenant } from '@redux/slices/currentTenantSlice';
 import { User } from 'next-auth';
+import { Tenant } from '@share/states';
 
 interface Props {
   /**

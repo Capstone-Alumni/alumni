@@ -16,7 +16,7 @@ export default function Logo({
         height={height || 40}
         width={width || 40}
         alt="platform-logo"
-        src={url ?? '/logo.png'}
+        src={url || '/logo.png'}
       />
     </Box>
     // <Box sx={{ width: 40, height: 40, ...sx }}>
