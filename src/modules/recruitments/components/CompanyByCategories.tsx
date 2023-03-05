@@ -34,9 +34,15 @@ const CompaniesSlider = ({
   };
 
   const handleRenderCompanies = () => {
+    const duplicateTypeOfJobList = data.items.map(
+      (company: Job) => company.type,
+    );
+    const uniqueArray = duplicateTypeOfJobList.filter(function (item, pos) {
+      return duplicateTypeOfJobList.indexOf(item) == pos;
+    });
     return data.items.map((company: Job) => {
       return (
-        company.type === type && (
+        uniqueArray.includes(type) && (
           <CompanyItem
             key={company.id}
             companyDetails={company}
