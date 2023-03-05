@@ -246,8 +246,6 @@ model Post {
 
   postComments PostComment[]
   postLikes    PostLike[]
-
-  @@map("post")
 }
 
 model PostComment {
