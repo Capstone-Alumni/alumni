@@ -80,7 +80,7 @@ const EventSidebar = () => {
   return (
     <StyledNavWrapper>
       <StyledNav>
-        {EVENT_NAV_ITEMS.map((item) => {
+        {EVENT_NAV_ITEMS.map(item => {
           const isActive = item.link && pathname?.startsWith(item.link);
           return (
             <Link
