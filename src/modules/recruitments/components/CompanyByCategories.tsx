@@ -17,32 +17,34 @@ const CompaniesSlider = ({
   data: { items: Job[]; totalItems: number; itemPerPage: number };
 }) => {
   const theme = useTheme();
-  const [type, setType] = React.useState<string>(data.items[0].type || '');
+  const [jobActivate, setJobActivate] = React.useState<string>(
+    data.items[0].job || '',
+  );
 
   const handleRenderCategories = () => {
-    return data.items.map((company: Job) => {
+    const duplicateTypeOfJobList = data.items.map(
+      (company: Job) => company.job,
+    );
+    const uniqueArray = duplicateTypeOfJobList.filter(function (item, pos) {
+      return duplicateTypeOfJobList.indexOf(item) == pos;
+    });
+    return uniqueArray.map((job: string, index: number) => {
       return (
         <CategoryWrapper
-          key={company.id}
-          variant={type === company.type ? 'contained' : 'outlined'}
-          onClick={() => setType(company.type)}
+          key={index}
+          variant={job === jobActivate ? 'contained' : 'outlined'}
+          onClick={() => setJobActivate(job)}
         >
-          {company.type}
+          {job}
         </CategoryWrapper>
       );
     });
   };
 
   const handleRenderCompanies = () => {
-    const duplicateTypeOfJobList = data.items.map(
-      (company: Job) => company.type,
-    );
-    const uniqueArray = duplicateTypeOfJobList.filter(function (item, pos) {
-      return duplicateTypeOfJobList.indexOf(item) == pos;
-    });
     return data.items.map((company: Job) => {
       return (
-        uniqueArray.includes(type) && (
+        company.job === jobActivate && (
           <CompanyItem
             key={company.id}
             companyDetails={company}
@@ -76,7 +78,7 @@ const CompaniesSlider = ({
       <Typography variant="h5" sx={{ margin: '0' }}>
         Việc làm theo danh mục
       </Typography>
-      <Grid container gap="1rem" sx={{ marginTop: '0.25rem' }}>
+      <Grid container gap="1rem" sx={{ marginTop: '0.5rem' }}>
         {handleRenderCategories()}
         {/* <Pagination
           sx={{
