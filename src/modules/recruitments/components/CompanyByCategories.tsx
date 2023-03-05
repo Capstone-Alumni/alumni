@@ -1,21 +1,10 @@
 'use client';
 
 import React from 'react';
-import {
-  Box,
-  Button,
-  Grid,
-  styled,
-  Typography,
-  useTheme,
-  Pagination,
-} from '@mui/material';
-import { useRecoilState } from 'recoil';
-import { getAdminJobListParamsAtom } from '../states';
+import { Button, Grid, styled, Typography, useTheme } from '@mui/material';
 
 import Link from 'next/link';
 import CompanyItem from './CompanyItem';
-import Slider from 'react-slick';
 import { Job } from '../types';
 
 const CategoryWrapper = styled(Button)(({ theme }) => ({
@@ -34,6 +23,7 @@ const CompaniesSlider = ({
     return data.items.map((company: Job) => {
       return (
         <CategoryWrapper
+          key={company.id}
           variant={type === company.type ? 'contained' : 'outlined'}
           onClick={() => setType(company.type)}
         >

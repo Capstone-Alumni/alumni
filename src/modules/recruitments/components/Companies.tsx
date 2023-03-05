@@ -5,10 +5,10 @@ import {
   Box,
   Button,
   Grid,
+  Pagination,
   styled,
   Typography,
   useTheme,
-  Pagination,
 } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import { getAdminJobListParamsAtom } from '../states';
@@ -48,7 +48,7 @@ const CompaniesSlider = ({
   const [params, setParams] = useRecoilState(getAdminJobListParamsAtom);
 
   const handleRenderCompanies = () => {
-    return data.items.map((company: any) => {
+    return data.items.map((company: Job) => {
       return (
         <CompanyItem
           key={company.id}

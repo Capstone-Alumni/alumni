@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Pagination, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import React from 'react';
 import { useRecoilState } from 'recoil';
