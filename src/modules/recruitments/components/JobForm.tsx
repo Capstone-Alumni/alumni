@@ -3,13 +3,13 @@ import * as yup from 'yup';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 import { Job } from '../types';
 import TextInput from '@share/components/form/TextInput';
-import { Box, Button, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { Typography } from '@mui/material';
-import { useState } from 'react';
 import UploadBackgroundInput from '@share/components/form/UploadBackgroundInput';
 import RichTextInput from '@share/components/form/RichTextInput';
 import SelectInput from '@share/components/form/SelectInput';
 import EditorPreview from '@share/components/editor/EditorPreview';
+import { LoadingButton } from '@mui/lab';
 
 const JOB_LIST = [
   'Công nghệ thông tin',
@@ -81,12 +81,11 @@ const JobForm = ({
   onSubmit?: (values: JobFormValues) => Promise<void>;
   isPreview?: boolean;
 }) => {
-  const [isSaving, setIsSaving] = useState(false);
   const theme = useTheme();
 
   const resolver = useYupValidateionResolver(validationSchema);
 
-  const { control, handleSubmit, setValue, getValues } = useForm({
+  const { control, handleSubmit, getValues, formState } = useForm({
     resolver,
     defaultValues: {
       companyName: initialData?.companyName ?? '',
@@ -107,6 +106,8 @@ const JobForm = ({
         : null,
     },
   });
+
+  const { isSubmitting } = formState;
 
   return (
     <Box
@@ -261,20 +262,21 @@ const JobForm = ({
       {!isPreview && (
         <>
           <Box sx={{ width: '100%' }}>
-            <Typography variant="body2">
+            <Typography variant="body2" color={'red'}>
               Lưu ý*: Công việc bạn đăng của bạn sẽ được gửi đến ban đại diện
               của trường để kiểm duyệt. Sau khi được bạn đại diện chấp nhận,
               người khác mới có thể nhìn thấy, xem cũng như nộp hồ sơ cho bạn.
             </Typography>
           </Box>
 
-          <Button
+          <LoadingButton
+            type="submit"
             variant="contained"
-            disabled={isSaving}
             onClick={handleSubmit(onSubmit as any)}
+            loading={isSubmitting}
           >
             Lưu
-          </Button>
+          </LoadingButton>
         </>
       )}
     </Box>

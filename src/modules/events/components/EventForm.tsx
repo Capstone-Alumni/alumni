@@ -185,7 +185,7 @@ const EventForm = ({
           inputProps={{ label: 'Công khai danh sách người tham gia?' }}
         />
 
-        <Typography variant="body2">
+        <Typography variant="body2" color={'red'}>
           Lưu ý*: Sự kiện của bạn sẽ được gửi đến ban đại diện của trường để
           kiểm duyệt. Sau khi được bạn đại diện chấp nhận, người khác mới có thể
           nhìn thấy và tham gia sự kiện của bạn.

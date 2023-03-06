@@ -3,12 +3,17 @@
 import { Box, Typography } from '@mui/material';
 import useCreateEvent from '../hooks/useCreateJob';
 import JobForm, { JobFormValues } from './JobForm';
+import { useRouter } from 'next/navigation';
 
 const CreateJobPage = () => {
-  const { fetchApi } = useCreateEvent();
+  const { fetchApi, error } = useCreateEvent();
+  const router = useRouter();
 
   const onCreateEvent = async (values: JobFormValues) => {
     await fetchApi(values);
+    if (!error) {
+      router.replace('/recruitments/posted_jobs');
+    }
   };
 
   return (
