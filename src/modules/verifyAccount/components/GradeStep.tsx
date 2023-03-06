@@ -70,7 +70,7 @@ const GradeStep = () => {
               fontSize={18}
               color="primary"
             >
-              {selectedGrade.name}
+              {selectedGrade?.code} - {selectedGrade.name}
             </Typography>
           </Typography>
         ) : null}

@@ -21,6 +21,7 @@ import { Box } from '@mui/material';
 import getRoleName from '@share/utils/getRoleName';
 import { useRecoilValue } from 'recoil';
 import { currentUserInformationDataAtom } from '@share/states';
+import { User } from 'next-auth';
 
 const Wrapper = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -37,7 +38,7 @@ const Wrapper = styled('div')(({ theme }) => ({
   },
 }));
 
-const HeaderUserOptions = ({ user }: { user: any }) => {
+const HeaderUserOptions = ({ user }: { user?: User }) => {
   const theme = useTheme();
   const router = useRouter();
 
@@ -70,12 +71,12 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
         >
           <Typography variant="subtitle2">{user?.email}</Typography>
           <Typography variant="caption" color="warning">
-            {getRoleName(user.accessLevel)}
+            {getRoleName(user?.accessLevel || 'ALUMNI')}
           </Typography>
         </Box>
         <MyAvatar
-          displayName={currentUserInformation.fullName}
-          photoUrl={currentUserInformation.avatarUrl}
+          displayName={currentUserInformation?.fullName}
+          photoUrl={currentUserInformation?.avatarUrl}
         />
       </Wrapper>
       <Menu
@@ -88,7 +89,7 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
         }}
       >
         <Link
-          href={`/profile/${user.id}?profile_tab=information`}
+          href={`/profile/${user?.id}?profile_tab=information`}
           style={{ color: 'inherit' }}
         >
           <MenuItem>
