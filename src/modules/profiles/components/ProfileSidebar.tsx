@@ -56,19 +56,19 @@ const StyledNavItem = styled(Box)(({ theme }) => ({
   },
 }));
 
-const EVENT_NAV_ITEMS = [
+const NAV_ITEMS = [
   {
     id: 'posts',
     title: 'Bài đăng',
     icon: 'fluent:status-16-filled',
     link: 'posts',
   },
-  {
-    id: 'information',
-    title: 'Thông tin',
-    icon: 'mingcute:profile-fill',
-    link: 'information',
-  },
+  // {
+  //   id: 'information',
+  //   title: 'Thông tin',
+  //   icon: 'mingcute:profile-fill',
+  //   link: 'information',
+  // },
 ];
 
 const ProfileSidebar = () => {
@@ -122,7 +122,7 @@ const ProfileSidebar = () => {
       </Card>
       <Card sx={{ width: '100%', py: 2 }}>
         <StyledNav>
-          {EVENT_NAV_ITEMS.map(item => {
+          {NAV_ITEMS.map(item => {
             const isActive = item.link && currentProfileTab === item.link;
             return (
               <Link
