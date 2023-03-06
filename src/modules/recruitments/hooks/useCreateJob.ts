@@ -13,13 +13,13 @@ type CreateJobError = AxiosError;
 const useCreateJob = () => {
   const router = useRouter();
 
-  const { fetchApi, isLoading } = useApi<
+  const { fetchApi, isLoading, error } = useApi<
     CreateJobParams,
     CreateJobResponse,
     CreateJobError
   >(
     'createJob',
-    data => ({
+    (data) => ({
       method: 'POST',
       url: '/api/recruitments',
       data: data,
@@ -38,6 +38,7 @@ const useCreateJob = () => {
   return {
     isLoading,
     fetchApi,
+    error,
   };
 };
 
