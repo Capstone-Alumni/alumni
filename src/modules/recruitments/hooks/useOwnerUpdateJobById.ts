@@ -15,7 +15,7 @@ type OwnerUpdateJobByIdError = AxiosError;
 const useOwnerUpdateJobById = () => {
   const router = useRouter();
 
-  const { fetchApi, isLoading } = useApi<
+  const { fetchApi, isLoading, error } = useApi<
     OwnerUpdateJobByIdParams,
     OwnerUpdateJobByIdResponse,
     OwnerUpdateJobByIdError
@@ -40,6 +40,7 @@ const useOwnerUpdateJobById = () => {
   return {
     isLoading,
     fetchApi,
+    error,
   };
 };
 

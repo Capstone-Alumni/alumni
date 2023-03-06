@@ -13,7 +13,7 @@ type GetOwnerGetJobByIdResponse = {
 type GetOwnerGetJobByIdError = AxiosError;
 
 const useOwnerGetJobById = () => {
-  const { fetchApi, data, isLoading } = useApi<
+  const { fetchApi, data, isLoading, error } = useApi<
     GetOwnerGetJobByIdParams,
     GetOwnerGetJobByIdResponse,
     GetOwnerGetJobByIdError
@@ -26,6 +26,7 @@ const useOwnerGetJobById = () => {
     isLoading,
     data,
     fetchApi,
+    error,
   };
 };
 
