@@ -4,6 +4,7 @@ import parse from 'html-react-parser';
 // import CreateIcon from '@mui/icons-material/Create';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { News } from '../types';
+import { formatDate } from '@share/utils/formatDate';
 
 const NewsContentPage = ({ data }: { data: News }) => {
   return (
@@ -67,7 +68,7 @@ const NewsContentPage = ({ data }: { data: News }) => {
               color: 'text.secondary',
             }}
           >
-            {new Date(data.createdAt).toDateString()}
+            {formatDate(new Date(data.createdAt))}
           </Typography>
         </Box>
       </Box>

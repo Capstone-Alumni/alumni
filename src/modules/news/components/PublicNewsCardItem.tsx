@@ -1,7 +1,10 @@
 'use client';
 
-import { Box, Link, Typography } from '@mui/material';
+import { Box, Chip, Link, Typography } from '@mui/material';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { formatDate } from '@share/utils/formatDate';
 import { getImageOfNews } from '@share/utils/getFirstImageOfNews';
+import { getShortTitle } from '@share/utils/getShortTitle';
 import React from 'react';
 import { News } from '../types';
 import PublicNewsCardItemImage from './PublicNewsCardItemImage';
@@ -17,22 +20,21 @@ const PublicNewsCardItems = ({ item, sx }: { item: News; sx?: any }) => {
         width: sx.width,
       }}
     >
-      <PublicNewsCardItemImage srcImg={srcImg} sx={sx} />
-      <Box
+      <Link
         sx={{
-          maxHeight: '100px',
-          textOverflow: 'ellipsis',
-          overflow: 'hidden',
+          color: 'inherit',
+          '&:focus, &:hover, &:visited, &:link, &:active': {
+            textDecoration: 'none',
+          },
         }}
+        href={`/news/${item.id}`}
       >
-        <Link
+        <PublicNewsCardItemImage srcImg={srcImg} sx={sx} />
+        <Box
           sx={{
-            color: 'inherit',
-            '&:focus, &:hover, &:visited, &:link, &:active': {
-              textDecoration: 'none',
-            },
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
           }}
-          href={`/news/${item.id}`}
         >
           <Typography
             sx={{
@@ -41,10 +43,19 @@ const PublicNewsCardItems = ({ item, sx }: { item: News; sx?: any }) => {
             }}
             variant={sx.typoVariant}
           >
-            {item.title}
+            {getShortTitle(item.title)}
           </Typography>
-        </Link>
-      </Box>
+
+          <Typography
+            sx={{ textTransform: 'capitalize', mb: 1 }}
+            color="GrayText"
+          >
+            {formatDate(new Date(item.createdAt))}
+          </Typography>
+
+          <Chip label="Example tag" variant="outlined" color="primary" />
+        </Box>
+      </Link>
     </Box>
   );
 };
