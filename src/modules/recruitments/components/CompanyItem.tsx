@@ -14,6 +14,7 @@ import {
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import { Job } from '../types';
 
 const defaultCompanyImage =
   'https://bka.hcmut.edu.vn/FileManager/Download/?filename=%5cimage_upload%5ce6475845-00ab-4b0d-931e-8fe744c5db11.png';
@@ -42,7 +43,7 @@ const Company = ({
   isSlide,
   actions,
 }: {
-  companyDetails: any;
+  companyDetails: Job;
   isSlide?: boolean;
   actions: ReactNode;
 }) => {
@@ -85,21 +86,9 @@ const Company = ({
           }}
         />
         <CardContent>
-          {companyDetails.expireAt && (
-            <Grid container>
-              <Grid item xs={1}>
-                <CalendarTodayIcon fontSize="small" sx={{ color: '#64748b' }} />
-              </Grid>
-              <Grid item xs={11}>
-                <Typography variant="body2">
-                  &nbsp;&nbsp;{companyDetails.expireAt}
-                </Typography>
-              </Grid>
-            </Grid>
-          )}
           <StyledDiv>
             <StyledTypography variant="h6">
-              {companyDetails.position}
+              {companyDetails.title}
             </StyledTypography>
           </StyledDiv>
           <Grid container>
