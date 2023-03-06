@@ -162,7 +162,7 @@ const JobDetailPage = () => {
 
       {tabKey === 'description' ? (
         <Box sx={{ my: 2 }}>
-          <EditorPreview value={jobData?.description || 'Mô tả công việc...'} />
+          <EditorPreview value={jobData?.description || undefined} />
         </Box>
       ) : null}
     </Box>
