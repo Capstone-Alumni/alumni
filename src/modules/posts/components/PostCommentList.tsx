@@ -21,7 +21,7 @@ const PostCommentList = ({ postId }: { postId: string }) => {
         />
       ))}
 
-      {isLoading && !postCommentListData ? <LoadingIndicator /> : null}
+      {isLoading ? <LoadingIndicator /> : null}
 
       {loadedAll || isLoading ? null : (
         <Typography
