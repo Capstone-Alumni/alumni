@@ -1,7 +1,6 @@
 'use client';
 
 import { Box, Chip, Link, Typography } from '@mui/material';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { formatDate } from '@share/utils/formatDate';
 import { getImageOfNews } from '@share/utils/getFirstImageOfNews';
 import { getShortTitle } from '@share/utils/getShortTitle';
