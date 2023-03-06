@@ -44,6 +44,9 @@ const useGetPostList = () => {
   );
 
   useEffect(() => {
+    if (!postList.length || !apiData) {
+      fetchApi(params);
+    }
     return refresh();
   }, []);
 
