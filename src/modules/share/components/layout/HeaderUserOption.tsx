@@ -74,8 +74,8 @@ const HeaderUserOptions = ({ user }: { user: any }) => {
           </Typography>
         </Box>
         <MyAvatar
-          displayName={currentUserInformation?.fullName}
-          photoUrl={currentUserInformation?.avatarUrl}
+          displayName={currentUserInformation.fullName}
+          photoUrl={currentUserInformation.avatarUrl}
         />
       </Wrapper>
       <Menu
