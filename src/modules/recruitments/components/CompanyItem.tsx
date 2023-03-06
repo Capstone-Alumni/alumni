@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { Job } from '../types';
 
 const defaultCompanyImage =
