@@ -39,7 +39,6 @@ const EVENT_NAV_ITEM = {
   icon: 'ic:baseline-event',
   link: '/admin/event',
 };
-
 const RECRUITMENTS_NAV_ITEM = {
   id: 'recruitments',
   title: 'Tuyển dụng',
@@ -47,6 +46,12 @@ const RECRUITMENTS_NAV_ITEM = {
   link: '/admin/recruitments',
 };
 
+const SCHOOL_NAV_ITEM = {
+  id: 'school',
+  title: 'Thiết lập cho trường',
+  icon: 'material-symbols:meeting-room-outline-rounded',
+  link: '/admin/school',
+};
 const GRADE_NAV_ITEM = {
   id: 'grade_class',
   title: 'Niên khoá và Lớp',
@@ -157,12 +162,13 @@ const generateNavItems = (
     case 'SCHOOL_ADMIN':
       return [
         ACCESS_NAV_ITEM,
+        EVENT_NAV_ITEM,
         NEWS_NAV_ITEM,
         FUND_NAV_ITEM,
-        EVENT_NAV_ITEM,
+        RECRUITMENTS_NAV_ITEM,
+        SCHOOL_NAV_ITEM,
         GRADE_NAV_ITEM,
         USER_NAV_ITEM,
-        RECRUITMENTS_NAV_ITEM,
       ];
   }
 };
