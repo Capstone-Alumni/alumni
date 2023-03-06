@@ -57,6 +57,9 @@ const useGetPostCommentList = (postId: string) => {
   );
 
   useEffect(() => {
+    if (!postCommentListData.length) {
+      fetchApi(params);
+    }
     return refresh();
   }, []);
 

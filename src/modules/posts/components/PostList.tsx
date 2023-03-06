@@ -15,7 +15,7 @@ const PostList = () => {
         <PostCardItem key={post.id} data={post} />
       ))}
 
-      {isLoading && !postListData ? <LoadingIndicator /> : null}
+      {isLoading ? <LoadingIndicator /> : null}
 
       {loadedAll || isLoading ? null : (
         <Typography
