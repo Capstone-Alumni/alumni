@@ -49,7 +49,7 @@ const AdminFundListPage = () => {
       >
         <Typography variant="h3">Gây quỹ</Typography>
 
-        <Link href="/admin/funds/create">
+        <Link href="/admin/funds/create" prefetch={false}>
           <Button variant="contained" startIcon={<AddIcon />} role="link">
             Thêm quỹ mới
           </Button>

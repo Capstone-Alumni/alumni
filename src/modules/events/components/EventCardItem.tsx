@@ -7,17 +7,25 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { currentTenantDataAtom } from '@share/states';
 import { ReactNode } from 'react';
 import { useRecoilValue } from 'recoil';
 import { Event } from '../types';
+import { formatDate } from '@share/utils/formatDate';
+import { Stack } from '@mui/material';
+import { Box } from '@mui/material';
+import MyAvatar from '@share/components/MyAvatar';
+import { getShortTitle } from '@share/utils/getShortTitle';
 
 const EventCardItem = ({
   data,
   actions,
+  showStatus = false,
 }: {
   data: Event;
   actions?: ReactNode[];
+  showStatus?: boolean;
 }) => {
   const theme = useTheme();
   const currentTenant = useRecoilValue(currentTenantDataAtom);
@@ -42,22 +50,58 @@ const EventCardItem = ({
             })`,
           }}
         />
-        <CardContent sx={{ flex: 1 }}>
-          <Typography variant="caption">
-            {new Date(data.startTime).toDateString()}
-          </Typography>
+        <CardContent sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+          <Stack direction="row">
+            <FiberManualRecordIcon
+              fontSize="small"
+              color={data.isOffline ? 'warning' : 'success'}
+            />
+            <Typography variant="body2">
+              {data.isOffline ? 'Offline' : 'Online'}
+            </Typography>
 
-          <Typography variant="h6">{data.title}</Typography>
+            <Box sx={{ flex: 1 }} />
 
-          <Typography variant="body2">
-            {data.isOffline ? data.location : 'Online'}
-          </Typography>
+            <Typography variant="body2">
+              {formatDate(new Date(data.startTime))}
+            </Typography>
+          </Stack>
 
-          <Typography variant="body2">
-            {data.approvedStatus === -1 ? 'Đang chờ xác nhận' : null}
-            {data.approvedStatus === 0 ? 'Đã bị từ chối' : null}
-            {data.approvedStatus === 1 ? 'Đã được xác nhận' : null}
-          </Typography>
+          <Typography variant="h6">{getShortTitle(data.title)}</Typography>
+
+          {data.isOffline ? (
+            <Typography variant="body2">{data.location}</Typography>
+          ) : null}
+
+          {showStatus ? (
+            <Typography variant="body2">
+              {data.approvedStatus === -1 ? 'Đang chờ xác nhận' : null}
+              {data.approvedStatus === 0 ? 'Đã bị từ chối' : null}
+              {data.approvedStatus === 1 ? 'Đã được xác nhận' : null}
+            </Typography>
+          ) : null}
+
+          <Box sx={{ flex: 1 }} />
+
+          <Stack direction="row" gap={1} alignItems="center" sx={{ mt: 1 }}>
+            <MyAvatar
+              size="small"
+              displayName={data.hostInformation?.fullName}
+              photoUrl={data.hostInformation?.avatarUrl}
+            />
+            <Stack direction="column" justifyContent="center">
+              <Typography variant="body2">
+                {data.hostInformation?.fullName}
+              </Typography>
+              {data.hostInformation?.alumClass?.grade ? (
+                <Typography variant="caption">
+                  {data.hostInformation?.alumClass?.grade?.code}
+                  {' / '}
+                  {data.hostInformation?.alumClass?.name}
+                </Typography>
+              ) : null}
+            </Stack>
+          </Stack>
         </CardContent>
         <CardActions>{actions}</CardActions>
       </Card>

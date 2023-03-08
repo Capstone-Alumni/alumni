@@ -38,7 +38,7 @@ export const NavItem = ({ label, href }: { label: string; href: string }) => {
   }
 
   return (
-    <Link href={href} style={{ color: 'inherit' }}>
+    <Link href={href} style={{ color: 'inherit' }} prefetch={false}>
       <MuiNavItem className={href?.includes(pathnameShorter) ? 'active' : ''}>
         {label}
       </MuiNavItem>

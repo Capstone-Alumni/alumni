@@ -31,7 +31,15 @@ export default class PublicEventService {
               userId: userId ?? '',
             },
           },
-          hostInformation: true,
+          hostInformation: {
+            include: {
+              alumClass: {
+                include: {
+                  grade: true,
+                },
+              },
+            },
+          },
         },
       }),
     ]);

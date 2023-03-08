@@ -203,6 +203,7 @@ const AdminNav = ({ user, tenant }: { user?: any; tenant: any }) => {
                   key={item.id}
                   href={item.link}
                   style={{ color: 'inherit', width: '100%' }}
+                  prefetch={false}
                 >
                   <StyledNavItem
                     sx={{
@@ -231,7 +232,11 @@ const AdminNav = ({ user, tenant }: { user?: any; tenant: any }) => {
 
         <StyledFooter>
           <StyledNav sx={{ padding: 0 }}>
-            <Link href="/" style={{ color: 'inherit', width: '100%' }}>
+            <Link
+              href="/"
+              style={{ color: 'inherit', width: '100%' }}
+              prefetch={false}
+            >
               <StyledNavItem>
                 <Icon height={24} icon="majesticons:door-exit" />
                 <Typography fontWeight={600}>Thoát bảng điều khiển</Typography>

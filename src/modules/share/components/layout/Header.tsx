@@ -109,6 +109,7 @@ const Header = ({
               <Link
                 href="/admin/access_request"
                 style={{ color: 'inherit', marginRight: theme.spacing(2) }}
+                prefetch={false}
               >
                 <Button
                   startIcon={<AdminPanelSettingsIcon />}
@@ -123,7 +124,11 @@ const Header = ({
             {user ? (
               <HeaderUserOptions user={user} />
             ) : (
-              <Link href="/sign_in" style={{ color: 'inherit' }}>
+              <Link
+                href="/sign_in"
+                style={{ color: 'inherit' }}
+                prefetch={false}
+              >
                 <Button color="primary" variant="contained" role="href">
                   Đăng nhập
                 </Button>

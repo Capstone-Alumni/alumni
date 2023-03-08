@@ -12,6 +12,7 @@ import { Typography } from '@mui/material';
 import { useState } from 'react';
 import RichTextInput from '@share/components/form/RichTextInput';
 import UploadBackgroundInput from '@share/components/form/UploadBackgroundInput';
+import RadioInput from '@share/components/form/RadioInput';
 
 export type EventFormValues = {
   title: string;
@@ -19,12 +20,15 @@ export type EventFormValues = {
   description?: string;
   isOffline: boolean;
   location?: string;
-  registrationTime?: Date;
   startTime: Date;
   endTime?: Date;
   isEnded?: boolean;
   publicity: AccessLevel;
   publicParticipant: boolean;
+};
+
+export type InternalFormValues = Omit<EventFormValues, 'isOffline'> & {
+  isOffline: 'true' | 'false';
 };
 
 const validationSchema = yup.object({
@@ -53,9 +57,6 @@ const EventForm = ({
       description: initialData?.description ?? '',
       isOffline: initialData?.isOffline ?? false,
       location: initialData?.location,
-      registrationTime: initialData?.registrationTime
-        ? new Date(initialData.registrationTime)
-        : new Date(),
       startTime: initialData?.startTime
         ? new Date(initialData.startTime)
         : new Date(),
@@ -66,9 +67,9 @@ const EventForm = ({
     },
   });
 
-  const onSubmitWithStatus = async (values: EventFormValues) => {
+  const onSubmitWithStatus = async (values: InternalFormValues) => {
     setIsSaving(true);
-    await onSubmit(values);
+    await onSubmit({ ...values, isOffline: values.isOffline === 'true' });
     setIsSaving(false);
   };
 
@@ -99,32 +100,27 @@ const EventForm = ({
         inputProps={{ label: 'Tên sự kiện', fullWidth: true }}
       />
 
-      <Box sx={{ width: '100%' }}>
-        <TextInput
-          control={control}
-          name="location"
-          inputProps={{ label: 'Địa điểm', fullWidth: true }}
-        />
-        <Checkbox
-          control={control}
-          name="isOffline"
-          inputProps={{ label: 'Sự kiện tổ chức offline' }}
-        />
-      </Box>
+      <RadioInput
+        control={control}
+        name="isOffline"
+        inputProps={{ label: 'Hình thức tổ chức' }}
+        containerSx={{ width: '100%' }}
+        options={[
+          { value: 'false', name: 'Online' },
+          { value: 'true', name: 'Offline' },
+        ]}
+      />
+
+      <TextInput
+        control={control}
+        name="location"
+        inputProps={{ label: 'Địa điểm / Link tham dự', fullWidth: true }}
+      />
 
       <RichTextInput
         control={control}
         name="description"
         inputProps={{ placeholder: 'Mô tả' }}
-      />
-
-      <DateTimeInput
-        control={control}
-        name="registrationTime"
-        inputProps={{
-          fullWidth: true,
-          label: 'Thời gian mở đăng ký',
-        }}
       />
 
       <DateTimeInput

@@ -57,18 +57,18 @@ const StyledNavItem = styled(Box)(({ theme }) => ({
 }));
 
 const NAV_ITEMS = [
-  {
-    id: 'posts',
-    title: 'Bài đăng',
-    icon: 'fluent:status-16-filled',
-    link: 'posts',
-  },
   // {
-  //   id: 'information',
-  //   title: 'Thông tin',
-  //   icon: 'mingcute:profile-fill',
-  //   link: 'information',
+  //   id: 'posts',
+  //   title: 'Bài đăng',
+  //   icon: 'fluent:status-16-filled',
+  //   link: 'posts',
   // },
+  {
+    id: 'information',
+    title: 'Thông tin',
+    icon: 'mingcute:profile-fill',
+    link: 'information',
+  },
 ];
 
 const ProfileSidebar = () => {
@@ -129,6 +129,7 @@ const ProfileSidebar = () => {
                 key={item.id}
                 href={`${pathname}/?profile_tab=${item.link}`}
                 style={{ color: 'inherit', width: '100%' }}
+                prefetch={false}
               >
                 <StyledNavItem
                   sx={{

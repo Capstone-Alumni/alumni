@@ -87,6 +87,7 @@ const EventSidebar = () => {
               key={item.id}
               href={item.link}
               style={{ color: 'inherit', width: '100%' }}
+              prefetch={false}
             >
               <StyledNavItem
                 sx={{
@@ -112,7 +113,7 @@ const EventSidebar = () => {
           );
         })}
 
-        <Link href="/events/create" style={{ width: '100%' }}>
+        <Link href="/events/create" style={{ width: '100%' }} prefetch={false}>
           <Button variant="contained" fullWidth startIcon={<AddIcon />}>
             tạo sự kiện
           </Button>

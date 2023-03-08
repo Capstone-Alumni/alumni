@@ -21,6 +21,17 @@ export default class OwnerEventService {
         orderBy: {
           createdAt: 'desc',
         },
+        include: {
+          hostInformation: {
+            include: {
+              alumClass: {
+                include: {
+                  grade: true,
+                },
+              },
+            },
+          },
+        },
       }),
     ]);
 
@@ -61,7 +72,6 @@ export default class OwnerEventService {
       backgroundImage = '',
       isOffline,
       location = '',
-      registrationTime,
       startTime,
       endTime,
       publicity,
@@ -72,7 +82,6 @@ export default class OwnerEventService {
       backgroundImage?: string;
       isOffline?: boolean;
       location?: string;
-      registrationTime?: Date;
       startTime: Date;
       endTime?: Date;
       publicity?: AccessLevel;
@@ -87,7 +96,6 @@ export default class OwnerEventService {
         description,
         isOffline,
         location,
-        registrationTime,
         startTime,
         endTime,
         publicity,
@@ -110,7 +118,6 @@ export default class OwnerEventService {
       description?: string;
       isOffline?: boolean;
       location?: string;
-      registrationTime?: Date;
       startTime: Date;
       endTime?: Date;
       isEnded?: boolean;
@@ -189,7 +196,19 @@ export default class OwnerEventService {
           createdAt: 'desc',
         },
         include: {
-          event: true,
+          event: {
+            include: {
+              hostInformation: {
+                include: {
+                  alumClass: {
+                    include: {
+                      grade: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       }),
     ]);
@@ -224,7 +243,19 @@ export default class OwnerEventService {
           createdAt: 'desc',
         },
         include: {
-          event: true,
+          event: {
+            include: {
+              hostInformation: {
+                include: {
+                  alumClass: {
+                    include: {
+                      grade: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       }),
     ]);

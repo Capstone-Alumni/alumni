@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Grid, Tab, Tabs, useTheme } from '@mui/material';
+import { Button, Stack, Tab, Tabs, useTheme } from '@mui/material';
 import { Box, Typography } from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
@@ -14,6 +14,9 @@ import EventParticipantListTab from './EventParticipantListTab';
 import usePublicInterestEventById from '../hooks/usePublicInterestEventById';
 import usePublicUninterestEventById from '../hooks/usePublicUninterestEventById';
 import EditorPreview from '@share/components/editor/EditorPreview';
+import MyAvatar from '@share/components/MyAvatar';
+import { formatDate } from '@share/utils/formatDate';
+import Link from 'next/link';
 
 type EventStatus = 'not-open' | 'opened' | 'running' | 'ended';
 
@@ -74,11 +77,11 @@ const EventDetailPage = () => {
 
     const { data: eventData } = data;
 
-    if (new Date(eventData.registrationTime) > new Date()) {
+    if (new Date(eventData.startTime) < new Date()) {
       return 'not-open';
     }
 
-    if (new Date(eventData.startTime) > new Date()) {
+    if (new Date(eventData.startTime) >= new Date()) {
       return 'opened';
     }
 
@@ -125,7 +128,7 @@ const EventDetailPage = () => {
         }}
       >
         <Image
-          src="/side_background.png"
+          src={eventData?.backgroundImage || '/side_background.png'}
           alt="event-image"
           fill
           style={{ objectFit: 'cover' }}
@@ -136,91 +139,105 @@ const EventDetailPage = () => {
         {eventData.title}
       </Typography>
 
-      <Box
+      <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 2 }}>
+        <MyAvatar
+          displayName={eventData.hostInformation?.fullName}
+          photoUrl={eventData.hostInformation?.avatarUrl}
+        />
+
+        <Stack direction="column">
+          <Link
+            href={`/profile/${eventData.userId}?profile_tab=information`}
+            prefetch={false}
+          >
+            <Typography fontWeight={600}>
+              {eventData.hostInformation?.fullName}
+            </Typography>
+          </Link>
+          <Typography>{eventData.hostInformation?.email}</Typography>
+        </Stack>
+      </Stack>
+
+      <Stack
+        direction={{
+          sm: 'column',
+          md: 'row',
+        }}
+        gap={2}
         sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: theme.spacing(2),
           mb: 2,
         }}
       >
-        <Box sx={{ flex: 1 }}>
-          <Grid container spacing={1}>
-            <Grid item xs={3}>
-              <Typography>Người tổ chức</Typography>
-            </Grid>
-            <Grid item xs={9}>
-              <Typography>{eventData.hostInformation?.fullName}</Typography>
-            </Grid>
-
-            <Grid item xs={3}>
-              <Typography>Email</Typography>
-            </Grid>
-            <Grid item xs={9}>
-              <Typography>{eventData.hostInformation?.email}</Typography>
-            </Grid>
-
-            <Grid item xs={3}>
-              <Typography>Hình thức</Typography>
-            </Grid>
-            <Grid item xs={9}>
-              {eventData.isOffline ? (
-                <Typography
-                  component="span"
-                  fontWeight={600}
-                  sx={{ color: theme.palette.warning.main }}
-                >
-                  Offline
-                </Typography>
-              ) : (
-                <Typography
-                  component="span"
-                  fontWeight={600}
-                  sx={{ color: theme.palette.success.main }}
-                >
-                  Online
-                </Typography>
-              )}
-            </Grid>
-
-            <Grid item xs={3}>
-              <Typography>Tình trạng</Typography>
-            </Grid>
-            <Grid item xs={9}>
-              <Typography>{renderEventStatus(eventStatus)}</Typography>
-            </Grid>
-
-            <Grid item xs={3}>
-              <Typography>Mở đăng ký</Typography>
-            </Grid>
-            <Grid item xs={9}>
-              <Typography>
-                {new Date(eventData.registrationTime).toDateString()}
-              </Typography>
-            </Grid>
-
-            <Grid item xs={3}>
-              <Typography>Bắt đâu diễn ra</Typography>
-            </Grid>
-            <Grid item xs={9}>
-              <Typography>
-                {new Date(eventData.startTime).toDateString()}
-              </Typography>
-            </Grid>
-
-            {eventData?.endTime ? (
-              <>
-                <Grid item xs={3}>
-                  <Typography>Kết thúc</Typography>
-                </Grid>
-                <Grid item xs={9}>
-                  <Typography>
-                    {new Date(eventData.endTime).toDateString()}
+        <Box
+          sx={{
+            flex: 1,
+            padding: theme.spacing(2),
+            borderRadius: `${theme.shape.borderRadiusSm}px`,
+            backgroundColor: theme.palette.background.neutral,
+          }}
+        >
+          <Stack
+            direction={{ sm: 'column', md: 'row' }}
+            gap={1}
+            justifyContent="space-around"
+          >
+            <Box>
+              <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 1 }}>
+                <Typography variant="h6">Hình thức</Typography>
+                {eventData.isOffline ? (
+                  <Typography
+                    fontWeight={600}
+                    sx={{ color: theme.palette.warning.main }}
+                  >
+                    Offline
                   </Typography>
-                </Grid>
-              </>
-            ) : null}
-          </Grid>
+                ) : (
+                  <Typography
+                    fontWeight={600}
+                    sx={{ color: theme.palette.success.main }}
+                  >
+                    Online
+                  </Typography>
+                )}
+              </Stack>
+
+              <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 1 }}>
+                <Typography variant="h6">
+                  {eventData.isOffline ? 'Địa điểm' : 'Link tham gia'}
+                </Typography>
+                <Typography>{eventData.location}</Typography>
+              </Stack>
+            </Box>
+
+            <Box>
+              <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 1 }}>
+                <Typography variant="h6">Tình trạng</Typography>
+                <Typography>{renderEventStatus(eventStatus)}</Typography>
+              </Stack>
+
+              <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 1 }}>
+                <Typography variant="h6">Bắt đầu</Typography>
+                <Typography>
+                  {formatDate(
+                    new Date(eventData.startTime),
+                    'dd/MM/yyyy - HH:ss',
+                  )}
+                </Typography>
+              </Stack>
+
+              <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 1 }}>
+                <Typography variant="h6">Kết thúc</Typography>
+                <Typography>
+                  {eventData.endTime
+                    ? formatDate(
+                        new Date(eventData.endTime),
+                        'dd/MM/yyyy - HH:ss',
+                      )
+                    : 'Chưa cập nhập'}
+                </Typography>
+              </Stack>
+            </Box>
+          </Stack>
         </Box>
 
         <Box>
@@ -250,7 +267,7 @@ const EventDetailPage = () => {
             {isInterested ? 'Huỷ lưu' : 'Lưu'}
           </Button>
         </Box>
-      </Box>
+      </Stack>
 
       <Tabs
         value={tabKey}

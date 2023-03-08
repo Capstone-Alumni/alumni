@@ -1,4 +1,5 @@
 import { AccessLevel } from '@prisma/client';
+import { UserInformation } from '@share/states';
 import { Information } from '../profiles/types';
 
 export type Event = {
@@ -11,7 +12,6 @@ export type Event = {
   backgroundImage?: string;
   isOffline: boolean;
   location?: string;
-  registrationTime: string | Date;
   startTime: string | Date;
   endTime: string | Date;
   isEnded: boolean;
@@ -19,12 +19,7 @@ export type Event = {
   publicity: AccessLevel;
   publicParticipant: boolean;
   userId: string;
-  hostInformation?: {
-    id: string;
-    userId: string;
-    email: string;
-    fullName: string;
-  };
+  hostInformation?: UserInformation;
   eventParticipants: EventParticipant[];
   eventInterests: EventInterest[];
 };

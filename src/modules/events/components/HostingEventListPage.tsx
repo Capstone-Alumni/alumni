@@ -39,11 +39,13 @@ const HostingEventListPage = () => {
           <EventCardItem
             key={item.id}
             data={item}
+            showStatus={true}
             actions={[
               <Link
                 key="edit-btn"
                 href={`/events/hosting/${item.id}`}
                 style={{ width: '100%' }}
+                prefetch={false}
               >
                 <Button fullWidth variant="outlined">
                   Chỉnh sửa

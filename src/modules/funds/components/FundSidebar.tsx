@@ -81,6 +81,7 @@ const FundSidebar = ({ user }: { user: User }) => {
               key={item.id}
               href={item.link}
               style={{ color: 'inherit', width: '100%' }}
+              prefetch={false}
             >
               <StyledNavItem
                 sx={{
@@ -110,6 +111,7 @@ const FundSidebar = ({ user }: { user: User }) => {
           <Link
             href={FUND_HOSTING_NAV_ITEM.link}
             style={{ color: 'inherit', width: '100%' }}
+            prefetch={false}
           >
             <StyledNavItem
               sx={{
@@ -143,7 +145,7 @@ const FundSidebar = ({ user }: { user: User }) => {
         )}
 
         {isAlumni ? null : (
-          <Link href="/funds/create" style={{ width: '100%' }}>
+          <Link href="/funds/create" style={{ width: '100%' }} prefetch={false}>
             <Button variant="contained" fullWidth startIcon={<AddIcon />}>
               tạo quỹ
             </Button>
