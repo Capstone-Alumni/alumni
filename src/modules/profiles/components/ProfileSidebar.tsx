@@ -129,6 +129,7 @@ const ProfileSidebar = () => {
                 key={item.id}
                 href={`${pathname}/?profile_tab=${item.link}`}
                 style={{ color: 'inherit', width: '100%' }}
+                prefetch={false}
               >
                 <StyledNavItem
                   sx={{

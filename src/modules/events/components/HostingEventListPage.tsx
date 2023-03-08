@@ -45,6 +45,7 @@ const HostingEventListPage = () => {
                 key="edit-btn"
                 href={`/events/hosting/${item.id}`}
                 style={{ width: '100%' }}
+                prefetch={false}
               >
                 <Button fullWidth variant="outlined">
                   Chỉnh sửa

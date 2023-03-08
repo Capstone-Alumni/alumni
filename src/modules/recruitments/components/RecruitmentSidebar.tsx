@@ -81,6 +81,7 @@ const RecruitmentSidebar = () => {
               key={item.id}
               href={item.link}
               style={{ color: 'inherit', width: '100%' }}
+              prefetch={false}
             >
               <StyledNavItem
                 sx={{
@@ -97,7 +98,11 @@ const RecruitmentSidebar = () => {
           );
         })}
 
-        <Link href="/recruitments/create" style={{ width: '100%' }}>
+        <Link
+          href="/recruitments/create"
+          style={{ width: '100%' }}
+          prefetch={false}
+        >
           <Button variant="contained" fullWidth startIcon={<AddIcon />}>
             tạo công việc
           </Button>

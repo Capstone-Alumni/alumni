@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Container, Typography, useTheme } from '@mui/material';
-import { Tenant } from '@redux/slices/currentTenantSlice';
+import { Tenant } from '@share/states';
 
 const IntroductionSection = ({ tenant }: { tenant: Tenant }) => {
   const theme = useTheme();

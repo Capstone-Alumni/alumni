@@ -27,7 +27,7 @@ const ClassmateList = () => {
         <Typography fontWeight={600} color="GrayText">
           Bạn cùng lớp
         </Typography>
-        <Link href="/find">
+        <Link href="/find" prefetch={false}>
           <Typography fontWeight={600}>Xem thêm</Typography>
         </Link>
       </Stack>
@@ -37,6 +37,7 @@ const ClassmateList = () => {
           key={item.id}
           href={`/profile/${item.id}?profile_tab=information`}
           style={{ color: 'inherit' }}
+          prefetch={false}
         >
           <Stack direction="row" gap={1} alignItems="center">
             <MyAvatar />

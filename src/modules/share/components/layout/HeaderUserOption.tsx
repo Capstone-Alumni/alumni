@@ -91,6 +91,7 @@ const HeaderUserOptions = ({ user }: { user?: User }) => {
         <Link
           href={`/profile/${user?.id}?profile_tab=information`}
           style={{ color: 'inherit' }}
+          prefetch={false}
         >
           <MenuItem>
             <ListItemIcon>

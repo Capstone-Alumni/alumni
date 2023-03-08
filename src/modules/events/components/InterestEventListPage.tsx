@@ -45,6 +45,7 @@ const InterestEventListPage = () => {
                 key="edit-btn"
                 href={`/events/${item.id}`}
                 style={{ width: '100%', marginRight: theme.spacing(1) }}
+                prefetch={false}
               >
                 <Button fullWidth variant="outlined">
                   Xem chi tiết

@@ -4,9 +4,9 @@ import { Controller, useForm } from 'react-hook-form';
 import {
   Box,
   Button,
-  Checkbox,
-  FormControlLabel,
-  Link,
+  // Checkbox,
+  // FormControlLabel,
+  // Link,
   TextField,
   Typography,
 } from '@mui/material';
@@ -81,7 +81,7 @@ const SignInForm = () => {
               my: 1,
             }}
           >
-            <Controller
+            {/* <Controller
               control={control}
               name="remember"
               render={({ field }) => (
@@ -90,8 +90,8 @@ const SignInForm = () => {
                   label="Ghi nhớ tài khoản"
                 />
               )}
-            />
-            <Link underline="always">Quên mật khẩu</Link>
+            /> */}
+            {/* <Link underline="always">Quên mật khẩu</Link> */}
           </Box>
 
           <Button

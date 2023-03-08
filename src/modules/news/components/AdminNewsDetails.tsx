@@ -41,7 +41,7 @@ const AdminNewsDetails = () => {
             alignItems: 'center',
           }}
         >
-          <Link href="/admin/news">
+          <Link href="/admin/news" prefetch={false}>
             <Typography>Danh sách tin tức</Typography>
           </Link>
           <Button

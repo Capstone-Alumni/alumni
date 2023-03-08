@@ -36,6 +36,7 @@ const GoingEventListPage = () => {
                 key="edit-btn"
                 href={`/events/${item.id}`}
                 style={{ width: '100%' }}
+                prefetch={false}
               >
                 <Button fullWidth variant="outlined">
                   Xem chi tiết

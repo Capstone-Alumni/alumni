@@ -44,6 +44,7 @@ const HostingFundListPage = () => {
                 key="edit-btn"
                 href={`/funds/hosting/${item.id}`}
                 style={{ width: '100%' }}
+                prefetch={false}
               >
                 <Button fullWidth variant="outlined">
                   Chỉnh sửa
