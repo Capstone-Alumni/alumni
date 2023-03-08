@@ -57,18 +57,18 @@ const StyledNavItem = styled(Box)(({ theme }) => ({
 }));
 
 const NAV_ITEMS = [
-  {
-    id: 'posts',
-    title: 'Bài đăng',
-    icon: 'fluent:status-16-filled',
-    link: 'posts',
-  },
   // {
-  //   id: 'information',
-  //   title: 'Thông tin',
-  //   icon: 'mingcute:profile-fill',
-  //   link: 'information',
+  //   id: 'posts',
+  //   title: 'Bài đăng',
+  //   icon: 'fluent:status-16-filled',
+  //   link: 'posts',
   // },
+  {
+    id: 'information',
+    title: 'Thông tin',
+    icon: 'mingcute:profile-fill',
+    link: 'information',
+  },
 ];
 
 const ProfileSidebar = () => {

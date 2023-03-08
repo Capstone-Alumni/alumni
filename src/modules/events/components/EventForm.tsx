@@ -20,7 +20,6 @@ export type EventFormValues = {
   description?: string;
   isOffline: boolean;
   location?: string;
-  registrationTime?: Date;
   startTime: Date;
   endTime?: Date;
   isEnded?: boolean;
@@ -58,9 +57,6 @@ const EventForm = ({
       description: initialData?.description ?? '',
       isOffline: initialData?.isOffline ?? false,
       location: initialData?.location,
-      registrationTime: initialData?.registrationTime
-        ? new Date(initialData.registrationTime)
-        : new Date(),
       startTime: initialData?.startTime
         ? new Date(initialData.startTime)
         : new Date(),
@@ -125,15 +121,6 @@ const EventForm = ({
         control={control}
         name="description"
         inputProps={{ placeholder: 'Mô tả' }}
-      />
-
-      <DateTimeInput
-        control={control}
-        name="registrationTime"
-        inputProps={{
-          fullWidth: true,
-          label: 'Thời gian mở đăng ký',
-        }}
       />
 
       <DateTimeInput

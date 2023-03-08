@@ -12,7 +12,6 @@ export type Event = {
   backgroundImage?: string;
   isOffline: boolean;
   location?: string;
-  registrationTime: string | Date;
   startTime: string | Date;
   endTime: string | Date;
   isEnded: boolean;

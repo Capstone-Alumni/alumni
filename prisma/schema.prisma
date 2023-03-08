@@ -141,7 +141,6 @@ model Event {
   description       String?
   isOffline         Boolean     @default(false) @map("is_offline")
   location          String?
-  registrationTime  DateTime    @default(now()) @map("registration_time")
   startTime         DateTime    @default(now()) @map("start_time")
   endTime           DateTime?   @map("end_time")
   isEnded           Boolean     @default(false) @map("is_ended")
