@@ -39,6 +39,7 @@ const HostingEventListPage = () => {
           <EventCardItem
             key={item.id}
             data={item}
+            showStatus={true}
             actions={[
               <Link
                 key="edit-btn"

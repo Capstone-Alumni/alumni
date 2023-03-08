@@ -21,6 +21,17 @@ export default class OwnerEventService {
         orderBy: {
           createdAt: 'desc',
         },
+        include: {
+          hostInformation: {
+            include: {
+              alumClass: {
+                include: {
+                  grade: true,
+                },
+              },
+            },
+          },
+        },
       }),
     ]);
 
@@ -189,7 +200,19 @@ export default class OwnerEventService {
           createdAt: 'desc',
         },
         include: {
-          event: true,
+          event: {
+            include: {
+              hostInformation: {
+                include: {
+                  alumClass: {
+                    include: {
+                      grade: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       }),
     ]);
@@ -224,7 +247,19 @@ export default class OwnerEventService {
           createdAt: 'desc',
         },
         include: {
-          event: true,
+          event: {
+            include: {
+              hostInformation: {
+                include: {
+                  alumClass: {
+                    include: {
+                      grade: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       }),
     ]);

@@ -22,11 +22,14 @@ const AdminEventListItem = ({
   return (
     <>
       <TableRow>
-        <TableCell align="left">
+        <TableCell align="left" sx={{ maxWidth: '200px' }}>
           <Typography>{data.title}</Typography>
         </TableCell>
         <TableCell align="left">
           <Typography>{data.hostInformation?.email}</Typography>
+        </TableCell>
+        <TableCell align="left">
+          <Typography>{new Date(data.createdAt).toDateString()}</Typography>
         </TableCell>
         <TableCell align="center">
           <Typography>
@@ -46,9 +49,6 @@ const AdminEventListItem = ({
               </Tooltip>
             ) : null}
           </Typography>
-        </TableCell>
-        <TableCell align="left">
-          <Typography>{new Date(data.createdAt).toDateString()}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <IconButton onClick={() => onApprove(data.id)}>
