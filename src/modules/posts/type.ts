@@ -14,6 +14,7 @@ export type PostComment = {
   authorInformation: Information;
   content: string;
   createdAt: string | Date;
+  updatedAt: string | Date;
 };
 
 export type Post = {
@@ -24,4 +25,5 @@ export type Post = {
   postLikes: PostLike[];
   postComments: PostComment[];
   createdAt: string | Date;
+  updatedAt: string | Date;
 };

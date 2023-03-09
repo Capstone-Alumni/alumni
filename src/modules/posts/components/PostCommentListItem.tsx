@@ -44,6 +44,13 @@ const PostCommentListItem = ({
         <Typography variant="body2">{comment.content}</Typography>
         <Typography variant="caption" fontWeight={400}>
           {formatDate(new Date(comment.createdAt))}
+          {comment.createdAt !== comment.updatedAt ? (
+            <Typography component="span" variant="caption" sx={{ ml: 2 }}>
+              Đã chỉnh sửa
+            </Typography>
+          ) : (
+            ''
+          )}
         </Typography>
       </Box>
 
