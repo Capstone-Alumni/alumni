@@ -11,6 +11,8 @@ const handler = nc({
   onNoMatch: onNoMatchAPIHandler,
 }).use(extractTenantId);
 
-handler.delete(isAuthenticatedUser, PostController.deletePost);
+handler
+  .delete(isAuthenticatedUser, PostController.deletePost)
+  .put(isAuthenticatedUser, PostController.updatePost);
 
 export default handler;

@@ -54,6 +54,21 @@ class PostController {
       status: true,
     });
   };
+
+  static updatePost = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    const prisma = await getPrismaClient(req.tenantId);
+    const { id } = req.query;
+
+    const data = await PostService.updatePost(prisma, id as string, req.body);
+
+    return res.status(200).json({
+      data: data,
+      status: true,
+    });
+  };
 }
 
 export default PostController;

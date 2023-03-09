@@ -22,7 +22,6 @@ import useCreatePostComment from '../hooks/useCreatePostComment';
 import PostCommentList from './PostCommentList';
 import ActionButton from '@share/components/ActionButton';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
-import { noop } from 'lodash/fp';
 import useDeletePost from '../hooks/useDeletePost';
 import EditorPreview from '@share/components/editor/EditorPreview';
 import MyAvatar from '@share/components/MyAvatar';
@@ -43,7 +42,13 @@ import MyAvatar from '@share/components/MyAvatar';
 //   }),
 // }));
 
-const PostCardItem = ({ data }: { data: Post }) => {
+const PostCardItem = ({
+  data,
+  onEdit,
+}: {
+  data: Post;
+  onEdit: (id: string) => void;
+}) => {
   const { data: session } = useSession();
   const [expanded, setExpanded] = React.useState(false);
   const [openModal, setOpenModal] = React.useState(false);
@@ -87,7 +92,7 @@ const PostCardItem = ({ data }: { data: Post }) => {
                   id: 'update',
                   icon: <BorderColorIcon />,
                   text: 'Chỉnh sửa bài đăng',
-                  onClick: noop,
+                  onClick: () => onEdit(data.id),
                 },
                 {
                   id: 'delete',

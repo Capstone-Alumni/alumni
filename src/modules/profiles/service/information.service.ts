@@ -125,10 +125,10 @@ export default class InformationService {
       whereFilter.alumClass = {
         gradeId: gradeId,
       };
+    }
 
-      if (classId) {
-        whereFilter.alumClassId = classId;
-      }
+    if (classId) {
+      whereFilter.alumClassId = classId;
     }
 
     const [totalUsersInformation, usersInformationItems] =
