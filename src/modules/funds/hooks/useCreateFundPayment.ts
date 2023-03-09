@@ -22,6 +22,7 @@ const useCreateFundPayment = () => {
       method: 'POST',
       url: '/api/create_payment_url',
       data: {
+        ...data,
         amount: 100000,
         orderDescription:
           'Nap tien cho thue bao 0123456789. So tien 100,000 VND',
@@ -33,8 +34,8 @@ const useCreateFundPayment = () => {
         toast.error('Yêu cầu tạo quỹ thất bại');
       },
       onSuccess: ({ data: vnpUrl }) => {
-        console.log(vnpUrl);
-        // window.open(vnpUrl, '_self');
+        // console.log(vnpUrl);
+        window.open(vnpUrl, '_self');
       },
     },
   );

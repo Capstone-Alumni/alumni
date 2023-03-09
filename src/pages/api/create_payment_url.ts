@@ -2,6 +2,7 @@ import appNextConnect from '@lib/next-connect';
 import dateFormat from 'dateformat';
 import querystring from 'qs';
 import crypto from 'crypto';
+import { isNil } from 'lodash/fp';
 
 function sortObject(obj: any) {
   const sorted = {};
@@ -27,12 +28,18 @@ const handler = appNextConnect.post(function (req, res) {
     req.connection.remoteAddress ||
     req.socket.remoteAddress;
 
-  // const config = require('config');
+  const tmnCode = process.env.VNPAY_TMNCODE; // config.get('vnp_TmnCode');
+  const secretKey = process.env.VNPAY_HASHSECRET; // config.get('vnp_HashSecret');
 
-  const tmnCode = 'LV8GF9HU'; // config.get('vnp_TmnCode');
-  const secretKey = 'PCNZIYGWCOCPNHWAYYJAYFSTPXBREKIV'; // config.get('vnp_HashSecret');
-  // let vnpUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'; // config.get('vnp_Url'); // use rewrites to prevent CORS
-  let vnpUrl = '/vnpayUrl';
+  if (isNil(secretKey) || isNil(tmnCode)) {
+    return res.status(500).json({
+      message: 'Xảy ra lỗi',
+      status: false,
+    });
+  }
+
+  let vnpUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'; // config.get('vnp_Url');
+  // TODO: https://capstone-alumni.atlassian.net/browse/AL-147
   const returnUrl = 'http://localhost:3005/vnpayreturn'; // config.get('vnp_ReturnUrl');
 
   const date = new Date();
@@ -75,13 +82,10 @@ const handler = appNextConnect.post(function (req, res) {
   vnp_Params.vnp_SecureHash = signed;
   vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
 
-  // return res.status(200).json({
-  //   data: vnpUrl,
-  //   status: true,
-  // });
-  res.redirect(vnpUrl);
+  return res.status(200).json({
+    data: vnpUrl,
+    status: true,
+  });
 });
 
 export default handler;
-
-// https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?vnp_Amount=10000000&vnp_BankCode=NCB&vnp_Command=pay&vnp_CreateDate=20230310000335&vnp_CurrCode=VND&vnp_IpAddr=%3A%3A1&vnp_Locale=undefined&vnp_OrderInfo=Nap+tien+cho+thue+bao+0123456789.+So+tien+100%2C000+VND&vnp_OrderType=250000&vnp_ReturnUrl=http%3A%2F%2Flocalhost%3A3005%2Fvnpayreturn&vnp_TmnCode=LV8GF9HU&vnp_TxnRef=000335&vnp_Version=2.1.0&vnp_SecureHash=8c9462c6e57c485ed462ef06d6b359561bd6f37feaf202e1b0ddc89133c7338018ebef0046d93791b73686c0dafd71ab6fed4a39e9c952d33ca1e72629854f5f

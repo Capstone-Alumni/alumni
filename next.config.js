@@ -35,19 +35,6 @@ const nextConfig = {
         source: '/platformHost/:path*',
         destination: `${platformHost}/:path*`,
       },
-      // {
-      //   source: '/paymentv2/:path*',
-      //   destination: 'https://sandbox.vnpayment.vn/paymentv2/:path*',
-      // },
-    ];
-  },
-  async redirects() {
-    return [
-      {
-        source: '/vnpayUrl',
-        destination: 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html',
-        permanent: true,
-      },
     ];
   },
 };
