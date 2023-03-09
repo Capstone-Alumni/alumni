@@ -22,10 +22,10 @@ import useCreatePostComment from '../hooks/useCreatePostComment';
 import PostCommentList from './PostCommentList';
 import ActionButton from '@share/components/ActionButton';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
-import { noop } from 'lodash/fp';
 import useDeletePost from '../hooks/useDeletePost';
 import EditorPreview from '@share/components/editor/EditorPreview';
 import MyAvatar from '@share/components/MyAvatar';
+import { formatDate } from '@share/utils/formatDate';
 
 // interface ExpandMoreProps {
 //   expand: boolean;
@@ -43,7 +43,13 @@ import MyAvatar from '@share/components/MyAvatar';
 //   }),
 // }));
 
-const PostCardItem = ({ data }: { data: Post }) => {
+const PostCardItem = ({
+  data,
+  onEdit,
+}: {
+  data: Post;
+  onEdit: (id: string) => void;
+}) => {
   const { data: session } = useSession();
   const [expanded, setExpanded] = React.useState(false);
   const [openModal, setOpenModal] = React.useState(false);
@@ -87,7 +93,7 @@ const PostCardItem = ({ data }: { data: Post }) => {
                   id: 'update',
                   icon: <BorderColorIcon />,
                   text: 'Chỉnh sửa bài đăng',
-                  onClick: noop,
+                  onClick: () => onEdit(data.id),
                 },
                 {
                   id: 'delete',
@@ -108,10 +114,17 @@ const PostCardItem = ({ data }: { data: Post }) => {
               component="span"
               display="block"
             >
-              {new Date(data.createdAt).toDateString()}{' '}
+              {formatDate(new Date(data.createdAt))}{' '}
               {/* <>{getPublicitySmallIcon(data.publicity)}</> */}
             </Typography>
             <>{getPublicitySmallIcon(data.publicity)}</>
+            {data.createdAt !== data.updatedAt ? (
+              <Typography variant="body2" sx={{ ml: 1 }}>
+                Đã chỉnh sửa
+              </Typography>
+            ) : (
+              ''
+            )}
           </Stack>
         }
       />
@@ -149,10 +162,7 @@ const PostCardItem = ({ data }: { data: Post }) => {
         <Divider sx={{ marginX: 2 }} />
         <CardContent>
           <Box mb={2}>
-            <PostCommentForm
-              onSave={createComment}
-              onClose={handleExpandClick}
-            />
+            <PostCommentForm onSave={createComment} />
           </Box>
 
           <PostCommentList postId={data.id} />

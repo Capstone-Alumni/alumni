@@ -3,18 +3,20 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ActionButton from '@share/components/ActionButton';
 import MyAvatar from '@share/components/MyAvatar';
-import { noop } from 'lodash/fp';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import useDeleteComment from '../hooks/useDeleteComment';
 import { PostComment } from '../type';
 import { useState } from 'react';
+import { formatDate } from '@share/utils/formatDate';
 
 const PostCommentListItem = ({
   comment,
   postId,
+  onEdit,
 }: {
   comment: PostComment;
   postId: string;
+  onEdit: (id: string) => void;
 }) => {
   const [openModal, setOpenModal] = useState(false);
   const theme = useTheme();
@@ -41,7 +43,14 @@ const PostCommentListItem = ({
         </Typography>
         <Typography variant="body2">{comment.content}</Typography>
         <Typography variant="caption" fontWeight={400}>
-          {new Date(comment.createdAt).toDateString()}
+          {formatDate(new Date(comment.createdAt))}
+          {comment.createdAt !== comment.updatedAt ? (
+            <Typography component="span" variant="caption" sx={{ ml: 2 }}>
+              Đã chỉnh sửa
+            </Typography>
+          ) : (
+            ''
+          )}
         </Typography>
       </Box>
 
@@ -51,7 +60,7 @@ const PostCommentListItem = ({
             id: 'update',
             icon: <BorderColorIcon />,
             text: 'Chỉnh sửa bình luận',
-            onClick: noop,
+            onClick: () => onEdit(comment.id),
           },
           {
             id: 'delete',

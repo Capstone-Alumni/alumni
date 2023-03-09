@@ -154,6 +154,23 @@ class PostService {
 
     return post;
   };
+
+  static updatePost = async (
+    tenantPrisma: PrismaClient,
+    postId: string,
+    data: { content?: string; publicity?: AccessLevel },
+  ) => {
+    const post = await tenantPrisma.post.update({
+      where: {
+        id: postId,
+      },
+      data: data,
+    });
+
+    await tenantPrisma.$disconnect();
+
+    return post;
+  };
 }
 
 export default PostService;

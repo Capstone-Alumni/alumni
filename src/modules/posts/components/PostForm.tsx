@@ -9,6 +9,7 @@ import { useState } from 'react';
 import RichTextInput from '@share/components/form/RichTextInput';
 import { useRecoilValue } from 'recoil';
 import { currentUserInformationDataAtom } from '@share/states';
+import { Post } from '../type';
 
 export type PostFormValues = {
   content: string;
@@ -21,9 +22,11 @@ const validationSchema = yup.object({
 });
 
 const PostForm = ({
+  data,
   onClose,
   onSave,
 }: {
+  data?: Post;
   onClose: () => void;
   onSave: (values: PostFormValues) => void;
 }) => {
@@ -35,8 +38,8 @@ const PostForm = ({
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      content: '',
-      publicity: 'ALUMNI',
+      content: data?.content ?? '',
+      publicity: data?.publicity ?? 'ALUMNI',
     },
     resolver,
   });
@@ -61,7 +64,15 @@ const PostForm = ({
       }}
     >
       <Stack direction="row" gap={1} alignItems="center">
-        <MyAvatar />
+        <MyAvatar
+          photoUrl={
+            data?.authorInformation.avatarUrl ||
+            currentUserInformation.avatarUrl
+          }
+          displayName={
+            data?.authorInformation.fullName || currentUserInformation.fullName
+          }
+        />
 
         <Typography fontWeight={600}>
           {currentUserInformation.fullName}
@@ -110,7 +121,7 @@ const PostForm = ({
           disabled={isSaving}
           onClick={handleSubmit(onSaveWithLoading)}
         >
-          Đăng
+          {data ? 'Lưu' : 'Đăng'}
         </Button>
       </Stack>
     </Stack>
