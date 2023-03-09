@@ -1,20 +1,19 @@
 'use client';
 
-import { Box, Grid, useTheme } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import React, { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import SearchInput from 'src/modules/share/components/SearchInput';
+import { useRecoilState } from 'recoil';
+import { getProfileListParamsAtom } from '../states';
 
 const Seach = () => {
-  const theme = useTheme();
-  const searchParams = useSearchParams();
-  const name = searchParams.get('name');
+  const [params, setParams] = useRecoilState(getProfileListParamsAtom);
+  const { name } = params;
   const [search, setSearch] = useState<string>(name ?? '');
-  const router = useRouter();
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    router.push(`/find?name=${search}`);
+    setParams(prev => ({ ...prev, name: search }));
   };
 
   const handleSearchOnChange = (e: any) => {
