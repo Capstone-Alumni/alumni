@@ -19,6 +19,7 @@ import usePublicInterestFundById from '../hooks/usePublicSaveFundById';
 import usePublicUninterestFundById from '../hooks/usePublicUnsaveFundById';
 import EditorPreview from '@share/components/editor/EditorPreview';
 import { renderEventStatus } from 'src/modules/events/components/EventDetailPage';
+import FundPaymentForm from './FundPaymentForm';
 
 const FundDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
@@ -201,11 +202,18 @@ const FundDetailPage = () => {
             aria-label="wrapped tabs"
           >
             <Tab value="description" label="Mô tả" />
+            <Tab value="send" label="Đóng góp" />
           </Tabs>
 
           {tabKey === 'description' ? (
             <Box sx={{ my: 2 }}>
               <EditorPreview value={fundData?.description || ''} />
+            </Box>
+          ) : null}
+
+          {tabKey === 'send' ? (
+            <Box sx={{ my: 2 }}>
+              <FundPaymentForm />
             </Box>
           ) : null}
         </Box>
