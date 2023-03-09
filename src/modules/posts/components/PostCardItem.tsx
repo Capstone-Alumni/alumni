@@ -154,10 +154,7 @@ const PostCardItem = ({
         <Divider sx={{ marginX: 2 }} />
         <CardContent>
           <Box mb={2}>
-            <PostCommentForm
-              onSave={createComment}
-              onClose={handleExpandClick}
-            />
+            <PostCommentForm onSave={createComment} />
           </Box>
 
           <PostCommentList postId={data.id} />

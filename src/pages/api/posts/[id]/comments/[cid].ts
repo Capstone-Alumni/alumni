@@ -12,7 +12,7 @@ const handler = nc({
 }).use(extractTenantId);
 
 handler
-  .put(isAuthenticatedUser, PostCommentController.getCommentList)
+  .put(isAuthenticatedUser, PostCommentController.updateComment)
   .delete(isAuthenticatedUser, PostCommentController.deleteComment);
 
 export default handler;

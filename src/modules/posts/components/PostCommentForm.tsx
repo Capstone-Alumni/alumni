@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 import { useRecoilValue } from 'recoil';
 import { currentUserInformationDataAtom } from '@share/states';
+import { PostComment } from '../type';
 
 export type PostCommentFormValues = {
   content: string;
@@ -18,10 +19,10 @@ const validationSchema = yup.object({
 
 const PostCommentForm = ({
   onSave,
-  onClose,
+  data,
 }: {
-  onSave: (values: PostCommentFormValues) => void;
-  onClose?: () => void;
+  data?: PostComment;
+  onSave: (values: PostCommentFormValues) => Promise<any>;
 }) => {
   const theme = useTheme();
   const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
@@ -30,17 +31,17 @@ const PostCommentForm = ({
 
   const { control, reset, handleSubmit } = useForm({
     defaultValues: {
-      content: '',
+      content: data?.content ?? '',
     },
     resolver,
   });
 
-  const onSubmit = (values: PostCommentFormValues) => {
+  const onSubmit = async (values: PostCommentFormValues) => {
     if (!values.content.length) {
       return;
     }
 
-    onSave(values);
+    await onSave(values);
     reset();
   };
 
