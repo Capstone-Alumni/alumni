@@ -1,5 +1,6 @@
 import { Icon } from '@iconify/react';
 import { IconButton } from '@mui/material';
+import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import { TableCell, TableRow, Typography } from '@mui/material';
 import { AccessRequest } from '../types';
 
@@ -23,7 +24,7 @@ const AdminAccessRequestListItem = ({
         </TableCell>
         <TableCell align="center">
           <IconButton onClick={() => onApprove(data.id)}>
-            <Icon height={24} icon="uil:pen" />
+            <DoneOutlineIcon />
           </IconButton>
         </TableCell>
         <TableCell align="center">
