@@ -1,8 +1,8 @@
 import appNextConnect from '@lib/next-connect';
-import dateFormat from 'dateformat';
 import querystring from 'qs';
 import crypto from 'crypto';
 import { isNil } from 'lodash/fp';
+import { formatDate } from '@share/utils/formatDate';
 
 function sortObject(obj: any) {
   const sorted = {};
@@ -44,8 +44,8 @@ const handler = appNextConnect.post(function (req, res) {
 
   const date = new Date();
 
-  const createDate = dateFormat(date, 'yyyymmddHHmmss');
-  const orderId = dateFormat(date, 'HHmmss');
+  const createDate = formatDate(date, 'yyyyMMddHHmmss');
+  const orderId = formatDate(date, 'HHmmss');
   const amount = req.body.amount;
   const bankCode = req.body.bankCode;
 
