@@ -94,6 +94,7 @@ export type GetCareerListServiceParams = {
 export type GetUsersInformationListServiceParams = {
   name: string;
   classId: string;
+  gradeId: string;
   page: number;
   limit: number;
 };

@@ -101,7 +101,7 @@ export default class InformationService {
     user: User,
     params: GetUsersInformationListServiceParams,
   ) => {
-    const { name, page, limit, classId } = params;
+    const { name, page, limit, classId, gradeId } = params;
 
     const requesterInformation = await tenantPrisma.information.findUnique({
       where: { userId: user.id },
@@ -121,8 +121,14 @@ export default class InformationService {
       },
     };
 
-    if (classId) {
-      whereFilter.alumClassId = classId;
+    if (gradeId) {
+      whereFilter.alumClass = {
+        gradeId: gradeId,
+      };
+
+      if (classId) {
+        whereFilter.alumClassId = classId;
+      }
     }
 
     const [totalUsersInformation, usersInformationItems] =

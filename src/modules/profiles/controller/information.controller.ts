@@ -47,7 +47,7 @@ export default class InformationController {
     req: NextApiRequestWithTenant,
     res: NextApiResponse,
   ) => {
-    const { name, classId, page, limit } = req.query;
+    const { name, gradeId, classId, page, limit } = req.query;
     const prisma = await getPrismaClient(req.tenantId);
 
     const userInformationList = await InformationService.getUserInformationList(
@@ -56,6 +56,7 @@ export default class InformationController {
       {
         name: name ? (name as string) : '',
         classId: classId ? (classId as string) : '',
+        gradeId: gradeId ? (gradeId as string) : '',
         page: page ? parseInt(page as string, 10) : 1,
         limit: limit ? parseInt(limit as string, 10) : 20,
       },
