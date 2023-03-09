@@ -52,13 +52,15 @@ const SeachPage = () => {
                   <Link
                     href={`/profile/${user.userId}?profile_tab=information`}
                     prefetch={false}
+                    passHref
                     style={{ color: 'inherit' }}
                   >
                     <Wrapper>
                       <Box display={'flex'}>
                         <Avatar
                           sx={{ width: 60, height: 60 }}
-                          src={user?.avatarUrl ?? null}
+                          photoUrl={user?.avatarUrl ?? null}
+                          displayName={user?.fullName}
                         />
                         <Box
                           sx={{
@@ -67,13 +69,9 @@ const SeachPage = () => {
                             width: '100%',
                           }}
                         >
-                          <Link
-                            href={`/profile/${user.userId}?profile_tab=information`}
-                            style={{ color: 'inherit', fontWeight: 'bold' }}
-                            prefetch={false}
-                          >
+                          <Typography fontWeight={600}>
                             {user.fullName}
-                          </Link>
+                          </Typography>
                           <Box
                             display={'flex'}
                             flexDirection="column"

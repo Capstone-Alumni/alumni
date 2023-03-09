@@ -8,7 +8,7 @@ export type Grade = {
 
 export type Class = {
   id: string;
-  name?: string;
+  name: string;
   description: string | null;
   createdAt: string | Date;
   gradeId: string;
