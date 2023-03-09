@@ -95,7 +95,7 @@ const Seach = () => {
           <button type="submit" style={{ display: 'none' }}></button>
         </form>
 
-        <Stack direction="row" gap={2}>
+        <Stack direction={{ sm: 'column', md: 'row' }} gap={2}>
           <Autocomplete
             value={selectedGrade}
             onChange={(event, newValue) => {
