@@ -3,24 +3,24 @@ import { toast } from 'react-toastify';
 import useApi from 'src/modules/share/hooks/useApi';
 import { FundFormValues } from '../components/FundForm';
 
-type CreateFundPaymentParams = FundFormValues;
+type CreateFundTransactionParams = FundFormValues;
 
-type CreateFundPaymentResponse = {
+type CreateFundTransactionResponse = {
   data: string;
 };
 
-type CreateFundPaymentError = AxiosError;
+type CreateFundTransactionError = AxiosError;
 
-const useCreateFundPayment = () => {
+const useCreateFundTransaction = () => {
   const { fetchApi, isLoading } = useApi<
-    CreateFundPaymentParams,
-    CreateFundPaymentResponse,
-    CreateFundPaymentError
+    CreateFundTransactionParams,
+    CreateFundTransactionResponse,
+    CreateFundTransactionError
   >(
-    'createFundPayment',
+    'createFundTransaction',
     data => ({
       method: 'POST',
-      url: '/api/create_payment_url',
+      url: '/api/funds/create_transaction_url',
       data: {
         ...data,
         amount: 100000,
@@ -46,4 +46,4 @@ const useCreateFundPayment = () => {
   };
 };
 
-export default useCreateFundPayment;
+export default useCreateFundTransaction;

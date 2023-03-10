@@ -1,28 +1,19 @@
-import appNextConnect from '@lib/next-connect';
+import nc from 'next-connect';
 import querystring from 'qs';
 import crypto from 'crypto';
 import { isNil } from 'lodash/fp';
 import { formatDate } from '@share/utils/formatDate';
+import onErrorAPIHandler from '@lib/next-connect/onErrorAPIHandler';
+import onNoMatchAPIHandler from '@lib/next-connect/onNoMatchAPIHandler';
+import { extractTenantId } from '@lib/next-connect';
+import { sortObject } from '@share/utils/sortObject';
 
-function sortObject(obj: any) {
-  const sorted = {};
-  const str = [];
-  let key;
-  for (key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      str.push(encodeURIComponent(key));
-    }
-  }
-  str.sort();
-  for (key = 0; key < str.length; key++) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    sorted[str[key]] = encodeURIComponent(obj[str[key]]).replace(/%20/g, '+');
-  }
-  return sorted;
-}
+const handler = nc({
+  onError: onErrorAPIHandler,
+  onNoMatch: onNoMatchAPIHandler,
+}).use(extractTenantId);
 
-const handler = appNextConnect.post(function (req, res) {
+handler.post(function (req, res) {
   const ipAddr =
     req.headers['x-forwarded-for'] ||
     req.connection.remoteAddress ||
@@ -40,12 +31,19 @@ const handler = appNextConnect.post(function (req, res) {
 
   let vnpUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'; // config.get('vnp_Url');
   // TODO: https://capstone-alumni.atlassian.net/browse/AL-147
-  const returnUrl = 'http://localhost:3005/vnpayreturn'; // config.get('vnp_ReturnUrl');
+
+  const subdomain = req.cookies['tenant-subdomain'] as string;
+  const host = process.env.NEXT_PUBLIC_MAINAPP_HOST;
+  const returnUrl = `${host?.replace(
+    'alumni-sp23',
+    subdomain,
+  )}/funds/transaction_status`;
+  // 'http://localhost:3005/vnpayreturn'; // config.get('vnp_ReturnUrl');
 
   const date = new Date();
 
   const createDate = formatDate(date, 'yyyyMMddHHmmss');
-  const orderId = formatDate(date, 'HHmmss');
+  const orderId = createDate; // formatDate(date, 'HHmmss');
   const amount = req.body.amount;
   const bankCode = req.body.bankCode;
 
@@ -86,6 +84,7 @@ const handler = appNextConnect.post(function (req, res) {
     data: vnpUrl,
     status: true,
   });
+  // res.redirect(vnpUrl);
 });
 
 export default handler;
