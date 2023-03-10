@@ -35,18 +35,27 @@ const HostingEventListPage = () => {
           mb: 2,
         }}
       >
-        {data?.data.items.map(item => (
+        {data?.data.items.map((item) => (
           <CompanyItem
             key={item.id}
             companyDetails={item}
             actions={[
               <Link
                 key="edit-btn"
+                href={`/recruitments/job_details/${item.id}`}
+                style={{ width: '100%' }}
+              >
+                <Button fullWidth variant="outlined">
+                  Xem
+                </Button>
+              </Link>,
+              <Link
+                key="edit-btn"
                 href={`/recruitments/posted_jobs/${item.id}`}
                 style={{ width: '100%' }}
               >
                 <Button fullWidth variant="outlined">
-                  Chỉnh sửa
+                  Sửa
                 </Button>
               </Link>,
               <IconButton
@@ -71,7 +80,7 @@ const HostingEventListPage = () => {
         count={Math.ceil(data?.data.totalItems / data?.data.itemPerPage)}
         page={params.page}
         onChange={(_, nextPage) => {
-          setParams(prevParams => ({ ...prevParams, page: nextPage }));
+          setParams((prevParams) => ({ ...prevParams, page: nextPage }));
         }}
       />
     </>

@@ -5,7 +5,7 @@ import {
   GetOwnerInterestJobListParams,
   GetOwnerJobListParams,
   GetPublicJobListParams,
-  GetPublicJobParticipantListParams,
+  GetPublicJobApplierInfoListParams,
 } from './types';
 
 export const getAdminJobListParamsAtom = atom<GetAdminJobListParams>({
@@ -33,12 +33,13 @@ export const getPublicJobListParamsAtom = atom<GetPublicJobListParams>({
   },
 });
 
-export const getPublicJobParticipantListParamsAtom =
-  atom<GetPublicJobParticipantListParams>({
-    key: 'getPublicJobParticipantListParams',
+export const getPublicJobApplierInfoListParamsAtom =
+  atom<GetPublicJobApplierInfoListParams>({
+    key: 'getPublicJobApplierInfoListParams',
     default: {
       limit: 10,
       page: 1,
+      jobId: null,
     },
   });
 

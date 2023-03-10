@@ -49,11 +49,21 @@ export type Job = {
   type: string;
 };
 
-export type JobParticipant = {
+type ApplicationOwnerInfo = {
+  fullName: string;
+  email: string;
+  phone: string | null;
+};
+
+export type JobApplierInfo = {
   id: string;
-  userId: string;
-  eventId: string;
-  participantInformation: any;
+  archived: boolean;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+  resumeUrl: string;
+  recruitmentId: string;
+  applicationOwnerId: string;
+  applicationOwnerInfo: ApplicationOwnerInfo;
 };
 
 export type JobInterest = {
@@ -88,9 +98,10 @@ export type GetPublicJobListParams = {
   limit: number;
 };
 
-export type GetPublicJobParticipantListParams = {
+export type GetPublicJobApplierInfoListParams = {
   page: number;
   limit: number;
+  jobId?: string | null;
 };
 
 //BE

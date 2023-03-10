@@ -1,4 +1,4 @@
-import AdminEventListPage from 'src/modules/recruitments/components/AdminEventListPage';
+import AdminEventListPage from 'src/modules/recruitments/components/AdminJobListPage';
 
 export default async function Page() {
   return <AdminEventListPage />;

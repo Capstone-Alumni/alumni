@@ -7,7 +7,7 @@ import useAdminApproveEventById from '../hooks/useAdminApproveJobById';
 import useAdminGetEventList from '../hooks/useAdminGetJobList';
 import useAdminRejectEventById from '../hooks/useAdminRejectJobById';
 import { getAdminJobListParamsAtom } from '../states';
-import AdminEventListTable from './AdminEventListTable';
+import AdminEventListTable from './AdminJobListTable';
 
 const AdminEventListPage = () => {
   const theme = useTheme();
@@ -61,8 +61,8 @@ const AdminEventListPage = () => {
             page={params.page || 1}
             onApprove={onApproveEvent}
             onReject={onRejectEvent}
-            onChangePage={nextPage => {
-              setParams(prevParams => ({ ...prevParams, page: nextPage }));
+            onChangePage={(nextPage) => {
+              setParams((prevParams) => ({ ...prevParams, page: nextPage }));
             }}
           />
         ) : null}
