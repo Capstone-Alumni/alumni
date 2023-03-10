@@ -20,7 +20,7 @@ const useCreateFundTransaction = () => {
     'createFundTransaction',
     data => ({
       method: 'POST',
-      url: '/api/create_Transaction_url',
+      url: '/api/funds/create_transaction_url',
       data: {
         ...data,
         amount: 100000,
