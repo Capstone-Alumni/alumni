@@ -3,13 +3,13 @@ import querystring from 'qs';
 import crypto from 'crypto';
 import onErrorAPIHandler from '@lib/next-connect/onErrorAPIHandler';
 import onNoMatchAPIHandler from '@lib/next-connect/onNoMatchAPIHandler';
-import { extractTenantId } from '@lib/next-connect';
+// import { extractTenantId } from '@lib/next-connect';
 import { sortObject } from '@share/utils/sortObject';
 
 const handler = nc({
   onError: onErrorAPIHandler,
   onNoMatch: onNoMatchAPIHandler,
-}).use(extractTenantId);
+});
 
 handler.get(function (req, res) {
   let vnp_Params = req.query;
