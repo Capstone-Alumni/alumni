@@ -19,7 +19,7 @@ import usePublicInterestFundById from '../hooks/usePublicSaveFundById';
 import usePublicUninterestFundById from '../hooks/usePublicUnsaveFundById';
 import EditorPreview from '@share/components/editor/EditorPreview';
 import { renderEventStatus } from 'src/modules/events/components/EventDetailPage';
-import FundPaymentForm from './FundPaymentForm';
+import FundTransactionForm from './FundTransactionForm';
 
 const FundDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
@@ -213,7 +213,7 @@ const FundDetailPage = () => {
 
           {tabKey === 'send' ? (
             <Box sx={{ my: 2 }}>
-              <FundPaymentForm />
+              <FundTransactionForm />
             </Box>
           ) : null}
         </Box>
