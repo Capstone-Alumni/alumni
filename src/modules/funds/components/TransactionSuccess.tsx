@@ -1,6 +1,7 @@
 'use client';
 
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Button, Stack, Typography, useTheme } from '@mui/material';
+import Link from 'next/link';
 import ThankYou from 'public/thankyou.svg';
 
 const TransactionSuccess = () => {
@@ -10,12 +11,15 @@ const TransactionSuccess = () => {
     <Stack direction={{ md: 'row', sm: 'column-reverse' }} alignItems="center">
       <Box sx={{ minWidth: '30rem' }}>
         <Typography variant="h2">Ủng hộ thành công</Typography>
-        <Typography>
+        <Typography sx={{ mb: 2 }}>
           Cảm ơn bạn đã ủng hộ nhà trường. Thông tin ủng hộ của bạn đã được hệ
-          thống ghi nhân.
+          thống ghi nhận.
         </Typography>
+        <Link href="/funds/discover">
+          <Button role="href">Xem thêm quỹ</Button>
+        </Link>
       </Box>
-      <ThankYou style={{ fill: theme.palette.primary.main }} />
+      <ThankYou style={{ fill: theme.palette.success.main }} />
     </Stack>
   );
 };
