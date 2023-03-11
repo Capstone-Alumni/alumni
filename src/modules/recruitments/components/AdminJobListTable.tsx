@@ -7,7 +7,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import DataTablePagination from '@share/components/DataTablePagination';
 import { AdminGetJobListData } from '../hooks/useAdminGetJobList';
-import AdminEventListItem from './AdminEventListItem';
+import AdminEventListItem from './AdminJobListItem';
 
 const AdminEventListTable = ({
   data,

@@ -7,7 +7,7 @@ export const useCanEditProfile = () => {
   const pathname = usePathname();
   const userProfileId = pathname?.slice(pathname?.lastIndexOf('/') + 1);
 
-  const canEditProfile = currentUserInformation.userId === userProfileId;
+  const canEditProfile = currentUserInformation?.userId === userProfileId;
 
   return {
     canEditProfile,
