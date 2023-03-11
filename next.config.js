@@ -43,6 +43,10 @@ const nextConfig = {
         source: '/platformHost/:path*',
         destination: `${platformHost}/:path*`,
       },
+      {
+        source: '/api/fund_update_transaction',
+        destination: '/api/funds/transaction_ipn',
+      },
     ];
   },
 };
