@@ -271,6 +271,8 @@ model FundTransaction {
   vnp_ResponseCode      String? @map("vnp_response_code")
   vnp_TransactionStatus String? @map("vnp_transaction_status")
 
+  paymentStatus Int @default(0) @map("payment_status")
+
   fundId          String      @map("fund_id")
   userId          String      @map("user_id")
   fund            Fund        @relation(fields: [fundId], references: [id])

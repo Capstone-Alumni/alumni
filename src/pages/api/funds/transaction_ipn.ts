@@ -22,7 +22,7 @@ handler.get(function (req, res) {
   delete vnp_Params.vnp_SecureHashType;
 
   vnp_Params = sortObject(vnp_Params);
-  const secretKey = process.env.VNPAY_HASHSECRET as string; // .get('vnp_HashSecret');
+  const secretKey = process.env.VNPAY_HASHSECRET as string;
   const signData = querystring.stringify(vnp_Params, { encode: false });
   const hmac = crypto.createHmac('sha512', secretKey);
   const signed = hmac.update(new Buffer(signData, 'utf-8')).digest('hex');
@@ -33,6 +33,9 @@ handler.get(function (req, res) {
 
   const checkOrderId = true; // Mã đơn hàng "giá trị của vnp_TxnRef" VNPAY phản hồi tồn tại trong CSDL của bạn
   const checkAmount = true; // Kiểm tra số tiền "giá trị của vnp_Amout/100" trùng khớp với số tiền của đơn hàng trong CSDL của bạn
+
+  console.log(req);
+
   if (secureHash === signed) {
     //kiểm tra checksum
     if (checkOrderId) {
