@@ -218,7 +218,7 @@ const JobDetailPage = () => {
         Boolean(dataGetAppliedJobListById?.status) &&
         handleCheckUserIsJobOwner(
           currentUserInformation.id,
-          jobData.recruitmentOwnerId,
+          jobData.recruitmentOwnerInfoId,
         ) ? (
           <Box>
             <UsersAppliedJobPreview data={dataGetAppliedJobListById}>
@@ -250,7 +250,7 @@ const JobDetailPage = () => {
               <UploadFileInput
                 fileType={{ 'application/pdf': ['.pdf'] }}
                 control={control}
-                onSuccess={value => handlePostResume(value)}
+                onSuccess={(value) => handlePostResume(value)}
                 name="resumeUrl"
                 containerSx={{
                   opacity: '0',
@@ -292,7 +292,7 @@ const JobDetailPage = () => {
                 <UploadFileInput
                   control={control}
                   fileType={{ 'application/pdf': ['.pdf'] }}
-                  onSuccess={value =>
+                  onSuccess={(value) =>
                     handlePutResume(
                       value,
                       getApplicationId(
