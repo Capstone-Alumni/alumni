@@ -126,6 +126,8 @@ const JobDetailPage = () => {
 
   const { data: jobData } = data;
 
+  // prettier-ignore
+
   return (
     <Box>
       <Box
@@ -249,7 +251,7 @@ const JobDetailPage = () => {
               <UploadFileInput
                 fileType={{ 'application/pdf': ['.pdf'] }}
                 control={control}
-                onSuccess={(value) => handlePostResume(value)}
+                onSuccess={value => handlePostResume(value)}
                 name="resumeUrl"
                 containerSx={{
                   opacity: '0',
