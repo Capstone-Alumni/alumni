@@ -213,7 +213,7 @@ const FundDetailPage = () => {
 
           {tabKey === 'send' ? (
             <Box sx={{ my: 2 }}>
-              <FundTransactionForm />
+              <FundTransactionForm fundId={fundData.id} />
             </Box>
           ) : null}
         </Box>

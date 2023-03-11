@@ -5,15 +5,19 @@ import { isNil } from 'lodash/fp';
 import { formatDate } from '@share/utils/formatDate';
 import onErrorAPIHandler from '@lib/next-connect/onErrorAPIHandler';
 import onNoMatchAPIHandler from '@lib/next-connect/onNoMatchAPIHandler';
-import { extractTenantId } from '@lib/next-connect';
 import { sortObject } from '@share/utils/sortObject';
+import { extractTenantId, NextApiRequestWithTenant } from '@lib/next-connect';
+import getPrismaClient from '@lib/prisma/prisma';
+import { isAuthenticatedUser } from '@lib/next-connect/apiMiddleware';
 
 const handler = nc({
   onError: onErrorAPIHandler,
   onNoMatch: onNoMatchAPIHandler,
-}).use(extractTenantId);
+})
+  .use(extractTenantId)
+  .use(isAuthenticatedUser);
 
-handler.post(function (req, res) {
+handler.post(async function (req: NextApiRequestWithTenant, res) {
   const ipAddr =
     req.headers['x-forwarded-for'] ||
     req.connection.remoteAddress ||
@@ -65,13 +69,31 @@ handler.post(function (req, res) {
   vnp_Params.vnp_OrderInfo = orderInfo;
   vnp_Params.vnp_OrderType = orderType;
   vnp_Params.vnp_Amount = amount * 100;
-  vnp_Params.vnp_ReturnUrl = returnUrl;
   vnp_Params.vnp_IpAddr = ipAddr;
   vnp_Params.vnp_CreateDate = createDate;
   if (bankCode !== undefined && bankCode !== null && bankCode !== '') {
     vnp_Params.vnp_BankCode = bankCode;
   }
 
+  const prisma = await getPrismaClient(req.tenantId);
+
+  await prisma.fundTransaction.create({
+    data: {
+      ...vnp_Params,
+      vnp_Amount: parseInt(vnp_Params.vnp_Amount, 10),
+      vnp_OrderType: vnp_Params.vnp_OrderType.toString(),
+      fund: {
+        connect: { id: req.body.fundId },
+      },
+      userInformation: {
+        connect: { userId: req.user.id },
+      },
+    },
+  });
+
+  await prisma.$disconnect();
+
+  vnp_Params.vnp_ReturnUrl = returnUrl;
   vnp_Params = sortObject(vnp_Params);
 
   const signData = querystring.stringify(vnp_Params, { encode: false });
