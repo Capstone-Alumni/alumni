@@ -1,12 +1,13 @@
 import { atom } from 'recoil';
 import {
   GetAdminJobListParams,
+  GetCandiatesAppliedJobListParams,
   GetOwnerGoingJobListParams,
   GetOwnerInterestJobListParams,
   GetOwnerJobListParams,
   GetPublicJobApplierInfoListParams,
   GetPublicJobListParams,
-  GetCandiatesAppliedJobListParams,
+  GetUserAppliedJobListParams,
 } from './types';
 
 export const getAdminJobListParamsAtom = atom<GetAdminJobListParams>({
@@ -17,6 +18,15 @@ export const getAdminJobListParamsAtom = atom<GetAdminJobListParams>({
     approved: undefined,
   },
 });
+
+export const getUserGetAppliedJobListParamsAtom =
+  atom<GetUserAppliedJobListParams>({
+    key: 'getUserGetAppliedJobListParams',
+    default: {
+      limit: 10,
+      page: 1,
+    },
+  });
 
 export const getCandiatesAppliedJobListParamsAtom =
   atom<GetCandiatesAppliedJobListParams>({

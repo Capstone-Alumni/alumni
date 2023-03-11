@@ -81,19 +81,6 @@ const CompaniesSlider = ({
       </Typography>
       <Grid container gap="1rem" sx={{ marginTop: '0.5rem' }}>
         {handleRenderCategories()}
-        {/* <Pagination
-          sx={{
-            margin: '1rem auto',
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-          color="primary"
-          count={Math.ceil((data?.totalItems || 0) / (data?.itemPerPage || 1))}
-          page={params.page}
-          onChange={(_, nextPage) => {
-            setParams((prevParams) => ({ ...prevParams, page: nextPage }));
-          }}
-        /> */}
       </Grid>
       <Grid container spacing={2} sx={{ marginTop: '0.25rem' }}>
         {handleRenderCompanies()}

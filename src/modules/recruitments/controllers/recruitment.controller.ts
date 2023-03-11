@@ -101,6 +101,33 @@ export default class RecruitmentController {
     }
   };
 
+  static getListAppliedByUserId = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const prisma = await getPrismaClient(req.tenantId);
+      const { page, limit } = req.query;
+      const listAppliedJob = await RecruimentService.getUserAppliedJobList(
+        prisma,
+        {
+          userId: req.user.id,
+          page: page ? parseInt(page as string, 10) : 1,
+          limit: limit ? parseInt(limit as string, 10) : 20,
+        },
+      );
+      return res.status(200).json({
+        status: true,
+        data: listAppliedJob,
+      });
+    } catch (error: any) {
+      return res.status(400).json({
+        status: false,
+        message: error.message,
+      });
+    }
+  };
+
   static getByIdAndApproved = async (
     req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
