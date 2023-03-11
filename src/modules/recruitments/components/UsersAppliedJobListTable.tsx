@@ -6,7 +6,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import DataTablePagination from '@share/components/DataTablePagination';
-import { AdminGetJobListData } from '../hooks/useAdminGetJobList';
 import UsersAppliedJobListItem from './UsersAppliedJobListItem';
 import { GetAppliedJobListByIdResponse } from '../hooks/usePublicGetAppliedJobListById';
 
@@ -37,7 +36,7 @@ const AdminEventListTable = ({
           </TableHead>
           <TableBody>
             {data.data.items.map(
-              (row) =>
+              row =>
                 !row.archived && (
                   <UsersAppliedJobListItem
                     key={row.id}

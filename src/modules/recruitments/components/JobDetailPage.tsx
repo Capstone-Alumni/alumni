@@ -33,8 +33,6 @@ import UploadFileInput from '@share/components/form/UploadFileInput';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 import { useForm } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
-import { JobApplierInfo } from '../types';
-import PdfResumePreview from './PdfResumePreview';
 import UsersAppliedJobPreview from './UsersAppliedJobPreview';
 
 const StyledGeneralInfomation = styled(Box)(({ theme }) => ({
@@ -108,7 +106,7 @@ const JobDetailPage = () => {
     ownerId: string,
   ): boolean => {
     console.log(viewerId, ownerId);
-    return viewerId === ownerId ? true : false;
+    return viewerId === ownerId;
   };
 
   const getApplicationId = (
@@ -251,7 +249,7 @@ const JobDetailPage = () => {
               Tải lên CV
               <UploadFileInput
                 control={control}
-                onSuccess={(value) => handlePostResume(value)}
+                onSuccess={value => handlePostResume(value)}
                 name="resumeUrl"
                 containerSx={{
                   opacity: '0',
@@ -292,7 +290,7 @@ const JobDetailPage = () => {
                 Chỉnh sửa CV
                 <UploadFileInput
                   control={control}
-                  onSuccess={(value) =>
+                  onSuccess={value =>
                     handlePutResume(
                       value,
                       getApplicationId(

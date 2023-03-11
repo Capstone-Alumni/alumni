@@ -61,8 +61,8 @@ const AdminEventListPage = () => {
             page={params.page || 1}
             onApprove={onApproveEvent}
             onReject={onRejectEvent}
-            onChangePage={(nextPage) => {
-              setParams((prevParams) => ({ ...prevParams, page: nextPage }));
+            onChangePage={nextPage => {
+              setParams(prevParams => ({ ...prevParams, page: nextPage }));
             }}
           />
         ) : null}

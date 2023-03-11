@@ -1,14 +1,6 @@
 import { Icon } from '@iconify/react';
-import {
-  Link,
-  IconButton,
-  TableCell,
-  TableRow,
-  Typography,
-} from '@mui/material';
-import axios from 'axios';
-import { Job, JobApplierInfo } from '../types';
-import AdminJobPreview from './AdminJobPreview';
+import { IconButton, TableCell, TableRow, Typography } from '@mui/material';
+import { JobApplierInfo } from '../types';
 import PdfResumePreview from './PdfResumePreview';
 
 const AdminEventListItem = ({

@@ -78,7 +78,7 @@ const UsersAppliedJobListPage = ({
           page={1}
           onPreview={onPreviewCandidates}
           onDownload={onDownloadResumeCandidate}
-          onChangePage={(nextPage) => {
+          onChangePage={nextPage => {
             // setParams((prevParams) => ({ ...prevParams, page: nextPage }));
           }}
         />

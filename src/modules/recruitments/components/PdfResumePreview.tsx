@@ -1,6 +1,6 @@
 import { useState } from 'react';
 // material
-import { styled, Dialog } from '@mui/material';
+import { Dialog, styled } from '@mui/material';
 
 // ----------------------------------------------------------------------
 interface FormDialogsProps {
