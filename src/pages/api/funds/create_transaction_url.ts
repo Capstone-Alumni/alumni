@@ -41,7 +41,7 @@ handler.post(async function (req: NextApiRequestWithTenant, res) {
   const returnUrl = `${host?.replace(
     'alumni-sp23',
     subdomain,
-  )}/funds/transaction_status`;
+  )}/transaction_status`;
   // 'http://localhost:3005/vnpayreturn'; // config.get('vnp_ReturnUrl');
 
   const date = new Date();

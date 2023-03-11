@@ -28,6 +28,14 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+
+    return config;
+  },
   async rewrites() {
     const platformHost = process.env.NEXT_PUBLIC_PLATFORM_HOST;
     return [
