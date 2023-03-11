@@ -85,6 +85,9 @@ handler.get(async function (req, res) {
                 },
               },
             });
+
+            // TODO: increase message for user
+
             res.status(200).json({ RspCode: '00', Message: 'Success' });
           } else {
             //that bai

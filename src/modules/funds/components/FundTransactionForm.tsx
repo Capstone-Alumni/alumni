@@ -1,14 +1,30 @@
-import { Button, TextField } from '@mui/material';
-import { Box } from '@mui/material';
+import { Button, Stack, TextField } from '@mui/material';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import useCreateFundTransaction from '../hooks/useCreateFundTransaction';
 
-const FundTransactionForm = ({ fundId }: { fundId: string }) => {
+const FundTransactionForm = ({
+  fundId,
+  canDonate,
+}: {
+  fundId: string;
+  canDonate: boolean;
+}) => {
   const { fetchApi } = useCreateFundTransaction();
   const [amount, setAmount] = useState(200000);
 
+  const handleDonate = () => {
+    if (canDonate) {
+      fetchApi({ fundId: fundId, amount: amount });
+    } else {
+      toast.info(
+        'Không thể ủng hộ. Thời gian gây quỹ đã kết thúc hoặc quỹ đã đạt số tiền mong muốn',
+      );
+    }
+  };
+
   return (
-    <Box>
+    <Stack direction="column" gap={1}>
       <TextField
         size="small"
         label="Số tiền ủng hộ"
@@ -19,13 +35,10 @@ const FundTransactionForm = ({ fundId }: { fundId: string }) => {
           setAmount(parseInt(e.target.value, 10));
         }}
       />
-      <Button
-        variant="contained"
-        onClick={() => fetchApi({ fundId: fundId, amount: amount })}
-      >
+      <Button variant="contained" onClick={() => handleDonate()}>
         Ủng hộ ngay
       </Button>
-    </Box>
+    </Stack>
   );
 };
 

@@ -52,7 +52,6 @@ const FundForm = ({
       endTime: initialData?.endTime
         ? new Date(initialData.endTime)
         : new Date(),
-      isEnded: initialData?.isEnded,
       targetBalance: initialData?.targetBalance ?? 100000,
       publicity: initialData?.publicity ?? 'ALUMNI',
     },

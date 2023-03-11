@@ -37,6 +37,8 @@ const FundCardItem = ({
             {data.title}
           </Typography>
 
+          <Box sx={{ flex: 1 }} />
+
           <Stack direction="column" justifyContent="center" sx={{ mb: 1 }}>
             <Typography variant="caption">
               <strong>Bắt đầu:</strong>{' '}
@@ -47,8 +49,6 @@ const FundCardItem = ({
               {formatDate(new Date(data.endTime), 'HH:mm - dd/MM/yyyy')}
             </Typography>
           </Stack>
-
-          <Box sx={{ flex: 1 }} />
 
           {/* <Stack direction="row" gap={1} alignItems="center" sx={{ mb: 2 }}>
             <MyAvatar

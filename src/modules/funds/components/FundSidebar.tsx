@@ -48,13 +48,13 @@ const FUND_NAV_ITEMS = [
   {
     id: 'ongoing',
     title: 'Đang gây quỹ',
-    icon: 'material-symbols:globe-asia-sharp',
+    icon: 'carbon:checkmark-filled',
     link: '/funds/going',
   },
   {
     id: 'ended',
     title: 'Đã kết thúc',
-    icon: 'material-symbols:globe-asia-sharp',
+    icon: 'uil:trash-alt',
     link: '/funds/ended',
   },
   {
