@@ -1,35 +1,33 @@
 import { useState } from 'react';
 // material
-import { Dialog } from '@mui/material';
-// import JobForm from './JobForm';
-// import useOwnerGetJobById from '../hooks/useOwnerGetJobById';
-import { Job } from '../types';
-import dynamic from 'next/dynamic';
+import { styled, Dialog } from '@mui/material';
 
-const PdfPreview = dynamic(() => import('@share/components/editor/PdfReview'), {
-  ssr: false,
-});
 // ----------------------------------------------------------------------
 interface FormDialogsProps {
-  isPreview?: boolean;
+  resumeUrl?: string;
   children?: React.ReactNode;
 }
 
+const DialogStyled = styled(Dialog)(({ theme }) => ({
+  width: '100vw',
+  '& .MuiDialog-container': {
+    width: '95vw',
+    margin: '0 auto',
+    '& .MuiPaper-root': {
+      padding: theme.spacing(0),
+      width: '100vw',
+      height: '100vh',
+      margin: '0 auto',
+      maxWidth: '100vw',
+    },
+  },
+}));
+
 export default function PdfResumePreview({
-  isPreview,
+  resumeUrl,
   children,
 }: FormDialogsProps) {
   const [open, setOpen] = useState(false);
-
-  // const {
-  //   fetchApi: getJob,
-  //   data: jobData,
-  //   isLoading: isGettingJob,
-  // } = useOwnerGetJobById();
-
-  // useEffect(() => {
-  //   getJob({ jobId: data.id });
-  // }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -42,17 +40,23 @@ export default function PdfResumePreview({
   return (
     <div>
       <div onClick={handleClickOpen}>{children}</div>
-      <Dialog
+      <DialogStyled
         open={open}
         onClose={handleClose}
-        sx={{ width: '700px', margin: '0 auto' }}
+        sx={{ width: '100vw', margin: '0 auto' }}
       >
-        <PdfPreview
-          url="https://www.africau.edu/images/default/sample.pdf"
-          width="200"
-          pageNumber={1}
-        />
-      </Dialog>
+        <object
+          data={resumeUrl}
+          type="application/pdf"
+          width="100%"
+          height="100%"
+        >
+          <p>
+            Alternative text - include a link{' '}
+            <a href={resumeUrl}>to the PDF!</a>
+          </p>
+        </object>
+      </DialogStyled>
     </div>
   );
 }

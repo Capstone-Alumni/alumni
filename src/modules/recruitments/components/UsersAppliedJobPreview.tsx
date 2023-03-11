@@ -1,9 +1,24 @@
 import { useState } from 'react';
 // material
-import { Dialog } from '@mui/material';
+import { Dialog, styled } from '@mui/material';
 import { GetAppliedJobListByIdResponse } from '../hooks/usePublicGetAppliedJobListById';
 import UsersAppliedJobListPage from './UsersAppliedJobListPage';
 // ----------------------------------------------------------------------
+
+const DialogStyled = styled(Dialog)(({ theme }) => ({
+  width: '100vw',
+  '& .MuiDialog-container': {
+    width: '80vw',
+    margin: '0 auto',
+    '& .MuiPaper-root': {
+      padding: theme.spacing(4),
+      width: '100%',
+      // height: '100%',
+      margin: '0 auto',
+    },
+  },
+}));
+
 interface FormDialogsProps {
   isPreview?: boolean;
   children?: React.ReactNode;
@@ -28,13 +43,13 @@ export default function UsersAppliedJobPreview({
   return (
     <div>
       <div onClick={handleClickOpen}>{children}</div>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        sx={{ width: '80vw', margin: '0 auto' }}
-      >
-        {!data ? <h1>Chưa có người nộp</h1> : <UsersAppliedJobListPage />}
-      </Dialog>
+      <DialogStyled open={open} onClose={handleClose} maxWidth="xl">
+        {!data ? (
+          <h1>Chưa có người nộp</h1>
+        ) : (
+          <UsersAppliedJobListPage data={data} />
+        )}
+      </DialogStyled>
     </div>
   );
 }

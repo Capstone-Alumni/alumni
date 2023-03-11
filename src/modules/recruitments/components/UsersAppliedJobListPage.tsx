@@ -1,29 +1,49 @@
 'use client';
 
 import { Box, Typography, useTheme } from '@mui/material';
-import LoadingIndicator from '@share/components/LoadingIndicator';
-import { useRecoilState } from 'recoil';
-import useAdminApproveEventById from '../hooks/useAdminApproveJobById';
-import useAdminGetEventList from '../hooks/useAdminGetJobList';
-import useAdminRejectEventById from '../hooks/useAdminRejectJobById';
-import { getAdminJobListParamsAtom } from '../states';
-import AdminEventListTable from './AdminJobListTable';
 
-const AdminEventListPage = () => {
+import { GetAppliedJobListByIdResponse } from '../hooks/usePublicGetAppliedJobListById';
+import UsersAppliedJobListTable from './UsersAppliedJobListTable';
+
+const UsersAppliedJobListPage = ({
+  data,
+}: {
+  data: GetAppliedJobListByIdResponse;
+}) => {
   const theme = useTheme();
-  const [params, setParams] = useRecoilState(getAdminJobListParamsAtom);
-  const { data, reload, isLoading } = useAdminGetEventList();
-  const { fetchApi: approveEvent } = useAdminApproveEventById();
-  const { fetchApi: rejectEvent } = useAdminRejectEventById();
 
-  const onApproveEvent = async (id: string) => {
-    await approveEvent({ jobId: id });
-    reload();
+  const onPreviewCandidates = async (id: string) => {
+    // await approveEvent({ jobId: id });
+    // reload();
   };
 
-  const onRejectEvent = async (id: string) => {
-    await rejectEvent({ jobId: id });
-    reload();
+  const onDownloadResumeCandidate = async (id: string) => {
+    console.log(id);
+    // await fetch('https://cors-anywhere.herokuapp.com/' + id, {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/pdf',
+    //   },
+    // })
+    //   .then((response) => response.blob())
+    //   .then((blob) => {
+    //     // Create blob link to download
+    //     const url = window.URL.createObjectURL(new Blob([blob]));
+    //     const link = document.createElement('a');
+    //     link.href = url;
+    //     link.setAttribute('download', `FileName.pdf`);
+
+    //     // Append to html link element page
+    //     document.body.appendChild(link);
+
+    //     fileDownload(url, 'GiaAn.pdf');
+
+    //     // Start download
+    //     // link.click();
+
+    //     // Clean up and remove the link
+    //     link.parentNode && link.parentNode.removeChild(link);
+    //   });
   };
 
   return (
@@ -45,7 +65,7 @@ const AdminEventListPage = () => {
           alignItems: 'center',
         }}
       >
-        <Typography variant="h3">Tuyển dụng</Typography>
+        <Typography variant="h3">Danh sách những người đã nộp</Typography>
       </Box>
 
       <Box
@@ -53,22 +73,18 @@ const AdminEventListPage = () => {
           width: '100%',
         }}
       >
-        {isLoading ? <LoadingIndicator /> : null}
-
-        {data?.data ? (
-          <AdminEventListTable
-            data={data?.data}
-            page={params.page || 1}
-            onApprove={onApproveEvent}
-            onReject={onRejectEvent}
-            onChangePage={(nextPage) => {
-              setParams((prevParams) => ({ ...prevParams, page: nextPage }));
-            }}
-          />
-        ) : null}
+        <UsersAppliedJobListTable
+          data={data}
+          page={1}
+          onPreview={onPreviewCandidates}
+          onDownload={onDownloadResumeCandidate}
+          onChangePage={(nextPage) => {
+            // setParams((prevParams) => ({ ...prevParams, page: nextPage }));
+          }}
+        />
       </Box>
     </Box>
   );
 };
 
-export default AdminEventListPage;
+export default UsersAppliedJobListPage;

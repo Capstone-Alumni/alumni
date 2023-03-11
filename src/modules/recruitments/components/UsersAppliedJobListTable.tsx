@@ -7,18 +7,19 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import DataTablePagination from '@share/components/DataTablePagination';
 import { AdminGetJobListData } from '../hooks/useAdminGetJobList';
-import AdminEventListItem from './AdminJobListItem';
+import UsersAppliedJobListItem from './UsersAppliedJobListItem';
+import { GetAppliedJobListByIdResponse } from '../hooks/usePublicGetAppliedJobListById';
 
 const AdminEventListTable = ({
   data,
-  onApprove,
-  onReject,
+  onDownload,
+  onPreview,
   page,
   onChangePage,
 }: {
-  data: AdminGetJobListData;
-  onApprove: (id: string) => void;
-  onReject: (id: string) => void;
+  data: GetAppliedJobListByIdResponse;
+  onDownload: (id: string) => void;
+  onPreview: (id: string) => void;
   page: number;
   onChangePage: (nextPage: number) => void;
 }) => {
@@ -28,24 +29,21 @@ const AdminEventListTable = ({
         <Table aria-label="event table">
           <TableHead>
             <TableRow>
-              <TableCell align="left">Tên công việc</TableCell>
-              <TableCell align="left">Người gửi yêu cầu</TableCell>
-              <TableCell align="left">Trạng thái</TableCell>
-              <TableCell align="left">Ngày được tạo</TableCell>
-              <TableCell sx={{ maxWidth: '2.5rem' }} />
-              <TableCell sx={{ maxWidth: '2.5rem' }} />
+              <TableCell align="left">Họ tên</TableCell>
+              <TableCell align="left">Email</TableCell>
+              <TableCell align="left">Số điện thoại</TableCell>
               <TableCell sx={{ maxWidth: '2.5rem' }} />
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.items.map(
+            {data.data.items.map(
               (row) =>
                 !row.archived && (
-                  <AdminEventListItem
+                  <UsersAppliedJobListItem
                     key={row.id}
                     data={row}
-                    onApprove={onApprove}
-                    onReject={onReject}
+                    onPreview={onPreview}
+                    onDownload={onDownload}
                   />
                 ),
             )}
@@ -54,7 +52,7 @@ const AdminEventListTable = ({
           <DataTablePagination
             colSpan={6}
             currentPage={page}
-            totalPage={Math.ceil(data.totalItems / data.itemPerPage)}
+            totalPage={Math.ceil(data.data.totalItems / data.data.itemPerPage)}
             onChangePage={onChangePage}
           />
         </Table>

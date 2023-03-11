@@ -1,68 +1,45 @@
 import { Icon } from '@iconify/react';
 import {
-  Button,
+  Link,
   IconButton,
   TableCell,
   TableRow,
   Typography,
 } from '@mui/material';
-import { Job } from '../types';
+import axios from 'axios';
+import { Job, JobApplierInfo } from '../types';
 import AdminJobPreview from './AdminJobPreview';
+import PdfResumePreview from './PdfResumePreview';
 
 const AdminEventListItem = ({
   data,
-  onApprove,
-  onReject,
+  onPreview,
+  onDownload,
 }: {
-  data: Job;
-  onApprove: (id: string) => void;
-  onReject: (id: string) => void;
+  data: JobApplierInfo;
+  onPreview: (id: string) => void;
+  onDownload: (id: string) => void;
 }) => {
   return (
     <>
       <TableRow>
         <TableCell align="left">
-          <Typography>{data.title}</Typography>
+          <Typography>{data.applicationOwnerInfo.fullName}</Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>{data.recruitmentOwnerInfo?.fullName}</Typography>
+          <Typography>{data.applicationOwnerInfo?.email}</Typography>
         </TableCell>
         <TableCell align="left">
           <Typography>
-            {data.archived ? (
-              <Button variant="outlined" size="small" color="error">
-                Đã từ chối
-              </Button>
-            ) : data.isApproved ? (
-              <Button variant="outlined" size="small" color="success">
-                Đã chấp thuận
-              </Button>
-            ) : (
-              <Button variant="outlined" size="small" color="warning">
-                Đang chờ xác nhận
-              </Button>
-            )}
+            {data.applicationOwnerInfo?.phone || 'Chưa cập nhật'}
           </Typography>
         </TableCell>
-        <TableCell align="left">
-          <Typography>{new Date(data.createdAt).toDateString()}</Typography>
-        </TableCell>
-        <TableCell align="center" sx={{ maxWidth: '3rem' }}>
-          <AdminJobPreview data={data}>
-            <IconButton>
+        <TableCell align="center" sx={{ maxWidth: '2rem' }}>
+          <PdfResumePreview resumeUrl={data.resumeUrl}>
+            <IconButton onClick={() => onPreview(data.resumeUrl)}>
               <Icon height={24} icon="uil:eye" />
             </IconButton>
-          </AdminJobPreview>
-        </TableCell>
-        <TableCell align="center" sx={{ maxWidth: '3rem' }}>
-          <IconButton onClick={() => onApprove(data.id)}>
-            <Icon height={24} icon="uil:pen" />
-          </IconButton>
-        </TableCell>
-        <TableCell align="center" sx={{ maxWidth: '3rem' }}>
-          <IconButton onClick={() => onReject(data.id)}>
-            <Icon height={24} icon="uil:trash-alt" />
-          </IconButton>
+          </PdfResumePreview>
         </TableCell>
       </TableRow>
     </>
