@@ -49,12 +49,14 @@ export interface UploadSingleFileProps extends DropzoneOptions {
   error?: boolean;
   file: CustomFile | string | null;
   sx?: SxProps<Theme>;
+  fileType: any;
 }
 
 export default function UploadSingleFile({
   error = false,
   file,
   sx,
+  fileType,
   ...other
 }: UploadSingleFileProps) {
   const {
@@ -65,6 +67,7 @@ export default function UploadSingleFile({
     fileRejections,
   } = useDropzone({
     multiple: false,
+    ...(fileType && { accept: { ...fileType } }),
     ...other,
   });
 
@@ -76,7 +79,7 @@ export default function UploadSingleFile({
         px: 2,
         mt: 3,
         borderColor: 'error.light',
-        bgcolor: theme => alpha(theme.palette.error.main, 0.08),
+        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08),
       }}
     >
       {fileRejections.map(({ file, errors }) => {
@@ -86,7 +89,7 @@ export default function UploadSingleFile({
             <Typography variant="subtitle2" noWrap>
               {path} - {fData(size)}
             </Typography>
-            {errors.map(e => (
+            {errors.map((e) => (
               <Typography key={e.code} variant="caption" component="p">
                 - {e.message}
               </Typography>

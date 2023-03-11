@@ -248,8 +248,9 @@ const JobDetailPage = () => {
             >
               Tải lên CV
               <UploadFileInput
+                fileType={{ 'application/pdf': ['.pdf'] }}
                 control={control}
-                onSuccess={value => handlePostResume(value)}
+                onSuccess={(value) => handlePostResume(value)}
                 name="resumeUrl"
                 containerSx={{
                   opacity: '0',
@@ -290,7 +291,8 @@ const JobDetailPage = () => {
                 Chỉnh sửa CV
                 <UploadFileInput
                   control={control}
-                  onSuccess={value =>
+                  fileType={{ 'application/pdf': ['.pdf'] }}
+                  onSuccess={(value) =>
                     handlePutResume(
                       value,
                       getApplicationId(
