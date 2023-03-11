@@ -15,12 +15,7 @@ const AppliedJobListPage = () => {
   const [params, setParams] = useRecoilState(
     getUserGetAppliedJobListParamsAtom,
   );
-  const { data, reload, isLoading } = useUserGetAppliedJobList();
-
-  const onDeleteJob = async (id: string) => {
-    // await deleteJob({ jobId: id });
-    // reload();
-  };
+  const { data, isLoading } = useUserGetAppliedJobList();
 
   if (isLoading || !data?.data) {
     return <LoadingIndicator />;
@@ -35,7 +30,7 @@ const AppliedJobListPage = () => {
           mb: 2,
         }}
       >
-        {data?.data.items.map((item) => (
+        {data?.data.items.map(item => (
           <CompanyItem
             key={item.id}
             companyDetails={item.recruitment}
@@ -49,7 +44,10 @@ const AppliedJobListPage = () => {
                   Xem
                 </Button>
               </Link>,
-              <PdfResumePreview resumeUrl={item.resumeUrl}>
+              <PdfResumePreview
+                resumeUrl={item.resumeUrl}
+                key="preview-user-pdf"
+              >
                 <IconButton key="delete-btn" color="default">
                   <VisibilityIcon />
                 </IconButton>
@@ -68,7 +66,7 @@ const AppliedJobListPage = () => {
         count={Math.ceil(data?.data.totalItems / data?.data.itemPerPage)}
         page={params.page}
         onChange={(_, nextPage) => {
-          setParams((prevParams) => ({ ...prevParams, page: nextPage }));
+          setParams(prevParams => ({ ...prevParams, page: nextPage }));
         }}
       />
     </>

@@ -15,6 +15,7 @@ type UploadFileInputProps<T extends FieldValues> = {
   };
   containerSx?: SxProps;
   onSuccess?: (url: string) => void;
+  fileType?: any;
 };
 
 const UploadFileInput = <T extends FieldValues>({
@@ -23,6 +24,7 @@ const UploadFileInput = <T extends FieldValues>({
   inputProps,
   containerSx,
   onSuccess,
+  fileType,
 }: UploadFileInputProps<T>) => {
   const handleDrop = async (acceptedFiles: File[]) => {
     const { uploadFile } = setStorage();
@@ -59,6 +61,7 @@ const UploadFileInput = <T extends FieldValues>({
           <UploadSingleFile
             // {...field}
             {...inputProps}
+            fileType={fileType}
             file={field.value}
             onDrop={async files => {
               const url = await handleDrop(files);
