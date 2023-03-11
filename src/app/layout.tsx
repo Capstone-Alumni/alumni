@@ -7,8 +7,6 @@ import GetInitialUserInformation from '@share/helpers/GetInitialUserInformation'
 import SetCurrentTenant from '@share/helpers/SetCurrentTenant';
 import { getTenantDataSSR } from '@share/helpers/SSRAuthorization';
 
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import 'quill/dist/quill.snow.css';
 import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';

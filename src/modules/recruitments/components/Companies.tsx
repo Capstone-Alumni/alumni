@@ -2,7 +2,6 @@
 
 import React from 'react';
 import {
-  Box,
   Button,
   Grid,
   Pagination,
@@ -15,27 +14,10 @@ import { getAdminJobListParamsAtom } from '../states';
 
 import Link from 'next/link';
 import CompanyItem from './CompanyItem';
-import Slider from 'react-slick';
 import { Job } from '../types';
-
-const FlexWrapper = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexWrap: 'wrap',
-  width: '100%',
-  gap: '1rem',
-
-  '& .MuiBox-root': {
-    width: '32%',
-  },
-}));
 
 const Spacer = styled('div')(({ theme }) => ({
   marginTop: `${theme.spacing(6)}`,
-}));
-
-const StyledSlider = styled(Slider)(({ theme }) => ({
-  display: 'flex',
-  width: '100%',
 }));
 
 const CompaniesSlider = ({
@@ -69,6 +51,7 @@ const CompaniesSlider = ({
       );
     });
   };
+  // prettier-ignore
   return (
     <Grid
       container

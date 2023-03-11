@@ -64,6 +64,7 @@ export type JobApplierInfo = {
   recruitmentId: string;
   applicationOwnerId: string;
   applicationOwnerInfo: ApplicationOwnerInfo;
+  recruitment: Job;
 };
 
 export type JobInterest = {
@@ -76,6 +77,11 @@ export type GetAdminJobListParams = {
   page: number;
   limit: number;
   approved: number | undefined;
+};
+
+export type GetUserAppliedJobListParams = {
+  page: number;
+  limit: number;
 };
 
 export type GetCandiatesAppliedJobListParams = {
