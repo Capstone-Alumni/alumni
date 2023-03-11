@@ -4,6 +4,7 @@ import useApi from 'src/modules/share/hooks/useApi';
 
 type CreateFundTransactionParams = {
   fundId: string;
+  amount: number;
 };
 
 type CreateFundTransactionResponse = {
@@ -25,9 +26,7 @@ const useCreateFundTransaction = () => {
       data: {
         ...data,
         fundId,
-        amount: 100000,
-        orderDescription:
-          'Nap tien cho thue bao 0123456789. So tien 100,000 VND',
+        orderDescription: `dong gop cho quy ${fundId} so tien ${data.amount}`,
         orderType: 250000,
       },
     }),
