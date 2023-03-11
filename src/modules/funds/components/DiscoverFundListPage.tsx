@@ -59,7 +59,7 @@ const DiscoverFundListPage = () => {
                   prefetch={false}
                 >
                   <Button fullWidth variant="outlined">
-                    Tìm hiểu thêm
+                    Ủng hộ
                   </Button>
                 </Link>,
                 isSaved ? (

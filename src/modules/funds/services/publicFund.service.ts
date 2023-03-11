@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from '@prisma/client';
+import { omit } from 'lodash/fp';
 
 export default class PublicFundService {
   static getList = async (
@@ -22,6 +23,14 @@ export default class PublicFundService {
           createdAt: 'desc',
         },
         include: {
+          fundTransactions: {
+            where: {
+              paymentStatus: 1,
+            },
+            select: {
+              vnp_Amount: true,
+            },
+          },
           fundSaved: {
             where: {
               userId: userId ?? '',
@@ -34,9 +43,19 @@ export default class PublicFundService {
 
     await tenantPrisma.$disconnect();
 
+    const transformedItems = items.map(item =>
+      omit('fundTransactions')({
+        ...item,
+        currentBalance: item.fundTransactions.reduce(
+          (sum, tsx) => tsx.vnp_Amount + sum,
+          0,
+        ),
+      }),
+    );
+
     return {
       totalItems: totalItems,
-      items,
+      items: transformedItems,
       itemPerPage: limit,
     };
   };

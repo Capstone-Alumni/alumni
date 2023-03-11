@@ -3,7 +3,7 @@ import cacheData from 'memory-cache';
 export const getTenantData = async (subdomain: string) => {
   const url = `${process.env.NEXT_PUBLIC_PLATFORM_HOST}/api/tenants/subdomain/${subdomain}`;
 
-  const cachedValue = cacheData.get(url);
+  const cachedValue = await cacheData.get(url);
   if (cachedValue) {
     return cachedValue;
   }

@@ -47,7 +47,13 @@ const StyledNavItem = styled(Box)(({ theme }) => ({
 const FUND_NAV_ITEMS = [
   {
     id: 'discover',
-    title: 'Khám phá',
+    title: 'Đang gây quỹ',
+    icon: 'material-symbols:globe-asia-sharp',
+    link: '/funds/discover',
+  },
+  {
+    id: 'discover',
+    title: 'Đã kết thúc',
     icon: 'material-symbols:globe-asia-sharp',
     link: '/funds/discover',
   },

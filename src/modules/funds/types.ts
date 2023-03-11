@@ -20,12 +20,7 @@ export type Fund = {
   approvedStatus: -1 | 0 | 1;
   publicity: AccessLevel;
   userId: string;
-  hostInformation?: {
-    id: string;
-    userId: string;
-    email: string;
-    fullName: string;
-  };
+  hostInformation?: UserInformation;
   fundSaved: FundSaved[];
   statementFile?: string;
 };
