@@ -84,6 +84,7 @@ model Information {
   postComments           PostComment[]
   postLikes              PostLike[]
   RecruitmentApplication RecruitmentApplication[]
+  fundTransactions        FundTransaction[]
 
   @@map("informations")
 }
@@ -128,6 +129,22 @@ model News {
   authorInfo Information? @relation(fields: [authorInfoId], references: [id])
 
   @@map("news")
+}
+
+model NewsComment {
+  id              String   @id @default(cuid())
+  archived        Boolean  @default(false)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
+  commentContent  String   @map("comment_content")
+  commenterId     String   @map("commenter_id")
+  commenterInfoId String?  @map("commenter_info_id")
+  newsId          String   @map("news_id")
+
+  news          News         @relation(fields: [newsId], references: [id])
+  commenterInfo Information? @relation(fields: [commenterInfoId], references: [id])
+
+  @@map("news_comment")
 }
 
 model Event {
@@ -211,7 +228,8 @@ model Fund {
   userId          String      @map("user_id")
   hostInformation Information @relation(fields: [userId], references: [userId])
 
-  fundSaved FundSaved[]
+  fundSaved        FundSaved[]
+  fundTransactions FundTransaction[]
 
   @@map("funds")
 }
@@ -229,6 +247,36 @@ model FundSaved {
   userInformation Information @relation(fields: [userId], references: [userId])
 
   @@map("fund_saved")
+}
+
+model FundTransaction {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  vnp_Version    String  @map("vpn_version")
+  vnp_Command    String  @map("vnp_commnad")
+  vnp_TmnCode    String  @map("vnp_tmn_code")
+  vnp_Amount     Int     @map("vnp_amount")
+  vnp_BankCode   String? @map("vnp_bank_code")
+  vnp_CreateDate String  @map("vnp_create_date")
+  vnp_CurrCode   String  @map("vnp_CurrCode")
+  vnp_IpAddr     String  @map("vnp_ip_addr")
+  vnp_Locale     String  @map("vnp_locale")
+  vnp_OrderInfo  String  @map("vnp_order_info")
+  vnp_OrderType  String  @map("vpn_order_type")
+  vnp_TxnRef     String  @unique @map("vnp_txn_ref")
+
+  vnp_TransactionNo     String? @map("vnp_transaction_no")
+  vnp_ResponseCode      String? @map("vnp_response_code")
+  vnp_TransactionStatus String? @map("vnp_transaction_status")
+
+  fundId          String      @map("fund_id")
+  userId          String      @map("user_id")
+  fund            Fund        @relation(fields: [fundId], references: [id])
+  userInformation Information @relation(fields: [userId], references: [id])
+
+  @@map("fund_transactions")
 }
 
 model Post {
@@ -280,22 +328,6 @@ model PostLike {
 
   @@unique([authorId, postId])
   @@map("post_likes")
-}
-
-model NewsComment {
-  id              String   @id @default(cuid())
-  archived        Boolean  @default(false)
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
-  commentContent  String   @map("comment_content")
-  commenterId     String   @map("commenter_id")
-  commenterInfoId String?  @map("commenter_info_id")
-  newsId          String   @map("news_id")
-
-  news          News         @relation(fields: [newsId], references: [id])
-  commenterInfo Information? @relation(fields: [commenterInfoId], references: [id])
-
-  @@map("news_comment")
 }
 
 model Recruitment {
