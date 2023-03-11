@@ -274,7 +274,7 @@ model FundTransaction {
   fundId          String      @map("fund_id")
   userId          String      @map("user_id")
   fund            Fund        @relation(fields: [fundId], references: [id])
-  userInformation Information @relation(fields: [userId], references: [id])
+  userInformation Information @relation(fields: [userId], references: [userId])
 
   @@map("fund_transactions")
 }
