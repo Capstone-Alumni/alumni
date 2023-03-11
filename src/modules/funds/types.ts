@@ -42,7 +42,7 @@ export type FundTransaction = {
   userInformation?: UserInformation;
   fundId: string;
   fund?: Fund;
-  amount: string | number;
+  vnp_Amount: string | number;
   createdAt: string | Date;
 };
 

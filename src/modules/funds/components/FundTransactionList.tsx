@@ -20,6 +20,9 @@ import MyAvatar from '@share/components/MyAvatar';
 import DataTablePagination from '@share/components/DataTablePagination';
 import { getFundTransactionListParamsAtom } from '../states';
 import useGetFundTransactionList from '../hooks/useGetFundTransactionList';
+import Link from 'next/link';
+import { formatDate } from '@share/utils/formatDate';
+import { formatAmountMoney } from '../utils';
 
 const FundTransactionListTab = () => {
   const pathname = usePathname();
@@ -44,36 +47,51 @@ const FundTransactionListTab = () => {
           <TableHead>
             <TableRow>
               <TableCell align="left">Người ủng hộ</TableCell>
-              <TableCell align="center">Niên khoá</TableCell>
-              <TableCell align="center">Lớp</TableCell>
               <TableCell align="center">Số tiền</TableCell>
-              <TableCell align="left">Thời gian</TableCell>
+              <TableCell align="center">Thời gian</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.data.items.map(row => (
               <TableRow key={row.id}>
                 <TableCell align="left">
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      gap: 1,
-                      alignItems: 'center',
-                    }}
+                  <Link
+                    href={`/profile/${row.userId}`}
+                    prefetch={false}
+                    style={{ color: 'inherit' }}
                   >
-                    <MyAvatar />
-                    <Typography>{row?.userInformation?.fullName}</Typography>
-                  </Box>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: 1,
+                        alignItems: 'center',
+                      }}
+                    >
+                      <MyAvatar
+                        displayName={row?.userInformation?.fullName}
+                        photoUrl={row?.userInformation?.avatarUrl}
+                      />
+                      <Box>
+                        <Typography>
+                          {row?.userInformation?.fullName}
+                        </Typography>
+                        <Typography variant="body2">
+                          {row?.userInformation?.alumClass?.grade?.code} /{' '}
+                          {row?.userInformation?.alumClass?.name}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Link>
                 </TableCell>
                 <TableCell align="center">
-                  {row?.userInformation?.alumClass?.grade?.code}
+                  <Typography fontWeight={600}>
+                    {formatAmountMoney(row.vnp_Amount)}
+                  </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  {row?.userInformation?.alumClass?.name}
+                  {formatDate(new Date(row.createdAt), 'HH:mm dd/MM/yyyy')}
                 </TableCell>
-                <TableCell align="center">{row.amount}</TableCell>
-                <TableCell>{new Date(row.createdAt).toDateString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>
