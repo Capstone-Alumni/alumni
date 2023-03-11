@@ -214,7 +214,7 @@ const JobDetailPage = () => {
           </Grid>
         </StyledGeneralInfomation>
         {currentUserInformation &&
-        jobData.recruitmentOwnerId &&
+        jobData.recruitmentOwnerInfoId &&
         Boolean(dataGetAppliedJobListById?.status) &&
         handleCheckUserIsJobOwner(
           currentUserInformation.id,
