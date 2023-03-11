@@ -126,6 +126,8 @@ const JobDetailPage = () => {
 
   const { data: jobData } = data;
 
+  // prettier-ignore
+
   return (
     <Box>
       <Box
