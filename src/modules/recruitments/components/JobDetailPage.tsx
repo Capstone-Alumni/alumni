@@ -293,7 +293,7 @@ const JobDetailPage = () => {
                 <UploadFileInput
                   control={control}
                   fileType={{ 'application/pdf': ['.pdf'] }}
-                  onSuccess={(value) =>
+                  onSuccess={value =>
                     handlePutResume(
                       value,
                       getApplicationId(
