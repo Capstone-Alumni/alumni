@@ -66,7 +66,7 @@ handler.post(async function (req: NextApiRequestWithTenant, res) {
   vnp_Params.vnp_Locale = locale;
   vnp_Params.vnp_CurrCode = currCode;
   vnp_Params.vnp_TxnRef = orderId;
-  vnp_Params.vnp_OrderInfo = orderInfo;
+  vnp_Params.vnp_OrderInfo = `${req.tenantId} ${orderInfo}`;
   vnp_Params.vnp_OrderType = orderType;
   vnp_Params.vnp_Amount = amount * 100;
   vnp_Params.vnp_IpAddr = ipAddr;

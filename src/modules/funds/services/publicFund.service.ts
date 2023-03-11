@@ -141,6 +141,7 @@ export default class PublicFundService {
   ) => {
     const whereFilter = {
       fundId: fundId,
+      paymentStatus: 1,
     };
 
     const [totalItems, items] = await tenantPrisma.$transaction([
