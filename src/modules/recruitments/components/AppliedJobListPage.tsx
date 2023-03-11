@@ -15,12 +15,7 @@ const AppliedJobListPage = () => {
   const [params, setParams] = useRecoilState(
     getUserGetAppliedJobListParamsAtom,
   );
-  const { data, reload, isLoading } = useUserGetAppliedJobList();
-
-  const onDeleteJob = async (id: string) => {
-    // await deleteJob({ jobId: id });
-    // reload();
-  };
+  const { data, isLoading } = useUserGetAppliedJobList();
 
   if (isLoading || !data?.data) {
     return <LoadingIndicator />;

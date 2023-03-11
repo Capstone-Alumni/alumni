@@ -63,7 +63,7 @@ const UploadFileInput = <T extends FieldValues>({
             {...inputProps}
             fileType={fileType}
             file={field.value}
-            onDrop={async (files) => {
+            onDrop={async files => {
               const url = await handleDrop(files);
               field.onChange(url);
             }}
