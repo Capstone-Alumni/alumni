@@ -134,4 +134,46 @@ export default class PublicFundService {
 
     return save;
   };
+
+  static getTransactionList = async (
+    tenantPrisma: PrismaClient,
+    { page, limit, fundId }: { page: number; limit: number; fundId?: string },
+  ) => {
+    const whereFilter = {
+      fundId: fundId,
+    };
+
+    const [totalItems, items] = await tenantPrisma.$transaction([
+      tenantPrisma.fundTransaction.count({
+        where: whereFilter,
+      }),
+      tenantPrisma.fundTransaction.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereFilter,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        include: {
+          userInformation: {
+            include: {
+              alumClass: {
+                include: {
+                  grade: true,
+                },
+              },
+            },
+          },
+        },
+      }),
+    ]);
+
+    await tenantPrisma.$disconnect();
+
+    return {
+      totalItems: totalItems,
+      items,
+      itemPerPage: limit,
+    };
+  };
 }
