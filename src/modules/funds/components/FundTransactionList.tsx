@@ -90,7 +90,7 @@ const FundTransactionListTab = () => {
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  {formatDate(new Date(row.createdAt), 'HH:mm dd/MM/yyyy')}
+                  {formatDate(new Date(row.createdAt), 'HH:mm - dd/MM/yyyy')}
                 </TableCell>
               </TableRow>
             ))}
