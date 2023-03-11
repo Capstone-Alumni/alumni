@@ -105,7 +105,6 @@ const JobDetailPage = () => {
     viewerId: string,
     ownerId: string,
   ): boolean => {
-    console.log(viewerId, ownerId);
     return viewerId === ownerId;
   };
 
