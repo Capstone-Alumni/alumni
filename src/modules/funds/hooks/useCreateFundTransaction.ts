@@ -1,9 +1,11 @@
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import useApi from 'src/modules/share/hooks/useApi';
-import { FundFormValues } from '../components/FundForm';
 
-type CreateFundTransactionParams = FundFormValues;
+type CreateFundTransactionParams = {
+  fundId: string;
+  amount: number;
+};
 
 type CreateFundTransactionResponse = {
   data: string;
@@ -18,14 +20,13 @@ const useCreateFundTransaction = () => {
     CreateFundTransactionError
   >(
     'createFundTransaction',
-    data => ({
+    ({ fundId, ...data }) => ({
       method: 'POST',
       url: '/api/funds/create_transaction_url',
       data: {
         ...data,
-        amount: 100000,
-        orderDescription:
-          'Nap tien cho thue bao 0123456789. So tien 100,000 VND',
+        fundId,
+        orderDescription: `dong gop cho quy ${fundId} so tien ${data.amount}`,
         orderType: 250000,
       },
     }),

@@ -1,6 +1,7 @@
 import { atom } from 'recoil';
 import {
   GetAdminFundListParams,
+  GetFundTransactionListParams,
   GetOwnerFundListParams,
   GetOwnerSavedFundListParams,
   GetPublicFundListParams,
@@ -34,6 +35,15 @@ export const getPublicFundListParamsAtom = atom<GetPublicFundListParams>({
 export const getOwnerSavedFundListParamsAtom =
   atom<GetOwnerSavedFundListParams>({
     key: 'getOwnerInterestFundListParamsAtom',
+    default: {
+      limit: 10,
+      page: 1,
+    },
+  });
+
+export const getFundTransactionListParamsAtom =
+  atom<GetFundTransactionListParams>({
+    key: 'getFundTransactionListParams',
     default: {
       limit: 10,
       page: 1,

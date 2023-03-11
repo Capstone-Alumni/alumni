@@ -28,12 +28,24 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+
+    return config;
+  },
   async rewrites() {
     const platformHost = process.env.NEXT_PUBLIC_PLATFORM_HOST;
     return [
       {
         source: '/platformHost/:path*',
         destination: `${platformHost}/:path*`,
+      },
+      {
+        source: '/api/fund_update_transaction',
+        destination: '/api/funds/transaction_ipn',
       },
     ];
   },
