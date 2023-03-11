@@ -22,7 +22,7 @@ const useOwnerGetAppliedJobListById = () => {
     GetAppliedJobListByIdParams,
     GetAppliedJobListByIdResponse,
     GetAppliedJobListByIdError
-  >('ownerGetJobById', ({ jobId }) => ({
+  >('getCandiatesAppliedJobListParams', ({ jobId }) => ({
     method: 'GET',
     url: `/api/recruitments/owner/${jobId}/application`,
   }));

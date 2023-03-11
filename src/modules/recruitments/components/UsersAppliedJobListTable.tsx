@@ -11,14 +11,10 @@ import { GetAppliedJobListByIdResponse } from '../hooks/usePublicGetAppliedJobLi
 
 const AdminEventListTable = ({
   data,
-  onDownload,
-  onPreview,
   page,
   onChangePage,
 }: {
   data: GetAppliedJobListByIdResponse;
-  onDownload: (id: string) => void;
-  onPreview: (id: string) => void;
   page: number;
   onChangePage: (nextPage: number) => void;
 }) => {
@@ -36,14 +32,9 @@ const AdminEventListTable = ({
           </TableHead>
           <TableBody>
             {data.data.items.map(
-              row =>
+              (row) =>
                 !row.archived && (
-                  <UsersAppliedJobListItem
-                    key={row.id}
-                    data={row}
-                    onPreview={onPreview}
-                    onDownload={onDownload}
-                  />
+                  <UsersAppliedJobListItem key={row.id} data={row} />
                 ),
             )}
           </TableBody>

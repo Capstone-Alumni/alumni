@@ -6,6 +6,7 @@ import {
   GetOwnerJobListParams,
   GetPublicJobApplierInfoListParams,
   GetPublicJobListParams,
+  GetCandiatesAppliedJobListParams,
 } from './types';
 
 export const getAdminJobListParamsAtom = atom<GetAdminJobListParams>({
@@ -16,6 +17,15 @@ export const getAdminJobListParamsAtom = atom<GetAdminJobListParams>({
     approved: undefined,
   },
 });
+
+export const getCandiatesAppliedJobListParamsAtom =
+  atom<GetCandiatesAppliedJobListParams>({
+    key: 'getCandiatesAppliedJobListParams',
+    default: {
+      limit: 10,
+      page: 1,
+    },
+  });
 
 export const getOwnerJobListParamsAtom = atom<GetOwnerJobListParams>({
   key: 'getOwnerJobListParams',

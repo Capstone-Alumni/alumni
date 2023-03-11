@@ -78,6 +78,11 @@ export type GetAdminJobListParams = {
   approved: number | undefined;
 };
 
+export type GetCandiatesAppliedJobListParams = {
+  page: number;
+  limit: number;
+};
+
 export type GetOwnerJobListParams = {
   page: number;
   limit: number;

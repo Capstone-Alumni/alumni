@@ -3,15 +3,7 @@ import { IconButton, TableCell, TableRow, Typography } from '@mui/material';
 import { JobApplierInfo } from '../types';
 import PdfResumePreview from './PdfResumePreview';
 
-const AdminEventListItem = ({
-  data,
-  onPreview,
-  onDownload,
-}: {
-  data: JobApplierInfo;
-  onPreview: (id: string) => void;
-  onDownload: (id: string) => void;
-}) => {
+const AdminEventListItem = ({ data }: { data: JobApplierInfo }) => {
   return (
     <>
       <TableRow>
@@ -28,7 +20,7 @@ const AdminEventListItem = ({
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '2rem' }}>
           <PdfResumePreview resumeUrl={data.resumeUrl}>
-            <IconButton onClick={() => onPreview(data.resumeUrl)}>
+            <IconButton>
               <Icon height={24} icon="uil:eye" />
             </IconButton>
           </PdfResumePreview>
