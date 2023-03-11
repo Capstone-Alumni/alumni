@@ -84,7 +84,7 @@ model Information {
   postComments           PostComment[]
   postLikes              PostLike[]
   RecruitmentApplication RecruitmentApplication[]
-  fundTransactions        FundTransaction[]
+  fundTransactions       FundTransaction[]
 
   @@map("informations")
 }
@@ -212,18 +212,11 @@ model Fund {
 
   title             String
   description       String?
-  isOffline         Boolean     @default(false) @map("is_offline")
-  location          String?
   startTime         DateTime    @default(now()) @map("start_time")
-  endTime           DateTime?   @map("end_time")
-  isEnded           Boolean     @default(false) @map("is_ended")
+  endTime           DateTime?    @default(now()) @map("end_time")
   targetBalance     Int         @default(0) @map("target_balance")
-  currentBalance    Int         @default(0) @map("current_balance")
-  balanceUpdatedAt  DateTime    @default(now()) @map("target_updated")
-  approvedStatus    Int         @default(-1) @map("approved_status")
   publicity         AccessLevel @default(ALUMNI)
   publicParticipant Boolean     @default(false) @map("public_participant")
-  statementFile     String?     @map("statement_file")
 
   userId          String      @map("user_id")
   hostInformation Information @relation(fields: [userId], references: [userId])

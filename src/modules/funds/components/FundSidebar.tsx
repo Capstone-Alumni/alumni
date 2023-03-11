@@ -1,9 +1,9 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import { Button, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { Box, styled, useTheme } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+// import AddIcon from '@mui/icons-material/Add';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { User } from 'next-auth';
@@ -53,7 +53,7 @@ const FUND_NAV_ITEMS = [
   },
   {
     id: 'interest',
-    title: 'Lưu',
+    title: 'Đã Lưu',
     icon: 'material-symbols:bookmark',
     link: '/funds/saved',
   },
@@ -107,7 +107,7 @@ const FundSidebar = ({ user }: { user: User }) => {
           );
         })}
 
-        {isAlumni ? null : (
+        {/* {isAlumni ? null : (
           <Link
             href={FUND_HOSTING_NAV_ITEM.link}
             style={{ color: 'inherit', width: '100%' }}
@@ -132,25 +132,17 @@ const FundSidebar = ({ user }: { user: User }) => {
                 {FUND_HOSTING_NAV_ITEM.title}
               </Typography>
               <Box sx={{ flex: 1 }} />
-              {/* <Icon
-                height={24}
-                icon={
-                  isActive
-                    ? 'material-symbols:keyboard-arrow-right'
-                    : 'material-symbols:keyboard-arrow-down-rounded'
-                }
-              /> */}
             </StyledNavItem>
           </Link>
-        )}
+        )} */}
 
-        {isAlumni ? null : (
+        {/* {isAlumni ? null : (
           <Link href="/funds/create" style={{ width: '100%' }} prefetch={false}>
             <Button variant="contained" fullWidth startIcon={<AddIcon />}>
               tạo quỹ
             </Button>
           </Link>
-        )}
+        )} */}
       </StyledNav>
     </StyledNavWrapper>
   );

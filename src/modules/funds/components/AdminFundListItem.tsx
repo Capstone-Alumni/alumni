@@ -1,14 +1,23 @@
 import {
-  IconButton,
+  // IconButton,
   TableCell,
   TableRow,
   Tooltip,
   Typography,
 } from '@mui/material';
-import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
-import CancelIcon from '@mui/icons-material/Cancel';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+// import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
+// import CancelIcon from '@mui/icons-material/Cancel';
+import PublicIcon from '@mui/icons-material/Public';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+// import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Fund } from '../types';
+import ActionButton from '@share/components/ActionButton';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
+import useOwnerDeleteFundById from '../hooks/useOwnerDeleteFundById';
+import useAdminGetFundList from '../hooks/useAdminGetFundList';
 
 const AdminFundListItem = ({
   data,
@@ -19,6 +28,17 @@ const AdminFundListItem = ({
   onApprove: (id: string) => void;
   onReject: (id: string) => void;
 }) => {
+  const router = useRouter();
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+  const { reload } = useAdminGetFundList();
+  const { fetchApi: deleteFund } = useOwnerDeleteFundById();
+
+  const onDeleteFund = async (id: string) => {
+    await deleteFund({ fundId: id });
+    reload();
+  };
+
   return (
     <>
       <TableRow>
@@ -28,29 +48,47 @@ const AdminFundListItem = ({
         <TableCell align="left">
           <Typography>{data.hostInformation?.email}</Typography>
         </TableCell>
+        <TableCell align="left">
+          <Typography>{new Date(data.createdAt).toDateString()}</Typography>
+        </TableCell>
         <TableCell align="center">
           <Typography>
-            {data.approvedStatus === -1 ? (
+            {/* {data.approvedStatus === -1 ? (
               <Tooltip title="Đang chờ xác nhận">
                 <MoreHorizIcon />
               </Tooltip>
-            ) : null}
-            {data.approvedStatus === 0 ? (
-              <Tooltip title="Đã bị từ chối">
-                <CancelIcon color="error" />
+            ) : null} */}
+            {data.publicity === 'ALUMNI' ? (
+              <Tooltip title="Chưa công khai">
+                <PublicIcon color="error" />
               </Tooltip>
             ) : null}
-            {data.approvedStatus === 1 ? (
-              <Tooltip title="Đã được xác nhận">
-                <DoneOutlineIcon color="success" />
+            {data.publicity === 'SCHOOL_ADMIN' ? (
+              <Tooltip title="Đã công khai">
+                <PublicIcon color="success" />
               </Tooltip>
             ) : null}
           </Typography>
         </TableCell>
-        <TableCell align="left">
-          <Typography>{new Date(data.createdAt).toDateString()}</Typography>
+        <TableCell align="center">
+          <ActionButton
+            actions={[
+              {
+                id: 'edit',
+                text: 'Chỉnh sửa',
+                onClick: () => router.push(`/admin/funds/${data.id}`),
+                icon: <EditIcon />,
+              },
+              {
+                id: 'delete',
+                text: 'Xoá ',
+                onClick: () => setOpenDeleteModal(true),
+                icon: <DeleteIcon color="error" />,
+              },
+            ]}
+          />
         </TableCell>
-        <TableCell align="center" sx={{ maxWidth: '3rem' }}>
+        {/* <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <IconButton onClick={() => onApprove(data.id)}>
             <DoneOutlineIcon />
           </IconButton>
@@ -59,8 +97,15 @@ const AdminFundListItem = ({
           <IconButton onClick={() => onReject(data.id)}>
             <CancelIcon />
           </IconButton>
-        </TableCell>
+        </TableCell> */}
       </TableRow>
+
+      <ConfirmDeleteModal
+        open={openDeleteModal}
+        title="Bạn muốn xoá quỹ này?"
+        onClose={() => setOpenDeleteModal(false)}
+        onDelete={() => onDeleteFund(data.id)}
+      />
     </>
   );
 };

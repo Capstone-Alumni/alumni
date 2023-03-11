@@ -1,12 +1,13 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 export default class PublicFundService {
   static getList = async (
     tenantPrisma: PrismaClient,
     { page, limit, userId }: { page: number; limit: number; userId?: string },
   ) => {
-    const whereFilter = {
-      AND: [{ approvedStatus: 1 }, { archived: false }],
+    const whereFilter: Prisma.FundWhereInput = {
+      archived: false,
+      publicity: 'SCHOOL_ADMIN',
     };
 
     const [totalItems, items] = await tenantPrisma.$transaction([
@@ -47,7 +48,6 @@ export default class PublicFundService {
     const fund = await tenantPrisma.fund.findFirst({
       where: {
         id: fundId,
-        approvedStatus: 1,
       },
       include: {
         fundSaved: {

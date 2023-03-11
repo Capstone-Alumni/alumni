@@ -29,11 +29,10 @@ const AdminFundListTable = ({
           <TableHead>
             <TableRow>
               <TableCell align="left">Tên quỹ</TableCell>
-              <TableCell align="left">Người gửi yêu cầu</TableCell>
-              <TableCell align="center">Trạng thái</TableCell>
+              <TableCell align="left">Người tạo</TableCell>
               <TableCell align="left">Ngày được tạo</TableCell>
-              <TableCell sx={{ maxWidth: '3rem' }} />
-              <TableCell sx={{ maxWidth: '3rem' }} />
+              <TableCell align="center">Trạng thái</TableCell>
+              <TableCell align="center">Thao tác</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

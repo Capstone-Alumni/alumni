@@ -5,34 +5,28 @@ import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationR
 import { Fund } from '../types';
 import TextInput from '@share/components/form/TextInput';
 import { Box, Button, InputAdornment, useTheme } from '@mui/material';
-import Checkbox from '@share/components/form/Checkbox';
 import DateTimeInput from '@share/components/form/DateTimeInput';
 // import SelectInput from '@share/components/form/SelectInput';
 // import { Typography } from '@mui/material';
 import { useState } from 'react';
 import RichTextInput from '@share/components/form/RichTextInput';
-import UploadFileInput from '@share/components/form/UploadFileInput';
+import SelectInput from '@share/components/form/SelectInput';
 
 export type FundFormValues = {
   title: string;
   description?: string;
-  isOffline: boolean;
-  location?: string;
   startTime: Date;
-  endTime?: Date;
-  isEnded?: boolean;
+  endTime: Date;
   targetBalance: number;
-  currentBalance: number;
   publicity: AccessLevel;
-  statementFile?: string;
 };
 
 const validationSchema = yup.object({
   title: yup.string().required(),
   startTime: yup.date().required(),
+  endTime: yup.date().required(),
   publicity: yup.string().required(),
   targetBalance: yup.number().required(),
-  currentBalance: yup.number().required(),
 });
 
 const FundForm = ({
@@ -52,17 +46,15 @@ const FundForm = ({
     defaultValues: {
       title: initialData?.title ?? '',
       description: initialData?.description,
-      isOffline: initialData?.isOffline ?? false,
-      location: initialData?.location,
       startTime: initialData?.startTime
         ? new Date(initialData.startTime)
         : new Date(),
-      endTime: initialData?.endTime ? new Date(initialData.endTime) : null,
+      endTime: initialData?.endTime
+        ? new Date(initialData.endTime)
+        : new Date(),
       isEnded: initialData?.isEnded,
-      targetBalance: initialData?.targetBalance ?? 0,
-      currentBalance: initialData?.currentBalance ?? 0,
-      statementFile: initialData?.statementFile ?? null,
-      publicity: 'SCHOOL_ADMIN',
+      targetBalance: initialData?.targetBalance ?? 100000,
+      publicity: 'ALUMNI',
     },
   });
 
@@ -92,62 +84,24 @@ const FundForm = ({
         inputProps={{ label: 'Tên quỹ', fullWidth: true }}
       />
 
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'row',
-          gap: theme.spacing(2),
+      <TextInput
+        control={control}
+        name="targetBalance"
+        inputProps={{
+          label: 'Số tiền mục tiêu',
+          fullWidth: true,
+          type: 'number',
+          InputProps: {
+            endAdornment: <InputAdornment position="end">VNĐ</InputAdornment>,
+          },
         }}
-      >
-        <TextInput
-          control={control}
-          name="targetBalance"
-          inputProps={{
-            label: 'Số tiền mục tiêu',
-            fullWidth: true,
-            type: 'number',
-            InputProps: {
-              endAdornment: (
-                <InputAdornment position="end">000 VNĐ</InputAdornment>
-              ),
-            },
-          }}
-        />
-        <TextInput
-          control={control}
-          name="currentBalance"
-          inputProps={{
-            label: 'Số tiền hiện tại',
-            fullWidth: true,
-            type: 'number',
-            InputProps: {
-              endAdornment: (
-                <InputAdornment position="end">000 VNĐ</InputAdornment>
-              ),
-            },
-          }}
-        />
-      </Box>
+      />
 
       <RichTextInput
         control={control}
         name="description"
-        inputProps={{ placeholder: 'Mô tả' }}
+        inputProps={{ placeholder: 'Mô tả', containerSx: { width: '100%' } }}
       />
-
-      <Box sx={{ width: '100%' }}>
-        <TextInput
-          control={control}
-          name="location"
-          inputProps={{ label: 'Địa điểm', fullWidth: true }}
-        />
-        <Checkbox
-          control={control}
-          name="isOffline"
-          inputProps={{ label: 'Tổ chức gây quỹ offline' }}
-        />
-      </Box>
 
       <DateTimeInput
         control={control}
@@ -158,70 +112,36 @@ const FundForm = ({
         }}
       />
 
-      <Box sx={{ width: '100%' }}>
-        <DateTimeInput
-          control={control}
-          name="endTime"
-          inputProps={{
-            fullWidth: true,
-            label: 'Thời gian kết thúc',
-          }}
-        />{' '}
-        <Checkbox
-          control={control}
-          name="isEnded"
-          inputProps={{ label: 'Sự kiện đã kết thúc' }}
-        />
-      </Box>
+      <DateTimeInput
+        control={control}
+        name="endTime"
+        inputProps={{
+          fullWidth: true,
+          label: 'Thời gian kết thúc',
+        }}
+      />
 
-      {/* <Box sx={{ width: '100%' }}>
+      <Box sx={{ width: '100%' }}>
         <SelectInput
           control={control}
           name="publicity"
           inputProps={{
             fullWidth: true,
-            label: 'Ai có thể nhìn thấy và tham gia sự kiện này',
+            label:
+              'Quỹ này đã sẵn sàng, cho phép mọi người nhìn thấy và ủng hộ?',
           }}
           options={[
             {
               value: 'ALUMNI',
-              name: 'Chỉ bạn nhìn thấy',
-            },
-            {
-              value: 'CLASS_MOD',
-              name: 'Chỉ người cùng lớp',
-            },
-            {
-              value: 'GRADE_MOD',
-              name: 'Chỉ người cùng niên khoá',
+              name: 'Không, chưa sẵn sàng',
             },
             {
               value: 'SCHOOL_ADMIN',
-              name: 'Bất cứ ai',
+              name: 'Có, đã sẵn sàng nhận ủng hộ',
             },
           ]}
         />
-        <Checkbox
-          control={control}
-          name="publicParticipant"
-          inputProps={{ label: 'Công khai danh sách người tham gia?' }}
-        />
-
-        <Typography variant="body2">
-          Lưu ý*: Sự kiện của bạn sẽ được gửi đến ban đại diện của trường để
-          kiểm duyệt. Sau khi được bạn đại diện chấp nhận, người khác mới có thể
-          nhìn thấy và tham gia sự kiện của bạn.
-        </Typography>
-      </Box> */}
-
-      <UploadFileInput
-        control={control}
-        name="statementFile"
-        inputProps={{
-          label: 'File sao kê',
-        }}
-        containerSx={{ width: '100%' }}
-      />
+      </Box>
 
       <Button
         variant="contained"

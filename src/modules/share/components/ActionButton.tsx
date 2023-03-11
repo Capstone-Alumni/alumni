@@ -10,7 +10,7 @@ const ActionButton = ({
 }: {
   actions: Array<{
     id: string;
-    icon: React.ReactNode;
+    icon?: React.ReactNode;
     text: string;
     onClick: () => void;
   }>;

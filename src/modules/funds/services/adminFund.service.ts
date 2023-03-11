@@ -56,12 +56,10 @@ export default class AdminFundService {
       user,
       page,
       limit,
-      approved,
     }: {
       user: User;
       page: number;
       limit: number;
-      approved: number | undefined;
     },
   ) => {
     const whereFilter = await buildFundWhereFilter(tenantPrisma, user);
@@ -70,7 +68,7 @@ export default class AdminFundService {
       tenantPrisma.fund.count({
         where: {
           ...whereFilter,
-          approvedStatus: approved ? approved : undefined,
+          archived: false,
         },
       }),
       tenantPrisma.fund.findMany({
@@ -78,7 +76,7 @@ export default class AdminFundService {
         take: limit,
         where: {
           ...whereFilter,
-          approvedStatus: approved ? approved : undefined,
+          archived: false,
         },
         orderBy: {
           createdAt: 'desc',
