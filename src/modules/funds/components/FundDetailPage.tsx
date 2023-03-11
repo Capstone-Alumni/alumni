@@ -20,6 +20,7 @@ import usePublicUninterestFundById from '../hooks/usePublicUnsaveFundById';
 import EditorPreview from '@share/components/editor/EditorPreview';
 import { renderEventStatus } from 'src/modules/events/components/EventDetailPage';
 import FundTransactionForm from './FundTransactionForm';
+import FundTransactionListTab from './FundTransactionList';
 
 const FundDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
@@ -196,13 +197,16 @@ const FundDetailPage = () => {
             ) : null}
           </Grid>
 
+          <FundTransactionForm fundId={fundData.id} />
+
           <Tabs
             value={tabKey}
             onChange={(_, key) => setTabKey(key)}
             aria-label="wrapped tabs"
           >
             <Tab value="description" label="Mô tả" />
-            <Tab value="send" label="Đóng góp" />
+            <Tab value="transaction" label="Báo cáo" />
+            <Tab value="transaction" label="Danh sách ủng hộ" />
           </Tabs>
 
           {tabKey === 'description' ? (
@@ -211,9 +215,9 @@ const FundDetailPage = () => {
             </Box>
           ) : null}
 
-          {tabKey === 'send' ? (
+          {tabKey === 'transaction' ? (
             <Box sx={{ my: 2 }}>
-              <FundTransactionForm fundId={fundData.id} />
+              <FundTransactionListTab />
             </Box>
           ) : null}
         </Box>
