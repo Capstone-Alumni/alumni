@@ -73,7 +73,7 @@ const FundCardItem = ({
           <Box>
             <LinearProgress
               variant="determinate"
-              value={balancePercent}
+              value={balancePercent > 100 ? 100 : balancePercent}
               sx={{ height: '8px', flex: 1, width: '100%', mb: 0.5 }}
             />
           </Box>

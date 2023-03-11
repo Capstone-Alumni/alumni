@@ -60,6 +60,7 @@ export type GetOwnerSavedFundListParams = {
 export type GetPublicFundListParams = {
   page: number;
   limit: number;
+  status: 'ended' | 'going';
 };
 
 export type GetFundTransactionListParams = {

@@ -10,7 +10,7 @@ import DateTimeInput from '@share/components/form/DateTimeInput';
 // import { Typography } from '@mui/material';
 import { useState } from 'react';
 import RichTextInput from '@share/components/form/RichTextInput';
-import SelectInput from '@share/components/form/SelectInput';
+import RadioInput from '@share/components/form/RadioInput';
 
 export type FundFormValues = {
   title: string;
@@ -54,7 +54,7 @@ const FundForm = ({
         : new Date(),
       isEnded: initialData?.isEnded,
       targetBalance: initialData?.targetBalance ?? 100000,
-      publicity: 'ALUMNI',
+      publicity: initialData?.publicity ?? 'ALUMNI',
     },
   });
 
@@ -122,18 +122,16 @@ const FundForm = ({
       />
 
       <Box sx={{ width: '100%' }}>
-        <SelectInput
+        <RadioInput
           control={control}
           name="publicity"
           inputProps={{
-            fullWidth: true,
-            label:
-              'Quỹ này đã sẵn sàng, cho phép mọi người nhìn thấy và ủng hộ?',
+            label: 'Cho phép mọi người nhìn thấy và ủng hộ?',
           }}
           options={[
             {
               value: 'ALUMNI',
-              name: 'Không, chưa sẵn sàng',
+              name: 'Không, chưa sẵn sàng nhận ủng hộ',
             },
             {
               value: 'SCHOOL_ADMIN',

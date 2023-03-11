@@ -213,8 +213,9 @@ model Fund {
   title             String
   description       String?
   startTime         DateTime    @default(now()) @map("start_time")
-  endTime           DateTime?    @default(now()) @map("end_time")
-  targetBalance     Int         @default(0) @map("target_balance")
+  endTime           DateTime?   @default(now()) @map("end_time")
+  targetBalance     Int      @default(0) @map("target_balance")
+  currentBalance    Int      @default(0) @map("currect_balance")
   publicity         AccessLevel @default(ALUMNI)
   publicParticipant Boolean     @default(false) @map("public_participant")
 

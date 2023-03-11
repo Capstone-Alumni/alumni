@@ -46,6 +46,9 @@ handler.get(async function (req, res) {
     where: {
       vnp_TxnRef: orderId,
     },
+    include: {
+      fund: true,
+    },
   });
 
   const checkOrderId = !!transaction; // Mã đơn hàng "giá trị của vnp_TxnRef" VNPAY phản hồi tồn tại trong CSDL của bạn
@@ -66,12 +69,20 @@ handler.get(async function (req, res) {
             //thanh cong
             //paymentStatus = '1'
             // Ở đây cập nhật trạng thái giao dịch thanh toán thành công vào CSDL của bạn
+            const newCurrentBalance =
+              transaction.fund.currentBalance +
+              parseInt(vnp_Params.vnp_Amount as string, 10);
             await prisma.fundTransaction.update({
               where: {
                 vnp_TxnRef: orderId,
               },
               data: {
                 paymentStatus: 1,
+                fund: {
+                  update: {
+                    currentBalance: newCurrentBalance,
+                  },
+                },
               },
             });
             res.status(200).json({ RspCode: '00', Message: 'Success' });
