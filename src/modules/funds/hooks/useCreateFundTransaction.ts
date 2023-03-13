@@ -32,7 +32,7 @@ const useCreateFundTransaction = () => {
     }),
     {
       onError: () => {
-        toast.error('Yêu cầu tạo quỹ thất bại');
+        toast.error('Xảy ra lỗi');
       },
       onSuccess: ({ data: vnpUrl }) => {
         // console.log(vnpUrl);

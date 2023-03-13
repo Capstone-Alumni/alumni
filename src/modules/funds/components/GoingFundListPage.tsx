@@ -7,14 +7,15 @@ import LoadingIndicator from '@share/components/LoadingIndicator';
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
 import usePublicGetFundList from '../hooks/usePublicGetFundList';
-import { getOwnerFundListParamsAtom } from '../states';
+import { getPublicFundListParamsAtom } from '../states';
 import FundCardItem from './FundCardItem';
 import usePublicInterestFundById from '../hooks/usePublicSaveFundById';
 import usePublicUninterestFundById from '../hooks/usePublicUnsaveFundById';
+import { useEffect } from 'react';
 
-const DiscoverFundListPage = () => {
+const GogingFundListPage = () => {
   const theme = useTheme();
-  const [params, setParams] = useRecoilState(getOwnerFundListParamsAtom);
+  const [params, setParams] = useRecoilState(getPublicFundListParamsAtom);
   const { data, reload, isLoading } = usePublicGetFundList();
   const { fetchApi: interestFund, isLoading: isInterestingFund } =
     usePublicInterestFundById();
@@ -30,6 +31,10 @@ const DiscoverFundListPage = () => {
     await uninterestFund({ fundId: FundId });
     reload();
   };
+
+  useEffect(() => {
+    setParams(prev => ({ ...prev, status: 'going' }));
+  }, []);
 
   if (isLoading && !data?.data) {
     return <LoadingIndicator />;
@@ -59,7 +64,7 @@ const DiscoverFundListPage = () => {
                   prefetch={false}
                 >
                   <Button fullWidth variant="outlined">
-                    Tìm hiểu thêm
+                    Ủng hộ
                   </Button>
                 </Link>,
                 isSaved ? (
@@ -104,4 +109,4 @@ const DiscoverFundListPage = () => {
   );
 };
 
-export default DiscoverFundListPage;
+export default GogingFundListPage;

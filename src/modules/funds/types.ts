@@ -8,26 +8,14 @@ export type Fund = {
   updatedAt: string | Date;
   title: string;
   description?: string;
-  isOffline: boolean;
-  location?: string;
-  registrationTime: string | Date;
   startTime: string | Date;
   endTime: string | Date;
-  isEnded: boolean;
   targetBalance: number;
   currentBalance: number;
-  balanceUpdatedAt: Date | string;
-  approvedStatus: -1 | 0 | 1;
   publicity: AccessLevel;
   userId: string;
-  hostInformation?: {
-    id: string;
-    userId: string;
-    email: string;
-    fullName: string;
-  };
+  hostInformation?: UserInformation;
   fundSaved: FundSaved[];
-  statementFile?: string;
 };
 
 export type FundSaved = {
@@ -65,6 +53,7 @@ export type GetOwnerSavedFundListParams = {
 export type GetPublicFundListParams = {
   page: number;
   limit: number;
+  status: 'ended' | 'going';
 };
 
 export type GetFundTransactionListParams = {

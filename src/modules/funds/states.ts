@@ -29,6 +29,7 @@ export const getPublicFundListParamsAtom = atom<GetPublicFundListParams>({
   default: {
     limit: 10,
     page: 1,
+    status: 'going',
   },
 });
 

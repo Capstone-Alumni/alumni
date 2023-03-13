@@ -12,6 +12,8 @@ export type Tenant = {
   background1?: string;
   background2?: string;
   background3?: string;
+  vnp_tmnCode?: string;
+  vnp_hashSecret?: string;
 };
 
 export const currentTenantDataAtom = atom<Tenant>({

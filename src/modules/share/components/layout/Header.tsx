@@ -94,7 +94,7 @@ const Header = ({
               <NavItem label="Tin tức" href="/news" />
               <NavItem label="Sự kiện" href="/events/discover" />
               <NavItem label="Tuyển dụng" href="/recruitments/discover" />
-              <NavItem label="Gây quỹ" href="/funds/discover" />
+              <NavItem label="Gây quỹ" href="/funds/going" />
               {user ? (
                 <>
                   <NavItem label="Bài đăng" href="/posts" />

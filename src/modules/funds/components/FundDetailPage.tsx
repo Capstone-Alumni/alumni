@@ -2,9 +2,8 @@
 
 import {
   Button,
-  CircularProgress,
-  Grid,
-  Link,
+  LinearProgress,
+  Stack,
   Tab,
   Tabs,
   useTheme,
@@ -21,6 +20,8 @@ import EditorPreview from '@share/components/editor/EditorPreview';
 import { renderEventStatus } from 'src/modules/events/components/EventDetailPage';
 import FundTransactionForm from './FundTransactionForm';
 import FundTransactionListTab from './FundTransactionList';
+import { formatDate } from '@share/utils/formatDate';
+import { formatAmountMoney } from '../utils';
 
 const FundDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
@@ -50,19 +51,11 @@ const FundDetailPage = () => {
 
     const { data: fundData } = data;
 
-    if (new Date(fundData.registrationTime) > new Date()) {
-      return 'not-open';
-    }
-
     if (new Date(fundData.startTime) > new Date()) {
       return 'opened';
     }
 
     if (fundData.endTime && new Date(fundData.endTime) > new Date()) {
-      return 'running';
-    }
-
-    if (!fundData.endTime && !fundData.isEnded) {
       return 'running';
     }
 
@@ -84,6 +77,7 @@ const FundDetailPage = () => {
   }
 
   const { data: fundData } = data;
+  const balancePercent = fundData.currentBalance / fundData.targetBalance;
 
   return (
     <Box>
@@ -115,162 +109,78 @@ const FundDetailPage = () => {
           mb: 2,
         }}
       >
-        <Box sx={{ flex: 1 }}>
-          <Grid container spacing={1}>
-            <Grid item xs={3}>
-              <Typography>Người tổ chức</Typography>
-            </Grid>
-            <Grid item xs={9}>
-              <Typography>{fundData.hostInformation?.fullName}</Typography>
-            </Grid>
-
-            <Grid item xs={3}>
-              <Typography>Email</Typography>
-            </Grid>
-            <Grid item xs={9}>
-              <Typography>{fundData.hostInformation?.email}</Typography>
-            </Grid>
-
-            <Grid item xs={3}>
-              <Typography>Hình thức</Typography>
-            </Grid>
-            <Grid item xs={9}>
-              {fundData.isOffline ? (
-                <Typography
-                  component="span"
-                  fontWeight={600}
-                  sx={{ color: theme.palette.warning.main }}
-                >
-                  Offline
-                </Typography>
-              ) : (
-                <Typography
-                  component="span"
-                  fontWeight={600}
-                  sx={{ color: theme.palette.success.main }}
-                >
-                  Online
-                </Typography>
-              )}
-            </Grid>
-
-            {fundData.location ? (
-              <>
-                <Grid item xs={3}>
-                  <Typography>Nơi tổ chức</Typography>
-                </Grid>
-                <Grid item xs={9}>
-                  <Typography component="span" fontWeight={600}>
-                    {fundData.location}
-                  </Typography>
-                </Grid>
-              </>
-            ) : null}
-
-            <Grid item xs={3}>
-              <Typography>Tình trạng</Typography>
-            </Grid>
-            <Grid item xs={9}>
+        <Box
+          sx={{
+            flex: 1,
+            padding: 2,
+            borderRadius: `${theme.shape.borderRadiusSm}px`,
+            backgroundColor: theme.palette.background.neutral,
+          }}
+        >
+          <Stack direction="column">
+            <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 0.5 }}>
+              <Typography fontWeight={600}>Tình trạng</Typography>
               <Typography>{renderEventStatus(FundStatus)}</Typography>
-            </Grid>
-
-            <Grid item xs={3}>
-              <Typography>Bắt đâu diễn ra</Typography>
-            </Grid>
-            <Grid item xs={9}>
+            </Stack>
+            <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 0.5 }}>
+              <Typography fontWeight={600}>Bắt đầu</Typography>
               <Typography>
-                {new Date(fundData.startTime).toDateString()}
+                {formatDate(new Date(fundData.startTime), 'dd/MM/yyyy - HH:ss')}
               </Typography>
-            </Grid>
+            </Stack>
+            <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 0.5 }}>
+              <Typography fontWeight={600}>Kết thúc</Typography>
+              <Typography>
+                {formatDate(new Date(fundData.endTime), 'dd/MM/yyyy - HH:ss')}
+              </Typography>
+            </Stack>
+          </Stack>
 
-            {fundData?.endTime ? (
-              <>
-                <Grid item xs={3}>
-                  <Typography>Kết thúc</Typography>
-                </Grid>
-                <Grid item xs={9}>
-                  <Typography>
-                    {new Date(fundData.endTime).toDateString()}
-                  </Typography>
-                </Grid>
-              </>
-            ) : null}
-          </Grid>
+          <Box>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ mb: 1 }}
+            >
+              <Typography>Mục tiêu quỹ</Typography>
+              <Typography variant="h6">
+                {formatAmountMoney(fundData.targetBalance * 100)}
+              </Typography>
+            </Stack>
 
-          <FundTransactionForm fundId={fundData.id} />
+            <LinearProgress
+              variant="determinate"
+              value={balancePercent > 100 ? 100 : balancePercent}
+              sx={{ height: '12px', flex: 1, width: '100%', mb: 0.5 }}
+            />
+            <Typography textAlign="right">{balancePercent}%</Typography>
 
-          <Tabs
-            value={tabKey}
-            onChange={(_, key) => setTabKey(key)}
-            aria-label="wrapped tabs"
-          >
-            <Tab value="description" label="Mô tả" />
-            <Tab value="transaction" label="Báo cáo" />
-            <Tab value="transaction" label="Danh sách ủng hộ" />
-          </Tabs>
-
-          {tabKey === 'description' ? (
-            <Box sx={{ my: 2 }}>
-              <EditorPreview value={fundData?.description || ''} />
-            </Box>
-          ) : null}
-
-          {tabKey === 'transaction' ? (
-            <Box sx={{ my: 2 }}>
-              <FundTransactionListTab />
-            </Box>
-          ) : null}
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ mt: 1 }}
+            >
+              <Typography>Đã đạt được</Typography>
+              <Typography
+                variant="h5"
+                sx={{ color: theme.palette.primary.main }}
+              >
+                {formatAmountMoney(fundData.currentBalance)}
+              </Typography>
+            </Stack>
+          </Box>
         </Box>
 
-        <Box sx={{ minWidth: theme.spacing(12) }}>
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="h6" textAlign="center" sx={{ mb: 1 }}>
-              Số tiền gây quỹ
-            </Typography>
-
-            <Box
-              sx={{
-                position: 'relative',
-                width: 'fit-content',
-                textAlign: 'center',
-                margin: '0 auto',
-                p: 3,
-                mb: 1,
-              }}
-            >
-              <Typography fontSize="32px" fontWeight={600} sx={{ mb: 1 }}>
-                {(fundData.currentBalance * 100) / fundData.targetBalance || 0}%
-              </Typography>
-
-              <CircularProgress
-                value={
-                  (fundData.currentBalance * 100) / fundData.targetBalance || 0
-                }
-                variant="determinate"
-                size={100}
-                sx={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  bottom: 0,
-                  right: 0,
-                  margin: 'auto',
-                }}
-              />
-            </Box>
-
-            <Typography variant="h6" textAlign="center">
-              {fundData.currentBalance} / {fundData.targetBalance} (ngàn VND)
-              <br />
-              <Typography
-                variant="caption"
-                textAlign="center"
-                sx={{ m: 'auto' }}
-              >
-                Cập nhập: {new Date(fundData.balanceUpdatedAt).toDateString()}
-              </Typography>
-            </Typography>
-          </Box>
+        <Stack direction="column" gap={2}>
+          <FundTransactionForm
+            fundId={fundData.id}
+            canDonate={
+              FundStatus === 'running' &&
+              fundData.currentBalance < fundData.targetBalance * 100
+            }
+          />
 
           <Button
             fullWidth
@@ -282,19 +192,30 @@ const FundDetailPage = () => {
           >
             {isSaved ? 'Huỷ lưu' : 'Lưu'}
           </Button>
-
-          <Link href={fundData?.statementFile} target="_blank">
-            <Button
-              fullWidth
-              variant="outlined"
-              startIcon={<BookmarkBorderIcon />}
-              disabled={!fundData?.statementFile}
-            >
-              File sao kê
-            </Button>
-          </Link>
-        </Box>
+        </Stack>
       </Box>
+
+      <Tabs
+        value={tabKey}
+        onChange={(_, key) => setTabKey(key)}
+        aria-label="wrapped tabs"
+      >
+        <Tab value="description" label="Mô tả" />
+        <Tab value="transaction" label="Báo cáo" />
+        <Tab value="transaction" label="Danh sách ủng hộ" />
+      </Tabs>
+
+      {tabKey === 'description' ? (
+        <Box sx={{ my: 2 }}>
+          <EditorPreview value={fundData?.description || ''} />
+        </Box>
+      ) : null}
+
+      {tabKey === 'transaction' ? (
+        <Box sx={{ my: 2 }}>
+          <FundTransactionListTab />
+        </Box>
+      ) : null}
     </Box>
   );
 };

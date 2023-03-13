@@ -58,46 +58,32 @@ export default class OwnerFundService {
     {
       title,
       description = '',
-      isOffline,
-      location = '',
       startTime,
       endTime,
-      isEnded,
       targetBalance,
-      currentBalance,
       publicity,
-      publicParticipant,
-      statementFile = '',
     }: {
       title: string;
       description?: string;
-      isOffline?: boolean;
-      location?: string;
       startTime: Date;
       endTime?: Date;
-      isEnded?: boolean;
       targetBalance: number;
-      currentBalance: number;
       publicity?: AccessLevel;
-      publicParticipant?: boolean;
-      statementFile?: string;
     },
   ) => {
     const data = await tenantPrisma.fund.create({
       data: {
-        userId: userId,
         title,
         description,
-        isOffline,
-        location,
         startTime,
         endTime,
-        isEnded,
         targetBalance,
-        currentBalance,
         publicity,
-        publicParticipant,
-        statementFile,
+        hostInformation: {
+          connect: {
+            userId: userId,
+          },
+        },
       },
     });
 
@@ -113,16 +99,10 @@ export default class OwnerFundService {
     data: {
       title: string;
       description?: string;
-      isOffline?: boolean;
-      location?: string;
       startTime: Date;
       endTime?: Date;
-      isEnded?: boolean;
       targetBalance: number;
-      currentBalance: number;
       publicity?: AccessLevel;
-      publicParticipant?: boolean;
-      statementFile?: string;
     },
   ) => {
     const fund = await tenantPrisma.fund.findUnique({
@@ -135,19 +115,11 @@ export default class OwnerFundService {
       throw new Error('403 denied');
     }
 
-    const updateData: any = {
-      ...data,
-    };
-
-    if (data.currentBalance !== fund.currentBalance) {
-      updateData.balanceUpdatedAt = new Date();
-    }
-
     const newFund = await tenantPrisma.fund.update({
       where: {
         id: fundId,
       },
-      data: updateData,
+      data: data,
     });
 
     await tenantPrisma.$disconnect();

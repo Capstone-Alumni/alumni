@@ -1,10 +1,13 @@
 'use client';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import useCreateFund from '../hooks/useCreateFund';
 import FundForm, { FundFormValues } from './FundForm';
 
 const CreateFundPage = () => {
+  const router = useRouter();
+
   const { fetchApi } = useCreateFund();
 
   const onCreateFund = async (values: FundFormValues) => {
@@ -13,9 +16,14 @@ const CreateFundPage = () => {
 
   return (
     <Box>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Tạo yêu cầu gây quỹ
-      </Typography>
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          Tạo quỹ
+        </Typography>
+        <Button variant="text" onClick={() => router.back()}>
+          quay lại
+        </Button>
+      </Stack>
       <FundForm onSubmit={onCreateFund} />
     </Box>
   );

@@ -32,7 +32,7 @@ const useOwnerUpdateFundById = () => {
       },
       onSuccess: () => {
         toast.success('Cập nhập quỹ thành công');
-        router.push('/funds/hosting');
+        router.push('admin/funds');
       },
     },
   );
