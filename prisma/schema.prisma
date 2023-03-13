@@ -113,17 +113,18 @@ model Education {
 }
 
 model News {
-  id           String        @id @default(cuid())
-  archived     Boolean       @default(false)
-  createdAt    DateTime      @default(now()) @map("created_at")
-  updatedAt    DateTime      @default(now()) @updatedAt @map("updated_at")
+  id           String          @id @default(cuid())
+  archived     Boolean         @default(false)
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @default(now()) @updatedAt @map("updated_at")
   title        String
   content      String
-  authorId     String        @map("author_id")
-  newsImageUrl String?       @map("news_image_url")
-  isPublic     Boolean       @default(false) @map("is_public")
+  authorId     String          @map("author_id")
+  newsImageUrl String?         @map("news_image_url")
+  isPublic     Boolean         @default(false) @map("is_public")
   NewsComment  NewsComment[]
-  authorInfoId String?       @map("author_info_id")
+  authorInfoId String?         @map("author_info_id")
+  tagNews      TagNewsOnNews[]
 
   authorInfo Information? @relation(fields: [authorInfoId], references: [id])
 
@@ -339,6 +340,32 @@ model RecruitmentApplication {
   applicationOwnerInfo Information @relation(fields: [applicationOwnerId], references: [userId])
 
   @@map("recruitment_applications")
+}
+
+model TagNews {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  tagName String          @map("tag_name")
+  news    TagNewsOnNews[]
+
+  @@map("tags_news")
+}
+
+model TagNewsOnNews {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  news      News    @relation(fields: [newsId], references: [id])
+  newsId    String  @map("news_id")
+  tagNews   TagNews @relation(fields: [tagNewsId], references: [id])
+  tagNewsId String  @map("tag_news_id")
+
+  @@map("tags_news_on_news")
 }
 
 enum AccessLevel {
