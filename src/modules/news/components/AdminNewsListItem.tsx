@@ -56,7 +56,6 @@ const AdminNewsListItem = ({
             <DeleteOutlineIcon
               sx={{
                 margin: 'auto',
-                marginLeft: 4,
               }}
               color="error"
               onClick={() => setOpenDeleteModal(true)}

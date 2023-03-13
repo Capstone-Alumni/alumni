@@ -3,10 +3,10 @@
 import { Box, Chip, Link, Typography } from '@mui/material';
 import { formatDate } from '@share/utils/formatDate';
 import { getImageOfNews } from '@share/utils/getFirstImageOfNews';
-import { getShortTitle } from '@share/utils/getShortTitle';
 import React from 'react';
 import { News } from '../types';
 import PublicNewsCardItemImage from './PublicNewsCardItemImage';
+import ArticleIcon from '@mui/icons-material/Article';
 
 const PublicNewsCardItems = ({ item, sx }: { item: News; sx?: any }) => {
   const srcImg = item.newsImageUrl
@@ -39,20 +39,52 @@ const PublicNewsCardItems = ({ item, sx }: { item: News; sx?: any }) => {
             sx={{
               marginTop: sx.marginImg,
               cursor: 'pointer',
+              maxHeight: 60,
             }}
+            noWrap
             variant={sx.typoVariant}
           >
-            {getShortTitle(item.title)}
+            {item.title}
           </Typography>
-
-          <Typography
-            sx={{ textTransform: 'capitalize', mb: 1 }}
-            color="GrayText"
+          <Box
+            sx={{
+              display: sx.imgWidth > 250 ? 'flex' : 'block',
+              mb: 1,
+            }}
           >
-            {formatDate(new Date(item.createdAt))}
-          </Typography>
+            <Typography
+              sx={{ textTransform: 'capitalize', fontSize: 14 }}
+              color="GrayText"
+            >
+              {formatDate(new Date(item.createdAt))}
+            </Typography>
+            <Box
+              sx={{
+                ml: 'auto',
+                display: 'flex',
+              }}
+            >
+              <ArticleIcon
+                fontSize="small"
+                sx={{
+                  color: 'gray',
+                }}
+              />
+              <Typography
+                sx={{ fontSize: 14, fontWeight: 600 }}
+                color="GrayText"
+              >
+                {item.authorInfo ? item.authorInfo.fullName : 'Chưa cập nhật'}
+              </Typography>
+            </Box>
+          </Box>
 
-          <Chip label="Example tag" variant="outlined" color="primary" />
+          <Chip
+            label="Example tag"
+            size="small"
+            variant="outlined"
+            color="primary"
+          />
         </Box>
       </Link>
     </Box>

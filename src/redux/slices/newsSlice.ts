@@ -23,6 +23,7 @@ export const newsSliceApi = createApi({
         url: `api/news/${newsId}`,
         method: 'GET',
       }),
+      providesTags: ['News'],
     }),
     createNews: builer.mutation({
       query: ({ title, content, newsImageUrl }) => ({
@@ -62,6 +63,7 @@ export const newsSliceApi = createApi({
         url: `/api/news/public/${newsId}`,
         method: 'GET',
       }),
+      providesTags: ['News'],
     }),
     deleteNews: builer.mutation({
       query: ({ newsId }) => ({

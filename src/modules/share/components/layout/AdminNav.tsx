@@ -156,9 +156,9 @@ const generateNavItems = (
     case 'ALUMNI':
       return [];
     case 'CLASS_MOD':
-      return [ACCESS_NAV_ITEM, EVENT_NAV_ITEM];
+      return [ACCESS_NAV_ITEM];
     case 'GRADE_MOD':
-      return [ACCESS_NAV_ITEM, EVENT_NAV_ITEM, NEWS_NAV_ITEM];
+      return [ACCESS_NAV_ITEM, EVENT_NAV_ITEM];
     case 'SCHOOL_ADMIN':
       return [
         ACCESS_NAV_ITEM,

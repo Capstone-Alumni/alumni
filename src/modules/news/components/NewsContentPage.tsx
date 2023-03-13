@@ -52,8 +52,7 @@ const NewsContentPage = ({ data }: { data: News }) => {
             color: 'text.secondary',
           }}
         >
-          Người viết:{' '}
-          {data.authorInfo ? data.authorInfo.fullName : data.authorId}
+          Tác giả: {data.authorInfo ? data.authorInfo.fullName : data.authorId}
         </Typography>
         <Box
           sx={{

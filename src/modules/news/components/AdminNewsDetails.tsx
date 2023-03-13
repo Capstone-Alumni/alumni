@@ -7,10 +7,15 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useGetNewsByIdForSchoolAdminQuery } from 'src/redux/slices/newsSlice';
+import {
+  useGetNewsByIdForSchoolAdminQuery,
+  useUpdateNewsByIdMutation,
+} from 'src/redux/slices/newsSlice';
 import NewsCommentList from './NewsCommentList';
 import NewsContentPage from './NewsContentPage';
 import NewsForm from './NewsForm';
+import PublicIcon from '@mui/icons-material/Public';
+import PublicOffIcon from '@mui/icons-material/PublicOff';
 
 const AdminNewsDetails = () => {
   const pathname = usePathname();
@@ -25,6 +30,13 @@ const AdminNewsDetails = () => {
       setUser(session.user);
     }
   }, [session]);
+  const [updateNewsPublic] = useUpdateNewsByIdMutation();
+  const handlePublicNews = async (newsId: string, isNewsPublic: boolean) => {
+    await updateNewsPublic({
+      newsId,
+      isPublic: !isNewsPublic,
+    });
+  };
 
   const [openEditForm, setOpenEditForm] = useState(false);
   return (
@@ -44,15 +56,56 @@ const AdminNewsDetails = () => {
           <Link href="/admin/news" prefetch={false}>
             <Typography>Danh sách tin tức</Typography>
           </Link>
-          <Button
+          <Box
             sx={{
               marginLeft: 'auto',
             }}
-            variant="outlined"
-            onClick={() => setOpenEditForm(true)}
           >
-            Chỉnh sửa bài viết
-          </Button>
+            <Button
+              sx={{
+                mr: 1,
+              }}
+              variant="outlined"
+              onClick={() => setOpenEditForm(true)}
+            >
+              Chỉnh sửa bài viết
+            </Button>
+            {newsData && newsData.status ? (
+              <Button
+                sx={{
+                  marginLeft: 'auto',
+                  color: newsData.data.isPublic ? 'gray' : '',
+                }}
+                color={!newsData.data.isPublic ? 'secondary' : undefined}
+                variant="outlined"
+                onClick={() =>
+                  handlePublicNews(newsData.data.id, newsData.data.isPublic)
+                }
+              >
+                {newsData.data.isPublic ? (
+                  <>
+                    <PublicOffIcon
+                      fontSize="small"
+                      sx={{
+                        mr: 1,
+                      }}
+                    />
+                    Ẩn bài viết
+                  </>
+                ) : (
+                  <>
+                    <PublicIcon
+                      fontSize="small"
+                      sx={{
+                        mr: 1,
+                      }}
+                    />
+                    Công khai bài viết
+                  </>
+                )}
+              </Button>
+            ) : null}
+          </Box>
         </Box>
       )}
       {openEditForm && <NewsForm initialData={newsData.data} />}
