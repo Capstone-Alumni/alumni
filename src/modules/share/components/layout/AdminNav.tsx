@@ -52,6 +52,12 @@ const SCHOOL_NAV_ITEM = {
   icon: 'material-symbols:meeting-room-outline-rounded',
   link: '/admin/school',
 };
+const SCHOOL_VNPAY_NAV_ITEM = {
+  id: 'vnpay',
+  title: 'Tích hợp VNPay',
+  icon: 'material-symbols:meeting-room-outline-rounded',
+  link: '/admin/vnpay',
+};
 const GRADE_NAV_ITEM = {
   id: 'grade_class',
   title: 'Niên khoá và Lớp',
@@ -167,6 +173,7 @@ const generateNavItems = (
         FUND_NAV_ITEM,
         RECRUITMENTS_NAV_ITEM,
         SCHOOL_NAV_ITEM,
+        SCHOOL_VNPAY_NAV_ITEM,
         GRADE_NAV_ITEM,
         USER_NAV_ITEM,
       ];

@@ -1,8 +1,8 @@
 import { verifyAdminOrMod } from '@share/helpers/SSRAuthorization';
-import EditSchoolPage from 'src/modules/school/components/EditSchoolPage';
+import AdminVnpayIntegrationPage from 'src/modules/vnpay/components/AdminVnpayIntegrationPage';
 
 export default async function Page() {
   await verifyAdminOrMod();
 
-  return <EditSchoolPage />;
+  return <AdminVnpayIntegrationPage />;
 }

@@ -10,12 +10,12 @@ const FundTransactionForm = ({
   fundId: string;
   canDonate: boolean;
 }) => {
-  const { fetchApi } = useCreateFundTransaction();
+  const { fetchApi, isLoading } = useCreateFundTransaction();
   const [amount, setAmount] = useState(200000);
 
-  const handleDonate = () => {
+  const handleDonate = async () => {
     if (canDonate) {
-      fetchApi({ fundId: fundId, amount: amount });
+      await fetchApi({ fundId: fundId, amount: amount });
     } else {
       toast.info(
         'Không thể ủng hộ. Thời gian gây quỹ đã kết thúc hoặc quỹ đã đạt số tiền mong muốn',
@@ -35,7 +35,11 @@ const FundTransactionForm = ({
           setAmount(parseInt(e.target.value, 10));
         }}
       />
-      <Button variant="contained" onClick={() => handleDonate()}>
+      <Button
+        variant="contained"
+        disabled={isLoading}
+        onClick={() => handleDonate()}
+      >
         Ủng hộ ngay
       </Button>
     </Stack>

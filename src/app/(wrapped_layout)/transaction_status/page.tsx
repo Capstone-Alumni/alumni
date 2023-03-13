@@ -3,8 +3,12 @@ import TransactionSuccess from 'src/modules/funds/components/TransactionSuccess'
 import querystring from 'qs';
 import crypto from 'crypto';
 import TransactionFailed from 'src/modules/funds/components/TransactionFailed';
+import { getTenantVnpayData } from '@share/utils/getTenantData';
+import { cookies } from 'next/headers';
 
-const Page = ({ searchParams }: any) => {
+const Page = async ({ searchParams }: any) => {
+  const tenantId = cookies().get('tenant-id')?.value || '';
+
   let vnp_Params = { ...searchParams };
 
   const secureHash = vnp_Params.vnp_SecureHash;
@@ -15,7 +19,10 @@ const Page = ({ searchParams }: any) => {
   vnp_Params = sortObject(vnp_Params);
 
   // const tmnCode = process.env.VNPAY_TMNCODE;
-  const secretKey = process.env.VNPAY_HASHSECRET as string;
+  // const secretKey = process.env.VNPAY_HASHSECRET as string;
+  const { data } = await getTenantVnpayData(tenantId);
+
+  const secretKey = data.vnp_hashSecret;
 
   const signData = querystring.stringify(vnp_Params, { encode: false });
   const hmac = crypto.createHmac('sha512', secretKey);

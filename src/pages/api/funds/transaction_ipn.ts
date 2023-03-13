@@ -7,6 +7,7 @@ import onNoMatchAPIHandler from '@lib/next-connect/onNoMatchAPIHandler';
 import { sortObject } from '@share/utils/sortObject';
 import getPrismaClient from '@lib/prisma/prisma';
 import { isNil } from 'lodash/fp';
+import { getTenantVnpayData } from '@share/utils/getTenantData';
 
 const handler = nc({
   onError: onErrorAPIHandler,
@@ -15,6 +16,22 @@ const handler = nc({
 
 handler.get(async function (req, res) {
   let vnp_Params = req.query;
+
+  console.log('Update Transaction', vnp_Params);
+
+  const tenantId = vnp_Params.vnp_OrderInfo
+    ?.toString()
+    .split(' ')[0]
+    .split('+')[0];
+
+  if (isNil(tenantId)) {
+    return res.status(200).json({ RspCode: '01', Message: 'Order not found' });
+  }
+
+  if (vnp_Params.vnp_OrderInfo === 'Test_call_ipn') {
+    return res.status(200).json({ RspCode: '97', Message: 'Checksum failed' });
+  }
+
   const secureHash = vnp_Params.vnp_SecureHash;
 
   const orderId = vnp_Params.vnp_TxnRef as string;
@@ -24,22 +41,12 @@ handler.get(async function (req, res) {
   delete vnp_Params.vnp_SecureHashType;
 
   vnp_Params = sortObject(vnp_Params);
-  const secretKey = process.env.VNPAY_HASHSECRET as string;
+  const { data } = await getTenantVnpayData(tenantId);
+
+  const secretKey = data.vnp_hashSecret;
   const signData = querystring.stringify(vnp_Params, { encode: false });
   const hmac = crypto.createHmac('sha512', secretKey);
   const signed = hmac.update(new Buffer(signData, 'utf-8')).digest('hex');
-
-  console.log('Update Transaction', vnp_Params);
-
-  if (vnp_Params.vnp_OrderInfo === 'Test_call_ipn') {
-    res.status(200).json({ RspCode: '97', Message: 'Checksum failed' });
-  }
-
-  const tenantId = vnp_Params.vnp_OrderInfo?.toString().split('+')[0];
-
-  if (isNil(tenantId)) {
-    return res.status(200).json({ RspCode: '01', Message: 'Order not found' });
-  }
 
   const prisma = await getPrismaClient(tenantId);
   const transaction = await prisma.fundTransaction.findUnique({

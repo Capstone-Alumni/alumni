@@ -9,6 +9,7 @@ import { sortObject } from '@share/utils/sortObject';
 import { extractTenantId, NextApiRequestWithTenant } from '@lib/next-connect';
 import getPrismaClient from '@lib/prisma/prisma';
 import { isAuthenticatedUser } from '@lib/next-connect/apiMiddleware';
+import { getTenantVnpayData } from '@share/utils/getTenantData';
 
 const handler = nc({
   onError: onErrorAPIHandler,
@@ -23,8 +24,13 @@ handler.post(async function (req: NextApiRequestWithTenant, res) {
     req.connection.remoteAddress ||
     req.socket.remoteAddress;
 
-  const tmnCode = process.env.VNPAY_TMNCODE; // config.get('vnp_TmnCode');
-  const secretKey = process.env.VNPAY_HASHSECRET; // config.get('vnp_HashSecret');
+  const subdomain = req.cookies['tenant-subdomain'] as string;
+
+  const { data } = await getTenantVnpayData(req.tenantId);
+  // const tmnCode = process.env.VNPAY_TMNCODE; // config.get('vnp_TmnCode');
+  // const secretKey = process.env.VNPAY_HASHSECRET; // config.get('vnp_HashSecret');
+  const tmnCode = data.vnp_tmnCode;
+  const secretKey = data.vnp_hashSecret;
 
   if (isNil(secretKey) || isNil(tmnCode)) {
     return res.status(500).json({
@@ -36,7 +42,6 @@ handler.post(async function (req: NextApiRequestWithTenant, res) {
   let vnpUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'; // config.get('vnp_Url');
   // TODO: https://capstone-alumni.atlassian.net/browse/AL-147
 
-  const subdomain = req.cookies['tenant-subdomain'] as string;
   const host = process.env.NEXT_PUBLIC_MAINAPP_HOST;
   const returnUrl = `${host?.replace(
     'alumni-sp23',

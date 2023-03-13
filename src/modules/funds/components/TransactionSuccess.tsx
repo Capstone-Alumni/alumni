@@ -15,7 +15,7 @@ const TransactionSuccess = () => {
           Cảm ơn bạn đã ủng hộ nhà trường. Thông tin ủng hộ của bạn đã được hệ
           thống ghi nhận.
         </Typography>
-        <Link href="/funds/discover">
+        <Link href="/funds/going">
           <Button role="href">Xem thêm quỹ</Button>
         </Link>
       </Box>
