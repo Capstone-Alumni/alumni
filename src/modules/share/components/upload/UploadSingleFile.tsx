@@ -45,16 +45,18 @@ interface CustomFile extends File {
   preview?: string;
 }
 
-interface UploadSingleFileProps extends DropzoneOptions {
+export interface UploadSingleFileProps extends DropzoneOptions {
   error?: boolean;
   file: CustomFile | string | null;
   sx?: SxProps<Theme>;
+  fileType: any;
 }
 
 export default function UploadSingleFile({
   error = false,
   file,
   sx,
+  fileType,
   ...other
 }: UploadSingleFileProps) {
   const {
@@ -65,6 +67,7 @@ export default function UploadSingleFile({
     fileRejections,
   } = useDropzone({
     multiple: false,
+    ...(fileType && { accept: { ...fileType } }),
     ...other,
   });
 

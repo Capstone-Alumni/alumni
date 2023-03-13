@@ -85,6 +85,7 @@ model Information {
   postLikes              PostLike[]
   RecruitmentApplication RecruitmentApplication[]
   fundTransactions       FundTransaction[]
+  FundReport             FundReport[]
 
   @@map("informations")
 }
@@ -224,6 +225,7 @@ model Fund {
 
   fundSaved        FundSaved[]
   fundTransactions FundTransaction[]
+  FundReport       FundReport[]
 
   @@map("funds")
 }
@@ -273,6 +275,24 @@ model FundTransaction {
   userInformation Information @relation(fields: [userId], references: [userId])
 
   @@map("fund_transactions")
+}
+
+model FundReport {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  archived Boolean @default(false)
+
+  title   String
+  content String?
+
+  fundId String @map("fund_id")
+  userId String @map("user_id")
+
+  fund            Fund        @relation(fields: [fundId], references: [id])
+  userInformation Information @relation(fields: [userId], references: [userId])
+
+  @@map("fund_reports")
 }
 
 model Post {

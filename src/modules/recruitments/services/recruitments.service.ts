@@ -150,6 +150,45 @@ export default class RecruimentService {
     };
   };
 
+  static getUserAppliedJobList = async (
+    tenantPrisma: PrismaClient,
+    { userId, page, limit }: { userId: string; page: number; limit: number },
+  ) => {
+    const whereFilter = {
+      AND: [{ archived: false }, { applicationOwnerId: userId }],
+    };
+
+    const [totalItem, recruitmentItem] = await tenantPrisma.$transaction([
+      tenantPrisma.recruitmentApplication.count({
+        where: whereFilter,
+      }),
+      tenantPrisma.recruitmentApplication.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereFilter,
+        orderBy: [{ createdAt: 'desc' }],
+        include: {
+          recruitment: {
+            select: {
+              address: true,
+              archived: true,
+              job: true,
+              companyImageUrl: true,
+              companyName: true,
+              id: true,
+              title: true,
+            },
+          },
+        },
+      }),
+    ]);
+    return {
+      totalItems: totalItem,
+      items: recruitmentItem,
+      itemPerPage: limit,
+    };
+  };
+
   static getById = async (
     tenantPrisma: PrismaClient,
     recruitmentId: string,

@@ -55,7 +55,7 @@ const EVENT_NAV_ITEMS = [
   },
   {
     id: 'hosting',
-    title: 'Đơn đã nộp',
+    title: 'Công ty đã nộp',
     icon: 'material-symbols:person-pin',
     link: '/recruitments/applied',
   },

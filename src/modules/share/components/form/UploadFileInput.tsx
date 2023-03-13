@@ -14,6 +14,8 @@ type UploadFileInputProps<T extends FieldValues> = {
     label?: string;
   };
   containerSx?: SxProps;
+  onSuccess?: (url: string) => void;
+  fileType?: any;
 };
 
 const UploadFileInput = <T extends FieldValues>({
@@ -21,6 +23,8 @@ const UploadFileInput = <T extends FieldValues>({
   name,
   inputProps,
   containerSx,
+  onSuccess,
+  fileType,
 }: UploadFileInputProps<T>) => {
   const handleDrop = async (acceptedFiles: File[]) => {
     const { uploadFile } = setStorage();
@@ -35,7 +39,9 @@ const UploadFileInput = <T extends FieldValues>({
 
       toast.dismiss(toastId);
       toast.success('Đã xử lý xong');
-
+      if (onSuccess) {
+        onSuccess(url);
+      }
       return url;
     } catch (error) {
       toast.dismiss(toastId);
@@ -55,6 +61,7 @@ const UploadFileInput = <T extends FieldValues>({
           <UploadSingleFile
             // {...field}
             {...inputProps}
+            fileType={fileType}
             file={field.value}
             onDrop={async files => {
               const url = await handleDrop(files);
