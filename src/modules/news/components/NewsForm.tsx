@@ -30,9 +30,8 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
       newsImageUrl: initialData?.newsImageUrl || '',
       title: initialData?.title ?? '',
       content: initialData?.content ?? '',
-      tagsNews: initialData?.tagsNews?.map(tag => tag.tagName as string) ?? [
-        '',
-      ],
+      tagsNews:
+        initialData?.tagsNews?.map(tag => tag.tagName as string) ?? undefined,
     },
   });
   const [hasValueTitle, setHasValueTitle] = useState(false);
