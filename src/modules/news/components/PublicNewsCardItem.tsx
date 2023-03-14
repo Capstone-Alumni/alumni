@@ -4,7 +4,7 @@ import { Box, Chip, Link, Typography } from '@mui/material';
 import { formatDate } from '@share/utils/formatDate';
 import { getImageOfNews } from '@share/utils/getFirstImageOfNews';
 import React from 'react';
-import { News } from '../types';
+import { News, TagsNews } from '../types';
 import PublicNewsCardItemImage from './PublicNewsCardItemImage';
 import ArticleIcon from '@mui/icons-material/Article';
 
@@ -78,13 +78,19 @@ const PublicNewsCardItems = ({ item, sx }: { item: News; sx?: any }) => {
               </Typography>
             </Box>
           </Box>
-
-          <Chip
-            label="Example tag"
-            size="small"
-            variant="outlined"
-            color="primary"
-          />
+          {item.tagsNews?.map((tag: TagsNews) => (
+            <Chip
+              key={tag.id}
+              label={tag.tagName}
+              size="small"
+              variant="outlined"
+              color="primary"
+              sx={{
+                mr: 0.25,
+                cursor: 'pointer',
+              }}
+            />
+          ))}
         </Box>
       </Link>
     </Box>

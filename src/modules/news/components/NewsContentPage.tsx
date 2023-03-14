@@ -3,29 +3,12 @@ import { Box, Chip, Typography } from '@mui/material';
 import parse from 'html-react-parser';
 // import CreateIcon from '@mui/icons-material/Create';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { News } from '../types';
+import { News, TagsNews } from '../types';
 import { formatDate } from '@share/utils/formatDate';
 
 const NewsContentPage = ({ data }: { data: News }) => {
   return (
     <>
-      <Box
-        sx={{
-          marginY: '24px',
-        }}
-      >
-        {data.newsCategories
-          ? data.newsCategories.map((category: string, index: number) => (
-              <Chip
-                key={index}
-                sx={{
-                  margin: 0.5,
-                }}
-                label={category}
-              />
-            ))
-          : null}
-      </Box>
       <Box>
         <Typography
           sx={{
@@ -81,6 +64,23 @@ const NewsContentPage = ({ data }: { data: News }) => {
         }}
       >
         {parse(data.content)}
+      </Box>
+      <Box
+        sx={{
+          marginY: '24px',
+        }}
+      >
+        {data.tagsNews
+          ? data.tagsNews.map((tag: TagsNews) => (
+              <Chip
+                key={tag.id}
+                sx={{
+                  margin: 0.5,
+                }}
+                label={tag.tagName}
+              />
+            ))
+          : null}
       </Box>
     </>
   );

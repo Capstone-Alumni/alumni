@@ -26,19 +26,27 @@ export const newsSliceApi = createApi({
       providesTags: ['News'],
     }),
     createNews: builer.mutation({
-      query: ({ title, content, newsImageUrl }) => ({
+      query: ({ title, content, newsImageUrl, tagsNews }) => ({
         url: 'api/news',
         method: 'POST',
         body: {
           title,
           content,
           newsImageUrl,
+          tagsNews,
         },
       }),
       invalidatesTags: ['News'],
     }),
     updateNewsById: builer.mutation({
-      query: ({ newsId, title, content, isPublic, newsImageUrl }) => ({
+      query: ({
+        newsId,
+        title,
+        content,
+        isPublic,
+        newsImageUrl,
+        tagsNews,
+      }) => ({
         url: `api/news/${newsId}`,
         method: 'PUT',
         body: {
@@ -46,6 +54,7 @@ export const newsSliceApi = createApi({
           content,
           isPublic,
           newsImageUrl,
+          tagsNews,
         },
       }),
       invalidatesTags: ['News'],
@@ -72,6 +81,13 @@ export const newsSliceApi = createApi({
       }),
       invalidatesTags: ['News'],
     }),
+    getTagsNews: builer.query({
+      query: () => ({
+        url: '/api/news/tags',
+        method: 'GET',
+      }),
+      providesTags: ['News'],
+    }),
   }),
 });
 
@@ -83,4 +99,5 @@ export const {
   useGetNewsByIdForPublicQuery,
   useCreateNewsMutation,
   useDeleteNewsMutation,
+  useGetTagsNewsQuery,
 } = newsSliceApi;

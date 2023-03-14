@@ -1,13 +1,21 @@
 'use client';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Box, Button, TextField, Typography, useTheme } from '@mui/material';
+import {
+  Autocomplete,
+  Box,
+  Button,
+  TextField,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import Editor from '@share/components/editor';
-import { CreateNewsProps, News, UpdateNewsProps } from '../types';
+import { CreateNewsProps, News, TagsNews, UpdateNewsProps } from '../types';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import {
   useCreateNewsMutation,
+  useGetTagsNewsQuery,
   useUpdateNewsByIdMutation,
 } from 'src/redux/slices/newsSlice';
 import UploadBackgroundInput from '@share/components/form/UploadBackgroundInput';
@@ -22,10 +30,15 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
       newsImageUrl: initialData?.newsImageUrl || '',
       title: initialData?.title ?? '',
       content: initialData?.content ?? '',
+      tagsNews: initialData?.tagsNews?.map(tag => tag.tagName as string) ?? [
+        '',
+      ],
     },
   });
   const [hasValueTitle, setHasValueTitle] = useState(false);
   const [hasValueContent, setHasValueContent] = useState(false);
+
+  const { data: tags } = useGetTagsNewsQuery({});
 
   const [createNews] = useCreateNewsMutation();
 
@@ -131,7 +144,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
               return (
                 <TextField
                   sx={{
-                    width: '100%',
+                    width: '80%',
                   }}
                   fullWidth
                   label="Tiêu đề"
@@ -140,6 +153,36 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
               );
             }}
           />
+          {tags ? (
+            <Controller
+              control={control}
+              name="tagsNews"
+              render={({ field: { value, onChange } }) => (
+                <Autocomplete
+                  multiple
+                  id="tags-outlined"
+                  options={tags.data.map((tag: TagsNews) => tag.tagName)}
+                  onChange={(event, values) => onChange(values)}
+                  value={value}
+                  freeSolo
+                  autoHighlight
+                  limitTags={2}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      label="Thẻ tin tức"
+                      placeholder="Gắn thẻ tin tức"
+                    />
+                  )}
+                  sx={{
+                    width: '20%',
+                    height: '100%',
+                    ml: 2,
+                  }}
+                />
+              )}
+            />
+          ) : null}
         </Box>
 
         <Controller

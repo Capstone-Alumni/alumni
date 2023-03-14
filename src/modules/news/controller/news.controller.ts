@@ -158,4 +158,23 @@ export default class NewsController {
       });
     }
   };
+
+  static getListTags = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const prisma = await getPrismaClient(req.tenantId);
+      const tagsNews = await NewsService.getListTags(prisma);
+      return res.status(200).json({
+        status: true,
+        data: tagsNews,
+      });
+    } catch (error: any) {
+      return res.status(400).json({
+        status: false,
+        message: error.message,
+      });
+    }
+  };
 }
