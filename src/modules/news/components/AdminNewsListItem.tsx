@@ -1,5 +1,6 @@
 'use client';
 import {
+  Chip,
   Link,
   Switch,
   TableCell,
@@ -7,7 +8,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { News } from '../types';
+import { News, TagsNews } from '../types';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import { useState } from 'react';
@@ -32,7 +33,7 @@ const AdminNewsListItem = ({
             }}
             href={`/admin/news/${data.id}`}
           >
-            <Typography>{data.title}</Typography>
+            <Typography noWrap>{data.title}</Typography>
           </Link>
         </TableCell>
         <TableCell sx={{ maxWidth: '10rem' }} align="left">
@@ -42,6 +43,19 @@ const AdminNewsListItem = ({
         </TableCell>
         <TableCell align="left">
           <Typography>{new Date(data.createdAt).toDateString()}</Typography>
+        </TableCell>
+        <TableCell>
+          {data.tagsNews
+            ? data.tagsNews.map((tag: TagsNews) => (
+                <Chip
+                  key={tag.id}
+                  sx={{
+                    margin: 0.5,
+                  }}
+                  label={tag.tagName}
+                />
+              ))
+            : null}
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <Tooltip title="Công khai tin này cho mọi người.">
@@ -56,7 +70,6 @@ const AdminNewsListItem = ({
             <DeleteOutlineIcon
               sx={{
                 margin: 'auto',
-                marginLeft: 4,
               }}
               color="error"
               onClick={() => setOpenDeleteModal(true)}

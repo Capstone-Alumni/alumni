@@ -3,6 +3,7 @@ import { Box, Pagination, Typography } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { useState } from 'react';
 import { useGetNewsForPublicQuery } from 'src/redux/slices/newsSlice';
+import { News } from '../types';
 import PublicNewsCardItems from './PublicNewsCardItem';
 
 const PublicNewsPage = () => {
@@ -55,7 +56,7 @@ const PublicNewsPage = () => {
                     fontFamily: 'Poppins-SVN,sans-serif',
                   }}
                 >
-                  Mới <br /> nhất
+                  Mới nhất
                 </Typography>
                 <Box
                   className="first-two-news"
@@ -65,7 +66,7 @@ const PublicNewsPage = () => {
                     marginTop: 4,
                   }}
                 >
-                  {newestNews.data.items.slice(0, 2).map((item: any) => (
+                  {newestNews.data.items.slice(0, 2).map((item: News) => (
                     <PublicNewsCardItems
                       key={item.id}
                       item={item}

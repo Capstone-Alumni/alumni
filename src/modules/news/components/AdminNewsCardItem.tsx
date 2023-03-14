@@ -4,7 +4,6 @@ import {
   Box,
   Card,
   CardContent,
-  Chip,
   Link,
   Tooltip,
   Typography,
@@ -63,17 +62,17 @@ const AdminNewsCardItem = ({ item }: { item: News }) => {
               {item.title}
             </Typography>
           </Link>
-          {item.newsCategories
-            ? item.newsCategories.map((category: any) => (
+          {/* {item.tagsNews
+            ? item.tagsNews.map((category: any) => (
                 <Chip
                   key={item.id}
                   sx={{
                     ml: 1,
                   }}
-                  label={category}
+                  label={category.tagName}
                 />
               ))
-            : null}
+            : null} */}
 
           <Link
             sx={{

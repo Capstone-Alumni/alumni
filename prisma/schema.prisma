@@ -126,6 +126,7 @@ model News {
   isPublic     Boolean       @default(false) @map("is_public")
   NewsComment  NewsComment[]
   authorInfoId String?       @map("author_info_id")
+  tagsNews     TagsNews[]
 
   authorInfo Information? @relation(fields: [authorInfoId], references: [id])
 
@@ -387,6 +388,18 @@ model RecruitmentApplication {
   applicationOwnerInfo Information @relation(fields: [applicationOwnerId], references: [userId])
 
   @@map("recruitment_applications")
+}
+
+model TagsNews {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  tagName String @unique @map("tag_name")
+  news    News[]
+
+  @@map("tags_news")
 }
 
 enum AccessLevel {

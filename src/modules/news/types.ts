@@ -8,11 +8,19 @@ export type News = {
   createdAt: Date;
   updatedAt: Date;
   archived: boolean;
-  newsCategories?: string[];
+  tagsNews?: TagsNews[];
   isPublic: boolean;
   newsImageUrl?: string;
   authorInfoId?: string;
   authorInfo?: AuthorInfo;
+};
+
+export type TagsNews = {
+  id: string;
+  tagName: string;
+  createdAt: Date;
+  updatedAt: Date;
+  archived: boolean;
 };
 
 type AuthorInfo = {
@@ -66,12 +74,14 @@ export type CreateNewsProps = {
   title: string;
   content: string;
   newsImageUrl?: string;
+  tagsNews?: string[];
 };
 
 export type UpdateNewsProps = {
   title?: string;
   content?: string;
   newsImageUrl?: string;
+  tagsNews?: string[];
 };
 
 export type GetListNewParams = {

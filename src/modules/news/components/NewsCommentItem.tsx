@@ -4,7 +4,7 @@ import { IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import { Link } from '@mui/material';
 import { Avatar, Box } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
@@ -116,7 +116,7 @@ const NewsCommentItem = ({
                 {item.commenterInfo ? item.commenterInfo.fullName : ''}
               </Typography>
             </Link>
-            {user.id === item.commenterId ||
+            {(user && user.id === item.commenterId) ||
             user.accessLevel === 'SCHOOL_ADMIN' ? (
               <>
                 <IconButton
@@ -127,7 +127,7 @@ const NewsCommentItem = ({
                   aria-haspopup="true"
                   aria-expanded={open ? 'true' : undefined}
                 >
-                  <ArrowDropDownIcon sx={{ width: 20, height: 20 }} />
+                  <MoreVertIcon sx={{ width: 20, height: 20 }} />
                 </IconButton>
                 <MenuDropDown
                   open={open}

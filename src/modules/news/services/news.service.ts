@@ -32,12 +32,24 @@ export default class NewsService {
             authorInfo: {
               connect: { id: authorInformation?.id },
             },
+            tagsNews: {
+              connectOrCreate: body.tagsNews?.map(tag => ({
+                where: { tagName: tag },
+                create: { tagName: tag },
+              })),
+            },
           },
         })
       : await tenantPrisma.news.create({
           data: {
             ...body,
             authorId: authorId,
+            tagsNews: {
+              connectOrCreate: body.tagsNews?.map(tag => ({
+                where: { tagName: tag },
+                create: { tagName: tag },
+              })),
+            },
           },
         });
     return newsCreated;
@@ -49,10 +61,50 @@ export default class NewsService {
     body: UpdateNewsProps,
   ) => {
     await isNewsExisted(tenantPrisma, newsId);
+    const news = await tenantPrisma.news.findFirst({
+      where: { id: newsId },
+      include: {
+        tagsNews: true,
+      },
+    });
 
+    if (
+      news?.tagsNews &&
+      body.tagsNews &&
+      news?.tagsNews?.length > body.tagsNews?.length
+    ) {
+      const removeTags = news.tagsNews.filter(
+        tag => !body.tagsNews?.includes(tag.tagName),
+      );
+
+      await tenantPrisma.news.update({
+        where: { id: newsId },
+        data: {
+          tagsNews: {
+            disconnect: removeTags.map(tag => ({
+              id: tag.id,
+            })),
+          },
+        },
+        include: {
+          tagsNews: true,
+        },
+      });
+    }
     const newsUpdated = await tenantPrisma.news.update({
       where: { id: newsId },
-      data: body,
+      data: {
+        ...body,
+        tagsNews: {
+          connectOrCreate: body.tagsNews?.map(tag => ({
+            where: { tagName: tag },
+            create: { tagName: tag },
+          })),
+        },
+      },
+      include: {
+        tagsNews: true,
+      },
     });
 
     return newsUpdated;
@@ -85,6 +137,7 @@ export default class NewsService {
             avatarUrl: true,
           },
         },
+        tagsNews: true,
       },
     });
     return news;
@@ -120,6 +173,7 @@ export default class NewsService {
               avatarUrl: true,
             },
           },
+          tagsNews: true,
         },
         orderBy: [
           {
@@ -166,6 +220,7 @@ export default class NewsService {
               avatarUrl: true,
             },
           },
+          tagsNews: true,
         },
         orderBy: [
           {
@@ -196,8 +251,16 @@ export default class NewsService {
             avatarUrl: true,
           },
         },
+        tagsNews: true,
       },
     });
     return news;
+  };
+
+  static getListTags = async (tenantPrisma: PrismaClient) => {
+    const tags = await tenantPrisma.tagsNews.findMany({
+      where: { archived: false },
+    });
+    return tags;
   };
 }
