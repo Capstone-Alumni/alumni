@@ -22,6 +22,7 @@ import FundTransactionForm from './FundTransactionForm';
 import FundTransactionListTab from './FundTransactionList';
 import { formatDate } from '@share/utils/formatDate';
 import { formatAmountMoney } from '../utils';
+import FundReportList from './FundReportList';
 
 const FundDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
@@ -201,13 +202,19 @@ const FundDetailPage = () => {
         aria-label="wrapped tabs"
       >
         <Tab value="description" label="Mô tả" />
-        <Tab value="transaction" label="Báo cáo" />
+        <Tab value="report" label="Báo cáo" />
         <Tab value="transaction" label="Danh sách ủng hộ" />
       </Tabs>
 
       {tabKey === 'description' ? (
         <Box sx={{ my: 2 }}>
           <EditorPreview value={fundData?.description || ''} />
+        </Box>
+      ) : null}
+
+      {tabKey === 'report' ? (
+        <Box sx={{ my: 2 }}>
+          <FundReportList />
         </Box>
       ) : null}
 

@@ -40,7 +40,7 @@ export type FundReport = {
   createdAt: string | Date;
   updatedAt: string | Date;
   title: string;
-  content?: string;
+  content: string;
 };
 
 export type GetAdminFundListParams = {
