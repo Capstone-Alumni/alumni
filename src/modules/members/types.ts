@@ -11,11 +11,10 @@ export type Member = {
   userId: string;
   tenantId: string;
   accessLevel: ACCESS_LEVEL;
-  accessStatus: ACCESS_STATUS;
 
-  isOwner: boolean;
+  lastLogin?: Date | string;
 
-  user: {
+  account: {
     id: string;
     email: string;
   };
@@ -25,6 +24,7 @@ export type GetMemberListParams = {
   page?: number;
   limit?: number;
   email?: string;
+  tenantId: string;
 };
 
 export type GetMemberListData = {

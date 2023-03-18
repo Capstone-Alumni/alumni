@@ -43,7 +43,7 @@ const useApi = <Params, Data, Err>(
     retainOnUnmount: false,
   },
 ) => {
-  const useApiDataAtom = useApiDataAtomFamily(apiName);
+  const useApiDataAtom = useApiDataAtomFamily<Data>(apiName);
   const [dataAtom, setDataAtom] = useRecoilState(useApiDataAtom);
   const subdomain = useRecoilValue(currentTenantSubdomainSelector);
 
