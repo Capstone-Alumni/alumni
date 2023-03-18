@@ -2,6 +2,7 @@
 
 import {
   Button,
+  Divider,
   LinearProgress,
   Stack,
   Tab,
@@ -22,6 +23,7 @@ import FundTransactionForm from './FundTransactionForm';
 import FundTransactionListTab from './FundTransactionList';
 import { formatDate } from '@share/utils/formatDate';
 import { formatAmountMoney } from '../utils';
+import FundReportList from './FundReportList';
 
 const FundDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
@@ -136,6 +138,8 @@ const FundDetailPage = () => {
             </Stack>
           </Stack>
 
+          <Divider sx={{ width: '100%', my: 1 }} />
+
           <Box>
             <Stack
               direction="row"
@@ -143,18 +147,20 @@ const FundDetailPage = () => {
               alignItems="center"
               sx={{ mb: 1 }}
             >
-              <Typography>Mục tiêu quỹ</Typography>
+              <Typography>Mục tiêu quỹ:</Typography>
               <Typography variant="h6">
                 {formatAmountMoney(fundData.targetBalance * 100)}
               </Typography>
             </Stack>
 
-            <LinearProgress
-              variant="determinate"
-              value={balancePercent > 100 ? 100 : balancePercent}
-              sx={{ height: '12px', flex: 1, width: '100%', mb: 0.5 }}
-            />
-            <Typography textAlign="right">{balancePercent}%</Typography>
+            <Stack direction="row" alignItems="center" gap={1}>
+              <Typography textAlign="right">{balancePercent}%</Typography>
+              <LinearProgress
+                variant="determinate"
+                value={balancePercent > 100 ? 100 : balancePercent}
+                sx={{ height: '12px', flex: 1, width: '100%', mb: 0.5 }}
+              />
+            </Stack>
 
             <Stack
               direction="row"
@@ -162,7 +168,7 @@ const FundDetailPage = () => {
               alignItems="center"
               sx={{ mt: 1 }}
             >
-              <Typography>Đã đạt được</Typography>
+              <Typography>Số tiền đã quyên góp được:</Typography>
               <Typography
                 variant="h5"
                 sx={{ color: theme.palette.primary.main }}
@@ -180,6 +186,11 @@ const FundDetailPage = () => {
               FundStatus === 'running' &&
               fundData.currentBalance < fundData.targetBalance * 100
             }
+            maxDonate={
+              fundData.targetBalance * 100 - fundData.currentBalance < 0
+                ? 0
+                : fundData.targetBalance * 100 - fundData.currentBalance
+            }
           />
 
           <Button
@@ -190,7 +201,7 @@ const FundDetailPage = () => {
             onClick={isSaved ? onUnsaveFund : onSaveFund}
             sx={{ mb: 1 }}
           >
-            {isSaved ? 'Huỷ lưu' : 'Lưu'}
+            {isSaved ? 'Bỏ lưu' : 'Lưu'}
           </Button>
         </Stack>
       </Box>
@@ -201,13 +212,19 @@ const FundDetailPage = () => {
         aria-label="wrapped tabs"
       >
         <Tab value="description" label="Mô tả" />
-        <Tab value="transaction" label="Báo cáo" />
+        <Tab value="report" label="Báo cáo" />
         <Tab value="transaction" label="Danh sách ủng hộ" />
       </Tabs>
 
       {tabKey === 'description' ? (
         <Box sx={{ my: 2 }}>
           <EditorPreview value={fundData?.description || ''} />
+        </Box>
+      ) : null}
+
+      {tabKey === 'report' ? (
+        <Box sx={{ my: 2 }}>
+          <FundReportList />
         </Box>
       ) : null}
 

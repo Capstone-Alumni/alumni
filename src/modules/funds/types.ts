@@ -32,6 +32,16 @@ export type FundTransaction = {
   fund?: Fund;
   vnp_Amount: string | number;
   createdAt: string | Date;
+  incognito: boolean;
+};
+
+export type FundReport = {
+  id: string;
+  archived: boolean;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+  title: string;
+  content: string;
 };
 
 export type GetAdminFundListParams = {

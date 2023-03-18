@@ -87,6 +87,7 @@ handler.post(async function (req: NextApiRequestWithTenant, res) {
       ...vnp_Params,
       vnp_Amount: parseInt(vnp_Params.vnp_Amount, 10),
       vnp_OrderType: vnp_Params.vnp_OrderType.toString(),
+      incognito: req.body.incognito,
       fund: {
         connect: { id: req.body.fundId },
       },

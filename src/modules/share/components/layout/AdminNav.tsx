@@ -2,17 +2,12 @@
 
 import { Icon } from '@iconify/react';
 
-import {
-  Avatar,
-  Box,
-  IconButton,
-  styled,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, styled, Tooltip, Typography, useTheme } from '@mui/material';
+import { User } from 'next-auth';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import MyAvatar from '../MyAvatar';
 
 const ACCESS_NAV_ITEM = {
   id: 'request_access',
@@ -73,7 +68,7 @@ const USER_NAV_ITEM = {
 
 const StyledSidebar = styled(Box)(() => ({
   height: '100vh',
-  width: '20rem',
+  width: '18rem',
 
   display: 'flex',
   flexDirection: 'column',
@@ -144,10 +139,10 @@ const StyledAccountWrapper = styled(Box)(({ theme }) => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'row',
-  alignItems: 'flex-start',
+  alignItems: 'center',
   gap: theme.spacing(1.5),
   paddingTop: theme.spacing(3),
-  paddingRight: theme.spacing(4),
+  paddingRight: theme.spacing(2),
   paddingLeft: theme.spacing(1),
   paddingBottom: theme.spacing(0),
   borderTopWidth: '1px',
@@ -180,12 +175,16 @@ const generateNavItems = (
   }
 };
 
-const AdminNav = ({ user, tenant }: { user?: any; tenant: any }) => {
+const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
   const theme = useTheme();
   const pathname = usePathname();
 
+  if (!user) {
+    return null;
+  }
+
   return (
-    <Box sx={{ position: 'relative' }}>
+    <Box sx={{ position: 'fixed' }}>
       <StyledSidebar>
         <StyledNavWrapper>
           <StyledHeader
@@ -203,7 +202,7 @@ const AdminNav = ({ user, tenant }: { user?: any; tenant: any }) => {
           </StyledHeader>
 
           <StyledNav>
-            {generateNavItems(user.accessLevel).map(item => {
+            {generateNavItems(user?.accessLevel).map(item => {
               const isActive = item.link && pathname?.startsWith(item.link);
               return (
                 <Link
@@ -238,39 +237,21 @@ const AdminNav = ({ user, tenant }: { user?: any; tenant: any }) => {
         </StyledNavWrapper>
 
         <StyledFooter>
-          <StyledNav sx={{ padding: 0 }}>
-            <Link
-              href="/"
-              style={{ color: 'inherit', width: '100%' }}
-              prefetch={false}
-            >
-              <StyledNavItem>
-                <Icon height={24} icon="majesticons:door-exit" />
-                <Typography fontWeight={600}>Thoát bảng điều khiển</Typography>
-              </StyledNavItem>
-            </Link>
-          </StyledNav>
-
           <StyledAccountWrapper>
-            <Avatar src={user.image} />
-            <Box>
-              <Typography variant="body2">{user.name}</Typography>
-              <Typography variant="caption">{user.email}</Typography>
-            </Box>
+            <MyAvatar displayName={user?.image || undefined} />
+            <Typography variant="body2">{user.email}</Typography>
 
-            <IconButton
-              sx={{
-                position: 'absolute',
-                right: 0,
-                top: theme.spacing(3),
-              }}
-            >
-              <Icon
-                color={theme.palette.primary.contrastText}
-                height={32}
-                icon="fe:logout"
-              />
-            </IconButton>
+            <Box sx={{ flex: 1 }} />
+
+            <Tooltip title="Thoát bảng điều khiển">
+              <Link href="/" style={{ color: 'inherit' }} prefetch={false}>
+                <Icon
+                  color={theme.palette.primary.contrastText}
+                  height={32}
+                  icon="fe:logout"
+                />
+              </Link>
+            </Tooltip>
           </StyledAccountWrapper>
         </StyledFooter>
       </StyledSidebar>

@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from '@prisma/client';
+import { User } from 'next-auth';
 
 export default class PublicFundService {
   static getList = async (
@@ -167,8 +168,17 @@ export default class PublicFundService {
 
   static getTransactionList = async (
     tenantPrisma: PrismaClient,
+    user: User,
     { page, limit, fundId }: { page: number; limit: number; fundId?: string },
   ) => {
+    const fund = await tenantPrisma.fund.findUnique({
+      where: { id: fundId },
+    });
+
+    if (!fund) {
+      return [];
+    }
+
     const whereFilter = {
       fundId: fundId,
       paymentStatus: 1,
@@ -203,7 +213,13 @@ export default class PublicFundService {
 
     return {
       totalItems: totalItems,
-      items,
+      items: items.map(item => ({
+        ...item,
+        userInformation:
+          item.incognito && user.id !== fund.userId
+            ? null
+            : item.userInformation,
+      })),
       itemPerPage: limit,
     };
   };

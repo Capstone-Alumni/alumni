@@ -113,11 +113,15 @@ export default class PublicFundController {
     const { page, limit } = req.query;
     const { id } = req.query;
 
-    const listData = await PublicFundService.getTransactionList(prisma, {
-      fundId: id as string,
-      page: page ? parseInt(page as string, 10) : 1,
-      limit: limit ? parseInt(limit as string, 10) : 10,
-    });
+    const listData = await PublicFundService.getTransactionList(
+      prisma,
+      req.user,
+      {
+        fundId: id as string,
+        page: page ? parseInt(page as string, 10) : 1,
+        limit: limit ? parseInt(limit as string, 10) : 10,
+      },
+    );
 
     return res.status(200).json({
       data: listData,

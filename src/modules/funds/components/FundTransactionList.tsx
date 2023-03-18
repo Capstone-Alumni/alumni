@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  Avatar,
   Box,
   Paper,
   Table,
@@ -55,11 +56,7 @@ const FundTransactionListTab = () => {
             {data.data.items.map(row => (
               <TableRow key={row.id}>
                 <TableCell align="left">
-                  <Link
-                    href={`/profile/${row.userId}`}
-                    prefetch={false}
-                    style={{ color: 'inherit' }}
-                  >
+                  {row.incognito ? (
                     <Box
                       sx={{
                         display: 'flex',
@@ -68,21 +65,43 @@ const FundTransactionListTab = () => {
                         alignItems: 'center',
                       }}
                     >
-                      <MyAvatar
-                        displayName={row?.userInformation?.fullName}
-                        photoUrl={row?.userInformation?.avatarUrl}
-                      />
+                      <Avatar />
                       <Box>
-                        <Typography>
-                          {row?.userInformation?.fullName}
-                        </Typography>
-                        <Typography variant="body2">
-                          {row?.userInformation?.alumClass?.grade?.code} /{' '}
-                          {row?.userInformation?.alumClass?.name}
+                        <Typography color="text.secondary">
+                          Người ủng hộ ẩn danh
                         </Typography>
                       </Box>
                     </Box>
-                  </Link>
+                  ) : (
+                    <Link
+                      href={`/profile/${row.userId}`}
+                      prefetch={false}
+                      style={{ color: 'inherit' }}
+                    >
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          gap: 1,
+                          alignItems: 'center',
+                        }}
+                      >
+                        <MyAvatar
+                          displayName={row?.userInformation?.fullName}
+                          photoUrl={row?.userInformation?.avatarUrl}
+                        />
+                        <Box>
+                          <Typography>
+                            {row?.userInformation?.fullName}
+                          </Typography>
+                          <Typography variant="body2">
+                            {row?.userInformation?.alumClass?.grade?.code} /{' '}
+                            {row?.userInformation?.alumClass?.name}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Link>
+                  )}
                 </TableCell>
                 <TableCell align="center">
                   <Typography fontWeight={600}>
