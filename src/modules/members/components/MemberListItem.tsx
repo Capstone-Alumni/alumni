@@ -45,14 +45,18 @@ const AdminMemberListItem = ({
           </Typography>
         </TableCell>
         <TableCell align="center">
-          <IconButton onClick={() => setOpenEditModal(true)}>
-            <Icon height={24} icon="uil:pen" />
-          </IconButton>
+          {data.accessLevel === 'SCHOOL_ADMIN' ? null : (
+            <IconButton onClick={() => setOpenEditModal(true)}>
+              <Icon height={24} icon="uil:pen" />
+            </IconButton>
+          )}
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
-          <IconButton onClick={() => setOpenDeleteModal(true)}>
-            <Icon height={24} icon="uil:trash-alt" />
-          </IconButton>
+          {data.accessLevel === 'SCHOOL_ADMIN' ? null : (
+            <IconButton onClick={() => setOpenDeleteModal(true)}>
+              <Icon height={24} icon="uil:trash-alt" />
+            </IconButton>
+          )}
         </TableCell>
       </TableRow>
 

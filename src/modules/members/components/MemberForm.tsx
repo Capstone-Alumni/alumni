@@ -49,7 +49,7 @@ const MemberForm = ({
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      email: initialData?.user.email ?? '',
+      email: initialData?.account.email ?? '',
       accessLevel: initialData?.accessLevel ?? 'ALUMNI',
       password: undefined,
     },
@@ -94,7 +94,7 @@ const MemberForm = ({
             fullWidth
             label="Email"
             {...field}
-            disabled={!!initialData?.user.email}
+            disabled={!!initialData?.account.email}
           />
         )}
       />
@@ -111,14 +111,12 @@ const MemberForm = ({
             type="select"
             {...field}
           >
-            {['ALUMNI', 'CLASS_MOD', 'GRADE_MOD', 'SCHOOL_ADMIN']?.map(
-              (role: string) => (
-                <MenuItem key={role} value={role}>
-                  {/** @ts-ignore */}
-                  {getRoleName(role)}
-                </MenuItem>
-              ),
-            )}
+            {['ALUMNI', 'CLASS_MOD', 'GRADE_MOD']?.map((role: string) => (
+              <MenuItem key={role} value={role}>
+                {/** @ts-ignore */}
+                {getRoleName(role)}
+              </MenuItem>
+            ))}
           </TextField>
         )}
       />
@@ -127,7 +125,7 @@ const MemberForm = ({
         control={control}
         name="password"
         render={({ field }) => (
-          <TextField fullWidth label="Mat khau" type="password" {...field} />
+          <TextField fullWidth label="Mật khẩu" type="password" {...field} />
         )}
       />
 
