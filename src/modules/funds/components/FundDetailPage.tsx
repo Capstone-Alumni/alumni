@@ -201,7 +201,7 @@ const FundDetailPage = () => {
             onClick={isSaved ? onUnsaveFund : onSaveFund}
             sx={{ mb: 1 }}
           >
-            {isSaved ? 'Huỷ lưu' : 'Lưu'}
+            {isSaved ? 'Bỏ lưu' : 'Lưu'}
           </Button>
         </Stack>
       </Box>

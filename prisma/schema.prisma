@@ -216,8 +216,8 @@ model Fund {
   description       String?
   startTime         DateTime    @default(now()) @map("start_time")
   endTime           DateTime?   @default(now()) @map("end_time")
-  targetBalance     Int      @default(0) @map("target_balance")
-  currentBalance    Int      @default(0) @map("currect_balance")
+  targetBalance     Int         @default(0) @map("target_balance")
+  currentBalance    Int         @default(0) @map("currect_balance")
   publicity         AccessLevel @default(ALUMNI)
   publicParticipant Boolean     @default(false) @map("public_participant")
 
@@ -268,7 +268,8 @@ model FundTransaction {
   vnp_ResponseCode      String? @map("vnp_response_code")
   vnp_TransactionStatus String? @map("vnp_transaction_status")
 
-  paymentStatus Int @default(0) @map("payment_status")
+  paymentStatus Int     @default(0) @map("payment_status")
+  incognito     Boolean @default(false)
 
   fundId          String      @map("fund_id")
   userId          String      @map("user_id")
@@ -282,7 +283,7 @@ model FundReport {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
-  archived Boolean @default(false)
+  archived  Boolean  @default(false)
 
   title   String
   content String?

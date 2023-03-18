@@ -5,6 +5,7 @@ import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationR
 import useCreateFundTransaction from '../hooks/useCreateFundTransaction';
 import { useForm } from 'react-hook-form';
 import TextInput from '@share/components/form/TextInput';
+import Checkbox from '@share/components/form/Checkbox';
 
 const FundTransactionForm = ({
   fundId,
@@ -22,6 +23,7 @@ const FundTransactionForm = ({
       .number()
       .max(maxDonate, `Số tiền tối đa là ${maxDonate}`)
       .required('Bắt buộc nhập'),
+    incognito: yup.boolean().required(),
   });
 
   const resolver = useYupValidateionResolver(validationSchema);
@@ -30,12 +32,19 @@ const FundTransactionForm = ({
     resolver,
     defaultValues: {
       amount: maxDonate < 100000 ? maxDonate : 100000,
+      incognito: false,
     },
   });
 
-  const handleDonate = async ({ amount }: { amount: number }) => {
+  const handleDonate = async ({
+    amount,
+    incognito,
+  }: {
+    amount: number;
+    incognito: boolean;
+  }) => {
     if (canDonate) {
-      await fetchApi({ fundId: fundId, amount: amount });
+      await fetchApi({ fundId: fundId, amount: amount, incognito: incognito });
     } else {
       toast.info(
         'Không thể ủng hộ. Thời gian gây quỹ đã kết thúc hoặc quỹ đã đạt số tiền mong muốn',
@@ -51,6 +60,13 @@ const FundTransactionForm = ({
         inputProps={{
           label: 'Số tiền ủng hộ',
           type: 'number',
+        }}
+      />
+      <Checkbox
+        control={control}
+        name="incognito"
+        inputProps={{
+          label: 'Tôi muốn ủng hộ ẩn danh',
         }}
       />
       <Button
