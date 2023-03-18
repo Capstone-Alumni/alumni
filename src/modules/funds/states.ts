@@ -1,4 +1,5 @@
 import { atom } from 'recoil';
+import { GetFundReportListResponse } from './hooks/useGetFundReportList';
 import {
   GetAdminFundListParams,
   GetFundTransactionListParams,
@@ -50,3 +51,10 @@ export const getFundTransactionListParamsAtom =
       page: 1,
     },
   });
+
+export const getFundReportListDataAtom = atom<GetFundReportListResponse | null>(
+  {
+    key: 'getFundReportListDataAtom',
+    default: null,
+  },
+);
