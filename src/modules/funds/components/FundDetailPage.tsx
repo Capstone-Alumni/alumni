@@ -2,6 +2,7 @@
 
 import {
   Button,
+  Divider,
   LinearProgress,
   Stack,
   Tab,
@@ -137,6 +138,8 @@ const FundDetailPage = () => {
             </Stack>
           </Stack>
 
+          <Divider sx={{ width: '100%', my: 1 }} />
+
           <Box>
             <Stack
               direction="row"
@@ -144,18 +147,20 @@ const FundDetailPage = () => {
               alignItems="center"
               sx={{ mb: 1 }}
             >
-              <Typography>Mục tiêu quỹ</Typography>
+              <Typography>Mục tiêu quỹ:</Typography>
               <Typography variant="h6">
                 {formatAmountMoney(fundData.targetBalance * 100)}
               </Typography>
             </Stack>
 
-            <LinearProgress
-              variant="determinate"
-              value={balancePercent > 100 ? 100 : balancePercent}
-              sx={{ height: '12px', flex: 1, width: '100%', mb: 0.5 }}
-            />
-            <Typography textAlign="right">{balancePercent}%</Typography>
+            <Stack direction="row" alignItems="center" gap={1}>
+              <Typography textAlign="right">{balancePercent}%</Typography>
+              <LinearProgress
+                variant="determinate"
+                value={balancePercent > 100 ? 100 : balancePercent}
+                sx={{ height: '12px', flex: 1, width: '100%', mb: 0.5 }}
+              />
+            </Stack>
 
             <Stack
               direction="row"
@@ -163,7 +168,7 @@ const FundDetailPage = () => {
               alignItems="center"
               sx={{ mt: 1 }}
             >
-              <Typography>Đã đạt được</Typography>
+              <Typography>Số tiền đã quyên góp được:</Typography>
               <Typography
                 variant="h5"
                 sx={{ color: theme.palette.primary.main }}
@@ -180,6 +185,11 @@ const FundDetailPage = () => {
             canDonate={
               FundStatus === 'running' &&
               fundData.currentBalance < fundData.targetBalance * 100
+            }
+            maxDonate={
+              fundData.targetBalance * 100 - fundData.currentBalance < 0
+                ? 0
+                : fundData.targetBalance * 100 - fundData.currentBalance
             }
           />
 

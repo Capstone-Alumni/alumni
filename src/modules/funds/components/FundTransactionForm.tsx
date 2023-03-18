@@ -1,19 +1,39 @@
-import { Button, Stack, TextField } from '@mui/material';
-import { useState } from 'react';
+import { Button, Stack } from '@mui/material';
 import { toast } from 'react-toastify';
+import * as yup from 'yup';
+import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 import useCreateFundTransaction from '../hooks/useCreateFundTransaction';
+import { useForm } from 'react-hook-form';
+import TextInput from '@share/components/form/TextInput';
 
 const FundTransactionForm = ({
   fundId,
+  maxDonate,
   canDonate,
 }: {
   fundId: string;
+  maxDonate: number;
   canDonate: boolean;
 }) => {
   const { fetchApi, isLoading } = useCreateFundTransaction();
-  const [amount, setAmount] = useState(200000);
 
-  const handleDonate = async () => {
+  const validationSchema = yup.object({
+    amount: yup
+      .number()
+      .max(maxDonate, `Số tiền tối đa là ${maxDonate}`)
+      .required('Bắt buộc nhập'),
+  });
+
+  const resolver = useYupValidateionResolver(validationSchema);
+
+  const { control, handleSubmit } = useForm({
+    resolver,
+    defaultValues: {
+      amount: maxDonate < 100000 ? maxDonate : 100000,
+    },
+  });
+
+  const handleDonate = async ({ amount }: { amount: number }) => {
     if (canDonate) {
       await fetchApi({ fundId: fundId, amount: amount });
     } else {
@@ -25,20 +45,18 @@ const FundTransactionForm = ({
 
   return (
     <Stack direction="column" gap={1}>
-      <TextField
-        size="small"
-        label="Số tiền ủng hộ"
-        type="number"
-        autoFocus
-        value={amount}
-        onChange={e => {
-          setAmount(parseInt(e.target.value, 10));
+      <TextInput
+        control={control}
+        name="amount"
+        inputProps={{
+          label: 'Số tiền ủng hộ',
+          type: 'number',
         }}
       />
       <Button
         variant="contained"
         disabled={isLoading}
-        onClick={() => handleDonate()}
+        onClick={handleSubmit(handleDonate)}
       >
         Ủng hộ ngay
       </Button>

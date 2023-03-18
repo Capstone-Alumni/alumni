@@ -5,6 +5,7 @@ import crypto from 'crypto';
 import TransactionFailed from 'src/modules/funds/components/TransactionFailed';
 import { getTenantVnpayData } from '@share/utils/getTenantData';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 const Page = async ({ searchParams }: any) => {
   const tenantId = cookies().get('tenant-id')?.value || '';
@@ -30,6 +31,10 @@ const Page = async ({ searchParams }: any) => {
 
   if (secureHash === signed) {
     //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
+    if (vnp_Params.vnp_ResponseCode === '24') {
+      return redirect('/funds/going');
+    }
+
     return <TransactionSuccess />;
   }
 
