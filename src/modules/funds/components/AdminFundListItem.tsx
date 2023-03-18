@@ -21,11 +21,10 @@ import useOwnerDeleteFundById from '../hooks/useOwnerDeleteFundById';
 import useAdminGetFundList from '../hooks/useAdminGetFundList';
 import { formatDate } from '@share/utils/formatDate';
 import { formatAmountMoney } from '../utils';
+import { getShortTitle } from '@share/utils/getShortTitle';
 
 const AdminFundListItem = ({
   data,
-  onApprove,
-  onReject,
 }: {
   data: Fund;
   onApprove: (id: string) => void;
@@ -46,7 +45,7 @@ const AdminFundListItem = ({
     <>
       <TableRow>
         <TableCell align="left" sx={{ width: '20rem' }}>
-          <Typography>{data.title}</Typography>
+          <Typography>{getShortTitle(data.title)}</Typography>
         </TableCell>
         <TableCell align="left">
           <Typography>{data.hostInformation?.email}</Typography>

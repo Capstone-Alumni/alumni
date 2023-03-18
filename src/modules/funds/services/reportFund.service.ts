@@ -98,6 +98,7 @@ export default class ReportFundService {
         where: { archived: false },
       }),
       tenantPrisma.fundReport.findMany({
+        where: { archived: false },
         orderBy: {
           createdAt: 'desc',
         },

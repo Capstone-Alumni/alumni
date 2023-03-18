@@ -1,15 +1,18 @@
 'use client';
 
-import { Button, Stack } from '@mui/material';
+import { Button, Stack, Tab, Tabs } from '@mui/material';
 import { Box, Typography } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useOwnerGetFundById from '../hooks/useOwnerGetFundById';
 import useOwnerUpdateFundById from '../hooks/useOwnerUpdateFundById';
+import AdminFundReportTab from './AdminFundReportTab';
 import FundForm, { FundFormValues } from './FundForm';
 
 const HostingFundEditPage = () => {
+  const [tabKey, setTabKey] = useState('info');
+
   const router = useRouter();
   const pathname = usePathname();
 
@@ -44,7 +47,21 @@ const HostingFundEditPage = () => {
           quay lại
         </Button>
       </Stack>
-      <FundForm initialData={data?.data} onSubmit={onUpdateFund} />
+
+      <Tabs
+        value={tabKey}
+        onChange={(_, key) => setTabKey(key)}
+        aria-label="wrapped tabs"
+      >
+        <Tab value="info" label="Thông tin cơ bản" />
+        <Tab value="report" label="Báo cáo" />
+      </Tabs>
+
+      {tabKey === 'info' ? (
+        <FundForm initialData={data?.data} onSubmit={onUpdateFund} />
+      ) : null}
+
+      {tabKey === 'report' ? <AdminFundReportTab /> : null}
     </Box>
   );
 };
