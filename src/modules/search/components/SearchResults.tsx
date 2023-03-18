@@ -80,8 +80,7 @@ const SeachPage = () => {
                             {user?.alumClass && (
                               <Typography variant="caption">
                                 <strong>Khối: </strong>
-                                {user?.alumClass.grade.code} -{' '}
-                                {user?.alumClass.grade.name}
+                                {user?.alumClass.grade.code}
                               </Typography>
                             )}
                             {user?.alumClass && (

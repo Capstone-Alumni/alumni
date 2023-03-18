@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import useEffectV2 from '@share/hooks/useEffectV2';
 import { useRecoilValue } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getGradeListParamsAtom } from '../state';
@@ -31,7 +31,7 @@ const useGetGradeList = () => {
     },
   }));
 
-  useEffect(() => {
+  useEffectV2(() => {
     fetchApi(params);
   }, [params]);
 

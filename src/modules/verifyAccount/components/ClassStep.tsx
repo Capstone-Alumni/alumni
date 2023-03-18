@@ -42,7 +42,7 @@ const ClassStep = () => {
         }}
       >
         <Typography variant="body2" color="primary" sx={{ mb: 2 }}>
-          Niên khoá: {selectedGrade.name}
+          Niên khoá: {selectedGrade.code}
         </Typography>
 
         <Typography mb={4} variant="h4">

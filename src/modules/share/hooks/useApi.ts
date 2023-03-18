@@ -1,11 +1,14 @@
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import useSWRMutation, { SWRMutationConfiguration } from 'swr/mutation';
 import axios from 'axios';
 import { useCallback, useEffect } from 'react';
 import formatSearchParams from '../utils/formatParams';
 import { noop } from 'lodash/fp';
 import { getSession } from 'next-auth/react';
-import { currentTenantSubdomainSelector } from '@share/states';
+import {
+  currentTenantSubdomainSelector,
+  useApiDataAtomFamily,
+} from '@share/states';
 
 export type ApiConfig = {
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -40,6 +43,8 @@ const useApi = <Params, Data, Err>(
     retainOnUnmount: false,
   },
 ) => {
+  const useApiDataAtom = useApiDataAtomFamily(apiName);
+  const [dataAtom, setDataAtom] = useRecoilState(useApiDataAtom);
   const subdomain = useRecoilValue(currentTenantSubdomainSelector);
 
   const {
@@ -90,7 +95,7 @@ const useApi = <Params, Data, Err>(
     return data;
   };
 
-  const { data, error, trigger, reset, isMutating } = useSWRMutation(
+  const { error, trigger, reset, isMutating } = useSWRMutation(
     apiName,
     fetcher,
     {
@@ -99,7 +104,10 @@ const useApi = <Params, Data, Err>(
       populateCache,
       rollbackOnError,
       throwOnError,
-      onSuccess,
+      onSuccess: (data, key, config) => {
+        setDataAtom(data);
+        onSuccess?.(data, key, config);
+      },
       onError,
     },
   );
@@ -115,7 +123,7 @@ const useApi = <Params, Data, Err>(
   );
 
   return {
-    data,
+    data: dataAtom,
     error,
     fetchApi: trigger,
     reset,

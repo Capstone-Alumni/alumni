@@ -8,7 +8,7 @@ import {
 export default class GradeService {
   static create = async (
     tenantPrisma: PrismaClient,
-    { name, code }: CreateGradeServiceProps,
+    { code }: CreateGradeServiceProps,
   ) => {
     const existingGrade = await tenantPrisma.grade.findUnique({
       where: {
@@ -22,7 +22,6 @@ export default class GradeService {
 
     const newGrade = await tenantPrisma.grade.create({
       data: {
-        name: name,
         code: code,
       },
     });
@@ -34,13 +33,10 @@ export default class GradeService {
     tenantPrisma: PrismaClient,
     { params }: GetGradeListServiceProps,
   ) => {
-    const { name, code, page, limit } = params;
+    const { code, page, limit } = params;
 
     const whereFilter = {
-      AND: [
-        { OR: [{ code: { contains: code } }, { name: { contains: name } }] },
-        { archived: false },
-      ],
+      AND: [{ OR: [{ code: { contains: code } }] }, { archived: false }],
     };
 
     const [totalGradeItem, gradeItems] = await tenantPrisma.$transaction([

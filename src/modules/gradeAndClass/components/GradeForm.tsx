@@ -10,12 +10,10 @@ import { Grade } from '../types';
 
 export type GradeFormValues = {
   code: string;
-  name: string;
 };
 
 const validationSchema = yup.object({
   code: yup.string().required(),
-  name: yup.string(),
 });
 
 const GradeForm = ({
@@ -35,7 +33,6 @@ const GradeForm = ({
   const { control, handleSubmit } = useForm({
     defaultValues: {
       code: initialData?.code ?? '',
-      name: initialData?.name ?? '',
     },
     resolver,
   });
@@ -73,14 +70,6 @@ const GradeForm = ({
         name="code"
         render={({ field }) => (
           <TextField fullWidth label="Mã khoá" {...field} />
-        )}
-      />
-
-      <Controller
-        control={control}
-        name="name"
-        render={({ field }) => (
-          <TextField fullWidth label="Tên khoá" {...field} />
         )}
       />
 

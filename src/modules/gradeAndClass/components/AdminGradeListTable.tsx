@@ -29,8 +29,7 @@ const AdminGradeListTable = ({
         <Table aria-label="grade table">
           <TableHead>
             <TableRow>
-              <TableCell align="left">Mã khoá</TableCell>
-              <TableCell align="left">Tên niên khoá</TableCell>
+              <TableCell align="left">Mã niên khoá</TableCell>
               <TableCell align="left">Ngày được tạo</TableCell>
               <TableCell align="center" sx={{ maxWidth: '3rem' }}>
                 Lớp

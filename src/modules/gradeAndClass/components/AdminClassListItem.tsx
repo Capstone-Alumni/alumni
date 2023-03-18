@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
+import { formatDate } from '@share/utils/formatDate';
 import { useState } from 'react';
 import { Class } from '../types';
 import ClassForm, { ClassFormValues } from './ClassForm';
@@ -31,7 +32,7 @@ const AdminClassListItem = ({
           <Typography>{data.name}</Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>{new Date(data.createdAt).toDateString()}</Typography>
+          <Typography>{formatDate(new Date(data.createdAt))}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <IconButton onClick={() => setOpenEditModal(true)}>

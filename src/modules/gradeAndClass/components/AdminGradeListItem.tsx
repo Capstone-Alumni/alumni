@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
+import { formatDate } from '@share/utils/formatDate';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Grade } from '../types';
@@ -32,10 +33,7 @@ const AdminGradeListItem = ({
           <Typography>{data.code}</Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>{data.name}</Typography>
-        </TableCell>
-        <TableCell align="left">
-          <Typography>{new Date(data.createdAt).toDateString()}</Typography>
+          <Typography>{formatDate(new Date(data.createdAt))}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <IconButton>
