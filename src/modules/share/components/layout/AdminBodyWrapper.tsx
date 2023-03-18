@@ -11,6 +11,7 @@ const AdminBodyWrapper = ({ children }: { children: React.ReactNode }) => {
         flex: 1,
         paddingTop: theme.spacing(1.5),
         marginLeft: '20rem',
+        minHeight: '100vh',
       }}
     >
       <Box
