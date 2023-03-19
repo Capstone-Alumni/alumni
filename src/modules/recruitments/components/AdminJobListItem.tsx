@@ -66,8 +66,8 @@ const AdminEventListItem = ({
           <Tooltip
             title={
               data?.isApproved
-                ? `Ẩn công việc.`
-                : `Công khai công việc này cho mọi người.`
+                ? 'Ẩn công việc.'
+                : 'Công khai công việc này cho mọi người.'
             }
           >
             <Switch
