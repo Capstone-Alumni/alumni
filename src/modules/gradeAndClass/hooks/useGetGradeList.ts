@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import useEffectV2 from '@share/hooks/useEffectV2';
 import { useRecoilValue } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
@@ -30,6 +31,12 @@ const useGetGradeList = () => {
       code,
     },
   }));
+
+  useEffect(() => {
+    if (!data) {
+      fetchApi(params);
+    }
+  }, []);
 
   useEffectV2(() => {
     fetchApi(params);
