@@ -13,7 +13,7 @@ ALTER TABLE "_NewsToTagsNews" DROP CONSTRAINT "_NewsToTagsNews_A_fkey";
 ALTER TABLE "_NewsToTagsNews" DROP CONSTRAINT "_NewsToTagsNews_B_fkey";
 
 -- AlterTable
-ALTER TABLE "news" ADD COLUMN     "tag_news_id" TEXT NOT NULL;
+ALTER TABLE "news" ADD COLUMN     "tag_news_id" TEXT;
 
 -- DropTable
 DROP TABLE "_NewsToTagsNews";
