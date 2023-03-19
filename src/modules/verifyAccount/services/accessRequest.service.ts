@@ -1,5 +1,6 @@
 import { VerifyAccountInfoServiceProps } from '../types';
 import { PrismaClient } from '@prisma/client';
+import { User } from 'next-auth';
 
 export default class AccessRequestService {
   static verifyAccount = async (
@@ -122,6 +123,51 @@ export default class AccessRequestService {
     };
   };
 
+  static getOwnedAccessStatus = async (
+    tenantPrisma: PrismaClient,
+    user: User,
+  ) => {
+    const alumni = await tenantPrisma.alumni.findFirst({
+      where: {
+        accountId: user.id,
+      },
+    });
+
+    if (!alumni) {
+      throw new Error('alumni not existed');
+    }
+
+    const accessRequest = await tenantPrisma.accessRequest.findFirst({
+      where: {
+        userId: user.id,
+        archived: false,
+      },
+      include: {
+        alumClass: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        grade: {
+          select: {
+            id: true,
+            code: true,
+          },
+        },
+      },
+    });
+
+    await tenantPrisma.$disconnect();
+
+    console.log(accessRequest);
+
+    return {
+      accessStatus: alumni.accessStatus,
+      accessRequest: accessRequest,
+    };
+  };
+
   static rejectAccessRequest = async (
     tenantPrisma: PrismaClient,
     { id }: { id: string },
@@ -179,7 +225,6 @@ export default class AccessRequestService {
           select: {
             id: true,
             code: true,
-            name: true,
           },
         },
       },

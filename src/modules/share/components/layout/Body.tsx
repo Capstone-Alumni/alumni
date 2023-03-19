@@ -1,7 +1,18 @@
 'use client';
 
-import { BoxProps, Container, useTheme } from '@mui/material';
-import React from 'react';
+import {
+  alpha,
+  Box,
+  BoxProps,
+  Button,
+  Container,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
+import useGetAccessStatus from '@share/hooks/useGetAccessStatus';
+import Link from 'next/link';
+import React, { useMemo } from 'react';
 
 const Body = ({
   children,
@@ -11,6 +22,23 @@ const Body = ({
   sx?: BoxProps;
 }) => {
   const theme = useTheme();
+
+  const { data } = useGetAccessStatus();
+
+  console.log(data);
+
+  const message = useMemo(() => {
+    if (!data?.data) {
+      return null;
+    }
+    if (!data.data.accessRequest) {
+      return 'Hãy tìm lớp của bạn để mở nhiều chức năng hơn';
+    }
+    if (data.data.accessStatus === 'PENDING') {
+      return 'Yêu cầu tham gia lớp của bạn đã được ghi nhận, hãy đợi đại diện lớp của bạn duyệt yêu cầu nhé';
+    }
+    return null;
+  }, [data]);
 
   return (
     <Container
@@ -23,6 +51,31 @@ const Body = ({
         ...sx,
       }}
     >
+      {message ? (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingY: 2,
+            paddingX: 4,
+            mb: 4,
+            borderRadius: `${theme.shape.borderRadiusSm}px`,
+            backgroundColor: alpha(theme.palette.primary.lighter, 0.7),
+          }}
+        >
+          <InfoIcon sx={{ mr: 1 }} />
+
+          <Typography>{message}</Typography>
+
+          <Box sx={{ flex: 1 }} />
+
+          <Link href="/verify_account" prefetch={false}>
+            <Button variant="text">Tìm lớp ngay</Button>
+          </Link>
+        </Box>
+      ) : null}
+
       {children}
     </Container>
   );
