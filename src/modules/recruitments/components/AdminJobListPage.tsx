@@ -3,26 +3,26 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { useRecoilState } from 'recoil';
-import useAdminApproveEventById from '../hooks/useAdminApproveJobById';
-import useAdminGetEventList from '../hooks/useAdminGetJobList';
-import useAdminRejectEventById from '../hooks/useAdminRejectJobById';
+import useAdminApproveJobById from '../hooks/useAdminApproveJobById';
+import useAdminGetJobList from '../hooks/useAdminGetJobList';
+import useAdminRejectJobById from '../hooks/useAdminRejectJobById';
 import { getAdminJobListParamsAtom } from '../states';
-import AdminEventListTable from './AdminJobListTable';
+import AdminJobListTable from './AdminJobListTable';
 
-const AdminEventListPage = () => {
+const AdminJobListPage = () => {
   const theme = useTheme();
   const [params, setParams] = useRecoilState(getAdminJobListParamsAtom);
-  const { data, reload, isLoading } = useAdminGetEventList();
-  const { fetchApi: approveEvent } = useAdminApproveEventById();
-  const { fetchApi: rejectEvent } = useAdminRejectEventById();
+  const { data, reload, isLoading } = useAdminGetJobList();
+  const { fetchApi: approveJob } = useAdminApproveJobById();
+  const { fetchApi: rejectJob } = useAdminRejectJobById();
 
-  const onApproveEvent = async (id: string) => {
-    await approveEvent({ jobId: id });
+  const onApproveJob = async (id: string) => {
+    await approveJob({ jobId: id });
     reload();
   };
 
-  const onRejectEvent = async (id: string) => {
-    await rejectEvent({ jobId: id });
+  const onRejectJob = async (id: string) => {
+    await rejectJob({ jobId: id });
     reload();
   };
 
@@ -56,11 +56,11 @@ const AdminEventListPage = () => {
         {isLoading ? <LoadingIndicator /> : null}
 
         {data?.data ? (
-          <AdminEventListTable
+          <AdminJobListTable
             data={data?.data}
             page={params.page || 1}
-            onApprove={onApproveEvent}
-            onReject={onRejectEvent}
+            onApprove={onApproveJob}
+            onReject={onRejectJob}
             onChangePage={nextPage => {
               setParams(prevParams => ({ ...prevParams, page: nextPage }));
             }}
@@ -71,4 +71,4 @@ const AdminEventListPage = () => {
   );
 };
 
-export default AdminEventListPage;
+export default AdminJobListPage;
