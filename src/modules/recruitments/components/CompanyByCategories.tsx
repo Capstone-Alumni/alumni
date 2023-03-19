@@ -18,7 +18,7 @@ const CompaniesSlider = ({
 }) => {
   const theme = useTheme();
   const [jobActivate, setJobActivate] = React.useState<string>(
-    data.items[0].job || '',
+    data.items[0]?.job || '',
   );
 
   const handleRenderCategories = () => {

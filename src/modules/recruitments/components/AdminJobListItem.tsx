@@ -2,8 +2,10 @@ import { Icon } from '@iconify/react';
 import {
   Button,
   IconButton,
+  Switch,
   TableCell,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { Job } from '../types';
@@ -21,8 +23,12 @@ const AdminEventListItem = ({
   return (
     <>
       <TableRow>
-        <TableCell align="left">
-          <Typography>{data.title}</Typography>
+        <TableCell align="left" sx={{ cursor: 'pointer' }}>
+          <AdminJobPreview data={data}>
+            <Tooltip title="Xem tóm tắt công việc">
+              <Typography>{data.title}</Typography>
+            </Tooltip>
+          </AdminJobPreview>
         </TableCell>
         <TableCell align="left">
           <Typography>{data.recruitmentOwnerInfo?.fullName}</Typography>
@@ -49,21 +55,37 @@ const AdminEventListItem = ({
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <AdminJobPreview data={data}>
-            <IconButton>
-              <Icon height={24} icon="uil:eye" />
-            </IconButton>
+            <Tooltip title="Xem tóm tắt công việc">
+              <IconButton>
+                <Icon height={24} icon="uil:eye" />
+              </IconButton>
+            </Tooltip>
           </AdminJobPreview>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
-          <IconButton onClick={() => onApprove(data.id)}>
+          <Tooltip
+            title={
+              data?.isApproved
+                ? `Ẩn công việc.`
+                : `Công khai công việc này cho mọi người.`
+            }
+          >
+            <Switch
+              checked={data.isApproved}
+              onChange={() =>
+                !data.isApproved ? onApprove(data.id) : onReject(data.id)
+              }
+            />
+          </Tooltip>
+          {/* <IconButton onClick={() => onApprove(data.id)}>
             <Icon height={24} icon="uil:pen" />
-          </IconButton>
+          </IconButton> */}
         </TableCell>
-        <TableCell align="center" sx={{ maxWidth: '3rem' }}>
+        {/* <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <IconButton onClick={() => onReject(data.id)}>
             <Icon height={24} icon="uil:trash-alt" />
           </IconButton>
-        </TableCell>
+        </TableCell> */}
       </TableRow>
     </>
   );
