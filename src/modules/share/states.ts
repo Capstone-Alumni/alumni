@@ -1,4 +1,4 @@
-import { atom, selector } from 'recoil';
+import { atom, atomFamily, RecoilState, selector } from 'recoil';
 import { Class } from '../gradeAndClass/types';
 
 export type Tenant = {
@@ -14,6 +14,15 @@ export type Tenant = {
   background3?: string;
   vnp_tmnCode?: string;
   vnp_hashSecret?: string;
+};
+
+export const _useApiDataAtomFamily = atomFamily<any, string>({
+  key: 'useApiDataAtom',
+  default: null,
+});
+
+export const useApiDataAtomFamily = <T>(id: string): RecoilState<T> => {
+  return _useApiDataAtomFamily(id);
 };
 
 export const currentTenantDataAtom = atom<Tenant>({

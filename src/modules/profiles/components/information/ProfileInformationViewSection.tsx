@@ -64,8 +64,8 @@ const ProfileInformationSection = ({
             <ProfileInfoRow
               title="Niên khóa"
               content={
-                userInformation?.alumClass.grade.name
-                  ? userInformation.alumClass.grade.name
+                userInformation?.alumClass.grade.code
+                  ? userInformation.alumClass.grade.code
                   : 'Chưa cập nhật'
               }
             />

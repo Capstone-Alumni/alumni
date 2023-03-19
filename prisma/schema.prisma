@@ -13,7 +13,6 @@ model Grade {
   createdAt     DateTime        @default(now()) @map("created_at")
   updatedAt     DateTime        @default(now()) @updatedAt @map("updated_at")
   code          String          @unique
-  name          String
   alumClasses   AlumClass[]
   accessRequest AccessRequest[]
 
@@ -33,6 +32,22 @@ model AlumClass {
   accessRequest AccessRequest[]
 
   @@map("alum_classes")
+}
+
+model Alumni {
+  id           String @id @default(cuid())
+  tenantId     String @map("tenant_id")
+  accountId    String @map("account_id")
+  accountEmail String @map("account_email")
+
+  accessLevel  AccessLevel  @default(ALUMNI) @map("access_level")
+  accessStatus AccessStatus @default(PENDING) @map("access_status")
+
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("alumni")
 }
 
 model AccessRequest {
@@ -126,7 +141,7 @@ model News {
   isPublic     Boolean       @default(false) @map("is_public")
   NewsComment  NewsComment[]
   authorInfoId String?       @map("author_info_id")
-  tagsNews     TagsNews[]
+  tagsNews     TagsNews[]    @relation("news_to_tag_news")
 
   authorInfo Information? @relation(fields: [authorInfoId], references: [id])
 
@@ -398,7 +413,7 @@ model TagsNews {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   tagName String @unique @map("tag_name")
-  news    News[]
+  news    News[] @relation("news_to_tag_news")
 
   @@map("tags_news")
 }

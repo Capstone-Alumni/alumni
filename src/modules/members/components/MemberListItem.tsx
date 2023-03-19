@@ -1,7 +1,6 @@
 import { Icon } from '@iconify/react';
 import {
   Box,
-  Button,
   IconButton,
   Modal,
   TableCell,
@@ -9,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
+import { formatDate } from '@share/utils/formatDate';
 import getRoleName from '@share/utils/getRoleName';
 import { useState } from 'react';
 import { Member } from '../types';
@@ -30,7 +30,7 @@ const AdminMemberListItem = ({
     <>
       <TableRow>
         <TableCell align="left">
-          <Typography>{data.user.email}</Typography>
+          <Typography>{data.account.email}</Typography>
         </TableCell>
         <TableCell align="left">
           <Typography>{getRoleName(data.accessLevel)}</Typography>
@@ -38,27 +38,25 @@ const AdminMemberListItem = ({
         <TableCell align="left">
           <Typography>
             <Typography>
-              {data.accessStatus === 'APPROVED' ? (
-                <Button variant="outlined" size="small" color="success">
-                  Đã xác thực
-                </Button>
-              ) : (
-                <Button variant="outlined" size="small" color="warning">
-                  Chưa chọn lớp
-                </Button>
-              )}
+              {data.lastLogin
+                ? formatDate(new Date(data.lastLogin), 'dd/MM/yyyy - HH:mm')
+                : 'Chưa đăng nhập'}
             </Typography>
           </Typography>
         </TableCell>
         <TableCell align="center">
-          <IconButton onClick={() => setOpenEditModal(true)}>
-            <Icon height={24} icon="uil:pen" />
-          </IconButton>
+          {data.accessLevel === 'SCHOOL_ADMIN' ? null : (
+            <IconButton onClick={() => setOpenEditModal(true)}>
+              <Icon height={24} icon="uil:pen" />
+            </IconButton>
+          )}
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
-          <IconButton onClick={() => setOpenDeleteModal(true)}>
-            <Icon height={24} icon="uil:trash-alt" />
-          </IconButton>
+          {data.accessLevel === 'SCHOOL_ADMIN' ? null : (
+            <IconButton onClick={() => setOpenDeleteModal(true)}>
+              <Icon height={24} icon="uil:trash-alt" />
+            </IconButton>
+          )}
         </TableCell>
       </TableRow>
 

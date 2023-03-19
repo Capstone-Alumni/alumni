@@ -2,7 +2,6 @@
 export type Grade = {
   id: string;
   code: string;
-  name?: string;
   createdAt: string | Date;
 };
 
@@ -46,7 +45,6 @@ export type GetClassListParams = {
 export type GetGradeListServiceParams = {
   page: number;
   limit: number;
-  name: string;
   code: string;
 };
 

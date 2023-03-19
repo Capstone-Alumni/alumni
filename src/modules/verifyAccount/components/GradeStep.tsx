@@ -70,7 +70,7 @@ const GradeStep = () => {
               fontSize={18}
               color="primary"
             >
-              {selectedGrade?.code} - {selectedGrade.name}
+              {selectedGrade?.code}
             </Typography>
           </Typography>
         ) : null}
@@ -106,9 +106,6 @@ const GradeStep = () => {
             >
               <ListItemText sx={{ minWidth: theme.spacing(14) }}>
                 <Typography>{grade.code}</Typography>
-              </ListItemText>
-              <ListItemText>
-                <Typography>{grade.name}</Typography>
               </ListItemText>
             </MenuItem>
           ))}

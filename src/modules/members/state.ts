@@ -7,5 +7,6 @@ export const getMemberListParamsAtom = atom<GetMemberListParams>({
     page: 1,
     limit: 10,
     email: '',
+    tenantId: '',
   },
 });

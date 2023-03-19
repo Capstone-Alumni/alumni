@@ -13,7 +13,7 @@ type GetMemberListDataResponse = {
 
 type GetMemberListDataError = unknown;
 
-const useGetMemberList = (tenantId: string) => {
+const useGetMemberList = () => {
   const params = useRecoilValue(getMemberListParamsAtom);
 
   const { fetchApi, data, isLoading } = useApi<
@@ -21,8 +21,8 @@ const useGetMemberList = (tenantId: string) => {
     GetMemberListDataResponse,
     GetMemberListDataError
   >(
-    `getMemberList/${tenantId}`,
-    ({ page, limit, email }) => ({
+    'getMemberList',
+    ({ page, limit, email, tenantId }) => ({
       method: 'GET',
       url: '/platformHost/api/members',
       params: {
@@ -38,7 +38,9 @@ const useGetMemberList = (tenantId: string) => {
   );
 
   useEffect(() => {
-    fetchApi(params);
+    if (params.tenantId) {
+      fetchApi(params);
+    }
   }, [params]);
 
   const reload = () => {

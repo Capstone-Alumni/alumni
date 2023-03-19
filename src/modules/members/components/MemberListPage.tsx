@@ -3,7 +3,7 @@
 import { Box, Button, Typography, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import MemberListTable from './MemberListTable';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import useCreateMember from '../hooks/useCreateMember';
 import useDeleteMemberById from '../hooks/useDeleteMemberById';
@@ -29,7 +29,7 @@ const MemberListPage = () => {
     reload,
     data: memberListData,
     isLoading: isGettingMember,
-  } = useGetMemberList(tenantId);
+  } = useGetMemberList();
 
   const onAddMember = async (values: MemberFormValues) => {
     await createMember({ ...values, tenantId });
@@ -48,6 +48,14 @@ const MemberListPage = () => {
     await updateMemberById({ memberId, password, accessLevel });
     reload();
   };
+
+  useEffect(() => {
+    setParams(prev => ({ ...prev, tenantId: tenantId }));
+  }, [tenantId]);
+
+  if (!tenantId) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <Box
