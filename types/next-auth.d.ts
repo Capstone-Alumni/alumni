@@ -27,8 +27,6 @@ declare module 'next-auth' {
     email: string;
     tenant: Tenant;
     accessLevel: AccessLevel;
-    accessStatus: string;
-    accessMode: string;
   }
 }
 

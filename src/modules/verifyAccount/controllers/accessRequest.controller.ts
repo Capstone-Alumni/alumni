@@ -45,6 +45,22 @@ export default class AccessRequestController {
     });
   };
 
+  static getOwnedAccessStatus = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    const prisma = await getPrismaClient(req.tenantId);
+
+    const accountUpdated = await AccessRequestService.getOwnedAccessStatus(
+      prisma,
+      req.user,
+    );
+    return res.status(200).json({
+      status: true,
+      data: accountUpdated,
+    });
+  };
+
   static rejectAccessRequest = async (
     req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
