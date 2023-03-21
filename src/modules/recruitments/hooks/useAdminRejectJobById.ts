@@ -23,10 +23,10 @@ const useAdminRejectJobById = () => {
     }),
     {
       onError: () => {
-        toast.error('Ẩn sự kiện thất bại');
+        toast.error('Ẩn công việc thất bại');
       },
       onSuccess: () => {
-        toast.success('Ẩn sự kiện thành công');
+        toast.success('Ẩn công việc thành công');
       },
     },
   );
