@@ -93,14 +93,16 @@ const Header = ({
             >
               <NavItem label="Tin tức" href="/news" />
               <NavItem label="Sự kiện" href="/events/discover" />
-              <NavItem label="Tuyển dụng" href="/recruitments/discover" />
+              {user && (
+                <NavItem label="Tuyển dụng" href="/recruitments/discover" />
+              )}
               <NavItem label="Gây quỹ" href="/funds/going" />
-              {user ? (
+              {user && (
                 <>
                   <NavItem label="Bài đăng" href="/posts" />
                   <NavItem label="Tìm bạn" href="/find" />
                 </>
-              ) : null}
+              )}
             </Box>
 
             <Box sx={{ flex: 1 }} />
