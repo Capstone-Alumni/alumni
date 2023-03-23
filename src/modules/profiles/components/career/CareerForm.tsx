@@ -4,7 +4,7 @@ import deepPurple from '@mui/material/colors/deepPurple';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import TextInput from '@share/components/form/TextInput';
-import DateTimeInput from '@share/components/form/DateTimeInput';
+import DateInput from '@share/components/form/DateInput';
 
 const CareerForm = ({ defaultValues, onSave, onClose }: any) => {
   const theme = useTheme();
@@ -50,21 +50,25 @@ const CareerForm = ({ defaultValues, onSave, onClose }: any) => {
           label: 'Nơi công tác/Công ty',
           name: 'company',
           type: 'text',
+          require: true,
         },
         {
           label: 'Chức vụ',
           name: 'jobTitle',
           type: 'text',
+          require: true,
         },
         {
           label: 'Thời gian bắt đầu',
           name: 'startDate',
           type: 'date',
+          require: true,
         },
         {
           label: 'Thời gian kết thúc',
           name: 'endDate',
           type: 'date',
+          require: false,
         },
       ].map((item: any) => {
         switch (item.type) {
@@ -73,18 +77,23 @@ const CareerForm = ({ defaultValues, onSave, onClose }: any) => {
               <TextInput
                 control={control}
                 name={item.name}
-                inputProps={{ label: item.label, fullWidth: true }}
+                inputProps={{
+                  label: item.label,
+                  fullWidth: true,
+                  required: item.require,
+                }}
                 key={item.id}
               />
             );
           case 'date':
             return (
-              <DateTimeInput
+              <DateInput
                 control={control}
                 name={item.name}
                 inputProps={{
                   fullWidth: true,
                   label: item.label,
+                  required: item.require,
                 }}
                 key={item.id}
               />

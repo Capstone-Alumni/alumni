@@ -66,14 +66,16 @@ const Header = ({
       <ElevationScroll hasAnimation={hasAnimation}>
         <AppBar color="inherit">
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-            >
-              <Logo url={tenant?.logo} />
-            </IconButton>
+            <Link href="/">
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+              >
+                <Logo url={tenant?.logo} />
+              </IconButton>
+            </Link>
             <Typography variant="h6" component="div" color="primary">
               {tenant?.name}
             </Typography>

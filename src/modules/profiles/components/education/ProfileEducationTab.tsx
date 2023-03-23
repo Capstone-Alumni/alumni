@@ -16,29 +16,40 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useCanEditProfile } from '../../helpers/canEditProfile';
 import ProfileInfoRow from '../InfoRowCustom';
 import {
+  useAddUserEducationsMutation,
+  useDeleteUserEducationsMutation,
   useGetUserEducationsQuery,
   useUpdateUserEducationsMutation,
 } from '@redux/slices/userProfileSlice';
 import EducationForm from './EducationForm';
 import { toast } from 'react-toastify';
 import VisibilityFormDialogs from '../VisibilityFormDialogs';
+import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 
 const ProfileEducationTab = () => {
   const theme = useTheme();
 
   const [openAddForm, setOpenAddForm] = useState(false);
+  const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
   const [selectedEditId, setSelectedEditId] = useState(null);
   const [updateUserEducations] = useUpdateUserEducationsMutation();
+  const [deleteUserEducation] = useDeleteUserEducationsMutation();
+  const [addUserEducation] = useAddUserEducationsMutation();
   const { canEditProfile, userProfileId } = useCanEditProfile();
   const userEducationsResponse = useGetUserEducationsQuery(userProfileId);
 
   const educationListData = userEducationsResponse?.data?.data?.items;
 
   const onAddEducation = async (values: any) => {
-    const data = [...educationListData, values];
-
     try {
-      await updateUserEducations({ userId: userProfileId, data });
+      if (
+        values.endDate &&
+        new Date(values.endDate) < new Date(values.startDate)
+      ) {
+        toast.error('Ngày kết thúc phải lớn hơn ngày bắt đầu');
+        return;
+      }
+      await addUserEducation({ userId: userProfileId, data: values });
 
       setOpenAddForm(false);
 
@@ -49,29 +60,28 @@ const ProfileEducationTab = () => {
   };
 
   const onDeleteEducation = async (id: string) => {
-    const currentData = [...educationListData];
-
-    const deleteIndex = currentData.findIndex((item: any) => item.id === id);
-
-    currentData.splice(deleteIndex, 1);
-
     try {
-      await updateUserEducations({ userId: userProfileId, data: currentData });
-      toast.success('Cập nhật thành công');
+      await deleteUserEducation({ userId: userProfileId, educationId: id });
+      toast.success('Xóa thành công');
     } catch (error) {
       toast.error('Có lỗi xảy ra, vui lòng thử lại');
     }
   };
 
   const onUpdateEducation = async (id: any, values: any) => {
-    const currentData = [...educationListData];
-
-    const updateIndex = currentData.findIndex((item: any) => item.id === id);
-
-    currentData[updateIndex] = values;
-
     try {
-      await updateUserEducations({ userId: userProfileId, data: currentData });
+      if (
+        values.endDate &&
+        new Date(values.endDate) < new Date(values.startDate)
+      ) {
+        toast.error('Ngày kết thúc phải lớn hơn ngày bắt đầu');
+        return;
+      }
+      await updateUserEducations({
+        userId: userProfileId,
+        educationId: values.id,
+        data: values,
+      });
 
       setSelectedEditId(null);
 
@@ -116,7 +126,10 @@ const ProfileEducationTab = () => {
           {canEditProfile ? (
             <IconButton
               aria-label="edit-personla-info"
-              onClick={() => setOpenAddForm(true)}
+              onClick={() => {
+                setSelectedEditId(null);
+                setOpenAddForm(true);
+              }}
             >
               <AddCircleIcon />
             </IconButton>
@@ -175,12 +188,27 @@ const ProfileEducationTab = () => {
 
                     {canEditProfile ? (
                       <Box>
-                        <IconButton onClick={() => setSelectedEditId(item.id)}>
+                        <IconButton
+                          onClick={() => {
+                            if (openAddForm) {
+                              setOpenAddForm(false);
+                            }
+                            setSelectedEditId(item.id);
+                          }}
+                        >
                           <EditIcon />
                         </IconButton>
-                        <IconButton onClick={() => onDeleteEducation(item.id)}>
+                        <IconButton
+                          onClick={() => setOpenConfirmDeleteModal(true)}
+                        >
                           <DeleteIcon color="error" />
                         </IconButton>
+                        <ConfirmDeleteModal
+                          open={openConfirmDeleteModal}
+                          title="Bạn muốn xoá thông tin này?"
+                          onClose={() => setOpenConfirmDeleteModal(false)}
+                          onDelete={() => onDeleteEducation(item.id)}
+                        />
                       </Box>
                     ) : null}
                   </Box>

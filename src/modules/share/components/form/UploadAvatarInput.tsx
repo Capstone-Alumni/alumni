@@ -55,7 +55,7 @@ const UploadAvatarInput = <T extends FieldValues>({
           <UploadAvatar
             // {...field}
             {...inputProps}
-            file={field.value}
+            file={field.value ? field.value : '/default_avatar.png'}
             onDrop={async files => {
               const url = await handleDrop(files);
               if (url) {

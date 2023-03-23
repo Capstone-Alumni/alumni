@@ -205,6 +205,9 @@ export default class EducationServices {
           skip: (page - 1) * limit,
           take: limit,
           where: whereFilter,
+          orderBy: {
+            startDate: 'desc',
+          },
         }),
       ]);
     return {
