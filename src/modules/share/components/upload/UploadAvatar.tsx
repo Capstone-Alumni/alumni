@@ -65,6 +65,7 @@ export interface UploadAvatarProps extends DropzoneOptions {
   file: CustomFile | string | null;
   caption?: ReactNode;
   sx?: SxProps<Theme>;
+  hideShowGuideText?: boolean;
 }
 
 export default function UploadAvatar({
@@ -72,6 +73,7 @@ export default function UploadAvatar({
   file,
   caption,
   sx,
+  hideShowGuideText,
   ...other
 }: UploadAvatarProps) {
   const {
@@ -158,9 +160,11 @@ export default function UploadAvatar({
               icon={roundAddAPhoto}
               sx={{ width: 24, height: 24, mb: 1 }}
             />
-            <Typography variant="caption">
-              {file ? 'Cập nhập' : 'Tải ảnh lên'}
-            </Typography>
+            {!hideShowGuideText ? (
+              <Typography variant="caption">
+                {file ? 'Cập nhập' : 'Tải ảnh lên'}
+              </Typography>
+            ) : null}
           </PlaceholderStyle>
         </DropZoneStyle>
       </RootStyle>

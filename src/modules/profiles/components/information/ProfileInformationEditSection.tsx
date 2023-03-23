@@ -12,7 +12,7 @@ import { Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 import TextInput from '@share/components/form/TextInput';
-import DateTimeInput from '@share/components/form/DateTimeInput';
+import DateInput from '@share/components/form/DateInput';
 
 const ProfileInformationEditSection = ({
   userInformation,
@@ -153,7 +153,7 @@ const ProfileInformationEditSection = ({
             inputProps={{ label: 'Số điện thoại', fullWidth: true }}
           />
 
-          <DateTimeInput
+          <DateInput
             control={control}
             name="dateOfBirth"
             inputProps={{

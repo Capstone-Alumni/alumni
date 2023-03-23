@@ -35,16 +35,29 @@ export const userProfileApi = createApi({
       query: (id: any) => `api/users/${id}/career`,
       providesTags: ['Careers'],
     }),
-
-    updateUserCareers: builder.mutation<any, any>({
+    addUserCareers: builder.mutation<any, any>({
       query: ({ userId, data }) => ({
         url: `api/users/${userId}/career`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Careers'],
+    }),
+    updateUserCareers: builder.mutation<any, any>({
+      query: ({ userId, careerId, data }) => ({
+        url: `api/users/${userId}/career/${careerId}`,
         method: 'PUT',
         body: data,
       }),
       invalidatesTags: ['Careers'],
     }),
-
+    deleteUserCareers: builder.mutation<any, any>({
+      query: ({ userId, careerId, data }) => ({
+        url: `api/users/${userId}/career/${careerId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Careers'],
+    }),
     // Educations
 
     getUserEducations: builder.query<any, any>({
@@ -52,11 +65,26 @@ export const userProfileApi = createApi({
       providesTags: ['Educations'],
     }),
 
-    updateUserEducations: builder.mutation<any, any>({
+    addUserEducations: builder.mutation<any, any>({
       query: ({ userId, data }) => ({
-        url: `api/users/${userId}/education`,
+        url: `api/users/${userId}/education/`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Educations'],
+    }),
+    updateUserEducations: builder.mutation<any, any>({
+      query: ({ userId, educationId, data }) => ({
+        url: `api/users/${userId}/education/${educationId}`,
         method: 'PUT',
         body: data,
+      }),
+      invalidatesTags: ['Educations'],
+    }),
+    deleteUserEducations: builder.mutation<any, any>({
+      query: ({ userId, educationId }) => ({
+        url: `api/users/${userId}/education/${educationId}`,
+        method: 'DELETE',
       }),
       invalidatesTags: ['Educations'],
     }),
@@ -75,5 +103,9 @@ export const {
   useGetUserInformationQuery,
   useUpdateUserInformationMutation,
   useUpdateUserCareersMutation,
+  useAddUserCareersMutation,
+  useDeleteUserCareersMutation,
+  useAddUserEducationsMutation,
   useUpdateUserEducationsMutation,
+  useDeleteUserEducationsMutation,
 } = userProfileApi;

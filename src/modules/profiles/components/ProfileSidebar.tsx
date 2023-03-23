@@ -113,9 +113,10 @@ const ProfileSidebar = () => {
               disabled: !canEditProfile,
               maxSize: 3145728,
               onChange: handleChangeAvatar,
+              hideShowGuideText: !canEditProfile,
             }}
           />
-          <Typography variant="h5" textAlign="center">
+          <Typography sx={{ mt: 1 }} variant="h5" textAlign="center">
             {data?.data?.fullName}
           </Typography>
         </CardContent>
