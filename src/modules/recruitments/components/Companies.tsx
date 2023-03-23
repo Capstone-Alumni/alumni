@@ -51,7 +51,6 @@ const CompaniesSlider = ({
       );
     });
   };
-  // prettier-ignore
   return (
     <Grid
       container
@@ -62,26 +61,36 @@ const CompaniesSlider = ({
         mt: 1,
       }}
     >
-      <Typography variant="h5" sx={{ margin: '0' }}>
-        Việc làm hot
-      </Typography>
-      <Spacer />
-      <Grid container spacing={2}>
-        {handleRenderCompanies()}
-      </Grid>
-      <Pagination
-        sx={{
-          margin: '1rem auto',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-        color="primary"
-        count={Math.ceil((data?.totalItems || 0) / (data?.itemPerPage || 1))}
-        page={params.page}
-        onChange={(_, nextPage) => {
-          setParams(prevParams => ({ ...prevParams, page: nextPage }));
-        }}
-      />
+      {data && data.items.length > 0 ? (
+        <>
+          <Typography variant="h5" sx={{ margin: '0' }}>
+            Việc làm hot
+          </Typography>
+          <Spacer />
+          <Grid container spacing={2}>
+            {handleRenderCompanies()}
+          </Grid>
+          <Pagination
+            sx={{
+              margin: '1rem auto',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+            color="primary"
+            count={Math.ceil(
+              (data?.totalItems || 0) / (data?.itemPerPage || 1),
+            )}
+            page={params.page}
+            onChange={(_, nextPage) => {
+              setParams(prevParams => ({ ...prevParams, page: nextPage }));
+            }}
+          />
+        </>
+      ) : (
+        <Typography variant="h5" sx={{ margin: 'auto', mt: 2 }}>
+          Chưa có việc làm nào
+        </Typography>
+      )}
     </Grid>
   );
 };

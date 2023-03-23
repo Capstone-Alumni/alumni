@@ -1,12 +1,12 @@
 'use client';
 
 import { Box, Typography } from '@mui/material';
-import useCreateEvent from '../hooks/useCreateJob';
 import JobForm, { JobFormValues } from './JobForm';
 import { useRouter } from 'next/navigation';
+import useCreateJob from '../hooks/useCreateJob';
 
 const CreateJobPage = () => {
-  const { fetchApi, error } = useCreateEvent();
+  const { fetchApi, error } = useCreateJob();
   const router = useRouter();
 
   const onCreateEvent = async (values: JobFormValues) => {

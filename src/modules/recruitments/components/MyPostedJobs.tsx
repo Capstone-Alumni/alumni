@@ -1,7 +1,13 @@
 'use client';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Button, Grid, IconButton, Pagination } from '@mui/material';
+import {
+  Button,
+  Grid,
+  IconButton,
+  Pagination,
+  Typography,
+} from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import Link from 'next/link';
@@ -31,73 +37,89 @@ const HostingEventListPage = () => {
 
   return (
     <>
-      <Grid
-        container
-        spacing={2}
-        sx={{
-          mb: 2,
-        }}
-      >
-        {data?.data.items.map(item => (
-          <>
-            <CompanyItem
-              key={item.id}
-              companyDetails={item}
-              actions={[
-                <Link
-                  key="edit-btn"
-                  href={`/recruitments/job_details/${item.id}`}
-                  style={{ width: '100%' }}
-                >
-                  <Button fullWidth variant="outlined">
-                    Xem
-                  </Button>
-                </Link>,
-                <Link
-                  key="edit-btn"
-                  href={`/recruitments/posted_jobs/${item.id}`}
-                  style={{ width: '100%' }}
-                  prefetch={false}
-                >
-                  <Button fullWidth variant="outlined">
-                    Sửa
-                  </Button>
-                </Link>,
-                <IconButton
-                  key="delete-btn"
-                  color="error"
-                  disabled={isDeleting}
-                  onClick={() => {
-                    setJobId(item.id);
-                    setOpenDeleteModal(true);
-                  }}
-                >
-                  <DeleteOutlineIcon />
-                </IconButton>,
-              ]}
-            />
-          </>
-        ))}
-      </Grid>
-      <ConfirmDeleteModal
-        open={openDeleteModal}
-        title="Bạn muốn xoá công việc này?"
-        onClose={() => setOpenDeleteModal(false)}
-        onDelete={() => onDeleteJob()}
-      />
-      <Pagination
-        sx={{
-          margin: 'auto',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-        color="primary"
-        count={Math.ceil(data?.data.totalItems / data?.data.itemPerPage)}
-        page={params.page}
-        onChange={(_, nextPage) => {
-          setParams(prevParams => ({ ...prevParams, page: nextPage }));
-        }}
-      />
+      {data.data && data.data.items.length > 0 ? (
+        <>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              mb: 2,
+            }}
+          >
+            {data?.data.items.map(item => (
+              <>
+                <CompanyItem
+                  key={item.id}
+                  companyDetails={item}
+                  actions={[
+                    <Link
+                      key="edit-btn"
+                      href={`/recruitments/job_details/${item.id}`}
+                      style={{ width: '100%' }}
+                    >
+                      <Button fullWidth variant="outlined">
+                        Xem
+                      </Button>
+                    </Link>,
+                    <Link
+                      key="edit-btn"
+                      href={`/recruitments/posted_jobs/${item.id}`}
+                      style={{ width: '100%' }}
+                      prefetch={false}
+                    >
+                      <Button fullWidth variant="outlined">
+                        Sửa
+                      </Button>
+                    </Link>,
+                    <IconButton
+                      key="delete-btn"
+                      color="error"
+                      disabled={isDeleting}
+                      onClick={() => {
+                        setJobId(item.id);
+                        setOpenDeleteModal(true);
+                      }}
+                    >
+                      <DeleteOutlineIcon />
+                    </IconButton>,
+                  ]}
+                />
+              </>
+            ))}
+          </Grid>
+          <ConfirmDeleteModal
+            open={openDeleteModal}
+            title="Bạn muốn xoá công việc này?"
+            onClose={() => setOpenDeleteModal(false)}
+            onDelete={() => onDeleteJob()}
+          />
+          <Pagination
+            sx={{
+              margin: 'auto',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+            color="primary"
+            count={Math.ceil(data?.data.totalItems / data?.data.itemPerPage)}
+            page={params.page}
+            onChange={(_, nextPage) => {
+              setParams(prevParams => ({ ...prevParams, page: nextPage }));
+            }}
+          />
+        </>
+      ) : (
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            mb: 2,
+          }}
+        >
+          <Typography variant="h5" sx={{ margin: 'auto', mt: 2 }}>
+            Chưa có việc làm nào
+          </Typography>
+        </Grid>
+      )}
     </>
   );
 };

@@ -76,15 +76,19 @@ const CompaniesSlider = ({
         mt: 1,
       }}
     >
-      <Typography variant="h5" sx={{ margin: '0' }}>
-        Việc làm theo danh mục
-      </Typography>
-      <Grid container gap="1rem" sx={{ marginTop: '0.5rem' }}>
-        {handleRenderCategories()}
-      </Grid>
-      <Grid container spacing={2} sx={{ marginTop: '0.25rem' }}>
-        {handleRenderCompanies()}
-      </Grid>
+      {data && data.items.length > 0 ? (
+        <>
+          <Typography variant="h5" sx={{ margin: '0' }}>
+            Việc làm theo danh mục
+          </Typography>
+          <Grid container gap="1rem" sx={{ marginTop: '0.5rem' }}>
+            {handleRenderCategories()}
+          </Grid>
+          <Grid container spacing={2} sx={{ marginTop: '0.25rem' }}>
+            {handleRenderCompanies()}
+          </Grid>
+        </>
+      ) : null}
     </Grid>
   );
 };

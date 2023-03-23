@@ -32,9 +32,10 @@ const AdminEventListTable = ({
               <TableCell align="left">Người gửi yêu cầu</TableCell>
               <TableCell align="left">Trạng thái</TableCell>
               <TableCell align="left">Ngày được tạo</TableCell>
-              <TableCell sx={{ maxWidth: '2.5rem' }} />
-              <TableCell sx={{ maxWidth: '2.5rem' }} />
-              <TableCell sx={{ maxWidth: '2.5rem' }} />
+              <TableCell sx={{ maxWidth: '2.5rem' }}>Xem trước</TableCell>
+              <TableCell sx={{ maxWidth: '2.5rem' }}>
+                Công khai công việc
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

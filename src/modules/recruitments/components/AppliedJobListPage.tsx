@@ -1,7 +1,14 @@
 'use client';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { Button, Grid, IconButton, Pagination, useTheme } from '@mui/material';
+import {
+  Button,
+  Grid,
+  IconButton,
+  Pagination,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
@@ -23,52 +30,68 @@ const AppliedJobListPage = () => {
 
   return (
     <>
-      <Grid
-        container
-        spacing={2}
-        sx={{
-          mb: 2,
-        }}
-      >
-        {data?.data.items.map(item => (
-          <CompanyItem
-            key={item.id}
-            companyDetails={item.recruitment}
-            actions={[
-              <Link
-                key="edit-btn"
-                href={`/recruitments/job_details/${item.recruitment.id}`}
-                style={{ width: '100%' }}
-              >
-                <Button fullWidth variant="outlined">
-                  Xem
-                </Button>
-              </Link>,
-              <PdfResumePreview
-                resumeUrl={item.resumeUrl}
-                key="preview-user-pdf"
-              >
-                <IconButton key="delete-btn" color="default">
-                  <VisibilityIcon />
-                </IconButton>
-              </PdfResumePreview>,
-            ]}
+      {data.data && data.data.items.length > 0 ? (
+        <>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              mb: 2,
+            }}
+          >
+            {data?.data.items.map(item => (
+              <CompanyItem
+                key={item.id}
+                companyDetails={item.recruitment}
+                actions={[
+                  <Link
+                    key="edit-btn"
+                    href={`/recruitments/job_details/${item.recruitment.id}`}
+                    style={{ width: '100%' }}
+                  >
+                    <Button fullWidth variant="outlined">
+                      Xem
+                    </Button>
+                  </Link>,
+                  <PdfResumePreview
+                    resumeUrl={item.resumeUrl}
+                    key="preview-user-pdf"
+                  >
+                    <IconButton key="delete-btn" color="default">
+                      <VisibilityIcon />
+                    </IconButton>
+                  </PdfResumePreview>,
+                ]}
+              />
+            ))}
+          </Grid>
+          <Pagination
+            sx={{
+              margin: 'auto',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+            color="primary"
+            count={Math.ceil(data?.data.totalItems / data?.data.itemPerPage)}
+            page={params.page}
+            onChange={(_, nextPage) => {
+              setParams(prevParams => ({ ...prevParams, page: nextPage }));
+            }}
           />
-        ))}
-      </Grid>
-      <Pagination
-        sx={{
-          margin: 'auto',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-        color="primary"
-        count={Math.ceil(data?.data.totalItems / data?.data.itemPerPage)}
-        page={params.page}
-        onChange={(_, nextPage) => {
-          setParams(prevParams => ({ ...prevParams, page: nextPage }));
-        }}
-      />
+        </>
+      ) : (
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            mb: 2,
+          }}
+        >
+          <Typography variant="h5" sx={{ margin: 'auto', mt: 2 }}>
+            Chưa có việc làm nào
+          </Typography>
+        </Grid>
+      )}
     </>
   );
 };
