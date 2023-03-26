@@ -3,16 +3,15 @@ import AdminLayoutWrapper from '@share/components/layout/AdminLayoutWrapper';
 import AdminBodyWrapper from '@share/components/layout/AdminBodyWrapper';
 import { getTenantDataSSR } from '@share/helpers/SSRAuthorization';
 import { getServerSession } from 'next-auth';
+import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
 
 export default async function AuthorizedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession();
+  const session = await getServerSession(nextAuthOptions);
   const data = await getTenantDataSSR();
-
-  console.log(session);
 
   return (
     <AdminLayoutWrapper>

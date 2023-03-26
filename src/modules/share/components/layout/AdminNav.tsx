@@ -6,6 +6,7 @@ import { Box, styled, Tooltip, Typography, useTheme } from '@mui/material';
 import { User } from 'next-auth';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import MyAvatar from '../MyAvatar';
 import { AdminSubNav } from './AdminSubNav';
@@ -14,57 +15,57 @@ const ACCESS_NAV_ITEM = {
   id: 'request_access',
   title: 'Kiểm duyệt',
   icon: 'grommet-icons:validate',
-  link: '/admin/access_request',
+  link: '/admin/access/access_request',
 };
 
 const NEWS_NAV_ITEM = {
   id: 'news',
   title: 'Tin tức',
   icon: 'fluent:news-16-filled',
-  link: '/admin/news',
+  link: '/admin/action/news',
 };
 const FUND_NAV_ITEM = {
   id: 'fund',
   title: 'Quỹ',
   icon: 'ri:refund-2-line',
-  link: '/admin/funds',
+  link: '/admin/action/funds',
 };
 const EVENT_NAV_ITEM = {
   id: 'event',
   title: 'Sự kiện',
   icon: 'ic:baseline-event',
-  link: '/admin/event',
+  link: '/admin/action/event',
 };
 const RECRUITMENTS_NAV_ITEM = {
   id: 'recruitments',
   title: 'Tuyển dụng',
   icon: 'ic:baseline-event',
-  link: '/admin/recruitments',
+  link: '/admin/action/recruitments',
 };
 
 const SCHOOL_NAV_ITEM = {
   id: 'school',
   title: 'Thiết lập cho trường',
   icon: 'material-symbols:meeting-room-outline-rounded',
-  link: '/admin/school',
+  link: '/admin/config/school',
 };
 const SCHOOL_VNPAY_NAV_ITEM = {
   id: 'vnpay',
   title: 'Tích hợp VNPay',
   icon: 'material-symbols:meeting-room-outline-rounded',
-  link: '/admin/vnpay',
+  link: '/admin/config/vnpay',
 };
 const GRADE_NAV_ITEM = {
   id: 'grade_class',
   title: 'Niên khoá và Lớp',
   icon: 'material-symbols:meeting-room-outline-rounded',
-  link: '/admin/grade',
+  link: '/admin/config/grade',
 };
 const USER_NAV_ITEM = {
   id: 'user',
   title: 'Cựu học sinh',
   icon: 'ph:student-bold',
-  link: '/admin/members',
+  link: '/admin/config/members',
 };
 
 const StyledSidebar = styled(Box)(() => ({
@@ -140,12 +141,16 @@ const generateNavItems = (
         FUND_NAV_ITEM,
         RECRUITMENTS_NAV_ITEM,
       ];
+    default:
+      return [];
   }
 };
 
 const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
   const theme = useTheme();
-  const [sectionSelected, setSectionSelected] = useState('school');
+  const pathname = usePathname();
+  const defaultSection = pathname?.split('/')[2];
+  const [sectionSelected, setSectionSelected] = useState(defaultSection);
 
   if (!user) {
     return null;
@@ -199,10 +204,10 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
           <AdminSubNav
             title="Quản lý lớp"
             items={[ACCESS_NAV_ITEM]}
-            open={sectionSelected === 'class'}
+            open={sectionSelected === 'access'}
             onToggle={() =>
               setSectionSelected(prevState =>
-                prevState === 'class' ? '' : 'class',
+                prevState === 'access' ? '' : 'access',
               )
             }
           />

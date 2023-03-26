@@ -111,7 +111,7 @@ const Header = ({
 
             {user && user.accessLevel !== 'ALUMNI' ? (
               <Link
-                href="/admin/access_request"
+                href="/admin/access/access_request"
                 style={{ color: 'inherit', marginRight: theme.spacing(2) }}
                 prefetch={false}
               >
