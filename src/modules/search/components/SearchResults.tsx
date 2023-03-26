@@ -104,14 +104,14 @@ const SeachPage = () => {
   };
 
   const handleChangePage = (event: any, value: any) => {
-    setParams(prev => ({ ...prev, page: value }));
+    setParams((prev) => ({ ...prev, page: value }));
   };
 
   return (
     <>
       {isLoading ? (
         <LoadingIndicator />
-      ) : (
+      ) : profileListData?.data?.items?.length > 0 ? (
         <>
           {handleRenderUsersProfile()}
           <Grid
@@ -139,6 +139,15 @@ const SeachPage = () => {
             </Stack>
           </Grid>
         </>
+      ) : (
+        <Grid container spacing={3} maxWidth="md" sx={{ margin: 'auto' }}>
+          <Stack sx={{ margin: '2rem 0 1rem 0', width: '100%' }}>
+            <Typography variant="h6" textAlign="center">
+              Hiện chưa có thông tin cựu học sinh nào phù hợp với tìm kiếm của
+              bạn
+            </Typography>
+          </Stack>
+        </Grid>
       )}
     </>
   );
