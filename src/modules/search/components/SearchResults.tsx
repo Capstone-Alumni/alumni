@@ -104,7 +104,7 @@ const SeachPage = () => {
   };
 
   const handleChangePage = (event: any, value: any) => {
-    setParams((prev) => ({ ...prev, page: value }));
+    setParams(prev => ({ ...prev, page: value }));
   };
 
   return (
