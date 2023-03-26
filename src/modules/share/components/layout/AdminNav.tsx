@@ -39,20 +39,20 @@ const EVENT_NAV_ITEM = {
 const RECRUITMENTS_NAV_ITEM = {
   id: 'recruitments',
   title: 'Tuyển dụng',
-  icon: 'ic:baseline-event',
+  icon: 'ic:baseline-work',
   link: '/admin/action/recruitments',
 };
 
 const SCHOOL_NAV_ITEM = {
   id: 'school',
-  title: 'Thiết lập cho trường',
-  icon: 'material-symbols:meeting-room-outline-rounded',
+  title: 'Thông tin cơ bản',
+  icon: 'bxs:school',
   link: '/admin/config/school',
 };
 const SCHOOL_VNPAY_NAV_ITEM = {
   id: 'vnpay',
   title: 'Tích hợp VNPay',
-  icon: 'material-symbols:meeting-room-outline-rounded',
+  icon: 'ion:wallet',
   link: '/admin/config/vnpay',
 };
 const GRADE_NAV_ITEM = {
@@ -63,7 +63,7 @@ const GRADE_NAV_ITEM = {
 };
 const USER_NAV_ITEM = {
   id: 'user',
-  title: 'Cựu học sinh',
+  title: 'Mời cựu học sinh',
   icon: 'ph:student-bold',
   link: '/admin/config/members',
 };
