@@ -111,7 +111,7 @@ const SeachPage = () => {
     <>
       {isLoading ? (
         <LoadingIndicator />
-      ) : profileListData.data.items.length > 0 ? (
+      ) : profileListData?.data?.items?.length > 0 ? (
         <>
           {handleRenderUsersProfile()}
           <Grid
