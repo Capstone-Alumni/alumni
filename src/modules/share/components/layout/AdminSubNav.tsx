@@ -10,7 +10,7 @@ import { Icon } from '@iconify/react';
 import { useTheme } from '@mui/material';
 import { usePathname } from 'next/navigation';
 
-const StyledNavItem = styled(Box)(({ theme }) => ({
+export const StyledNavItem = styled(Box)(({ theme }) => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'row',
@@ -28,7 +28,7 @@ const StyledNavItem = styled(Box)(({ theme }) => ({
   },
 }));
 
-const StyledNav = styled(Box)(({ theme }) => ({
+export const StyledNav = styled(Box)(({ theme }) => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'column',

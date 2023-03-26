@@ -2,14 +2,14 @@
 
 import { Icon } from '@iconify/react';
 
-import { Box, styled, Tooltip, Typography, useTheme } from '@mui/material';
+import { Box, styled, Typography, useTheme } from '@mui/material';
 import { User } from 'next-auth';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import MyAvatar from '../MyAvatar';
-import { AdminSubNav } from './AdminSubNav';
+import { AdminSubNav, StyledNav, StyledNavItem } from './AdminSubNav';
 
 const ACCESS_NAV_ITEM = {
   id: 'request_access',
@@ -199,7 +199,7 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
             </Box>
           </StyledHeader>
 
-          {schoolItems ? (
+          {schoolItems && schoolItems.length ? (
             <AdminSubNav
               title="Cấu hình trường"
               items={schoolItems}
@@ -212,7 +212,7 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
             />
           ) : null}
 
-          {navItems ? (
+          {navItems && navItems.length ? (
             <AdminSubNav
               title="Hoạt động"
               items={navItems}
@@ -238,13 +238,26 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
         </StyledNavWrapper>
 
         <StyledFooter>
+          <StyledNav sx={{ padding: 0 }}>
+            <Link
+              href="/"
+              style={{ color: 'inherit', width: '100%' }}
+              prefetch={false}
+            >
+              <StyledNavItem>
+                <Icon height={24} icon="majesticons:door-exit" />
+                <Typography fontWeight={600}>Thoát bảng điều khiển</Typography>
+              </StyledNavItem>
+            </Link>
+          </StyledNav>
+
           <StyledAccountWrapper>
             <MyAvatar displayName={user?.image || undefined} />
             <Typography variant="body2">{user.email}</Typography>
 
             <Box sx={{ flex: 1 }} />
 
-            <Tooltip title="Thoát bảng điều khiển">
+            {/* <Tooltip title="Thoát bảng điều khiển">
               <Link href="/" style={{ color: 'inherit' }} prefetch={false}>
                 <Icon
                   color={theme.palette.primary.contrastText}
@@ -252,7 +265,7 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
                   icon="fe:logout"
                 />
               </Link>
-            </Tooltip>
+            </Tooltip> */}
           </StyledAccountWrapper>
         </StyledFooter>
       </StyledSidebar>
