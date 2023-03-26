@@ -1,12 +1,17 @@
-import { Button } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 import { Box, Paper, Typography } from '@mui/material';
 
+import DoneSVG from 'public/done.svg';
+
 const EndingStep = ({ reset }: { reset?: () => void }) => {
+  const theme = useTheme();
+
   return (
     <>
-      <Paper sx={{ p: 3, my: 3, minHeight: 120, bgcolor: 'grey.50012' }}>
-        <Typography sx={{ my: 1 }}>
-          All steps completed - you&apos;re finished
+      <Paper sx={{ p: 3, mb: 3, minHeight: 120, bgcolor: 'grey.50012' }}>
+        <Typography textAlign="center" sx={{ my: 1 }}>
+          <DoneSVG style={{ fill: theme.palette.success.main }} />
+          Nhấn nút nộp để hoàn thành.
         </Typography>
       </Paper>
 

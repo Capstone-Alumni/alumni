@@ -125,7 +125,7 @@ const StyledAccountWrapper = styled(Box)(({ theme }) => ({
 }));
 
 const generateNavItems = (
-  role: 'ALUMNI' | 'CLASS_MOD' | 'GRADE_MOD' | 'SCHOOL_ADMIN',
+  role?: 'ALUMNI' | 'CLASS_MOD' | 'GRADE_MOD' | 'SCHOOL_ADMIN',
 ) => {
   switch (role) {
     case 'ALUMNI':
@@ -133,13 +133,35 @@ const generateNavItems = (
     case 'CLASS_MOD':
       return [];
     case 'GRADE_MOD':
-      return [EVENT_NAV_ITEM];
+      return [EVENT_NAV_ITEM, FUND_NAV_ITEM];
     case 'SCHOOL_ADMIN':
       return [
-        EVENT_NAV_ITEM,
         NEWS_NAV_ITEM,
+        EVENT_NAV_ITEM,
         FUND_NAV_ITEM,
         RECRUITMENTS_NAV_ITEM,
+      ];
+    default:
+      return [];
+  }
+};
+
+const generateSchoolNavItems = (
+  role?: 'ALUMNI' | 'CLASS_MOD' | 'GRADE_MOD' | 'SCHOOL_ADMIN',
+) => {
+  switch (role) {
+    case 'ALUMNI':
+      return [];
+    case 'CLASS_MOD':
+      return [USER_NAV_ITEM];
+    case 'GRADE_MOD':
+      return [USER_NAV_ITEM];
+    case 'SCHOOL_ADMIN':
+      return [
+        SCHOOL_NAV_ITEM,
+        SCHOOL_VNPAY_NAV_ITEM,
+        GRADE_NAV_ITEM,
+        USER_NAV_ITEM,
       ];
     default:
       return [];
@@ -151,6 +173,9 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
   const pathname = usePathname();
   const defaultSection = pathname?.split('/')[2];
   const [sectionSelected, setSectionSelected] = useState(defaultSection);
+
+  const schoolItems = generateSchoolNavItems(user?.accessLevel);
+  const navItems = generateNavItems(user?.accessLevel);
 
   if (!user) {
     return null;
@@ -174,32 +199,31 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
             </Box>
           </StyledHeader>
 
-          <AdminSubNav
-            title="Cấu hình trường"
-            items={[
-              SCHOOL_NAV_ITEM,
-              SCHOOL_VNPAY_NAV_ITEM,
-              GRADE_NAV_ITEM,
-              USER_NAV_ITEM,
-            ]}
-            open={sectionSelected === 'school'}
-            onToggle={() =>
-              setSectionSelected(prevState =>
-                prevState === 'school' ? '' : 'school',
-              )
-            }
-          />
+          {schoolItems ? (
+            <AdminSubNav
+              title="Cấu hình trường"
+              items={schoolItems}
+              open={sectionSelected === 'config'}
+              onToggle={() =>
+                setSectionSelected(prevState =>
+                  prevState === 'config' ? '' : 'config',
+                )
+              }
+            />
+          ) : null}
 
-          <AdminSubNav
-            title="Hoạt động"
-            items={generateNavItems(user?.accessLevel)}
-            open={sectionSelected === 'action'}
-            onToggle={() =>
-              setSectionSelected(prevState =>
-                prevState === 'action' ? '' : 'action',
-              )
-            }
-          />
+          {navItems ? (
+            <AdminSubNav
+              title="Hoạt động"
+              items={navItems}
+              open={sectionSelected === 'action'}
+              onToggle={() =>
+                setSectionSelected(prevState =>
+                  prevState === 'action' ? '' : 'action',
+                )
+              }
+            />
+          ) : null}
 
           <AdminSubNav
             title="Quản lý lớp"

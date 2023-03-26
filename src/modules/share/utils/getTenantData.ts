@@ -1,10 +1,11 @@
+import { isNil } from 'lodash/fp';
 import cacheData from 'memory-cache';
 
 export const getTenantData = async (subdomain: string) => {
   const url = `${process.env.NEXT_PUBLIC_PLATFORM_HOST}/api/tenants/subdomain/${subdomain}`;
 
   const cachedValue = await cacheData.get(url);
-  if (cachedValue) {
+  if (!isNil(cachedValue)) {
     return cachedValue;
   }
 

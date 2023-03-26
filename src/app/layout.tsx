@@ -22,12 +22,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>{data.name}</title>
+        <title>{data?.name}</title>
         <meta content="initial-scale=1, width=device-width" name="viewport" />
-        <link rel="shortcut icon" href={data.logo ?? '/logo.png'} />
+        <link rel="shortcut icon" href={data?.logo ?? '/logo.png'} />
       </head>
       <body style={{ margin: 0, minHeight: '100vh' }}>
-        <CSRProvider theme={data.theme}>
+        <CSRProvider theme={data?.theme}>
           <Providers>
             {children}
             <SetCurrentTenant tenantData={data} />
