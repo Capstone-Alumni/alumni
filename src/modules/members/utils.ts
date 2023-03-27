@@ -20,3 +20,16 @@ export const getLowerRole = (role?: AccessLevel) => {
       return _check;
   }
 };
+
+export const compareRole = (role1?: AccessLevel, role2?: AccessLevel) => {
+  if (!role1 || !role2) {
+    return 0;
+  }
+
+  const role = ['ALUMNI', 'CLASS_MOD', 'GRADE_MOD', 'SCHOOL_ADMIN'];
+
+  const role1Index = role.findIndex(r => r === role1);
+  const role2Index = role.findIndex(r => r === role2);
+
+  return role1Index - role2Index;
+};

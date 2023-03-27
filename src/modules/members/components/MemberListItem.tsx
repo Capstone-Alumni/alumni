@@ -1,17 +1,13 @@
 import { Icon } from '@iconify/react';
-import {
-  Box,
-  IconButton,
-  Modal,
-  TableCell,
-  TableRow,
-  Typography,
-} from '@mui/material';
+import { Box, Modal, TableCell, TableRow, Typography } from '@mui/material';
+import ActionButton from '@share/components/ActionButton';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import { formatDate } from '@share/utils/formatDate';
 import getRoleName from '@share/utils/getRoleName';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { Member } from '../types';
+import { compareRole } from '../utils';
 import MemberForm, { MemberFormValues } from './MemberForm';
 
 const AdminMemberListItem = ({
@@ -25,6 +21,7 @@ const AdminMemberListItem = ({
 }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <>
@@ -45,18 +42,24 @@ const AdminMemberListItem = ({
           </Typography>
         </TableCell>
         <TableCell align="center">
-          {data.accessLevel === 'SCHOOL_ADMIN' ? null : (
-            <IconButton onClick={() => setOpenEditModal(true)}>
-              <Icon height={24} icon="uil:pen" />
-            </IconButton>
-          )}
-        </TableCell>
-        <TableCell align="center" sx={{ maxWidth: '3rem' }}>
-          {data.accessLevel === 'SCHOOL_ADMIN' ? null : (
-            <IconButton onClick={() => setOpenDeleteModal(true)}>
-              <Icon height={24} icon="uil:trash-alt" />
-            </IconButton>
-          )}
+          <ActionButton
+            actions={[
+              compareRole(session?.user.accessLevel, data.accessLevel) > 0
+                ? {
+                    id: 'edit',
+                    text: 'Chỉnh sửa',
+                    icon: <Icon height={24} icon="uil:pen" />,
+                    onClick: () => setOpenEditModal(true),
+                  }
+                : null,
+              {
+                id: 'delete',
+                text: 'Xoá',
+                icon: <Icon height={24} icon="uil:trash-alt" />,
+                onClick: () => setOpenDeleteModal(true),
+              },
+            ]}
+          />
         </TableCell>
       </TableRow>
 

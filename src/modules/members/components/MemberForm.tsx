@@ -20,6 +20,8 @@ import {
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 import { Member } from '../types';
 import getRoleName from '@share/utils/getRoleName';
+import { useSession } from 'next-auth/react';
+import { getLowerRole } from '../utils';
 
 export type MemberFormValues = {
   email: string;
@@ -44,6 +46,9 @@ const MemberForm = ({
 }) => {
   const theme = useTheme();
   const [submitting, setSubmitting] = useState(false);
+  const { data: session } = useSession();
+
+  const roleList = getLowerRole(session?.user.accessLevel);
 
   const resolver = useYupValidateionResolver(validationSchema);
 
@@ -111,7 +116,7 @@ const MemberForm = ({
             type="select"
             {...field}
           >
-            {['ALUMNI', 'CLASS_MOD', 'GRADE_MOD']?.map((role: string) => (
+            {roleList?.map((role: string) => (
               <MenuItem key={role} value={role}>
                 {/** @ts-ignore */}
                 {getRoleName(role)}
