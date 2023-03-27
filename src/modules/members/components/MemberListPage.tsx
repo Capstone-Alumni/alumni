@@ -16,6 +16,7 @@ import { getMemberListParamsAtom } from '../state';
 import { currentTenantDataAtom } from '@share/states';
 import Link from 'next/link';
 import UploadMemeberFileButton from './UploadMemberFileButton';
+import { TEMPLATE_FILE } from '../constants';
 
 const MemberListPage = () => {
   const theme = useTheme();
@@ -106,7 +107,7 @@ const MemberListPage = () => {
       >
         <UploadMemeberFileButton />
 
-        <Link href="#" target="_blank">
+        <Link href={TEMPLATE_FILE} target="_blank">
           File mẫu
         </Link>
       </Box>
