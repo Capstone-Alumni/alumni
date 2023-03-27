@@ -14,6 +14,8 @@ import MemberForm, { MemberFormValues } from './MemberForm';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { getMemberListParamsAtom } from '../state';
 import { currentTenantDataAtom } from '@share/states';
+import Link from 'next/link';
+import UploadMemeberFileButton from './UploadMemberFileButton';
 
 const MemberListPage = () => {
   const theme = useTheme();
@@ -77,29 +79,37 @@ const MemberListPage = () => {
         }}
       >
         <Typography variant="h3" sx={{ flex: 1 }}>
-          Thành viên
+          Cựu học sinh
         </Typography>
-
-        <Button
-          variant="outlined"
-          startIcon={<AddIcon />}
-          onClick={() => setOpenForm(true)}
-        >
-          Thêm thành viên mới
-        </Button>
 
         <Button
           variant="contained"
           startIcon={<AddIcon />}
           onClick={() => setOpenForm(true)}
         >
-          Thêm thành viên từ file
+          Thêm
         </Button>
       </Box>
 
       {openForm ? (
         <MemberForm onSubmit={onAddMember} onClose={() => setOpenForm(false)} />
       ) : null}
+
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          gap: theme.spacing(2),
+          alignItems: 'center',
+        }}
+      >
+        <UploadMemeberFileButton />
+
+        <Link href="#" target="_blank">
+          File mẫu
+        </Link>
+      </Box>
 
       <Box
         sx={{
