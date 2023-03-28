@@ -7,8 +7,6 @@ import TextInput from '@share/components/form/TextInput';
 import { Box, Button, useTheme } from '@mui/material';
 import Checkbox from '@share/components/form/Checkbox';
 import DateTimeInput from '@share/components/form/DateTimeInput';
-import SelectInput from '@share/components/form/SelectInput';
-import { Typography } from '@mui/material';
 import { useState } from 'react';
 import RichTextInput from '@share/components/form/RichTextInput';
 import UploadBackgroundInput from '@share/components/form/UploadBackgroundInput';
@@ -32,7 +30,7 @@ export type InternalFormValues = Omit<EventFormValues, 'isOffline'> & {
 };
 
 const validationSchema = yup.object({
-  title: yup.string().required(),
+  title: yup.string().required('Bắt buộc'),
   startTime: yup.date().required(),
   publicity: yup.string().required(),
 });
@@ -120,7 +118,7 @@ const EventForm = ({
       <RichTextInput
         control={control}
         name="description"
-        inputProps={{ placeholder: 'Mô tả' }}
+        inputProps={{ placeholder: 'Mô tả', containerSx: { width: '100%' } }}
       />
 
       <DateTimeInput
@@ -149,7 +147,27 @@ const EventForm = ({
       </Box>
 
       <Box sx={{ width: '100%' }}>
-        <SelectInput
+        <RadioInput
+          control={control}
+          name="publicity"
+          inputProps={{
+            label: 'Trạng thái',
+          }}
+          options={[
+            {
+              value: 'ALUMNI',
+              name: 'Bí mật',
+            },
+            {
+              value: 'SCHOOL_ADMIN',
+              name: 'Công khai',
+            },
+          ]}
+        />
+      </Box>
+
+      <Box sx={{ width: '100%' }}>
+        {/* <SelectInput
           control={control}
           name="publicity"
           inputProps={{
@@ -174,18 +192,19 @@ const EventForm = ({
               name: 'Bất cứ ai',
             },
           ]}
-        />
+        /> */}
+
         <Checkbox
           control={control}
           name="publicParticipant"
           inputProps={{ label: 'Công khai danh sách người tham gia?' }}
         />
 
-        <Typography variant="body2" color={'red'}>
+        {/* <Typography variant="body2" color={'red'}>
           Lưu ý*: Sự kiện của bạn sẽ được gửi đến ban đại diện của trường để
           kiểm duyệt. Sau khi được bạn đại diện chấp nhận, người khác mới có thể
           nhìn thấy và tham gia sự kiện của bạn.
-        </Typography>
+        </Typography> */}
       </Box>
 
       <Button

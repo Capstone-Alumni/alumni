@@ -1,14 +1,18 @@
-import {
-  IconButton,
-  TableCell,
-  TableRow,
-  Tooltip,
-  Typography,
-} from '@mui/material';
-import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
-import CancelIcon from '@mui/icons-material/Cancel';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { TableCell, TableRow, Tooltip, Typography } from '@mui/material';
+
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import PublicIcon from '@mui/icons-material/Public';
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+
 import { Event } from '../types';
+import { formatDate } from '@share/utils/formatDate';
+import ActionButton from '@share/components/ActionButton';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import useAdminGetEventList from '../hooks/useAdminGetEventList';
+import useOwnerDeleteEventById from '../hooks/useOwnerDeleteEventById';
+import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 
 const AdminEventListItem = ({
   data,
@@ -19,6 +23,17 @@ const AdminEventListItem = ({
   onApprove: (id: string) => void;
   onReject: (id: string) => void;
 }) => {
+  const router = useRouter();
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+  const { reload } = useAdminGetEventList();
+  const { fetchApi: deleteEvent } = useOwnerDeleteEventById();
+
+  const onDeleteEvent = async (id: string) => {
+    await deleteEvent({ eventId: id });
+    reload();
+  };
+
   return (
     <>
       <TableRow>
@@ -29,18 +44,75 @@ const AdminEventListItem = ({
           <Typography>{data.hostInformation?.email}</Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>{new Date(data.createdAt).toDateString()}</Typography>
+          <Typography>
+            {formatDate(new Date(data.startTime), 'dd/MM/yyyy - HH:ss')}
+          </Typography>
         </TableCell>
         <TableCell align="center">
           <Typography>
-            {data.approvedStatus === -1 ? (
+            {/* {data.approvedStatus === -1 ? (
               <Tooltip title="Đang chờ xác nhận">
                 <MoreHorizIcon />
               </Tooltip>
+            ) : null} */}
+            {new Date(data.endTime) < new Date() ? (
+              <Tooltip title="Đã kết thúc">
+                <DirectionsRunIcon color="error" />
+              </Tooltip>
+            ) : (
+              <Tooltip title="Chưa kết thúc">
+                <DirectionsRunIcon color="success" />
+              </Tooltip>
+            )}
+          </Typography>
+        </TableCell>
+        <TableCell align="center">
+          <Typography>
+            {/* {data.approvedStatus === -1 ? (
+              <Tooltip title="Đang chờ xác nhận">
+                <MoreHorizIcon />
+              </Tooltip>
+            ) : null} */}
+            {data.publicity === 'ALUMNI' ? (
+              <Tooltip title="Chưa sẵn sàng nhận ủng hộ">
+                <PublicIcon color="error" />
+              </Tooltip>
             ) : null}
-            {data.approvedStatus === 0 ? (
-              <Tooltip title="Đã bị từ chối">
-                <CancelIcon color="error" />
+            {data.publicity === 'SCHOOL_ADMIN' ? (
+              <Tooltip title="Sẵn sàng nhận ủng hộ">
+                <PublicIcon color="success" />
+              </Tooltip>
+            ) : null}
+          </Typography>
+        </TableCell>
+        <TableCell align="center">
+          <ActionButton
+            actions={[
+              {
+                id: 'edit',
+                text: 'Chỉnh sửa',
+                onClick: () => router.push(`/admin/action/event/${data.id}`),
+                icon: <EditIcon />,
+              },
+              {
+                id: 'delete',
+                text: 'Xoá ',
+                onClick: () => setOpenDeleteModal(true),
+                icon: <DeleteIcon color="error" />,
+              },
+            ]}
+          />
+        </TableCell>
+        {/* <TableCell align="center">
+          <Typography>
+            {data.publicity === 'ALUMNI' ? (
+              <Tooltip title="Bí mật">
+                <DirectionsRunIcon color="error" />
+              </Tooltip>
+            ) : null}
+            {data.publicity === 'SCHOOL_ADMIN' ? (
+              <Tooltip title="Công khai">
+                <DirectionsRunIcon color="success" />
               </Tooltip>
             ) : null}
             {data.approvedStatus === 1 ? (
@@ -59,8 +131,15 @@ const AdminEventListItem = ({
           <IconButton onClick={() => onReject(data.id)}>
             <CancelIcon />
           </IconButton>
-        </TableCell>
+        </TableCell> */}
       </TableRow>
+
+      <ConfirmDeleteModal
+        open={openDeleteModal}
+        title="Bạn muốn xoá sự kiện này?"
+        onClose={() => setOpenDeleteModal(false)}
+        onDelete={() => onDeleteEvent(data.id)}
+      />
     </>
   );
 };

@@ -54,9 +54,9 @@ export default class OwnerEventService {
       },
     });
 
-    if (event?.userId !== userId) {
-      throw new Error('denied');
-    }
+    // if (event?.userId !== userId) {
+    //   throw new Error('denied');
+    // }
 
     await tenantPrisma.$disconnect();
 
@@ -131,7 +131,7 @@ export default class OwnerEventService {
       },
     });
 
-    if (!event || event.userId !== userId) {
+    if (!event) {
       throw new Error('403 denied');
     }
 
@@ -159,9 +159,6 @@ export default class OwnerEventService {
         AND: [
           {
             id: eventId,
-          },
-          {
-            userId: userId,
           },
         ],
       },

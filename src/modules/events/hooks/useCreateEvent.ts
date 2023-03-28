@@ -30,7 +30,7 @@ const useCreateEvent = () => {
       },
       onSuccess: () => {
         toast.success('Yêu cầu tạo sự kiện thành công');
-        router.push('/events/hosting');
+        router.push('/admin/action/event');
       },
     },
   );
