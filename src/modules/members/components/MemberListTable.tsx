@@ -8,8 +8,15 @@ import Paper from '@mui/material/Paper';
 import { Member } from '../types';
 import { MemberFormValues } from './MemberForm';
 import AdminMemberListItem from './MemberListItem';
-import { Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import DataTablePagination from '@share/components/DataTablePagination';
+import SearchInput from '@share/components/SearchInput';
+import { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { getMemberListParamsAtom } from '../state';
+import Link from 'next/link';
+import { TEMPLATE_FILE } from '../constants';
+import UploadMemeberFileButton from './UploadMemberFileButton';
 
 const AdminMemberListTable = ({
   data,
@@ -28,6 +35,10 @@ const AdminMemberListTable = ({
   page: number;
   onChangePage: (page: number) => void;
 }) => {
+  const theme = useTheme();
+  const [search, setSearch] = useState('');
+  const setParams = useSetRecoilState(getMemberListParamsAtom);
+
   if (data.totalItems === 0) {
     return (
       <Typography textAlign="center" variant="h6">
@@ -38,6 +49,33 @@ const AdminMemberListTable = ({
 
   return (
     <>
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          gap: theme.spacing(2),
+          alignItems: 'center',
+          mb: 2,
+        }}
+      >
+        <UploadMemeberFileButton />
+
+        <Link href={TEMPLATE_FILE} target="_blank">
+          File mẫu
+        </Link>
+      </Box>
+
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          setParams(prevParams => ({ ...prevParams, email: search }));
+        }}
+        style={{ marginBottom: theme.spacing(2) }}
+      >
+        <SearchInput value={search} onChange={e => setSearch(e.target.value)} />
+        <button type="submit" style={{ display: 'none' }}></button>
+      </form>
       <TableContainer component={Paper}>
         <Table aria-label="Member table">
           <TableHead>

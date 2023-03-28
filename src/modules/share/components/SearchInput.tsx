@@ -53,7 +53,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchInput({
-  placeholder,
+  placeholder = 'Tìm kiếm',
   value,
   onChange,
   ...props

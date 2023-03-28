@@ -14,9 +14,6 @@ import MemberForm, { MemberFormValues } from './MemberForm';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { getMemberListParamsAtom } from '../state';
 import { currentTenantDataAtom } from '@share/states';
-import Link from 'next/link';
-import UploadMemeberFileButton from './UploadMemberFileButton';
-import { TEMPLATE_FILE } from '../constants';
 
 const MemberListPage = () => {
   const theme = useTheme();
@@ -95,22 +92,6 @@ const MemberListPage = () => {
       {openForm ? (
         <MemberForm onSubmit={onAddMember} onClose={() => setOpenForm(false)} />
       ) : null}
-
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'row',
-          gap: theme.spacing(2),
-          alignItems: 'center',
-        }}
-      >
-        <UploadMemeberFileButton />
-
-        <Link href={TEMPLATE_FILE} target="_blank">
-          File mẫu
-        </Link>
-      </Box>
 
       <Box
         sx={{
