@@ -11,13 +11,12 @@ export default class GradeController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const prisma = await getPrismaClient(req.tenantId);
-    const { page, limit, code, name } = req.query;
+    const { page, limit, code } = req.query;
     const gradeListData = await GradeService.getPublicList(prisma, {
       params: {
         page: page ? parseInt(page as string, 10) : 1,
         limit: limit ? parseInt(limit as string, 10) : 20,
         code: code ? (code as string) : '',
-        name: name ? (name as string) : '',
       },
     });
 
@@ -32,9 +31,9 @@ export default class GradeController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     try {
-      const { name, code } = req.body;
+      const { code } = req.body;
       const prisma = await getPrismaClient(req.tenantId);
-      const newGrade = await GradeService.create(prisma, { name, code });
+      const newGrade = await GradeService.create(prisma, { code });
 
       return res.status(201).json({
         status: true,

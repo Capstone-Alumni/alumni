@@ -3,7 +3,6 @@ import useApi from 'src/modules/share/hooks/useApi';
 type UpdateGradeByIdDataParams = {
   gradeId: string;
   code: string;
-  name: string;
 };
 
 type UpdateGradeByIdDataResponse = unknown;
@@ -15,12 +14,11 @@ const useUpdateGradeById = () => {
     UpdateGradeByIdDataParams,
     UpdateGradeByIdDataResponse,
     UpdateGradeByIdDataError
-  >('updateGradeById', ({ gradeId, code, name }) => ({
+  >('updateGradeById', ({ gradeId, code }) => ({
     method: 'PUT',
     url: `/api/grades/${gradeId}`,
     data: {
       code,
-      name,
     },
   }));
 

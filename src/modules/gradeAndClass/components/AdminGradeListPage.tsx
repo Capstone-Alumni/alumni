@@ -39,8 +39,8 @@ const AdminGradeListPage = () => {
     reload();
   };
 
-  const onUpdate = async (gradeId: string, { code, name }: GradeFormValues) => {
-    await updateGradeById({ gradeId, code, name });
+  const onUpdate = async (gradeId: string, { code }: GradeFormValues) => {
+    await updateGradeById({ gradeId, code });
     reload();
   };
 
