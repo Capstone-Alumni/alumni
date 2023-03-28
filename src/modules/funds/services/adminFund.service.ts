@@ -30,7 +30,7 @@ const buildFundWhereFilter = async (tenantPrisma: PrismaClient, user: User) => {
     throw new Error('user not exist');
   }
 
-  const publicityFilter = buildAccessLevelFilter('publicity', user.accessLevel);
+  const publicityFilter = buildAccessLevelFilter('publicity', 'SCHOOL_ADMIN');
   let gradeClassFilter = {};
   if (user.accessLevel === 'CLASS_MOD') {
     gradeClassFilter = getSameClassFilter(userInformation.alumClassId || '');

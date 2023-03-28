@@ -111,7 +111,7 @@ export default class OwnerFundService {
       },
     });
 
-    if (!fund || fund.userId !== userId) {
+    if (!fund) {
       throw new Error('403 denied');
     }
 
