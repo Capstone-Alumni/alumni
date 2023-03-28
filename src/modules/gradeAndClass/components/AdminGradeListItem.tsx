@@ -37,7 +37,10 @@ const AdminGradeListItem = ({
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <IconButton>
-            <Link href={`/admin/grade/${data.id}/class`} prefetch={false}>
+            <Link
+              href={`/admin/config/grade/${data.id}/class`}
+              prefetch={false}
+            >
               <Icon
                 height={24}
                 icon="material-symbols:meeting-room-outline-rounded"
