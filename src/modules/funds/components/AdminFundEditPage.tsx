@@ -5,12 +5,12 @@ import { Box, Typography } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import useOwnerGetFundById from '../hooks/useOwnerGetFundById';
+import useAdminGetFundById from '../hooks/useAdminGetFundById';
 import useOwnerUpdateFundById from '../hooks/useOwnerUpdateFundById';
 import AdminFundReportTab from './AdminFundReportTab';
 import FundForm, { FundFormValues } from './FundForm';
 
-const HostingFundEditPage = () => {
+const AdminFundEditPage = () => {
   const [tabKey, setTabKey] = useState('info');
 
   const router = useRouter();
@@ -23,7 +23,7 @@ const HostingFundEditPage = () => {
     fetchApi: getFund,
     data,
     isLoading: isGettingFund,
-  } = useOwnerGetFundById();
+  } = useAdminGetFundById();
 
   useEffect(() => {
     getFund({ fundId: fundId });
@@ -66,4 +66,4 @@ const HostingFundEditPage = () => {
   );
 };
 
-export default HostingFundEditPage;
+export default AdminFundEditPage;

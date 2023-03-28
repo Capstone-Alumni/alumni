@@ -56,10 +56,12 @@ export default class AdminFundService {
       user,
       page,
       limit,
+      title,
     }: {
       user: User;
       page: number;
       limit: number;
+      title: string;
     },
   ) => {
     const whereFilter = await buildFundWhereFilter(tenantPrisma, user);
@@ -69,6 +71,9 @@ export default class AdminFundService {
         where: {
           ...whereFilter,
           archived: false,
+          title: {
+            contains: title,
+          },
         },
       }),
       tenantPrisma.fund.findMany({
@@ -77,6 +82,9 @@ export default class AdminFundService {
         where: {
           ...whereFilter,
           archived: false,
+          title: {
+            contains: title,
+          },
         },
         orderBy: {
           createdAt: 'desc',
@@ -102,7 +110,7 @@ export default class AdminFundService {
   ) => {
     const whereFilter = await buildFundWhereFilter(tenantPrisma, user);
 
-    const Fund = await tenantPrisma.fund.findUnique({
+    const Fund = await tenantPrisma.fund.findFirst({
       where: {
         ...whereFilter,
         id: fundId,
@@ -124,7 +132,7 @@ export default class AdminFundService {
         id: fundId,
       },
       data: {
-        approvedStatus: 1,
+        // approvedStatus: 1,
       },
     });
 
@@ -143,7 +151,7 @@ export default class AdminFundService {
         id: fundId,
       },
       data: {
-        approvedStatus: 0,
+        // approvedStatus: 0,
       },
     });
 

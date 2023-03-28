@@ -8,6 +8,11 @@ import Paper from '@mui/material/Paper';
 import DataTablePagination from '@share/components/DataTablePagination';
 import { AdminGetFundListData } from '../hooks/useAdminGetFundList';
 import AdminFundListItem from './AdminFundListItem';
+import SearchInput from '@share/components/SearchInput';
+import { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { getAdminFundListParamsAtom } from '../states';
+import { useTheme } from '@mui/material';
 
 const AdminFundListTable = ({
   data,
@@ -22,8 +27,23 @@ const AdminFundListTable = ({
   page: number;
   onChangePage: (nextPage: number) => void;
 }) => {
+  const theme = useTheme();
+  const [search, setSearch] = useState('');
+  const setParams = useSetRecoilState(getAdminFundListParamsAtom);
+
   return (
     <>
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          setParams(prevParams => ({ ...prevParams, title: search }));
+        }}
+        style={{ marginBottom: theme.spacing(2) }}
+      >
+        <SearchInput value={search} onChange={e => setSearch(e.target.value)} />
+        <button type="submit" style={{ display: 'none' }}></button>
+      </form>
+
       <TableContainer component={Paper}>
         <Table aria-label="Fund table">
           <TableHead>
@@ -52,7 +72,7 @@ const AdminFundListTable = ({
           </TableBody>
 
           <DataTablePagination
-            colSpan={6}
+            colSpan={8}
             currentPage={page}
             totalPage={Math.ceil(data.totalItems / data.itemPerPage)}
             onChangePage={onChangePage}

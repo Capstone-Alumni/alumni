@@ -104,7 +104,7 @@ const AdminFundListItem = ({
               {
                 id: 'edit',
                 text: 'Chỉnh sửa',
-                onClick: () => router.push(`/admin/funds/${data.id}`),
+                onClick: () => router.push(`/admin/action/funds/${data.id}`),
                 icon: <EditIcon />,
               },
               {
