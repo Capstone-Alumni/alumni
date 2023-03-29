@@ -101,6 +101,7 @@ model Information {
   RecruitmentApplication RecruitmentApplication[]
   fundTransactions       FundTransaction[]
   FundReport             FundReport[]
+  ping                   Ping[]
 
   @@map("informations")
 }
@@ -416,6 +417,20 @@ model TagsNews {
   news    News[] @relation("news_to_tag_news")
 
   @@map("tags_news")
+}
+
+model Ping {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  message String @unique @map("message")
+
+  pingerInfoId   String
+  pingerInfo Information @relation(fields: [pingerInfoId], references: [userId])
+
+  @@map("pings")
 }
 
 enum AccessLevel {

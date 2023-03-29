@@ -19,6 +19,9 @@ import {
 import UploadAvatarInput from '@share/components/form/UploadAvatarInput';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
+import SmsIcon from '@mui/icons-material/Sms';
+import Button from '@mui/material/Button';
+import PingMessageModal from './PingMessageModal';
 
 const StyledNavWrapper = styled(Box)(({ theme }) => ({
   minWidth: '16rem',
@@ -123,7 +126,7 @@ const ProfileSidebar = () => {
       </Card>
       <Card sx={{ width: '100%', py: 2 }}>
         <StyledNav>
-          {NAV_ITEMS.map(item => {
+          {NAV_ITEMS.map((item) => {
             const isActive = item.link && currentProfileTab === item.link;
             return (
               <Link
@@ -147,6 +150,17 @@ const ProfileSidebar = () => {
               </Link>
             );
           })}
+          {canEditProfile && data?.data?.phone && (
+            <PingMessageModal>
+              <Button
+                startIcon={<SmsIcon />}
+                variant="contained"
+                color="warning"
+              >
+                Gửi tin nhắn
+              </Button>
+            </PingMessageModal>
+          )}
         </StyledNav>
       </Card>
     </StyledNavWrapper>
