@@ -198,8 +198,8 @@ export default class NewsService {
     const { title, content } = params;
     const whereFilter = {
       AND: [
-        { title: { contains: title } },
-        { content: { contains: content } },
+        { title: { contains: title, mode: 'insensitive' } },
+        { content: { contains: content, mode: 'insensitive' } },
         { archived: false },
         { isPublic: true },
       ],
