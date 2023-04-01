@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { useCanEditProfile } from '../helpers/canEditProfile';
+import { useCanSendMessage } from '../helpers/canSendMessage';
 import { usePathname, useSearchParams } from 'next/navigation';
 import {
   useGetUserInformationQuery,
@@ -83,6 +84,9 @@ const ProfileSidebar = () => {
   const { canEditProfile, userProfileId } = useCanEditProfile();
 
   const { data } = useGetUserInformationQuery(userProfileId);
+
+  const { canSendMessage } = useCanSendMessage(data?.data?.ping);
+
   const [updateUserInformation] = useUpdateUserInformationMutation();
 
   const { control, setValue } = useForm({
@@ -150,8 +154,8 @@ const ProfileSidebar = () => {
               </Link>
             );
           })}
-          {canEditProfile && data?.data?.phone && (
-            <PingMessageModal>
+          {canSendMessage && data?.data?.havePhone && userProfileId && (
+            <PingMessageModal userProfileId={userProfileId}>
               <Button
                 startIcon={<SmsIcon />}
                 variant="contained"

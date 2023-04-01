@@ -425,9 +425,11 @@ model Ping {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  message String @unique @map("message")
+  message String
 
-  pingerInfoId   String
+  pingAlumniInfoId String
+  pingerInfoId String
+  
   pingerInfo Information @relation(fields: [pingerInfoId], references: [userId])
 
   @@map("pings")

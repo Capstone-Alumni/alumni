@@ -28,6 +28,7 @@ const filterInformation = (
     )
   ) {
     result = omit('phone')(result);
+    result.havePhone = true;
   }
 
   if (
@@ -79,6 +80,11 @@ export default class InformationService {
             grade: true,
           },
         },
+        ping: {
+          include: {
+            pingerInfo: true,
+          },
+        },
       },
     });
 
@@ -88,6 +94,11 @@ export default class InformationService {
         alumClass: {
           include: {
             grade: true,
+          },
+        },
+        ping: {
+          include: {
+            pingerInfo: true,
           },
         },
       },
@@ -150,7 +161,7 @@ export default class InformationService {
         }),
       ]);
 
-    const filteredInformationItems = usersInformationItems.map(information =>
+    const filteredInformationItems = usersInformationItems.map((information) =>
       filterInformation(information, requesterInformation),
     );
 
