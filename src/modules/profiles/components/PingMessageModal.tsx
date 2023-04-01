@@ -22,15 +22,20 @@ import useSendMessage from '../hooks/useSendMessage';
 interface PingMessageModalProps {
   children?: React.ReactNode;
   userProfileId: string;
+  onSendMessageSuccess: () => void;
 }
 
 const messageSchema = Yup.object().shape({
-  message: Yup.string().required('Tin nhắn không được để trống'),
+  message: Yup.string()
+    .required('Tin nhắn không được để trống')
+    .min(1, 'Must be exactly 5 digits')
+    .max(100, 'Must be exactly 5 digits'),
 });
 
 export default function PingMessageModal({
   children,
   userProfileId,
+  onSendMessageSuccess,
 }: PingMessageModalProps) {
   const [open, setOpen] = useState(false);
   const { fetchApi: sendMessage } = useSendMessage();
@@ -57,6 +62,7 @@ export default function PingMessageModal({
         });
         resetForm();
         handleClose();
+        onSendMessageSuccess();
         setSubmitting(false);
         // enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
       } catch (error: any) {
@@ -70,60 +76,64 @@ export default function PingMessageModal({
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
   return (
-    <div>
-      <div onClick={handleClickOpen}>{children}</div>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        sx={{ width: '700px', margin: '0 auto' }}
-      >
-        <FormikProvider value={formik}>
-          <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
-            <DialogTitle>Người bạn quen?</DialogTitle>
-            <DialogContent>
-              <Stack sx={{ py: 1 }}>
-                <DialogContentText>
-                  Bằng cách gửi tin nhắn thông qua SMS (tối đa 100 kí tự) tới
-                  người này và bạn được gửi tối đa 1 lần
-                </DialogContentText>
-              </Stack>
-              <Box>
-                <Stack sx={{ py: '0.25rem' }}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      flexDirection: 'row',
-                      gap: '1rem',
-                    }}
-                  >
-                    <TextField
-                      label="Tin nhắn"
-                      multiline
-                      fullWidth
-                      {...getFieldProps('message')}
-                      error={Boolean(touched.message && errors.message)}
-                      helperText={touched.message && errors.message}
-                    />
-                  </Box>
+    <>
+      <div style={{ width: '100%' }} onClick={handleClickOpen}>
+        {children}
+      </div>
+      <div>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          sx={{ width: '700px', margin: '0 auto' }}
+        >
+          <FormikProvider value={formik}>
+            <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
+              <DialogTitle>Người bạn quen?</DialogTitle>
+              <DialogContent>
+                <Stack sx={{ py: 1 }}>
+                  <DialogContentText>
+                    Bằng cách gửi tin nhắn thông qua SMS (tối đa 100 kí tự) tới
+                    người này và bạn được gửi tối đa 1 lần
+                  </DialogContentText>
                 </Stack>
-              </Box>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="inherit">
-                Huỷ
-              </Button>
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                loading={isSubmitting}
-              >
-                Gửi
-              </LoadingButton>
-            </DialogActions>
-          </Form>
-        </FormikProvider>
-      </Dialog>
-    </div>
+                <Box>
+                  <Stack sx={{ py: '0.25rem' }}>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        gap: '1rem',
+                      }}
+                    >
+                      <TextField
+                        label="Tin nhắn"
+                        multiline
+                        fullWidth
+                        {...getFieldProps('message')}
+                        error={Boolean(touched.message && errors.message)}
+                        helperText={touched.message && errors.message}
+                      />
+                    </Box>
+                  </Stack>
+                </Box>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="inherit">
+                  Huỷ
+                </Button>
+                <LoadingButton
+                  type="submit"
+                  variant="contained"
+                  loading={isSubmitting}
+                >
+                  Gửi
+                </LoadingButton>
+              </DialogActions>
+            </Form>
+          </FormikProvider>
+        </Dialog>
+      </div>
+    </>
   );
 }

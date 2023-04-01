@@ -24,12 +24,12 @@ export const useCanSendMessage = (pings: any) => {
 
   if (currentUserInformation?.userId) {
     canSendMessage = currentUserInformation?.userId !== userProfileId;
-  }
-  if (currentUserInformation?.ping) {
-    const array = currentUserInformation?.ping.filter((ping) => {
-      return ping.pingAlumniInfoId === userProfileId;
-    });
-    canSendMessage = array.length === 0 && true;
+    if (currentUserInformation?.ping) {
+      const array = currentUserInformation?.ping.filter((ping) => {
+        return ping.pingAlumniInfoId === userProfileId;
+      });
+      canSendMessage = array.length === 0 && true;
+    }
   }
 
   return {

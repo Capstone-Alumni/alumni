@@ -19,7 +19,7 @@ import {
 } from '@redux/slices/userProfileSlice';
 import UploadAvatarInput from '@share/components/form/UploadAvatarInput';
 import { useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import SmsIcon from '@mui/icons-material/Sms';
 import Button from '@mui/material/Button';
 import PingMessageModal from './PingMessageModal';
@@ -81,6 +81,7 @@ const ProfileSidebar = () => {
   const searchParams = useSearchParams();
 
   const currentProfileTab = searchParams.get('profile_tab');
+  const [alreadySendMessage, setAlreadySendMessage] = useState(false);
   const { canEditProfile, userProfileId } = useCanEditProfile();
 
   const { data } = useGetUserInformationQuery(userProfileId);
@@ -103,6 +104,10 @@ const ProfileSidebar = () => {
       avatarUrl: url,
       userId: userProfileId,
     });
+  };
+
+  const handleSendMessageSuccess = () => {
+    setAlreadySendMessage(true);
   };
 
   useEffect(() => {
@@ -154,17 +159,22 @@ const ProfileSidebar = () => {
               </Link>
             );
           })}
-          {canSendMessage && data?.data?.havePhone && userProfileId && (
-            <PingMessageModal userProfileId={userProfileId}>
-              <Button
-                startIcon={<SmsIcon />}
-                variant="contained"
-                color="warning"
+          {alreadySendMessage ||
+            (canSendMessage && data?.data?.havePhone && userProfileId && (
+              <PingMessageModal
+                userProfileId={userProfileId}
+                onSendMessageSuccess={handleSendMessageSuccess}
               >
-                Gửi tin nhắn
-              </Button>
-            </PingMessageModal>
-          )}
+                <Button
+                  sx={{ width: '100%' }}
+                  startIcon={<SmsIcon />}
+                  variant="contained"
+                  color="warning"
+                >
+                  Gửi tin nhắn
+                </Button>
+              </PingMessageModal>
+            ))}
         </StyledNav>
       </Card>
     </StyledNavWrapper>
