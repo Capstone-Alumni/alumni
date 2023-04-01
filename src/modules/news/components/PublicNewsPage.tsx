@@ -1,10 +1,12 @@
 'use client';
-import { Box, Pagination, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
+import SearchInput from '@share/components/SearchInput';
 import { useState } from 'react';
 import { useGetNewsForPublicQuery } from 'src/redux/slices/newsSlice';
-import { News } from '../types';
-import PublicNewsCardItems from './PublicNewsCardItem';
+import PublicLatestNewsPage from './PublicLatestNewsPage';
+import PublicOlderNewsPage from './PublicOlderNewsPage';
+import PublicSearchNewsResult from './PublicSearchNewsResult';
 
 const PublicNewsPage = () => {
   const newestNewsParams = {
@@ -18,7 +20,7 @@ const PublicNewsPage = () => {
     params: newestNewsParams,
   });
 
-  const [olerNewsParams, setOlderNewsParams] = useState({
+  const [olderNewsParams, setOlderNewsParams] = useState({
     page: 3,
     limit: 3,
     title: '',
@@ -26,15 +28,53 @@ const PublicNewsPage = () => {
   });
 
   const { data: olderNews } = useGetNewsForPublicQuery({
-    params: olerNewsParams,
+    params: olderNewsParams,
   });
 
-  const onChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
-    event.preventDefault();
+  const onChangePage = (value: number) => {
     setOlderNewsParams({
-      ...olerNewsParams,
+      ...olderNewsParams,
       page: value + 2,
     });
+  };
+
+  const [titleSearch, setTitleSearch] = useState('');
+
+  const [searchNewsParams, setSearchNewsParams] = useState({
+    page: 1,
+    limit: 4,
+    title: '',
+    content: '',
+  });
+
+  const { data: searchNewsResult, isSuccess: isGettingResultSuccess } =
+    useGetNewsForPublicQuery({
+      params: searchNewsParams,
+    });
+  const [showSearchResult, setShowSearchResult] = useState(false);
+  const handleSearchNews = () => {
+    setSearchNewsParams({
+      ...searchNewsParams,
+      title: titleSearch,
+    });
+    if (titleSearch && isGettingResultSuccess) {
+      setShowSearchResult(true);
+    } else {
+      setShowSearchResult(false);
+    }
+  };
+
+  const handleChangeSearchPage = (value: number) => {
+    setSearchNewsParams({
+      ...searchNewsParams,
+      page: value,
+    });
+  };
+
+  const onPressSearchNews = (e: any) => {
+    if (e.key === 'Enter') {
+      handleSearchNews();
+    }
   };
   return (
     <>
@@ -47,127 +87,73 @@ const PublicNewsPage = () => {
               margin: 'auto',
             }}
           >
-            {newestNews.data.totalItems > 0 ? (
-              <>
-                <Typography
-                  variant="h3"
-                  sx={{
-                    marginTop: 4,
-                    fontFamily: 'Poppins-SVN,sans-serif',
-                  }}
-                >
-                  Mới nhất
-                </Typography>
-                <Box
-                  className="first-two-news"
-                  sx={{
-                    display: 'flex',
-                    gap: '16px',
-                    marginTop: 4,
-                  }}
-                >
-                  {newestNews.data.items.slice(0, 2).map((item: News) => (
-                    <PublicNewsCardItems
-                      key={item.id}
-                      item={item}
-                      sx={{
-                        width: '45%',
-                        height: '250px',
-                        imgWidth: 500,
-                        imgHeight: 250,
-                        typoVariant: 'h5',
-                        marginImg: 2,
-                      }}
-                    />
-                  ))}
-                </Box>
-                <Box
-                  className="next-four-news"
-                  sx={{
-                    display: 'flex',
-                    gap: '40px',
-                    marginTop: 4,
-                  }}
-                >
-                  {newestNews.data.items.slice(2, 6).map((item: any) => (
-                    <PublicNewsCardItems
-                      key={item.id}
-                      item={item}
-                      sx={{
-                        width: '20%',
-                        height: '150px',
-                        imgWidth: 250,
-                        imgHeight: 150,
-                        typoVariant: 'h6',
-                        marginImg: 2,
-                      }}
-                    />
-                  ))}
-                </Box>
-              </>
-            ) : (
-              <Typography textAlign="center" variant="h6">
-                Hiện tại chưa có tin tức nào
-              </Typography>
-            )}
-          </Box>
-          {olderNews && olderNews.data.items.length > 0 ? (
             <Box
               sx={{
-                width: '80%',
-                margin: 'auto',
                 display: 'flex',
-                flexDirection: 'column',
               }}
             >
-              <Typography
-                variant="h3"
+              {showSearchResult ? (
+                <Button onClick={() => setShowSearchResult(false)}>
+                  {' '}
+                  Quay lại tin tức
+                </Button>
+              ) : null}
+              <Box
                 sx={{
-                  marginTop: 4,
-                  fontFamily: 'Poppins-SVN,sans-serif',
+                  display: 'flex',
+                  width: '40%',
+                  marginLeft: 'auto',
                 }}
               >
-                Những tin cũ hơn
-              </Typography>
-              <>
-                <Box
-                  className="older-news"
-                  sx={{
-                    display: 'flex',
-                    gap: '60px',
-                    marginTop: 4,
-                    height: '250px',
-                    marginBottom: 4,
+                <SearchInput
+                  placeholder="Tìm kiếm tin tức"
+                  onKeyDown={event => onPressSearchNews(event)}
+                  value={titleSearch}
+                  onChange={event => {
+                    setTitleSearch(event.target.value);
                   }}
-                >
-                  {olderNews.data.items.map((item: any) => (
-                    <PublicNewsCardItems
-                      key={item.id}
-                      item={item}
-                      sx={{
-                        width: '25%',
-                        height: '150px',
-                        imgWidth: 350,
-                        imgHeight: 150,
-                        typoVariant: 'h6',
-                        marginImg: 2,
-                      }}
-                    />
-                  ))}
-                </Box>
-                <Pagination
-                  page={olerNewsParams.page - 2}
-                  sx={{
-                    margin: 'auto',
-                  }}
-                  count={Math.ceil(
-                    (olderNews.data.totalItems - 6) /
-                      olderNews.data.itemPerPage,
-                  )}
-                  onChange={onChangePage}
                 />
-              </>
+                <Button
+                  sx={{
+                    ml: 1,
+                    borderRadius: 2,
+                  }}
+                  size="small"
+                  variant="outlined"
+                  onClick={handleSearchNews}
+                >
+                  Tìm
+                </Button>
+              </Box>
             </Box>
+            {showSearchResult ? (
+              <PublicSearchNewsResult
+                newsList={searchNewsResult.data.items}
+                itemPerPage={searchNewsResult.data.itemPerPage}
+                totalItems={searchNewsResult.data.totalItems}
+                searchNewsParams={searchNewsParams}
+                onChangeSearchPage={handleChangeSearchPage}
+              />
+            ) : (
+              <>
+                {newestNews.data.totalItems > 0 ? (
+                  <PublicLatestNewsPage newsList={newestNews.data.items} />
+                ) : (
+                  <Typography textAlign="center" variant="h6">
+                    Hiện tại chưa có tin tức nào
+                  </Typography>
+                )}
+              </>
+            )}
+          </Box>
+          {!showSearchResult && olderNews && olderNews.data.items.length > 0 ? (
+            <PublicOlderNewsPage
+              newsList={olderNews.data.items}
+              itemPerPage={olderNews.data.itemPerPage}
+              totalItems={olderNews.data.totalItems}
+              olderNewsParams={olderNewsParams}
+              onChangePage={onChangePage}
+            />
           ) : null}
         </>
       ) : null}

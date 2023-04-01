@@ -73,6 +73,7 @@ const PublicNewsCardItems = ({ item, sx }: { item: News; sx?: any }) => {
               <Typography
                 sx={{ fontSize: 14, fontWeight: 600 }}
                 color="GrayText"
+                noWrap
               >
                 {item.authorInfo ? item.authorInfo.fullName : 'Chưa cập nhật'}
               </Typography>
