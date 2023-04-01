@@ -161,7 +161,7 @@ export default class InformationService {
         }),
       ]);
 
-    const filteredInformationItems = usersInformationItems.map((information) =>
+    const filteredInformationItems = usersInformationItems.map(information =>
       filterInformation(information, requesterInformation),
     );
 

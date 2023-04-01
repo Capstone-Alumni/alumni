@@ -18,11 +18,10 @@ export default class PingController {
         status: true,
         data: newPing,
       });
-    } else {
-      return res.status(500).json({
-        message: 'Xảy ra lỗi',
-        status: false,
-      });
     }
+    return res.status(500).json({
+      message: 'Xảy ra lỗi',
+      status: false,
+    });
   };
 }
