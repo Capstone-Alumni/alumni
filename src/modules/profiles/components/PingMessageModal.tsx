@@ -9,12 +9,10 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
   Stack,
+  styled,
   TextField,
   Typography,
-  styled,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import useSendMessage from '../hooks/useSendMessage';
