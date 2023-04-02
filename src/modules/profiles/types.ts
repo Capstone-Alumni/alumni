@@ -84,11 +84,11 @@ export type CreateCareerServiceProps = {
   endDate: string;
 };
 
-//carrers
 export type SendPingServiceProps = {
   message: string;
 };
 
+//carrers
 export type GetCareerListServiceParams = {
   jobTitle: string;
   company: string;

@@ -166,7 +166,7 @@ const ProfileSidebar = () => {
                 onSendMessageSuccess={handleSendMessageSuccess}
               >
                 <Button
-                  sx={{ width: '100%' }}
+                  sx={{ width: '100%', justifyContent: 'left' }}
                   startIcon={<SmsIcon />}
                   variant="contained"
                   color="warning"
