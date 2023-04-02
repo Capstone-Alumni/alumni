@@ -155,10 +155,20 @@ export default class OwnerFundService {
 
   static getSavedList = async (
     tenantPrisma: PrismaClient,
-    { userId, page, limit }: { userId: string; page: number; limit: number },
+    {
+      userId,
+      page,
+      limit,
+      title,
+    }: { userId: string; page: number; limit: number; title: string },
   ) => {
     const whereFilter = {
       userId: userId,
+      fund: {
+        title: {
+          contains: title,
+        },
+      },
       archived: false,
     };
 

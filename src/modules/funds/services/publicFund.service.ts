@@ -7,11 +7,13 @@ export default class PublicFundService {
     {
       page,
       limit,
+      title,
       status,
       userId,
     }: {
       page: number;
       limit: number;
+      title: string;
       status: 'ended' | 'going';
       userId?: string;
     },
@@ -19,6 +21,9 @@ export default class PublicFundService {
     const whereFilter: Prisma.FundWhereInput = {
       archived: false,
       publicity: 'SCHOOL_ADMIN',
+      title: {
+        contains: title,
+      },
     };
 
     if (status === 'going') {
