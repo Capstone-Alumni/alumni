@@ -43,6 +43,10 @@ const FundTransactionListTab = () => {
         px: 1,
       }}
     >
+      <Typography sx={{ mb: 1 }}>
+        Số lượt ủng hộ: <strong>{data?.data.totalItems}</strong>
+      </Typography>
+
       <TableContainer component={Paper}>
         <Table aria-label="event participant table">
           <TableHead>

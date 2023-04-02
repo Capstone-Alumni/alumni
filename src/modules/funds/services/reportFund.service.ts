@@ -95,10 +95,10 @@ export default class ReportFundService {
     fundfind(tenantPrisma, fundId);
     const [totalItems, items] = await tenantPrisma.$transaction([
       tenantPrisma.fundReport.count({
-        where: { archived: false },
+        where: { fundId: fundId, archived: false },
       }),
       tenantPrisma.fundReport.findMany({
-        where: { archived: false },
+        where: { fundId: fundId, archived: false },
         orderBy: {
           createdAt: 'desc',
         },

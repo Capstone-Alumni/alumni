@@ -70,7 +70,7 @@ const AdminClassListPage = () => {
         }}
       >
         <Typography variant="h3">
-          <Link href="/admin/grade" prefetch={false}>
+          <Link href="/admin/config/grade" prefetch={false}>
             Niên khoá
           </Link>{' '}
           / Lớp

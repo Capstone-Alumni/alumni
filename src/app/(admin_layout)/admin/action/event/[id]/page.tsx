@@ -1,8 +1,8 @@
 import { verifyUser } from '@share/helpers/SSRAuthorization';
-import HostingEventEditPage from 'src/modules/events/components/HostingEventEditPage';
+import AdminEventEditPage from 'src/modules/events/components/AdminEventEditPage';
 
 export default async function Page() {
   await verifyUser();
 
-  return <HostingEventEditPage />;
+  return <AdminEventEditPage />;
 }

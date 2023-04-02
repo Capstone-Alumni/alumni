@@ -13,6 +13,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import useGetAccessStatus from '@share/hooks/useGetAccessStatus';
 import Link from 'next/link';
 import React, { useMemo } from 'react';
+import { usePathname } from 'next/navigation';
 
 const Body = ({
   children,
@@ -22,6 +23,7 @@ const Body = ({
   sx?: BoxProps;
 }) => {
   const theme = useTheme();
+  const pathname = usePathname();
 
   const { data } = useGetAccessStatus();
 
@@ -51,7 +53,7 @@ const Body = ({
         ...sx,
       }}
     >
-      {message ? (
+      {message && !pathname?.startsWith('/verify_account') ? (
         <Box
           sx={{
             display: 'flex',

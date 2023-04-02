@@ -10,13 +10,14 @@ export default class PublicFundController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const prisma = await getPrismaClient(req.tenantId);
-    const { page, status, limit } = req.query;
+    const { page, status, limit, title } = req.query;
     const { id: userId } = req.user || {};
 
     const listData = await PublicFundService.getList(prisma, {
       userId: userId,
       page: page ? parseInt(page as string, 10) : 1,
       limit: limit ? parseInt(limit as string, 10) : 10,
+      title: title as string,
       status: status === 'going' ? 'going' : 'ended',
     });
 

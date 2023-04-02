@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { currentTenantDataAtom } from '@share/states';
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import { Event } from '../types';
 import { formatDate } from '@share/utils/formatDate';
@@ -29,6 +29,11 @@ const EventCardItem = ({
 }) => {
   const theme = useTheme();
   const currentTenant = useRecoilValue(currentTenantDataAtom);
+
+  const isEnded = useMemo(
+    () => data.isEnded || new Date(data.endTime) < new Date(),
+    [],
+  );
 
   return (
     <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
@@ -73,15 +78,13 @@ const EventCardItem = ({
             <Typography variant="body2">{data.location}</Typography>
           ) : null}
 
-          {showStatus ? (
-            <Typography variant="body2">
-              {data.approvedStatus === -1 ? 'Đang chờ xác nhận' : null}
-              {data.approvedStatus === 0 ? 'Đã bị từ chối' : null}
-              {data.approvedStatus === 1 ? 'Đã được xác nhận' : null}
+          <Box sx={{ flex: 1 }} />
+
+          {isEnded ? (
+            <Typography variant="body2" color="error">
+              Đã kết thúc
             </Typography>
           ) : null}
-
-          <Box sx={{ flex: 1 }} />
 
           <Stack direction="row" gap={1} alignItems="center" sx={{ mt: 1 }}>
             <MyAvatar

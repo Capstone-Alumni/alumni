@@ -90,9 +90,6 @@ const GradeStep = () => {
             <ListItemText sx={{ minWidth: theme.spacing(14) }}>
               <Typography fontWeight={600}>Mã</Typography>
             </ListItemText>
-            <ListItemText>
-              <Typography fontWeight={600}>Tên niên khoá</Typography>
-            </ListItemText>
           </ListItem>
 
           {gradeList?.data.items.map(grade => (

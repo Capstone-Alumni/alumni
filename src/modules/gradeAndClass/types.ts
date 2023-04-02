@@ -53,12 +53,10 @@ export type GetGradeListServiceProps = {
 };
 
 export type CreateGradeServiceProps = {
-  name: string;
   code: string;
 };
 
 export type UpdateGradeInfoByIdServiceProps = {
-  name?: string;
   code?: string;
 };
 

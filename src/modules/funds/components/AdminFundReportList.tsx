@@ -27,7 +27,7 @@ const AdminFundReportList = () => {
 
   const pathname = usePathname();
 
-  const fundId = pathname?.split('/')[3];
+  const fundId = pathname?.split('/')[4];
 
   const {
     data,
@@ -49,7 +49,7 @@ const AdminFundReportList = () => {
   if (!data?.data.totalItems) {
     return (
       <Typography fontWeight={600} textAlign="center" sx={{ width: '100%' }}>
-        Không có báo cáo nào
+        Không có hoạt động nào
       </Typography>
     );
   }

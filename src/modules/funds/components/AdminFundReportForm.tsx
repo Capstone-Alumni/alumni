@@ -15,8 +15,8 @@ export type AdminFundReportFormValues = {
 };
 
 const validationSchema = yup.object({
-  title: yup.string().required(),
-  content: yup.string().required(),
+  title: yup.string().required('Bắt buộc'),
+  content: yup.string().required('Bắt buộc'),
 });
 
 const AdminFundReportForm = ({

@@ -117,12 +117,13 @@ export default class OwnerFundController {
   ) => {
     const prisma = await getPrismaClient(req.tenantId);
     const { id: userId } = req.user;
-    const { page, limit } = req.query;
+    const { page, limit, title } = req.query;
 
     const listData = await OwnerFundService.getSavedList(prisma, {
       userId,
       page: page ? parseInt(page as string, 10) : 1,
       limit: limit ? parseInt(limit as string, 10) : 10,
+      title: title as string,
     });
 
     return res.status(200).json({

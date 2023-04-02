@@ -2,68 +2,70 @@
 
 import { Icon } from '@iconify/react';
 
-import { Box, styled, Tooltip, Typography, useTheme } from '@mui/material';
+import { Box, styled, Typography, useTheme } from '@mui/material';
 import { User } from 'next-auth';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import MyAvatar from '../MyAvatar';
+import { AdminSubNav, StyledNav, StyledNavItem } from './AdminSubNav';
 
 const ACCESS_NAV_ITEM = {
   id: 'request_access',
   title: 'Kiểm duyệt',
   icon: 'grommet-icons:validate',
-  link: '/admin/access_request',
+  link: '/admin/access/access_request',
 };
 
 const NEWS_NAV_ITEM = {
   id: 'news',
   title: 'Tin tức',
   icon: 'fluent:news-16-filled',
-  link: '/admin/news',
+  link: '/admin/action/news',
 };
 const FUND_NAV_ITEM = {
   id: 'fund',
   title: 'Quỹ',
   icon: 'ri:refund-2-line',
-  link: '/admin/funds',
+  link: '/admin/action/funds',
 };
 const EVENT_NAV_ITEM = {
   id: 'event',
   title: 'Sự kiện',
   icon: 'ic:baseline-event',
-  link: '/admin/event',
+  link: '/admin/action/event',
 };
 const RECRUITMENTS_NAV_ITEM = {
   id: 'recruitments',
   title: 'Tuyển dụng',
-  icon: 'ic:baseline-event',
-  link: '/admin/recruitments',
+  icon: 'ic:baseline-work',
+  link: '/admin/action/recruitments',
 };
 
 const SCHOOL_NAV_ITEM = {
   id: 'school',
-  title: 'Thiết lập cho trường',
-  icon: 'material-symbols:meeting-room-outline-rounded',
-  link: '/admin/school',
+  title: 'Thông tin cơ bản',
+  icon: 'bxs:school',
+  link: '/admin/config/school',
 };
 const SCHOOL_VNPAY_NAV_ITEM = {
   id: 'vnpay',
   title: 'Tích hợp VNPay',
-  icon: 'material-symbols:meeting-room-outline-rounded',
-  link: '/admin/vnpay',
+  icon: 'ion:wallet',
+  link: '/admin/config/vnpay',
 };
 const GRADE_NAV_ITEM = {
   id: 'grade_class',
   title: 'Niên khoá và Lớp',
   icon: 'material-symbols:meeting-room-outline-rounded',
-  link: '/admin/grade',
+  link: '/admin/config/grade',
 };
 const USER_NAV_ITEM = {
   id: 'user',
-  title: 'Cựu học sinh',
+  title: 'Mời cựu học sinh',
   icon: 'ph:student-bold',
-  link: '/admin/members',
+  link: '/admin/config/members',
 };
 
 const StyledSidebar = styled(Box)(() => ({
@@ -84,7 +86,6 @@ const StyledNavWrapper = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   alignItems: 'flex-start',
   paddingTop: theme.spacing(4),
-  gap: theme.spacing(3),
 }));
 
 const StyledHeader = styled(Box)(({ theme }) => ({
@@ -93,34 +94,7 @@ const StyledHeader = styled(Box)(({ theme }) => ({
   alignItems: 'flex-start',
   paddingLeft: theme.spacing(3),
   paddingRight: theme.spacing(3),
-}));
-
-const StyledNav = styled(Box)(({ theme }) => ({
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-start',
-  gap: theme.spacing(1),
-  paddingLeft: theme.spacing(2),
-  paddingRight: theme.spacing(2),
-}));
-
-const StyledNavItem = styled(Box)(({ theme }) => ({
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  gap: theme.spacing(1),
-  paddingLeft: theme.spacing(1.5),
-  paddingRight: theme.spacing(1.5),
-  paddingTop: theme.spacing(1),
-  paddingBottom: theme.spacing(1),
-
-  borderRadius: theme.spacing(2),
-
-  '&:hover': {
-    backgroundColor: theme.palette.primary.dark,
-  },
+  paddingBottom: theme.spacing(3),
 }));
 
 const StyledFooter = styled(Box)(({ theme }) => ({
@@ -151,33 +125,57 @@ const StyledAccountWrapper = styled(Box)(({ theme }) => ({
 }));
 
 const generateNavItems = (
-  role: 'ALUMNI' | 'CLASS_MOD' | 'GRADE_MOD' | 'SCHOOL_ADMIN',
+  role?: 'ALUMNI' | 'CLASS_MOD' | 'GRADE_MOD' | 'SCHOOL_ADMIN',
 ) => {
   switch (role) {
     case 'ALUMNI':
       return [];
     case 'CLASS_MOD':
-      return [ACCESS_NAV_ITEM];
+      return [];
     case 'GRADE_MOD':
-      return [ACCESS_NAV_ITEM, EVENT_NAV_ITEM];
+      return [EVENT_NAV_ITEM, FUND_NAV_ITEM];
     case 'SCHOOL_ADMIN':
       return [
-        ACCESS_NAV_ITEM,
-        EVENT_NAV_ITEM,
         NEWS_NAV_ITEM,
+        EVENT_NAV_ITEM,
         FUND_NAV_ITEM,
         RECRUITMENTS_NAV_ITEM,
+      ];
+    default:
+      return [];
+  }
+};
+
+const generateSchoolNavItems = (
+  role?: 'ALUMNI' | 'CLASS_MOD' | 'GRADE_MOD' | 'SCHOOL_ADMIN',
+) => {
+  switch (role) {
+    case 'ALUMNI':
+      return [];
+    case 'CLASS_MOD':
+      return [USER_NAV_ITEM];
+    case 'GRADE_MOD':
+      return [USER_NAV_ITEM];
+    case 'SCHOOL_ADMIN':
+      return [
         SCHOOL_NAV_ITEM,
         SCHOOL_VNPAY_NAV_ITEM,
         GRADE_NAV_ITEM,
         USER_NAV_ITEM,
       ];
+    default:
+      return [];
   }
 };
 
 const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
   const theme = useTheme();
   const pathname = usePathname();
+  const defaultSection = pathname?.split('/')[2];
+  const [sectionSelected, setSectionSelected] = useState(defaultSection);
+
+  const schoolItems = generateSchoolNavItems(user?.accessLevel);
+  const navItems = generateNavItems(user?.accessLevel);
 
   if (!user) {
     return null;
@@ -201,49 +199,65 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
             </Box>
           </StyledHeader>
 
-          <StyledNav>
-            {generateNavItems(user?.accessLevel).map(item => {
-              const isActive = item.link && pathname?.startsWith(item.link);
-              return (
-                <Link
-                  key={item.id}
-                  href={item.link}
-                  style={{ color: 'inherit', width: '100%' }}
-                  prefetch={false}
-                >
-                  <StyledNavItem
-                    sx={{
-                      backgroundColor: isActive
-                        ? theme.palette.primary.dark
-                        : undefined,
-                    }}
-                  >
-                    <Icon height={24} icon={item.icon} />
-                    <Typography fontWeight={600}>{item.title}</Typography>
-                    <Box sx={{ flex: 1 }} />
-                    {/* <Icon
-                      height={24}
-                      icon={
-                        isActive
-                          ? 'material-symbols:keyboard-arrow-right'
-                          : 'material-symbols:keyboard-arrow-down-rounded'
-                      }
-                    /> */}
-                  </StyledNavItem>
-                </Link>
-              );
-            })}
-          </StyledNav>
+          {schoolItems && schoolItems.length ? (
+            <AdminSubNav
+              title="Cấu hình trường"
+              items={schoolItems}
+              open={sectionSelected === 'config'}
+              onToggle={() =>
+                setSectionSelected(prevState =>
+                  prevState === 'config' ? '' : 'config',
+                )
+              }
+            />
+          ) : null}
+
+          {navItems && navItems.length ? (
+            <AdminSubNav
+              title="Hoạt động"
+              items={navItems}
+              open={sectionSelected === 'action'}
+              onToggle={() =>
+                setSectionSelected(prevState =>
+                  prevState === 'action' ? '' : 'action',
+                )
+              }
+            />
+          ) : null}
+
+          <AdminSubNav
+            title="Quản lý lớp"
+            items={[ACCESS_NAV_ITEM]}
+            open={sectionSelected === 'access'}
+            onToggle={() =>
+              setSectionSelected(prevState =>
+                prevState === 'access' ? '' : 'access',
+              )
+            }
+          />
         </StyledNavWrapper>
 
         <StyledFooter>
+          <StyledNav sx={{ padding: 0 }}>
+            <Link
+              href="/"
+              style={{ color: 'inherit', width: '100%' }}
+              prefetch={false}
+            >
+              <StyledNavItem>
+                <Icon height={24} icon="majesticons:door-exit" />
+                <Typography fontWeight={600}>Thoát bảng điều khiển</Typography>
+              </StyledNavItem>
+            </Link>
+          </StyledNav>
+
           <StyledAccountWrapper>
             <MyAvatar displayName={user?.image || undefined} />
             <Typography variant="body2">{user.email}</Typography>
 
             <Box sx={{ flex: 1 }} />
 
-            <Tooltip title="Thoát bảng điều khiển">
+            {/* <Tooltip title="Thoát bảng điều khiển">
               <Link href="/" style={{ color: 'inherit' }} prefetch={false}>
                 <Icon
                   color={theme.palette.primary.contrastText}
@@ -251,7 +265,7 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
                   icon="fe:logout"
                 />
               </Link>
-            </Tooltip>
+            </Tooltip> */}
           </StyledAccountWrapper>
         </StyledFooter>
       </StyledSidebar>

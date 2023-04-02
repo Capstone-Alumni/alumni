@@ -77,23 +77,15 @@ const MemberListPage = () => {
         }}
       >
         <Typography variant="h3" sx={{ flex: 1 }}>
-          Thành viên
+          Cựu học sinh
         </Typography>
-
-        <Button
-          variant="outlined"
-          startIcon={<AddIcon />}
-          onClick={() => setOpenForm(true)}
-        >
-          Thêm thành viên mới
-        </Button>
 
         <Button
           variant="contained"
           startIcon={<AddIcon />}
           onClick={() => setOpenForm(true)}
         >
-          Thêm thành viên từ file
+          Thêm
         </Button>
       </Box>
 

@@ -111,7 +111,7 @@ export default class OwnerFundService {
       },
     });
 
-    if (!fund || fund.userId !== userId) {
+    if (!fund) {
       throw new Error('403 denied');
     }
 
@@ -155,10 +155,20 @@ export default class OwnerFundService {
 
   static getSavedList = async (
     tenantPrisma: PrismaClient,
-    { userId, page, limit }: { userId: string; page: number; limit: number },
+    {
+      userId,
+      page,
+      limit,
+      title,
+    }: { userId: string; page: number; limit: number; title: string },
   ) => {
     const whereFilter = {
       userId: userId,
+      fund: {
+        title: {
+          contains: title,
+        },
+      },
       archived: false,
     };
 

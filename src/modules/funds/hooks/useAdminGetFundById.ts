@@ -1,16 +1,19 @@
 import { AxiosError } from 'axios';
 import useApi from 'src/modules/share/hooks/useApi';
+import { Fund } from '../types';
 
 type GetAdminGetFundByIdParams = {
   fundId: string;
 };
 
-type GetAdminGetFundByIdResponse = unknown;
+type GetAdminGetFundByIdResponse = {
+  data: Fund;
+};
 
 type GetAdminGetFundByIdError = AxiosError;
 
 const useAdminGetFundById = () => {
-  const { fetchApi, isLoading } = useApi<
+  const { fetchApi, data, isLoading } = useApi<
     GetAdminGetFundByIdParams,
     GetAdminGetFundByIdResponse,
     GetAdminGetFundByIdError
@@ -21,6 +24,7 @@ const useAdminGetFundById = () => {
 
   return {
     isLoading,
+    data,
     fetchApi,
   };
 };

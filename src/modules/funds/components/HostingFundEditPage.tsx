@@ -16,7 +16,7 @@ const HostingFundEditPage = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const fundId = pathname?.split('/')[3] || '';
+  const fundId = pathname?.split('/')[4] || '';
 
   const { fetchApi: updateFund } = useOwnerUpdateFundById();
   const {

@@ -1,9 +1,9 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import { Button, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { Box, styled, useTheme } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+// import AddIcon from '@mui/icons-material/Add';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -65,12 +65,12 @@ const EVENT_NAV_ITEMS = [
     icon: 'material-symbols:bookmark',
     link: '/events/interest',
   },
-  {
-    id: 'hosting',
-    title: 'Của tôi',
-    icon: 'material-symbols:person-pin',
-    link: '/events/hosting',
-  },
+  // {
+  //   id: 'hosting',
+  //   title: 'Của tôi',
+  //   icon: 'material-symbols:person-pin',
+  //   link: '/events/hosting',
+  // },
 ];
 
 const EventSidebar = () => {
@@ -113,11 +113,11 @@ const EventSidebar = () => {
           );
         })}
 
-        <Link href="/events/create" style={{ width: '100%' }} prefetch={false}>
+        {/* <Link href="/events/create" style={{ width: '100%' }} prefetch={false}>
           <Button variant="contained" fullWidth startIcon={<AddIcon />}>
             tạo sự kiện
           </Button>
-        </Link>
+        </Link> */}
       </StyledNav>
     </StyledNavWrapper>
   );

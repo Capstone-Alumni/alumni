@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 
 import useSignIn from '../hooks/useSignIn';
+import { useState } from 'react';
 
 export type SignInFormValues = {
   email: string;
@@ -20,6 +21,7 @@ export type SignInFormValues = {
 
 const SignInForm = () => {
   const { signIn } = useSignIn();
+  const [signing, setSigning] = useState(false);
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -30,7 +32,9 @@ const SignInForm = () => {
   });
 
   const onSubmit = async (values: SignInFormValues) => {
+    setSigning(true);
     await signIn('credentials', values);
+    setSigning(false);
   };
 
   return (
@@ -98,6 +102,7 @@ const SignInForm = () => {
             fullWidth
             size="large"
             variant="contained"
+            disabled={signing}
             onClick={handleSubmit(onSubmit)}
           >
             Đăng nhập

@@ -13,7 +13,7 @@ const ActionButton = ({
     icon?: React.ReactNode;
     text: string;
     onClick: () => void;
-  }>;
+  } | null>;
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -44,18 +44,24 @@ const ActionButton = ({
           'aria-labelledby': 'basic-button',
         }}
       >
-        {actions.map(action => (
-          <MenuItem
-            key={action.id}
-            onClick={async () => {
-              await action.onClick();
-              handleClose();
-            }}
-          >
-            <ListItemIcon>{action.icon}</ListItemIcon>
-            <ListItemText>{action.text}</ListItemText>
-          </MenuItem>
-        ))}
+        {actions.map(action => {
+          if (!action) {
+            return <></>;
+          }
+
+          return (
+            <MenuItem
+              key={action.id}
+              onClick={async () => {
+                await action.onClick();
+                handleClose();
+              }}
+            >
+              <ListItemIcon>{action.icon}</ListItemIcon>
+              <ListItemText>{action.text}</ListItemText>
+            </MenuItem>
+          );
+        })}
       </Menu>
     </div>
   );

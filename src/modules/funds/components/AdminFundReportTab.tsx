@@ -13,7 +13,7 @@ const AdminFundReportTab = () => {
   const theme = useTheme();
   const pathname = usePathname();
 
-  const fundId = pathname?.split('/')[3];
+  const fundId = pathname?.split('/')[4];
 
   const { fetchApi: getReportList } = useGetFundReportList(fundId || '');
   const { fetchApi: createReport } = useCreateFundReport();
@@ -47,7 +47,7 @@ const AdminFundReportTab = () => {
         />
       ) : (
         <Button variant="contained" onClick={() => setOpenCreateForm(true)}>
-          Thêm báo cáo
+          Thêm
         </Button>
       )}
 

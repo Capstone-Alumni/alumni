@@ -32,7 +32,7 @@ const useOwnerUpdateEventById = () => {
       },
       onSuccess: () => {
         toast.success('Cập nhập sự kiện thành công');
-        router.push('/events/hosting');
+        router.push('/admin/action/event');
       },
     },
   );

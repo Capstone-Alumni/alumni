@@ -9,6 +9,11 @@ import { GetGradeListData } from '../types';
 import { GradeFormValues } from './GradeForm';
 import AdminGradeListItem from './AdminGradeListItem';
 import DataTablePagination from '@share/components/DataTablePagination';
+import { useSetRecoilState } from 'recoil';
+import { getGradeListParamsAtom } from '../state';
+import { useTheme } from '@mui/material';
+import { useState } from 'react';
+import SearchInput from '@share/components/SearchInput';
 
 const AdminGradeListTable = ({
   data,
@@ -23,8 +28,22 @@ const AdminGradeListTable = ({
   page: number;
   onChangePage: (nextPage: number) => void;
 }) => {
+  const theme = useTheme();
+  const [search, setSearch] = useState('');
+  const setParams = useSetRecoilState(getGradeListParamsAtom);
+
   return (
     <>
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          setParams(prevParams => ({ ...prevParams, code: search }));
+        }}
+        style={{ marginBottom: theme.spacing(2) }}
+      >
+        <SearchInput value={search} onChange={e => setSearch(e.target.value)} />
+        <button type="submit" style={{ display: 'none' }}></button>
+      </form>
       <TableContainer component={Paper}>
         <Table aria-label="grade table">
           <TableHead>

@@ -33,7 +33,7 @@ const buildEventWhereFilter = async (
     throw new Error('user not exist');
   }
 
-  const publicityFilter = buildAccessLevelFilter('publicity', user.accessLevel);
+  const publicityFilter = buildAccessLevelFilter('publicity', 'SCHOOL_ADMIN');
   let gradeClassFilter = {};
   if (user.accessLevel === 'CLASS_MOD') {
     gradeClassFilter = getSameClassFilter(userInformation.alumClassId || '');
@@ -59,12 +59,12 @@ export default class AdminEventService {
       user,
       page,
       limit,
-      approved,
+      title,
     }: {
       user: User;
       page: number;
       limit: number;
-      approved: number | undefined;
+      title: string;
     },
   ) => {
     const whereFilter = await buildEventWhereFilter(tenantPrisma, user);
@@ -73,8 +73,10 @@ export default class AdminEventService {
       tenantPrisma.event.count({
         where: {
           ...whereFilter,
-
-          approvedStatus: approved ? approved : undefined,
+          archived: false,
+          title: {
+            contains: title,
+          },
         },
       }),
       tenantPrisma.event.findMany({
@@ -82,8 +84,10 @@ export default class AdminEventService {
         take: limit,
         where: {
           ...whereFilter,
-
-          approvedStatus: approved ? approved : undefined,
+          archived: false,
+          title: {
+            contains: title,
+          },
         },
         orderBy: {
           createdAt: 'desc',
