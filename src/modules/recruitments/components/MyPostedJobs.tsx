@@ -49,18 +49,21 @@ const HostingEventListPage = () => {
             {data?.data.items.map(item => (
               <>
                 <CompanyItem
+                  isPostedJobs
                   key={item.id}
                   companyDetails={item}
                   actions={[
-                    <Link
-                      key="edit-btn"
-                      href={`/recruitments/job_details/${item.id}`}
-                      style={{ width: '100%' }}
-                    >
-                      <Button fullWidth variant="outlined">
-                        Xem
-                      </Button>
-                    </Link>,
+                    item.isApproved && (
+                      <Link
+                        key="edit-btn"
+                        href={`/recruitments/job_details/${item.id}`}
+                        style={{ width: '100%' }}
+                      >
+                        <Button fullWidth variant="outlined">
+                          Xem
+                        </Button>
+                      </Link>
+                    ),
                     <Link
                       key="edit-btn"
                       href={`/recruitments/posted_jobs/${item.id}`}

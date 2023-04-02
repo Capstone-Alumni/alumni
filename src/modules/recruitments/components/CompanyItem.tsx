@@ -7,10 +7,12 @@ import {
   CardContent,
   CardMedia,
   Grid,
+  Stack,
   styled,
   Typography,
   useTheme,
 } from '@mui/material';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Job } from '../types';
@@ -41,10 +43,12 @@ const Company = ({
   companyDetails,
   isSlide,
   actions,
+  isPostedJobs,
 }: {
   companyDetails: Job;
   isSlide?: boolean;
   actions: ReactNode;
+  isPostedJobs?: boolean;
 }) => {
   const theme = useTheme();
 
@@ -85,6 +89,17 @@ const Company = ({
           }}
         />
         <CardContent>
+          {isPostedJobs && (
+            <Stack direction="row" alignItems="center" gap="0.5rem">
+              <FiberManualRecordIcon
+                fontSize="small"
+                color={companyDetails.isApproved ? 'success' : 'warning'}
+              />
+              <Typography variant="body2">
+                {companyDetails.isApproved ? 'Đã duyệt' : 'Đang xét duyệt'}
+              </Typography>
+            </Stack>
+          )}
           <StyledDiv>
             <StyledTypography variant="h6">
               {companyDetails.title}
