@@ -208,7 +208,7 @@ const JobForm = ({
             label: 'Ngành nghề cần tuyển',
             disabled: isPreview,
           }}
-          options={JOB_LIST.map((job) => ({
+          options={JOB_LIST.map(job => ({
             name: job,
             value: job,
           }))}
@@ -244,7 +244,7 @@ const JobForm = ({
             label: 'Loại hình làm việc',
             disabled: isPreview,
           }}
-          options={JOB_TYPES.map((type) => ({
+          options={JOB_TYPES.map(type => ({
             name: type,
             value: type,
           }))}

@@ -19,7 +19,7 @@ const useCreateJob = () => {
     CreateJobError
   >(
     'createJob',
-    (data) => ({
+    data => ({
       method: 'POST',
       url: '/api/recruitments',
       data: data,
