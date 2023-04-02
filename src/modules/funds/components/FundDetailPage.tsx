@@ -212,7 +212,7 @@ const FundDetailPage = () => {
         aria-label="wrapped tabs"
       >
         <Tab value="description" label="Mô tả" />
-        <Tab value="report" label="Báo cáo" />
+        <Tab value="report" label="Hoạt động" />
         <Tab value="transaction" label="Danh sách ủng hộ" />
       </Tabs>
 

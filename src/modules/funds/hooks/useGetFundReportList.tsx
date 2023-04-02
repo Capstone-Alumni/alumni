@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
-import { getFundReportListDataAtom } from '../states';
+import { getFundReportListDataAtomFamily } from '../states';
 import { FundReport } from '../types';
 
 type GetFundReportListParams = never;
@@ -19,6 +19,7 @@ export type GetFundReportListResponse = {
 type GetFundReportListError = AxiosError;
 
 const useGetFundReportList = (fundId: string) => {
+  const getFundReportListDataAtom = getFundReportListDataAtomFamily(fundId);
   const [data, setData] = useRecoilState(getFundReportListDataAtom);
 
   const { fetchApi, isLoading } = useApi<
@@ -26,7 +27,7 @@ const useGetFundReportList = (fundId: string) => {
     GetFundReportListResponse,
     GetFundReportListError
   >(
-    'GetFundReportList',
+    `GetFundReportList/${fundId}`,
     () => ({
       method: 'GET',
       url: `/api/funds/owner/${fundId}/reports`,
@@ -39,7 +40,8 @@ const useGetFundReportList = (fundId: string) => {
   );
 
   useEffect(() => {
-    if (!data && !isLoading) {
+    console.log(fundId, data);
+    if (!data) {
       fetchApi();
     }
   }, []);

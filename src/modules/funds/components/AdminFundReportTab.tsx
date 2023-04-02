@@ -47,7 +47,7 @@ const AdminFundReportTab = () => {
         />
       ) : (
         <Button variant="contained" onClick={() => setOpenCreateForm(true)}>
-          Thêm báo cáo
+          Thêm
         </Button>
       )}
 

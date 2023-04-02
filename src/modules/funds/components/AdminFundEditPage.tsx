@@ -54,7 +54,7 @@ const AdminFundEditPage = () => {
         aria-label="wrapped tabs"
       >
         <Tab value="info" label="Thông tin cơ bản" />
-        <Tab value="report" label="Báo cáo" />
+        <Tab value="report" label="Cập nhập hoạt động" />
       </Tabs>
 
       {tabKey === 'info' ? (
