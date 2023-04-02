@@ -174,10 +174,20 @@ export default class OwnerEventService {
 
   static getGoingList = async (
     tenantPrisma: PrismaClient,
-    { userId, page, limit }: { userId: string; page: number; limit: number },
+    {
+      userId,
+      page,
+      limit,
+      title,
+    }: { userId: string; page: number; limit: number; title: string },
   ) => {
     const whereFilter = {
       userId: userId,
+      event: {
+        title: {
+          contains: title,
+        },
+      },
       archived: false,
     };
 
@@ -221,11 +231,21 @@ export default class OwnerEventService {
 
   static getInterestList = async (
     tenantPrisma: PrismaClient,
-    { userId, page, limit }: { userId: string; page: number; limit: number },
+    {
+      userId,
+      page,
+      limit,
+      title,
+    }: { userId: string; page: number; limit: number; title: string },
   ) => {
     const whereFilter = {
       userId: userId,
       archived: false,
+      event: {
+        title: {
+          contains: title,
+        },
+      },
     };
 
     const [totalItems, items] = await tenantPrisma.$transaction([

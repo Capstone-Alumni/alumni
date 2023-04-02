@@ -10,13 +10,14 @@ export default class PublicEventController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const prisma = await getPrismaClient(req.tenantId);
-    const { page, limit } = req.query;
+    const { page, limit, title } = req.query;
     const { id: userId } = req.user || {};
 
     const listData = await PublicEventService.getList(prisma, {
       userId: userId,
       page: page ? parseInt(page as string, 10) : 1,
       limit: limit ? parseInt(limit as string, 10) : 10,
+      title: title as string,
     });
 
     return res.status(200).json({

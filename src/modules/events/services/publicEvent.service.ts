@@ -3,10 +3,18 @@ import { Prisma, PrismaClient } from '@prisma/client';
 export default class PublicEventService {
   static getList = async (
     tenantPrisma: PrismaClient,
-    { page, limit, userId }: { page: number; limit: number; userId?: string },
+    {
+      page,
+      limit,
+      userId,
+      title,
+    }: { page: number; limit: number; userId?: string; title: string },
   ) => {
     const whereFilter: Prisma.EventWhereInput = {
       AND: [{ archived: false, publicity: 'SCHOOL_ADMIN' }],
+      title: {
+        contains: title,
+      },
     };
 
     const [totalItems, items] = await tenantPrisma.$transaction([
