@@ -17,6 +17,7 @@ import EditorPreview from '@share/components/editor/EditorPreview';
 import MyAvatar from '@share/components/MyAvatar';
 import { formatDate } from '@share/utils/formatDate';
 import Link from 'next/link';
+import usePublicUnJoinEventById from '../hooks/usePublicUnJoinEventById';
 
 type EventStatus = 'not-open' | 'opened' | 'running' | 'ended';
 
@@ -25,7 +26,7 @@ export const renderEventStatus = (status: EventStatus) => {
     case 'not-open':
       return 'Chưa mở đăng ký';
     case 'opened':
-      return 'Đã mở đăng ký';
+      return 'Sắp diễn ra';
     case 'running':
       return 'Đang diễn ra';
     case 'ended':
@@ -47,6 +48,8 @@ const EventDetailPage = () => {
   const { data, fetchApi, isLoading } = usePublicGetEventById();
   const { fetchApi: joinEvent, isLoading: joiningEvent } =
     usePublicJoinEventById();
+  const { fetchApi: unjoinEvent, isLoading: unjoiningEvent } =
+    usePublicUnJoinEventById();
   const { fetchApi: interestEvent, isLoading: isInterestingEvent } =
     usePublicInterestEventById();
   const { fetchApi: uninterestEvent, isLoading: isUninterestingEvent } =
@@ -77,10 +80,6 @@ const EventDetailPage = () => {
 
     const { data: eventData } = data;
 
-    if (new Date(eventData.startTime) < new Date()) {
-      return 'not-open';
-    }
-
     if (new Date(eventData.startTime) >= new Date()) {
       return 'opened';
     }
@@ -98,6 +97,11 @@ const EventDetailPage = () => {
 
   const onJoinEvent = async () => {
     await joinEvent({ eventId: eventId });
+    fetchApi({ eventId: eventId });
+  };
+
+  const onUnjoinEvent = async () => {
+    await unjoinEvent({ eventId: eventId });
     fetchApi({ eventId: eventId });
   };
 
@@ -176,85 +180,87 @@ const EventDetailPage = () => {
             backgroundColor: theme.palette.background.neutral,
           }}
         >
-          <Stack
-            direction={{ sm: 'column', md: 'row' }}
-            gap={1}
-            justifyContent="space-around"
-          >
-            <Box>
-              <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 1 }}>
-                <Typography variant="h6">Hình thức</Typography>
-                {eventData.isOffline ? (
-                  <Typography
-                    fontWeight={600}
-                    sx={{ color: theme.palette.warning.main }}
-                  >
-                    Offline
-                  </Typography>
-                ) : (
-                  <Typography
-                    fontWeight={600}
-                    sx={{ color: theme.palette.success.main }}
-                  >
-                    Online
-                  </Typography>
+          <Stack direction="column" gap={1} justifyContent="space-around">
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h6" sx={{ minWidth: '8rem' }}>
+                Hình thức
+              </Typography>
+              {eventData.isOffline ? (
+                <Typography
+                  fontWeight={600}
+                  sx={{ color: theme.palette.warning.main }}
+                >
+                  Offline
+                </Typography>
+              ) : (
+                <Typography
+                  fontWeight={600}
+                  sx={{ color: theme.palette.success.main }}
+                >
+                  Online
+                </Typography>
+              )}
+            </Stack>
+
+            <Stack direction="row" alignItems="flex-start">
+              <Typography variant="h6" sx={{ minWidth: '8rem' }}>
+                {eventData.isOffline ? 'Địa điểm' : 'Link tham gia'}
+              </Typography>
+              <Typography sx={{ wordBreak: 'break-all' }}>
+                {eventData.location}
+              </Typography>
+            </Stack>
+
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h6" sx={{ minWidth: '8rem' }}>
+                Tình trạng
+              </Typography>
+              <Typography>{renderEventStatus(eventStatus)}</Typography>
+            </Stack>
+
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h6" sx={{ minWidth: '8rem' }}>
+                Bắt đầu
+              </Typography>
+              <Typography>
+                {formatDate(
+                  new Date(eventData.startTime),
+                  'dd/MM/yyyy - HH:ss',
                 )}
-              </Stack>
+              </Typography>
+            </Stack>
 
-              <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 1 }}>
-                <Typography variant="h6">
-                  {eventData.isOffline ? 'Địa điểm' : 'Link tham gia'}
-                </Typography>
-                <Typography>{eventData.location}</Typography>
-              </Stack>
-            </Box>
-
-            <Box>
-              <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 1 }}>
-                <Typography variant="h6">Tình trạng</Typography>
-                <Typography>{renderEventStatus(eventStatus)}</Typography>
-              </Stack>
-
-              <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 1 }}>
-                <Typography variant="h6">Bắt đầu</Typography>
-                <Typography>
-                  {formatDate(
-                    new Date(eventData.startTime),
-                    'dd/MM/yyyy - HH:ss',
-                  )}
-                </Typography>
-              </Stack>
-
-              <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 1 }}>
-                <Typography variant="h6">Kết thúc</Typography>
-                <Typography>
-                  {eventData.endTime
-                    ? formatDate(
-                        new Date(eventData.endTime),
-                        'dd/MM/yyyy - HH:ss',
-                      )
-                    : 'Chưa cập nhập'}
-                </Typography>
-              </Stack>
-            </Box>
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h6" sx={{ minWidth: '8rem' }}>
+                Kết thúc
+              </Typography>
+              <Typography>
+                {eventData.endTime
+                  ? formatDate(
+                      new Date(eventData.endTime),
+                      'dd/MM/yyyy - HH:ss',
+                    )
+                  : 'Chưa cập nhập'}
+              </Typography>
+            </Stack>
           </Stack>
         </Box>
 
         <Box>
           <Button
             fullWidth
-            variant="contained"
+            variant={isJoined ? 'outlined' : 'contained'}
             disabled={
               eventStatus === 'not-open' ||
               eventStatus === 'ended' ||
-              isJoined ||
-              joiningEvent
+              joiningEvent ||
+              unjoiningEvent
             }
             startIcon={<AppRegistrationIcon />}
             sx={{ mb: 1 }}
-            onClick={onJoinEvent}
+            onClick={isJoined ? onUnjoinEvent : onJoinEvent}
           >
-            {isJoined ? 'Đã đăng ký' : 'Đăng ký'}
+            {isJoined ? 'Huỷ tham dự' : 'Tham dự'}
           </Button>
 
           <Button

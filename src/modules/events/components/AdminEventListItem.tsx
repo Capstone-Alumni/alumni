@@ -9,7 +9,7 @@ import { Event } from '../types';
 import { formatDate } from '@share/utils/formatDate';
 import ActionButton from '@share/components/ActionButton';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import useAdminGetEventList from '../hooks/useAdminGetEventList';
 import useOwnerDeleteEventById from '../hooks/useOwnerDeleteEventById';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
@@ -34,6 +34,26 @@ const AdminEventListItem = ({
     reload();
   };
 
+  const eventStatus = useMemo(() => {
+    if (!data) {
+      return 'not-open';
+    }
+
+    if (new Date(data.startTime) >= new Date()) {
+      return 'opened';
+    }
+
+    if (data.endTime && new Date(data.endTime) > new Date()) {
+      return 'running';
+    }
+
+    if (!data.endTime && !data.isEnded) {
+      return 'running';
+    }
+
+    return 'ended';
+  }, [data]);
+
   return (
     <>
       <TableRow>
@@ -55,7 +75,7 @@ const AdminEventListItem = ({
                 <MoreHorizIcon />
               </Tooltip>
             ) : null} */}
-            {new Date(data.endTime) < new Date() ? (
+            {eventStatus === 'ended' ? (
               <Tooltip title="Đã kết thúc">
                 <DirectionsRunIcon color="error" />
               </Tooltip>

@@ -13,6 +13,7 @@ const handler = nc({
 
 handler
   .get(PublicEventController.getParticipantList)
-  .post(isAuthenticatedUser, PublicEventController.joinEvent);
+  .post(isAuthenticatedUser, PublicEventController.joinEvent)
+  .delete(isAuthenticatedUser, PublicEventController.unjoinEvent);
 
 export default handler;

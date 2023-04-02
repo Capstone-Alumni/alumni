@@ -1,12 +1,12 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 export default class PublicEventService {
   static getList = async (
     tenantPrisma: PrismaClient,
     { page, limit, userId }: { page: number; limit: number; userId?: string },
   ) => {
-    const whereFilter = {
-      AND: [{ approvedStatus: 1 }, { archived: false }],
+    const whereFilter: Prisma.EventWhereInput = {
+      AND: [{ archived: false, publicity: 'SCHOOL_ADMIN' }],
     };
 
     const [totalItems, items] = await tenantPrisma.$transaction([
@@ -60,7 +60,7 @@ export default class PublicEventService {
     const event = await tenantPrisma.event.findFirst({
       where: {
         id: eventId,
-        approvedStatus: 1,
+        publicity: 'SCHOOL_ADMIN',
       },
       include: {
         eventParticipants: {
@@ -92,7 +92,7 @@ export default class PublicEventService {
       },
     });
 
-    if (!event || event?.approvedStatus !== 1) {
+    if (!event || event.publicity !== 'SCHOOL_ADMIN') {
       throw new Error('404 not found event');
     }
 
@@ -127,12 +127,39 @@ export default class PublicEventService {
     return participant;
   };
 
+  static unjoinEvent = async (
+    tenantPrisma: PrismaClient,
+    { eventId, userId }: { eventId: string; userId: string },
+  ) => {
+    const event = await tenantPrisma.event.findUnique({
+      where: {
+        id: eventId,
+      },
+    });
+
+    if (!event || event.publicity !== 'SCHOOL_ADMIN') {
+      throw new Error('404 not found event');
+    }
+
+    const deletedCount = await tenantPrisma.eventParticipant.deleteMany({
+      where: {
+        userId: userId,
+        eventId: eventId,
+      },
+    });
+
+    await tenantPrisma.$disconnect();
+
+    return deletedCount;
+  };
+
   static getParticipantList = async (
     tenantPrisma: PrismaClient,
     { eventId, page, limit }: { eventId: string; page: number; limit: number },
   ) => {
     const whereFilter = {
       eventId: eventId,
+      publicity: 'SCHOOL_ADMIN',
       archived: false,
     };
 
@@ -180,7 +207,7 @@ export default class PublicEventService {
       },
     });
 
-    if (!event || event?.approvedStatus !== 1) {
+    if (!event || event.publicity !== 'SCHOOL_ADMIN') {
       throw new Error('404 not found event');
     }
 
@@ -225,7 +252,7 @@ export default class PublicEventService {
       },
     });
 
-    if (!event || event?.approvedStatus !== 1) {
+    if (!event || event.publicity !== 'SCHOOL_ADMIN') {
       throw new Error('404 not found event');
     }
 

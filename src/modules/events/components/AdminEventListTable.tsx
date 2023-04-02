@@ -31,9 +31,9 @@ const AdminEventListTable = ({
               <TableCell align="left">Tên sự kiện</TableCell>
               <TableCell align="left">Người tạo</TableCell>
               <TableCell align="left">Ngày bắt đầu</TableCell>
-              <TableCell align="left">Kết thúc</TableCell>
+              <TableCell align="center">Kết thúc</TableCell>
               <TableCell align="center">Trạng thái</TableCell>
-              <TableCell />
+              <TableCell align="center">Thao tác</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
