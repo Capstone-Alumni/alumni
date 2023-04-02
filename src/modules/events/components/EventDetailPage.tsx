@@ -292,7 +292,9 @@ const EventDetailPage = () => {
         </Box>
       ) : null}
 
-      {tabKey === 'participant' ? <EventParticipantListTab /> : null}
+      {tabKey === 'participant' ? (
+        <EventParticipantListTab eventId={eventId} />
+      ) : null}
     </Box>
   );
 };

@@ -12,17 +12,14 @@ import {
   Typography,
 } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
-import { usePathname } from 'next/navigation';
 import { useRecoilState } from 'recoil';
 import usePublicGetEventParticipantList from '../hooks/usePublicGetEventParticipantList';
 import { getPublicEventParticipantListParamsAtom } from '../states';
 import MyAvatar from '@share/components/MyAvatar';
 import DataTablePagination from '@share/components/DataTablePagination';
+import { formatDate } from '@share/utils/formatDate';
 
-const EventParticipantListTab = () => {
-  const pathname = usePathname();
-  const eventId = pathname?.split('/')[2] || '';
-
+const EventParticipantListTab = ({ eventId }: { eventId: string }) => {
   const [params, setParams] = useRecoilState(
     getPublicEventParticipantListParamsAtom,
   );
@@ -44,9 +41,9 @@ const EventParticipantListTab = () => {
           <TableHead>
             <TableRow>
               <TableCell align="left">Tên</TableCell>
+              <TableCell align="left">Ngày đăng ký</TableCell>
               <TableCell align="center">Niên khoá</TableCell>
               <TableCell align="center">Lớp</TableCell>
-              <TableCell align="left">Ngày đăng ký</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -67,13 +64,13 @@ const EventParticipantListTab = () => {
                     </Typography>
                   </Box>
                 </TableCell>
+                <TableCell>{formatDate(new Date(row.createdAt))}</TableCell>
                 <TableCell align="center">
                   {row.participantInformation.alumClass?.grade?.code}
                 </TableCell>
                 <TableCell align="center">
                   {row.participantInformation.alumClass?.name}
                 </TableCell>
-                <TableCell>{new Date(row.createdAt).toDateString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -159,7 +159,7 @@ export default class PublicEventService {
   ) => {
     const whereFilter = {
       eventId: eventId,
-      publicity: 'SCHOOL_ADMIN',
+      // publicity: 'SCHOOL_ADMIN',
       archived: false,
     };
 
