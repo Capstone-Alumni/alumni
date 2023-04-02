@@ -36,7 +36,7 @@ export const sendMailService = async ({ to, subject, text }: EmailEntity) => {
 
 export const sendSmsService = async ({ to, body }: SmsEntity) => {
   await axiosInstance
-    .post('mail/send-sms', {
+    .post('sms/send-sms', {
       to,
       body,
     })

@@ -60,6 +60,7 @@ export type UserInformation = {
   alumClass?: Class;
   alumClassId?: string;
   avatarUrl?: string;
+  ping: any[];
 };
 
 export const currentUserInformationDataAtom = atom<UserInformation>({
@@ -69,5 +70,6 @@ export const currentUserInformationDataAtom = atom<UserInformation>({
     userId: '',
     email: '',
     fullName: '',
+    ping: [],
   },
 });

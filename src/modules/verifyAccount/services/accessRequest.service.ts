@@ -1,6 +1,7 @@
 import { VerifyAccountInfoServiceProps } from '../types';
 import { PrismaClient } from '@prisma/client';
 import { User } from 'next-auth';
+import { sendMailService } from 'src/utils/emailSmsService';
 
 export default class AccessRequestService {
   static verifyAccount = async (
@@ -199,6 +200,20 @@ export default class AccessRequestService {
         isApproved: true,
       },
     });
+
+    const user = await tenantPrisma.information.findUnique({
+      where: {
+        userId: id,
+      },
+    });
+
+    if (user?.email) {
+      await sendMailService({
+        to: 'anbui.dev@gmail.com',
+        subject: 'Đơn tham gia vào Alumni của bạn đã được duyệt',
+        text: 'Duyet eo muahahahahahahahahah',
+      });
+    }
 
     await tenantPrisma.$disconnect();
 
