@@ -208,7 +208,7 @@ const JobForm = ({
             label: 'Ngành nghề cần tuyển',
             disabled: isPreview,
           }}
-          options={JOB_LIST.map(job => ({
+          options={JOB_LIST.map((job) => ({
             name: job,
             value: job,
           }))}
@@ -244,7 +244,7 @@ const JobForm = ({
             label: 'Loại hình làm việc',
             disabled: isPreview,
           }}
-          options={JOB_TYPES.map(type => ({
+          options={JOB_TYPES.map((type) => ({
             name: type,
             value: type,
           }))}
@@ -261,13 +261,13 @@ const JobForm = ({
       </Box>
       {!isPreview && (
         <>
-          <Box sx={{ width: '100%' }}>
+          {/* <Box sx={{ width: '100%' }}>
             <Typography variant="body2" color={'red'}>
               Lưu ý*: Công việc bạn đăng của bạn sẽ được gửi đến ban đại diện
               của trường để kiểm duyệt. Sau khi được bạn đại diện chấp nhận,
               người khác mới có thể nhìn thấy, xem cũng như nộp hồ sơ cho bạn.
             </Typography>
-          </Box>
+          </Box> */}
 
           <LoadingButton
             type="submit"

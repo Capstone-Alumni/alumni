@@ -19,20 +19,17 @@ const useCreateJob = () => {
     CreateJobError
   >(
     'createJob',
-    data => ({
+    (data) => ({
       method: 'POST',
       url: '/api/recruitments',
       data: data,
     }),
     {
       onError: () => {
-        toast.error('Yêu cầu tạo việc thất bại');
+        toast.error('Tạo việc thất bại');
       },
       onSuccess: () => {
-        toast.success(
-          'Yêu cầu tạo việc thành công, xin vui lòng chờ xét duyệt',
-        );
-        // router.push('/Jobs/hosting');
+        toast.success('Tạo việc thành công, xin vui lòng chờ xét duyệt');
       },
     },
   );
