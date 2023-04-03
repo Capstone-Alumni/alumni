@@ -29,7 +29,7 @@ const useCreateJob = () => {
         toast.error('Tạo việc thất bại');
       },
       onSuccess: () => {
-        toast.success('Tạo việc thành công, xin vui lòng chờ xét duyệt');
+        toast.success('Tạo việc thành công');
       },
     },
   );
