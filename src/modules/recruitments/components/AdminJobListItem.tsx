@@ -24,7 +24,7 @@ const AdminEventListItem = ({
     <>
       <TableRow>
         <TableCell align="left" sx={{ cursor: 'pointer' }}>
-          <AdminJobPreview data={data}>
+          <AdminJobPreview data={data} isPreview>
             <Tooltip title="Xem tóm tắt công việc">
               <Typography>{data.title}</Typography>
             </Tooltip>
@@ -54,7 +54,7 @@ const AdminEventListItem = ({
           <Typography>{new Date(data.createdAt).toDateString()}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
-          <AdminJobPreview data={data}>
+          <AdminJobPreview data={data} isPreview>
             <Tooltip title="Xem tóm tắt công việc">
               <IconButton>
                 <Icon height={24} icon="uil:eye" />
@@ -77,15 +77,7 @@ const AdminEventListItem = ({
               }
             />
           </Tooltip>
-          {/* <IconButton onClick={() => onApprove(data.id)}>
-            <Icon height={24} icon="uil:pen" />
-          </IconButton> */}
         </TableCell>
-        {/* <TableCell align="center" sx={{ maxWidth: '3rem' }}>
-          <IconButton onClick={() => onReject(data.id)}>
-            <Icon height={24} icon="uil:trash-alt" />
-          </IconButton>
-        </TableCell> */}
       </TableRow>
     </>
   );

@@ -33,6 +33,7 @@ export default class RecruimentService {
       ? await tenantPrisma.recruitment.create({
           data: {
             ...body,
+            isApproved: true,
             recruitmentOwnerId: recruitmentOwnerId,
             recruitmentOwnerInfo: {
               connect: { id: recruitmentOwnerInfo?.id },
@@ -42,6 +43,7 @@ export default class RecruimentService {
       : await tenantPrisma.recruitment.create({
           data: {
             ...body,
+            isApproved: true,
             recruitmentOwnerId: recruitmentOwnerId,
           },
         });

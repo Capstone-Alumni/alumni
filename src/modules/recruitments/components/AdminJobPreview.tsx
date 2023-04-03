@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 // material
 import { Dialog } from '@mui/material';
 import JobForm from './JobForm';
-import useOwnerGetJobById from '../hooks/useOwnerGetJobById';
 import { Job } from '../types';
 
 // ----------------------------------------------------------------------
@@ -18,16 +17,6 @@ export default function AdminJobPreview({
   data,
 }: FormDialogsProps) {
   const [open, setOpen] = useState(false);
-
-  const {
-    fetchApi: getJob,
-    data: jobData,
-    isLoading: isGettingJob,
-  } = useOwnerGetJobById();
-
-  useEffect(() => {
-    getJob({ jobId: data.id });
-  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -45,7 +34,7 @@ export default function AdminJobPreview({
         onClose={handleClose}
         sx={{ width: '700px', margin: '0 auto' }}
       >
-        <JobForm isPreview initialData={jobData?.data} />
+        <JobForm isPreview={isPreview} initialData={data} />
       </Dialog>
     </div>
   );
