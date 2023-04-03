@@ -11,7 +11,7 @@ const IntroductionSection = ({ tenant }: { tenant: Tenant }) => {
       sx={{
         paddingX: theme.spacing(2),
         background: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${
-          tenant.background1 ?? '/side_background.png'
+          tenant?.background1 ?? '/side_background.png'
         })`,
         backgroundPosition: 'center',
         backgroundSize: 'cover',
