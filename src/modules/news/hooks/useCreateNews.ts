@@ -49,7 +49,7 @@ const useCreateNews = () => {
       onSuccess: (data: CreateNewsResponse) => {
         toast.success('Đăng tin thành công');
         const { id } = (data as CreateNewsSuccessResponse).data;
-        router.replace(`/admin/news/${id}`);
+        router.replace(`/admin/action/news/${id}`);
       },
     },
   );

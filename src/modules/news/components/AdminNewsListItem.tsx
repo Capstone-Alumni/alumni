@@ -31,7 +31,7 @@ const AdminNewsListItem = ({
             sx={{
               color: 'inherit',
             }}
-            href={`/admin/news/${data.id}`}
+            href={`/admin/action/news/${data.id}`}
           >
             <Typography noWrap>{data.title}</Typography>
           </Link>

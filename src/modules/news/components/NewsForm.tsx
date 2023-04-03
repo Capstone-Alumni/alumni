@@ -49,7 +49,8 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
       .then(result => {
         if (result.status) {
           toast.success('Đăng tin thành công');
-          handleCancel();
+          const { id } = result.data;
+          router.replace(`/admin/action/news/${id}`);
         } else {
           toast.error('Đăng tin thất bại');
         }
@@ -74,7 +75,9 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
   };
 
   const handleCancel = () => {
-    initialData ? window.location.reload() : router.replace('/admin/news');
+    initialData
+      ? window.location.reload()
+      : router.replace('/admin/action/news');
   };
 
   const onSubmitHandler = async (values: CreateNewsProps | UpdateNewsProps) => {
