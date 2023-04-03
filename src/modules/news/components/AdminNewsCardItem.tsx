@@ -50,7 +50,7 @@ const AdminNewsCardItem = ({ item }: { item: News }) => {
             sx={{
               textDecoration: 'none',
             }}
-            href={`/admin/news/${item.id}`}
+            href={`/admin/action/news/${item.id}`}
           >
             <Typography
               variant="h5"
@@ -78,7 +78,7 @@ const AdminNewsCardItem = ({ item }: { item: News }) => {
             sx={{
               marginLeft: 'auto',
             }}
-            href={`/admin/news/${item.id}`}
+            href={`/admin/action/news/${item.id}`}
           >
             Xem chi tiết
           </Link>

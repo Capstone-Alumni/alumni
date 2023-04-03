@@ -19,7 +19,7 @@ import PublicOffIcon from '@mui/icons-material/PublicOff';
 
 const AdminNewsDetails = () => {
   const pathname = usePathname();
-  const newsId = pathname?.split('/')[3] || '';
+  const newsId = pathname?.split('/')[4] || '';
   const { data: newsData, isLoading } =
     useGetNewsByIdForSchoolAdminQuery(newsId);
   const { data: session } = useSession();
@@ -53,7 +53,7 @@ const AdminNewsDetails = () => {
             alignItems: 'center',
           }}
         >
-          <Link href="/admin/news" prefetch={false}>
+          <Link href="/admin/action/news" prefetch={false}>
             <Typography>Danh sách tin tức</Typography>
           </Link>
           <Box
