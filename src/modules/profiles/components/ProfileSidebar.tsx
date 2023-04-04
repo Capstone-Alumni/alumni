@@ -21,8 +21,10 @@ import UploadAvatarInput from '@share/components/form/UploadAvatarInput';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import SmsIcon from '@mui/icons-material/Sms';
+import PasswordIcon from '@mui/icons-material/Password';
 import Button from '@mui/material/Button';
 import PingMessageModal from './PingMessageModal';
+import ChangePasswordModal from './ChangePasswordModal';
 
 const StyledNavWrapper = styled(Box)(({ theme }) => ({
   minWidth: '16rem',
@@ -135,7 +137,7 @@ const ProfileSidebar = () => {
       </Card>
       <Card sx={{ width: '100%', py: 2 }}>
         <StyledNav>
-          {NAV_ITEMS.map(item => {
+          {NAV_ITEMS.map((item) => {
             const isActive = item.link && currentProfileTab === item.link;
             return (
               <Link
@@ -175,6 +177,18 @@ const ProfileSidebar = () => {
                 </Button>
               </PingMessageModal>
             ))}
+          {userProfileId && (
+            <ChangePasswordModal userProfileId={userProfileId}>
+              <Button
+                sx={{ width: '100%', justifyContent: 'left' }}
+                startIcon={<PasswordIcon />}
+                variant="contained"
+                color="error"
+              >
+                Đổi mật khẩu
+              </Button>
+            </ChangePasswordModal>
+          )}
         </StyledNav>
       </Card>
     </StyledNavWrapper>
