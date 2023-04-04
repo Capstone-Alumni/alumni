@@ -22,7 +22,7 @@ const AdminClassListPage = () => {
 
   const pathname = usePathname();
 
-  const gradeId = pathname?.split('/')[3] || '';
+  const gradeId = pathname?.split('/')[4] || '';
 
   // const [params, setParams] = useRecoilState(getClassListParamsAtom);
 
