@@ -206,8 +206,8 @@ export default class AccessRequestService {
     if (accessRequest?.email) {
       await sendMailService({
         to: accessRequest.email,
-        subject: 'Đơn tham gia vào Alumni của bạn đã được duyệt',
-        text: 'Duyet eo muahahahahahahahahah',
+        subject: 'Đơn tham gia của bạn đã được duyệt',
+        text: `Cảm ơn bạn ${accessRequest.fullName} đã nộp đơn tham gia vào hội alumni của trường. Đơn tham gia của bạn đã được duyệt. Xin cảm ơn bạn.`,
       });
     }
 
