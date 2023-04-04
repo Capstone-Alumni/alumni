@@ -94,12 +94,12 @@ const AdminEventListItem = ({
               </Tooltip>
             ) : null} */}
             {data.publicity === 'ALUMNI' ? (
-              <Tooltip title="Chưa sẵn sàng nhận ủng hộ">
+              <Tooltip title="Chưa công khai">
                 <PublicIcon color="error" />
               </Tooltip>
             ) : null}
             {data.publicity === 'SCHOOL_ADMIN' ? (
-              <Tooltip title="Sẵn sàng nhận ủng hộ">
+              <Tooltip title="Đã công khai">
                 <PublicIcon color="success" />
               </Tooltip>
             ) : null}

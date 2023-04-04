@@ -42,24 +42,24 @@ const AdminMemberListItem = ({
           </Typography>
         </TableCell>
         <TableCell align="center">
-          <ActionButton
-            actions={[
-              compareRole(session?.user.accessLevel, data.accessLevel) > 0
-                ? {
-                    id: 'edit',
-                    text: 'Chỉnh sửa',
-                    icon: <Icon height={24} icon="uil:pen" />,
-                    onClick: () => setOpenEditModal(true),
-                  }
-                : null,
-              {
-                id: 'delete',
-                text: 'Xoá',
-                icon: <Icon height={24} icon="uil:trash-alt" />,
-                onClick: () => setOpenDeleteModal(true),
-              },
-            ]}
-          />
+          {compareRole(session?.user.accessLevel, data.accessLevel) > 0 ? (
+            <ActionButton
+              actions={[
+                {
+                  id: 'edit',
+                  text: 'Chỉnh sửa',
+                  icon: <Icon height={24} icon="uil:pen" />,
+                  onClick: () => setOpenEditModal(true),
+                },
+                {
+                  id: 'delete',
+                  text: 'Xoá',
+                  icon: <Icon height={24} icon="uil:trash-alt" />,
+                  onClick: () => setOpenDeleteModal(true),
+                },
+              ]}
+            />
+          ) : null}
         </TableCell>
       </TableRow>
 
