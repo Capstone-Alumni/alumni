@@ -25,6 +25,7 @@ export default class AccessRequestService {
     const accessRequest = await tenantPrisma.accessRequest.create({
       data: {
         userId: userId,
+        email: data.email,
         fullName: data.fullName,
         grade: {
           connect: {
@@ -201,15 +202,10 @@ export default class AccessRequestService {
       },
     });
 
-    const user = await tenantPrisma.information.findUnique({
-      where: {
-        userId: id,
-      },
-    });
-
-    if (user?.email) {
+    // TODO: change the subject and text to be more realistics
+    if (accessRequest?.email) {
       await sendMailService({
-        to: 'anbui.dev@gmail.com',
+        to: accessRequest.email,
         subject: 'Đơn tham gia vào Alumni của bạn đã được duyệt',
         text: 'Duyet eo muahahahahahahahahah',
       });
