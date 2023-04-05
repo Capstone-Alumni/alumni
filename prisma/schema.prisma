@@ -54,6 +54,7 @@ model Alumni {
 model AccessRequest {
   id          String  @id @default(cuid())
   fullName    String
+  email       String? @unique @map("email")
   userId      String  @map("user_id")
   gradeId     String  @map("grade_id")
   alumClassId String  @map("alum_class_id")

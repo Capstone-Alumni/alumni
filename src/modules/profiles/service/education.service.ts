@@ -189,6 +189,7 @@ export default class EducationServices {
     const { school, degree, startDate, endDate } = params;
     const whereFilter = {
       AND: [
+        { userId: userId },
         { school: { contains: school } },
         { degree: degree },
         { startDate: { gte: startDate } },

@@ -98,33 +98,35 @@ const PublicNewsPage = () => {
                   Quay lại tin tức
                 </Button>
               ) : null}
-              <Box
-                sx={{
-                  display: 'flex',
-                  width: '40%',
-                  marginLeft: 'auto',
-                }}
-              >
-                <SearchInput
-                  placeholder="Tìm kiếm tin tức"
-                  onKeyDown={event => onPressSearchNews(event)}
-                  value={titleSearch}
-                  onChange={event => {
-                    setTitleSearch(event.target.value);
-                  }}
-                />
-                <Button
+              {newestNews.data.totalItems > 0 ? (
+                <Box
                   sx={{
-                    ml: 1,
-                    borderRadius: 2,
+                    display: 'flex',
+                    width: '40%',
+                    marginLeft: 'auto',
                   }}
-                  size="small"
-                  variant="outlined"
-                  onClick={handleSearchNews}
                 >
-                  Tìm
-                </Button>
-              </Box>
+                  <SearchInput
+                    placeholder="Tìm kiếm tin tức"
+                    onKeyDown={event => onPressSearchNews(event)}
+                    value={titleSearch}
+                    onChange={event => {
+                      setTitleSearch(event.target.value);
+                    }}
+                  />
+                  <Button
+                    sx={{
+                      ml: 1,
+                      borderRadius: 2,
+                    }}
+                    size="small"
+                    variant="outlined"
+                    onClick={handleSearchNews}
+                  >
+                    Tìm
+                  </Button>
+                </Box>
+              ) : null}
             </Box>
             {showSearchResult ? (
               <PublicSearchNewsResult
