@@ -21,8 +21,10 @@ import UploadAvatarInput from '@share/components/form/UploadAvatarInput';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import SmsIcon from '@mui/icons-material/Sms';
+import PasswordIcon from '@mui/icons-material/Password';
 import Button from '@mui/material/Button';
 import PingMessageModal from './PingMessageModal';
+import ChangePasswordModal from './ChangePasswordModal';
 
 const StyledNavWrapper = styled(Box)(({ theme }) => ({
   minWidth: '16rem',
@@ -81,7 +83,7 @@ const ProfileSidebar = () => {
   const searchParams = useSearchParams();
 
   const currentProfileTab = searchParams.get('profile_tab');
-  const [alreadySendMessage, setAlreadySendMessage] = useState(false);
+  const [alreadySendMessage, setAlreadySendMessage] = useState<number>(0);
   const { canEditProfile, userProfileId } = useCanEditProfile();
 
   const { data } = useGetUserInformationQuery(userProfileId);
@@ -107,7 +109,7 @@ const ProfileSidebar = () => {
   };
 
   const handleSendMessageSuccess = () => {
-    setAlreadySendMessage(true);
+    setAlreadySendMessage(-1);
   };
 
   useEffect(() => {
@@ -159,7 +161,7 @@ const ProfileSidebar = () => {
               </Link>
             );
           })}
-          {alreadySendMessage ||
+          {alreadySendMessage === -1 ||
             (canSendMessage && data?.data?.havePhone && userProfileId && (
               <PingMessageModal
                 userProfileId={userProfileId}
@@ -175,6 +177,18 @@ const ProfileSidebar = () => {
                 </Button>
               </PingMessageModal>
             ))}
+          {canEditProfile && userProfileId && (
+            <ChangePasswordModal userProfileId={userProfileId}>
+              <Button
+                sx={{ width: '100%', justifyContent: 'left' }}
+                startIcon={<PasswordIcon />}
+                variant="contained"
+                color="error"
+              >
+                Đổi mật khẩu
+              </Button>
+            </ChangePasswordModal>
+          )}
         </StyledNav>
       </Card>
     </StyledNavWrapper>

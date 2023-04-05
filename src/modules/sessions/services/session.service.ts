@@ -1,6 +1,10 @@
 import { compareSync, hashSync } from 'bcrypt';
 import { omit } from 'lodash';
-import { SignInRequestBody, SignUpRequestBody } from '../types';
+import {
+  SignInRequestBody,
+  SignUpRequestBody,
+  UpdatePasswordRequestBody,
+} from '../types';
 import { PrismaClient } from '@prisma/client';
 
 export default class SessionService {
@@ -53,5 +57,31 @@ export default class SessionService {
     }
 
     throw new Error('sign-in failed');
+  };
+
+  static updatePassword = async ({
+    userId,
+    password: currentPassword,
+    newPassword,
+    subdomain,
+  }: UpdatePasswordRequestBody) => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_PLATFORM_HOST}/api/update_password`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          userId,
+          password: currentPassword,
+          newPassword,
+          subdomain,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    const result = await response.json();
+    return result;
   };
 }

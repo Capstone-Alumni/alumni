@@ -33,3 +33,10 @@ export type SignInRequestBody = {
   usernameOrEmail: string;
   password: string;
 };
+
+export type UpdatePasswordRequestBody = {
+  subdomain: string;
+  userId: string;
+  password: string;
+  newPassword: string;
+};
