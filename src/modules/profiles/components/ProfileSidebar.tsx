@@ -83,7 +83,7 @@ const ProfileSidebar = () => {
   const searchParams = useSearchParams();
 
   const currentProfileTab = searchParams.get('profile_tab');
-  const [alreadySendMessage, setAlreadySendMessage] = useState(false);
+  const [alreadySendMessage, setAlreadySendMessage] = useState<number>(0);
   const { canEditProfile, userProfileId } = useCanEditProfile();
 
   const { data } = useGetUserInformationQuery(userProfileId);
@@ -109,7 +109,7 @@ const ProfileSidebar = () => {
   };
 
   const handleSendMessageSuccess = () => {
-    setAlreadySendMessage(true);
+    setAlreadySendMessage(-1);
   };
 
   useEffect(() => {
@@ -137,7 +137,7 @@ const ProfileSidebar = () => {
       </Card>
       <Card sx={{ width: '100%', py: 2 }}>
         <StyledNav>
-          {NAV_ITEMS.map((item) => {
+          {NAV_ITEMS.map(item => {
             const isActive = item.link && currentProfileTab === item.link;
             return (
               <Link
@@ -161,7 +161,7 @@ const ProfileSidebar = () => {
               </Link>
             );
           })}
-          {alreadySendMessage ||
+          {alreadySendMessage === -1 ||
             (canSendMessage && data?.data?.havePhone && userProfileId && (
               <PingMessageModal
                 userProfileId={userProfileId}
@@ -177,7 +177,7 @@ const ProfileSidebar = () => {
                 </Button>
               </PingMessageModal>
             ))}
-          {userProfileId && (
+          {canEditProfile && userProfileId && (
             <ChangePasswordModal userProfileId={userProfileId}>
               <Button
                 sx={{ width: '100%', justifyContent: 'left' }}

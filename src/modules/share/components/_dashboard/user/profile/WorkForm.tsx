@@ -21,8 +21,6 @@ const WorkForm = ({ defaultValues, onSave, onClose }: any) => {
     },
   });
 
-  console.log(errors);
-
   const onSubmit = (values: any) => {
     onSave(values);
   };
@@ -69,7 +67,7 @@ const WorkForm = ({ defaultValues, onSave, onClose }: any) => {
           type: 'text',
           placeholder: 'yyyy-yyyy',
         },
-      ].map(item => {
+      ].map((item) => {
         return item.name !== 'startDate' && item.name !== 'endDate' ? (
           <Controller
             key={item.name}
@@ -111,7 +109,7 @@ const WorkForm = ({ defaultValues, onSave, onClose }: any) => {
                   onChange={(event: any) => {
                     onChange(event);
                   }}
-                  renderInput={params => (
+                  renderInput={(params) => (
                     <TextField
                       margin="normal"
                       {...register(item.name, { required: false })}

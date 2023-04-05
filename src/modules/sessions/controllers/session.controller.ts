@@ -50,4 +50,27 @@ export default class SessionController {
       throw error;
     }
   };
+
+  static updatePassword = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    const subdomain = req.cookies['tenant-subdomain'];
+
+    const result = await SessionService.updatePassword({
+      ...req.body,
+      subdomain,
+    });
+
+    if (result.message) {
+      return res.status(500).json({
+        status: result.status,
+        data: { message: result.message },
+      });
+    }
+    return res.status(200).json({
+      status: result.status,
+      data: result.data || { message: result.message },
+    });
+  };
 }

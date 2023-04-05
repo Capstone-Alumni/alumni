@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { Form, FormikProvider, useFormik } from 'formik';
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 // material
 import {
@@ -15,12 +17,16 @@ import {
   Typography,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import useUpdatePassword from '../hooks/useUpdatePassword';
 
 // ----------------------------------------------------------------------
 interface ChangePasswordModalProps {
   children?: React.ReactNode;
   userProfileId: string;
 }
+
+const WRONG_PASSWORD = 'Sai mật khẩu, vui lòng thử lại.';
+const DUPLICATED_PASSWORD = 'Không thể đổi mật khẩu mới giống mật khẩu cũ.';
 
 const messageSchema = Yup.object().shape({
   currentPassword: Yup.string().required('Mật khẩu không được để trống'),
@@ -57,11 +63,12 @@ export default function ChangePasswordModal({
   userProfileId,
 }: ChangePasswordModalProps) {
   const [open, setOpen] = useState(false);
+  const { fetchApi: updatePassword, error, data } = useUpdatePassword();
+  const router = useRouter();
 
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -74,21 +81,51 @@ export default function ChangePasswordModal({
       newPasswordConfirmation: '',
     },
     validationSchema: messageSchema,
-    onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
+    onSubmit: async (values, { setSubmitting, resetForm, setFieldError }) => {
       try {
-        resetForm();
-        handleClose();
-        setSubmitting(false);
-        // enqueueSnackbar(!isEdit ? 'Create success' : 'Update success', { variant: 'success' });
+        const result = await updatePassword({
+          userId: userProfileId,
+          password: values.currentPassword,
+          newPassword: values.newPassword,
+        });
       } catch (error: any) {
-        console.error(error);
         setSubmitting(false);
-        setErrors(error);
       }
     },
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+  const {
+    errors,
+    touched,
+    handleSubmit,
+    isSubmitting,
+    getFieldProps,
+    setFieldError,
+    resetForm,
+    setSubmitting,
+  } = formik;
+
+  const handleLogout = async () => {
+    await signOut({ redirect: false });
+    router.push('/');
+  };
+
+  useEffect(() => {
+    if ((error as any)?.response?.data.data.message === WRONG_PASSWORD) {
+      setFieldError('currentPassword', WRONG_PASSWORD);
+      return;
+    } else if (
+      (error as any)?.response?.data.data.message === DUPLICATED_PASSWORD
+    ) {
+      setFieldError('newPassword', DUPLICATED_PASSWORD);
+      return;
+    } else if ((data as any)?.status === true) {
+      setSubmitting(false);
+      resetForm();
+      handleClose();
+      handleLogout();
+    }
+  }, [error, data]);
 
   return (
     <>
