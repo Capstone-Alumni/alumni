@@ -37,15 +37,16 @@ model AlumClass {
 model Alumni {
   id           String @id @default(cuid())
   tenantId     String @map("tenant_id")
-  accountId    String @map("account_id")
+  accountId    String @map("account_id") @unique
   accountEmail String @map("account_email")
 
   accessLevel  AccessLevel  @default(ALUMNI) @map("access_level")
   accessStatus AccessStatus @default(PENDING) @map("access_status")
 
-  archived  Boolean  @default(false)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  archived    Boolean      @default(false)
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @default(now()) @updatedAt @map("updated_at")
+  information Information?
 
   @@map("alumni")
 }
@@ -102,6 +103,8 @@ model Information {
   fundTransactions       FundTransaction[]
   FundReport             FundReport[]
   ping                   Ping[]
+
+  alumni Alumni @relation(fields: [userId], references: [accountId])
 
   @@map("informations")
 }
@@ -428,8 +431,8 @@ model Ping {
   message String
 
   pingAlumniInfoId String
-  pingerInfoId String
-  
+  pingerInfoId     String
+
   pingerInfo Information? @relation(fields: [pingerInfoId], references: [userId])
 
   @@map("pings")

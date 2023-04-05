@@ -253,7 +253,9 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
 
           <StyledAccountWrapper>
             <MyAvatar displayName={user?.image || undefined} />
-            <Typography variant="body2">{user.email}</Typography>
+            <Typography variant="body2" sx={{ wordBreak: 'break-all' }}>
+              {user.email}
+            </Typography>
 
             <Box sx={{ flex: 1 }} />
 

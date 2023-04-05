@@ -67,6 +67,7 @@ export type UserInformation = {
   coverImageUrl: string;
   name: string;
   userEmail: string;
+  email: string;
   phone: string;
   dateOfBirth: Date | null;
   gradeName: string | null;

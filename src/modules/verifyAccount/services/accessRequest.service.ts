@@ -53,12 +53,16 @@ export default class AccessRequestService {
         },
       },
       create: {
-        userId: userId,
         fullName: data.fullName,
         email: data.email,
         alumClass: {
           connect: {
             id: data.classId,
+          },
+        },
+        alumni: {
+          connect: {
+            accountId: userId,
           },
         },
       },

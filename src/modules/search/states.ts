@@ -1,5 +1,6 @@
 import { GetProfileListParams } from './types';
 import { atom } from 'recoil';
+import { GetAdminProfileListData } from './hooks/useGetAdminProfileList';
 
 export const getProfileListParamsAtom = atom<GetProfileListParams>({
   key: 'getProfileListParams',
@@ -8,3 +9,10 @@ export const getProfileListParamsAtom = atom<GetProfileListParams>({
     limit: 10,
   },
 });
+
+export const getAdminProfileListDataAtom = atom<GetAdminProfileListData | null>(
+  {
+    key: 'getAdminProfileListData',
+    default: null,
+  },
+);

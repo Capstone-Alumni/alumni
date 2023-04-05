@@ -171,4 +171,52 @@ export default class InformationService {
       itemPerPage: limit,
     };
   };
+
+  static getAdminInformationList = async (
+    tenantPrisma: PrismaClient,
+    params: { page: number; limit: number },
+  ) => {
+    const { page, limit } = params;
+
+    const whereFilter: Prisma.AlumniWhereInput = {
+      accessLevel: {
+        in: ['SCHOOL_ADMIN', 'GRADE_MOD'],
+      },
+      information: {
+        isNot: undefined,
+      },
+    };
+
+    const [totalUsersInformation, usersInformationItems] =
+      await tenantPrisma.$transaction([
+        tenantPrisma.alumni.count({
+          where: whereFilter,
+        }),
+        tenantPrisma.alumni.findMany({
+          skip: (page - 1) * limit,
+          take: limit,
+          where: whereFilter,
+          include: {
+            information: {
+              select: {
+                avatarUrl: true,
+                fullName: true,
+                email: true,
+                alumClass: {
+                  include: {
+                    grade: true,
+                  },
+                },
+              },
+            },
+          },
+        }),
+      ]);
+
+    return {
+      totalItems: totalUsersInformation,
+      items: usersInformationItems,
+      itemPerPage: limit,
+    };
+  };
 }

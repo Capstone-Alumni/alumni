@@ -15,9 +15,13 @@ export default function MyAvatar({
 }: MAvatarProps & {
   displayName?: string;
   photoUrl?: string;
-  size?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large' | number;
 }) {
   const avatarSize = useMemo(() => {
+    if (typeof size === 'number') {
+      return size;
+    }
+
     switch (size) {
       case 'small':
         return 32;
