@@ -9,9 +9,9 @@ const useSignUp = () => {
 
   const { fetchApi, isLoading } = useApi(
     'sign-up',
-    (values: SignUpFormPayload) => ({
+    (values: SignUpFormPayload & { tenantId: string }) => ({
       method: 'POST',
-      url: '/api/signup',
+      url: '/platformHost/api/signup',
       data: values,
     }),
     {
@@ -22,11 +22,17 @@ const useSignUp = () => {
     },
   );
 
-  const signUp = async ({ username, email, password }: SignUpFormValues) => {
+  const signUp = async ({
+    username,
+    email,
+    password,
+    tenantId,
+  }: SignUpFormValues & { tenantId: string }) => {
     const payload = {
       username,
       email,
       password,
+      tenantId,
     };
 
     await fetchApi(payload);

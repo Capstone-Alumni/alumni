@@ -143,15 +143,27 @@ const Header = ({
             {user ? (
               <HeaderUserOptions user={user} />
             ) : (
-              <Link
-                href="/sign_in"
-                style={{ color: 'inherit' }}
-                prefetch={false}
-              >
-                <Button color="primary" variant="contained" role="href">
-                  Đăng nhập
-                </Button>
-              </Link>
+              <>
+                <Link
+                  href="/sign_in"
+                  style={{ color: 'inherit', marginRight: theme.spacing(2) }}
+                  prefetch={false}
+                >
+                  <Button color="primary" variant="contained" role="href">
+                    Đăng nhập
+                  </Button>
+                </Link>
+
+                <Link
+                  href="/sign_up"
+                  style={{ color: 'inherit' }}
+                  prefetch={false}
+                >
+                  <Button color="primary" variant="outlined" role="href">
+                    Đăng ký
+                  </Button>
+                </Link>
+              </>
             )}
           </Toolbar>
         </AppBar>

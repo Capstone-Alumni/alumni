@@ -3,6 +3,7 @@ import { IconButton } from '@mui/material';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import { TableCell, TableRow, Typography } from '@mui/material';
 import { AccessRequest } from '../types';
+import { formatDate } from '@share/utils/formatDate';
 
 const AdminAccessRequestListItem = ({
   data,
@@ -20,7 +21,7 @@ const AdminAccessRequestListItem = ({
           <Typography>{data.fullName}</Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>{new Date(data.createdAt).toDateString()}</Typography>
+          <Typography>{formatDate(new Date(data.createdAt))}</Typography>
         </TableCell>
         <TableCell align="center">
           <IconButton onClick={() => onApprove(data.id)}>

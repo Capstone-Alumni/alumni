@@ -185,6 +185,15 @@ export default class AccessRequestService {
       },
     });
 
+    await tenantPrisma.alumni.update({
+      where: {
+        accountId: accessRequest.userId,
+      },
+      data: {
+        accessStatus: 'PENDING',
+      },
+    });
+
     await tenantPrisma.$disconnect();
 
     return accessRequest;
@@ -203,9 +212,18 @@ export default class AccessRequestService {
       },
     });
 
+    await tenantPrisma.alumni.update({
+      where: {
+        accountId: accessRequest.userId,
+      },
+      data: {
+        accessStatus: 'APPROVED',
+      },
+    });
+
     const user = await tenantPrisma.information.findUnique({
       where: {
-        userId: id,
+        userId: accessRequest.userId,
       },
     });
 

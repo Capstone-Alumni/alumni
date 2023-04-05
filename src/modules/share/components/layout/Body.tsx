@@ -27,8 +27,6 @@ const Body = ({
 
   const { data } = useGetAccessStatus();
 
-  console.log(data);
-
   const message = useMemo(() => {
     if (!data?.data) {
       return null;
@@ -72,9 +70,11 @@ const Body = ({
 
           <Box sx={{ flex: 1 }} />
 
-          <Link href="/verify_account" prefetch={false}>
-            <Button variant="text">Tìm lớp ngay</Button>
-          </Link>
+          {message === 'Hãy tìm lớp của bạn để mở nhiều chức năng hơn' ? (
+            <Link href="/verify_account" prefetch={false}>
+              <Button variant="text">Tìm lớp ngay</Button>
+            </Link>
+          ) : null}
         </Box>
       ) : null}
 
