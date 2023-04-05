@@ -2,6 +2,7 @@
 
 import { Container, Stack, styled, Typography } from '@mui/material';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const StyledBox = styled('div')(({ theme }) => ({
   minWidth: '250px',
@@ -23,13 +24,9 @@ const StyledBox = styled('div')(({ theme }) => ({
 const FeaturesSection = () => {
   return (
     <Container sx={{ mt: 4, mb: 6 }}>
-      <Typography
-        variant="h4"
-        color="primary"
-        textAlign="center"
-        sx={{ mb: 2 }}
-      >
-        Hãy xác thực tài khoản để sử dụng nhiều tín năng hơn
+      <Typography variant="h4" textAlign="center" sx={{ mb: 2 }}>
+        Hãy <Link href="/verify_account">xác thực</Link> tài khoản để sử dụng
+        nhiều tín năng hơn
       </Typography>
 
       <Stack

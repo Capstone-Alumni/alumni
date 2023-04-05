@@ -165,8 +165,6 @@ export default class AccessRequestService {
 
     await tenantPrisma.$disconnect();
 
-    console.log(accessRequest);
-
     return {
       accessStatus: alumni.accessStatus,
       accessRequest: accessRequest,

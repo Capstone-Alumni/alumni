@@ -31,7 +31,6 @@ const MembersSection = () => {
     <Box
       sx={{
         paddingX: theme.spacing(2),
-        background: `linear-gradient(38deg, ${theme.palette.secondary.dark} 0%, ${theme.palette.secondary.lighter} 35%, ${theme.palette.common.white} 100%);`,
       }}
     >
       <Container
@@ -58,27 +57,25 @@ const MembersSection = () => {
           selectedItem={0}
         >
           {data?.items.map(item => (
-            <Box key={item.id}>
-              <Card sx={{ mx: 2, mb: 5 }}>
-                <CardContent sx={{ p: 2, '&:last-child': { p: 2 } }}>
-                  <Stack direction="column" alignItems="center">
-                    <MyAvatar
-                      displayName={item?.information?.fullName}
-                      photoUrl={item?.information?.avatarUrl}
-                      size={250}
-                      sx={{ mb: 2 }}
-                    />
-                    <Typography variant="h6">
-                      {item?.information?.fullName}
-                    </Typography>
-                    <Typography variant="body2" sx={{ wordBreak: 'break-all' }}>
-                      {item?.information?.email}
-                    </Typography>
-                    <Typography>{getRoleName(item.accessLevel)}</Typography>
-                  </Stack>
-                </CardContent>
-              </Card>
-            </Box>
+            <Card key={item.id} sx={{ mx: 2, mb: 5 }}>
+              <CardContent sx={{ p: 2, '&:last-child': { p: 2 } }}>
+                <Stack direction="column" alignItems="center">
+                  <MyAvatar
+                    displayName={item?.information?.fullName}
+                    photoUrl={item?.information?.avatarUrl}
+                    size={250}
+                    sx={{ mb: 2 }}
+                  />
+                  <Typography variant="h6">
+                    {item?.information?.fullName}
+                  </Typography>
+                  <Typography variant="body2" sx={{ wordBreak: 'break-all' }}>
+                    {item?.information?.email}
+                  </Typography>
+                  <Typography>{getRoleName(item.accessLevel)}</Typography>
+                </Stack>
+              </CardContent>
+            </Card>
           ))}
         </Carousel>
       </Container>

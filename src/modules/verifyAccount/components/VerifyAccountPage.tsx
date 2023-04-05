@@ -19,6 +19,7 @@ import ClassStep from './ClassStep';
 import useVerifyAccount from '../hooks/useVerifyAccount';
 import { useSession } from 'next-auth/react';
 import { AccessRequest } from '../types';
+import useGetAccessStatus from '@share/hooks/useGetAccessStatus';
 
 type VerifyFormValues = {
   fullName: string;
@@ -71,6 +72,7 @@ const VerifyAccountPage = ({
 
   const { data: session } = useSession();
   const { verifyAccount } = useVerifyAccount();
+  const { fetchApi } = useGetAccessStatus();
 
   const onSubmit = async (values: VerifyFormValues) => {
     if (!session?.user.id) {
@@ -84,6 +86,8 @@ const VerifyAccountPage = ({
       email: session.user.email,
       gradeId: values.grade,
     });
+
+    fetchApi();
   };
 
   return (
