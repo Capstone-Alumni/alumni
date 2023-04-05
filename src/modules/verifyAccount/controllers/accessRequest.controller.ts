@@ -25,7 +25,7 @@ export default class AccessRequestController {
     } catch (err) {
       return res.status(400).json({
         status: false,
-        message: err,
+        message: err.message,
       });
     }
   };
