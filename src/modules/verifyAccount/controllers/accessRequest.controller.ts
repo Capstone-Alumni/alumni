@@ -9,18 +9,25 @@ export default class AccessRequestController {
     req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
-    const { id: userId, accessLevel } = req.user;
-    const prisma = await getPrismaClient(req.tenantId);
+    try {
+      const { id: userId, accessLevel } = req.user;
+      const prisma = await getPrismaClient(req.tenantId);
 
-    const accountUpdated = await AccessRequestService.verifyAccount(prisma, {
-      ...req.body,
-      userId,
-      accessLevel,
-    });
-    return res.status(200).json({
-      status: true,
-      data: accountUpdated,
-    });
+      const accountUpdated = await AccessRequestService.verifyAccount(prisma, {
+        ...req.body,
+        userId,
+        accessLevel,
+      });
+      return res.status(200).json({
+        status: true,
+        data: accountUpdated,
+      });
+    } catch (err) {
+      return res.status(400).json({
+        status: false,
+        message: err,
+      });
+    }
   };
 
   static getAccessRequestList = async (
