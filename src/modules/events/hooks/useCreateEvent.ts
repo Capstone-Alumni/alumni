@@ -26,10 +26,10 @@ const useCreateEvent = () => {
     }),
     {
       onError: () => {
-        toast.error('Yêu cầu tạo sự kiện thất bại');
+        toast.error('Tạo sự kiện thất bại');
       },
       onSuccess: () => {
-        toast.success('Yêu cầu tạo sự kiện thành công');
+        toast.success('Tạo sự kiện thành công');
         router.push('/admin/action/event');
       },
     },

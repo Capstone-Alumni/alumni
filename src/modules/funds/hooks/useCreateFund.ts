@@ -26,10 +26,10 @@ const useCreateFund = () => {
     }),
     {
       onError: () => {
-        toast.error('Yêu cầu tạo quỹ thất bại');
+        toast.error('Tạo quỹ thất bại');
       },
       onSuccess: () => {
-        toast.success('Yêu cầu tạo quỹ thành công');
+        toast.success('Tạo quỹ thành công');
         router.back();
       },
     },

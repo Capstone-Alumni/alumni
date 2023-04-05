@@ -229,7 +229,7 @@ const JobDetailPage = () => {
                 startIcon={<AppRegistrationIcon />}
                 sx={{ mb: 1 }}
               >
-                Xem thống kê
+                Danh sách ứng viên
               </Button>
             </UsersAppliedJobPreview>
           </Box>
