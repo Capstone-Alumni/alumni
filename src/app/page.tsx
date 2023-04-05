@@ -4,7 +4,7 @@ import Header from '@share/components/layout/Header';
 import Footer from '@share/components/layout/Footer';
 import IntroductionSection from 'src/modules/landingPage/components/IntroductionSection';
 import NewsSection from 'src/modules/landingPage/components/NewsSection';
-import ClassSection from 'src/modules/landingPage/components/ClassSection';
+// import ClassSection from 'src/modules/landingPage/components/ClassSection';
 import AboutSection from 'src/modules/landingPage/components/AboutSection';
 import { getTenantDataSSR } from '@share/helpers/SSRAuthorization';
 import FeaturesSection from 'src/modules/landingPage/components/FeaturesSection';
