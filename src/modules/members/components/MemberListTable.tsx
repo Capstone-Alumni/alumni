@@ -84,7 +84,6 @@ const AdminMemberListTable = ({
               <TableCell align="left">Vai trò</TableCell>
               <TableCell align="left">Lần cuối đăng nhập</TableCell>
               <TableCell align="center">Thao tác</TableCell>
-              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -98,7 +97,7 @@ const AdminMemberListTable = ({
             ))}
           </TableBody>
           <DataTablePagination
-            colSpan={6}
+            colSpan={4}
             currentPage={page}
             totalPage={Math.ceil(data.totalItems / data.itemPerPage)}
             onChangePage={onChangePage}

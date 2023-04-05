@@ -54,12 +54,16 @@ export default class AccessRequestService {
         },
       },
       create: {
-        userId: userId,
         fullName: data.fullName,
         email: data.email,
         alumClass: {
           connect: {
             id: data.classId,
+          },
+        },
+        alumni: {
+          connect: {
+            accountId: userId,
           },
         },
       },
@@ -162,8 +166,6 @@ export default class AccessRequestService {
 
     await tenantPrisma.$disconnect();
 
-    console.log(accessRequest);
-
     return {
       accessStatus: alumni.accessStatus,
       accessRequest: accessRequest,
@@ -184,6 +186,15 @@ export default class AccessRequestService {
       },
     });
 
+    await tenantPrisma.alumni.update({
+      where: {
+        accountId: accessRequest.userId,
+      },
+      data: {
+        accessStatus: 'PENDING',
+      },
+    });
+
     await tenantPrisma.$disconnect();
 
     return accessRequest;
@@ -199,6 +210,21 @@ export default class AccessRequestService {
       },
       data: {
         isApproved: true,
+      },
+    });
+
+    await tenantPrisma.alumni.update({
+      where: {
+        accountId: accessRequest.userId,
+      },
+      data: {
+        accessStatus: 'APPROVED',
+      },
+    });
+
+    const user = await tenantPrisma.information.findUnique({
+      where: {
+        userId: accessRequest.userId,
       },
     });
 

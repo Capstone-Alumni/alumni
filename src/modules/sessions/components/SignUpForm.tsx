@@ -1,57 +1,75 @@
 'use client';
 
-import noop from 'lodash/fp/noop';
+// import noop from 'lodash/fp/noop';
 
 import * as yup from 'yup';
 
-import { signIn } from 'next-auth/react';
+// import { signIn } from 'next-auth/react';
 import { Controller, useForm } from 'react-hook-form';
 
 import {
   Box,
   Button,
-  Divider,
-  IconButton,
+  // Divider,
+  // IconButton,
   Link,
-  Stack,
+  // MenuItem,
+  // Radio,
+  // Stack,
   TextField,
   Typography,
 } from '@mui/material';
 
-import googleFill from '@iconify/icons-eva/google-fill';
-import twitterFill from '@iconify/icons-eva/twitter-fill';
-import facebookFill from '@iconify/icons-eva/facebook-fill';
-import { Icon } from '@iconify/react';
+// import googleFill from '@iconify/icons-eva/google-fill';
+// import twitterFill from '@iconify/icons-eva/twitter-fill';
+// import facebookFill from '@iconify/icons-eva/facebook-fill';
+// import { Icon } from '@iconify/react';
 
 import {
   requiredConfirmPasswordValidator,
   requiredEmailValidator,
   requiredPasswordValidator,
-  requiredUsernameValidator,
+  // requiredUsernameValidator,
 } from 'src/modules/share/utils/validators';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 
-import { SignUpFormValues } from '../types';
+import { LinkUpFormValues, SignUpFormValues } from '../types';
 import useSignUp from '../hooks/useSignUp';
+import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { currentTenantDataAtom } from '@share/states';
+// import { RadioGroup } from '@mui/material';
+// import { FormControlLabel } from '@mui/material';
 
 const validationSchema = yup
   .object({
-    username: requiredUsernameValidator,
+    // username: requiredUsernameValidator,
     email: requiredEmailValidator,
     password: requiredPasswordValidator,
     confirmPassword: requiredConfirmPasswordValidator,
   })
   .required();
 
+const validationLinkSchema = yup
+  .object({
+    email: requiredEmailValidator,
+  })
+  .required();
+
 const SignUpForm = () => {
   const { signUp, isLoading } = useSignUp();
 
+  const { id: tenantId } = useRecoilValue(currentTenantDataAtom);
+
+  const [mode, setMode] = useState('new');
+
   const resolver = useYupValidateionResolver(validationSchema);
+  const linkResolver = useYupValidateionResolver(validationLinkSchema);
 
   const { control, handleSubmit } = useForm<SignUpFormValues>({
     mode: 'onChange',
     defaultValues: {
-      username: '',
+      // username: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -59,8 +77,17 @@ const SignUpForm = () => {
     resolver,
   });
 
+  const { control: linkControl, handleSubmit: linkSubmit } =
+    useForm<LinkUpFormValues>({
+      mode: 'onChange',
+      defaultValues: {
+        email: '',
+      },
+      resolver: linkResolver,
+    });
+
   const onSubmit = async (values: SignUpFormValues) => {
-    await signUp(values);
+    await signUp({ ...values, tenantId });
   };
 
   return (
@@ -81,16 +108,28 @@ const SignUpForm = () => {
           Đăng ký
         </Typography>
 
-        <Box mb={5} sx={{ display: 'flex' }}>
-          <Typography sx={{ mr: 1 }} variant="body2">
-            Đã có tài khoản?
-          </Typography>
-          <Link variant="subtitle2" href="/sign_in">
-            Đăng nhập tại đây
-          </Link>
-        </Box>
+        {/* <TextField select type="select">
+          <MenuItem value="new">Tạo mới</MenuItem>
+          <MenuItem value="link">
+            Link kết tài khoản trong hệ thống The Alumni App
+          </MenuItem>
+        </TextField>
 
-        <Controller
+        <RadioGroup
+          aria-labelledby="radio-buttons-group-label"
+          defaultValue={mode}
+          value={mode}
+          onChange={e => setMode(e.target.value)}
+        >
+          <FormControlLabel value="new" control={<Radio />} label="Tạo mới" />
+          <FormControlLabel
+            value="link"
+            control={<Radio />}
+            label="Liên kết tài khoản đã có"
+          />
+        </RadioGroup> */}
+
+        {/* <Controller
           control={control}
           name="username"
           render={({ field, fieldState: { error } }) => (
@@ -103,7 +142,7 @@ const SignUpForm = () => {
               sx={{ mb: 3 }}
             />
           )}
-        />
+        /> */}
 
         <Controller
           control={control}
@@ -162,7 +201,16 @@ const SignUpForm = () => {
           Đăng ký
         </Button>
 
-        <Divider sx={{ my: 3 }}>
+        <Box mt={5} sx={{ display: 'flex' }}>
+          <Typography sx={{ mr: 1 }} variant="body2">
+            Đã có tài khoản?
+          </Typography>
+          <Link variant="subtitle2" href="/sign_in">
+            Đăng nhập tại đây
+          </Link>
+        </Box>
+
+        {/* <Divider sx={{ my: 3 }}>
           <Typography sx={{ color: 'text.secondary' }} variant="body2">
             Hoặc
           </Typography>
@@ -180,7 +228,7 @@ const SignUpForm = () => {
           <IconButton onClick={noop} size="large">
             <Icon color="#1C9CEA" height={24} icon={twitterFill} />
           </IconButton>
-        </Stack>
+        </Stack> */}
       </Box>
     </Box>
   );

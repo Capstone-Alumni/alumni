@@ -8,6 +8,7 @@ import SetCurrentTenant from '@share/helpers/SetCurrentTenant';
 import { getTenantDataSSR } from '@share/helpers/SSRAuthorization';
 
 import 'quill/dist/quill.snow.css';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
 

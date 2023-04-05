@@ -12,9 +12,10 @@ import Logo from '../Logo';
 import { Divider, useScrollTrigger, useTheme } from '@mui/material';
 import { NavItem } from './NavItem';
 import HeaderUserOptions from './HeaderUserOption';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { User } from 'next-auth';
 import { Tenant } from '@share/states';
+import useGetAccessStatus from '@share/hooks/useGetAccessStatus';
 
 interface Props {
   /**
@@ -56,6 +57,22 @@ const Header = ({
   hasAnimation: boolean;
 }) => {
   const theme = useTheme();
+
+  const { data } = useGetAccessStatus();
+
+  const isVerified = useMemo(() => {
+    if (!data?.data) {
+      return false;
+    }
+    if (!data.data.accessRequest) {
+      return false;
+    }
+    if (data.data.accessStatus === 'PENDING') {
+      return false;
+    }
+    return true;
+  }, [data]);
+
   // const searchParams = useSearchParams();
   // const name = searchParams.get('name');
   // const [search, setSearch] = useState<string>(name ?? '');
@@ -94,17 +111,15 @@ const Header = ({
               }}
             >
               <NavItem label="Tin tức" href="/news" />
-              <NavItem label="Sự kiện" href="/events/discover" />
-              {user && (
-                <NavItem label="Tuyển dụng" href="/recruitments/discover" />
-              )}
-              <NavItem label="Gây quỹ" href="/funds/going" />
-              {user && (
+              {user && isVerified ? (
                 <>
+                  <NavItem label="Sự kiện" href="/events/discover" />
+                  <NavItem label="Gây quỹ" href="/funds/going" />
+                  <NavItem label="Tuyển dụng" href="/recruitments/discover" />
                   <NavItem label="Bài đăng" href="/posts" />
                   <NavItem label="Tìm bạn" href="/find" />
                 </>
-              )}
+              ) : null}
             </Box>
 
             <Box sx={{ flex: 1 }} />
@@ -128,15 +143,27 @@ const Header = ({
             {user ? (
               <HeaderUserOptions user={user} />
             ) : (
-              <Link
-                href="/sign_in"
-                style={{ color: 'inherit' }}
-                prefetch={false}
-              >
-                <Button color="primary" variant="contained" role="href">
-                  Đăng nhập
-                </Button>
-              </Link>
+              <>
+                <Link
+                  href="/sign_in"
+                  style={{ color: 'inherit', marginRight: theme.spacing(2) }}
+                  prefetch={false}
+                >
+                  <Button color="primary" variant="contained" role="href">
+                    Đăng nhập
+                  </Button>
+                </Link>
+
+                <Link
+                  href="/sign_up"
+                  style={{ color: 'inherit' }}
+                  prefetch={false}
+                >
+                  <Button color="primary" variant="outlined" role="href">
+                    Đăng ký
+                  </Button>
+                </Link>
+              </>
             )}
           </Toolbar>
         </AppBar>

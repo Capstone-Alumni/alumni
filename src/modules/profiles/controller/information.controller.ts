@@ -67,4 +67,23 @@ export default class InformationController {
       data: userInformationList,
     });
   };
+
+  static getAdminInfomationList = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse,
+  ) => {
+    const { page, limit } = req.query;
+    const prisma = await getPrismaClient(req.tenantId);
+
+    const adminInformationList =
+      await InformationService.getAdminInformationList(prisma, {
+        page: page ? parseInt(page as string, 10) : 1,
+        limit: limit ? parseInt(limit as string, 10) : 20,
+      });
+
+    return res.status(200).json({
+      status: true,
+      data: adminInformationList,
+    });
+  };
 }
