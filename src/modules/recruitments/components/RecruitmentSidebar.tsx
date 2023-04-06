@@ -71,12 +71,10 @@ const RecruitmentSidebar = () => {
   const theme = useTheme();
   const pathname = usePathname();
 
-  console.log(pathname);
-
   return (
     <StyledNavWrapper>
       <StyledNav>
-        {EVENT_NAV_ITEMS.map(item => {
+        {EVENT_NAV_ITEMS.map((item) => {
           const isActive = item.link && pathname?.startsWith(item.link);
           return (
             <Link
