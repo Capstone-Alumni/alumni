@@ -271,29 +271,30 @@ const JobForm = ({
             </Typography>
           </Box> */}
           <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: theme.spacing(1),
-        }}>
-          <Button
-            variant="outlined"
-            disabled={isSubmitting}
-            onClick={() => router.back()}
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              gap: theme.spacing(1),
+            }}
           >
-            Huỷ
-          </Button>
+            <Button
+              variant="outlined"
+              disabled={isSubmitting}
+              onClick={() => router.back()}
+            >
+              Huỷ
+            </Button>
 
-          <LoadingButton
-            type="submit"
-            variant="contained"
-            onClick={handleSubmit(onSubmit as any)}
-            loading={isSubmitting}
-          >
-            Lưu
-          </LoadingButton>
-        </Box>
-      </>
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              onClick={handleSubmit(onSubmit as any)}
+              loading={isSubmitting}
+            >
+              Lưu
+            </LoadingButton>
+          </Box>
+        </>
       )}
     </Box>
   );
