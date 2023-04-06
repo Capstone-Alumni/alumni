@@ -28,7 +28,9 @@ const filterInformation = (
     )
   ) {
     result = omit('phone')(result);
-    result.havePhone = true;
+    if (information.phone) {
+      result.havePhone = true;
+    }
   }
 
   if (

@@ -3,13 +3,14 @@ import * as yup from 'yup';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 import { Job } from '../types';
 import TextInput from '@share/components/form/TextInput';
-import { Box, useTheme } from '@mui/material';
+import { Box, Button, useTheme } from '@mui/material';
 import { Typography } from '@mui/material';
 import UploadBackgroundInput from '@share/components/form/UploadBackgroundInput';
 import RichTextInput from '@share/components/form/RichTextInput';
 import SelectInput from '@share/components/form/SelectInput';
 import EditorPreview from '@share/components/editor/EditorPreview';
 import { LoadingButton } from '@mui/lab';
+import { useRouter } from 'next/navigation';
 
 const JOB_LIST = [
   'Công nghệ thông tin',
@@ -82,6 +83,7 @@ const JobForm = ({
   isPreview?: boolean;
 }) => {
   const theme = useTheme();
+  const router = useRouter();
 
   const resolver = useYupValidateionResolver(validationSchema);
 
@@ -268,6 +270,13 @@ const JobForm = ({
               người khác mới có thể nhìn thấy, xem cũng như nộp hồ sơ cho bạn.
             </Typography>
           </Box> */}
+          <Button
+            variant="outlined"
+            disabled={isSubmitting}
+            onClick={() => router.back()}
+          >
+            Huỷ
+          </Button>
 
           <LoadingButton
             type="submit"
