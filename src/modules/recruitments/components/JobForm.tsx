@@ -270,6 +270,12 @@ const JobForm = ({
               người khác mới có thể nhìn thấy, xem cũng như nộp hồ sơ cho bạn.
             </Typography>
           </Box> */}
+          <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: theme.spacing(1),
+        }}>
           <Button
             variant="outlined"
             disabled={isSubmitting}
@@ -286,7 +292,8 @@ const JobForm = ({
           >
             Lưu
           </LoadingButton>
-        </>
+        </Box>
+      </>
       )}
     </Box>
   );

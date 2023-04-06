@@ -89,7 +89,7 @@ const HeaderUserOptions = ({ user }: { user?: User }) => {
         }}
       >
         <Link
-          href={`/profile/${user?.id}?profile_tab=information`}
+          href={`/profile/${user?.id}`}
           style={{ color: 'inherit' }}
           prefetch={false}
         >

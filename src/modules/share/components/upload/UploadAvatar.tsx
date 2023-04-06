@@ -130,7 +130,12 @@ export default function UploadAvatar({
               component="img"
               alt="avatar"
               src={isString(file) ? file : file.preview}
-              sx={{ zIndex: 8, objectFit: 'cover' }}
+              sx={{
+                zIndex: 8,
+                objectFit: 'cover',
+                borderRadius: '50%',
+                overflow: 'hidden',
+              }}
             />
           )
         ) : (
