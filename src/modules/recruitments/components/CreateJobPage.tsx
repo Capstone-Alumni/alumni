@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import JobForm, { JobFormValues } from './JobForm';
 import { useRouter } from 'next/navigation';
 import useCreateJob from '../hooks/useCreateJob';
@@ -18,9 +18,17 @@ const CreateJobPage = () => {
 
   return (
     <Box>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Tạo công việc mới
-      </Typography>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ mb: 2 }}
+      >
+        <Typography variant="h6">Tạo công việc mới</Typography>
+        <Button variant="text" onClick={() => router.back()}>
+          quay lại
+        </Button>
+      </Stack>
       <JobForm onSubmit={onCreateEvent} />
     </Box>
   );

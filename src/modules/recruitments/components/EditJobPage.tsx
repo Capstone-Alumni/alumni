@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
@@ -43,9 +43,17 @@ const EditJobPage = () => {
 
   return (
     <Box>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Chỉnh sửa công việc
-      </Typography>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ mb: 2 }}
+      >
+        <Typography variant="h6"> Chỉnh sửa công việc</Typography>
+        <Button variant="text" onClick={() => router.back()}>
+          quay lại
+        </Button>
+      </Stack>
       <JobForm initialData={data?.data} onSubmit={onUpdateJob} />
     </Box>
   );

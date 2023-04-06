@@ -39,6 +39,14 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   WebkitBoxOrient: 'vertical',
 }));
 
+const StyledTypographyCompanyName = styled(Typography)(({ theme }) => ({
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  display: '-webkit-box',
+  WebkitLineClamp: 1,
+  WebkitBoxOrient: 'vertical',
+}));
+
 const Company = ({
   companyDetails,
   isSlide,
@@ -110,9 +118,9 @@ const Company = ({
               <AccountBalanceIcon fontSize="small" sx={{ color: '#64748b' }} />
             </Grid>
             <Grid item xs={11}>
-              <Typography variant="body2">
+              <StyledTypographyCompanyName variant="body2">
                 &nbsp;&nbsp;{companyDetails.companyName}
-              </Typography>
+              </StyledTypographyCompanyName>
             </Grid>
             <Grid item xs={1}>
               <LocationOnIcon fontSize="small" sx={{ color: '#64748b' }} />

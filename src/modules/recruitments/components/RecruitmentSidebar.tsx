@@ -74,7 +74,7 @@ const RecruitmentSidebar = () => {
   return (
     <StyledNavWrapper>
       <StyledNav>
-        {EVENT_NAV_ITEMS.map(item => {
+        {EVENT_NAV_ITEMS.map((item) => {
           const isActive = item.link && pathname?.startsWith(item.link);
           return (
             <Link
@@ -97,16 +97,17 @@ const RecruitmentSidebar = () => {
             </Link>
           );
         })}
-
-        <Link
-          href="/recruitments/create"
-          style={{ width: '100%' }}
-          prefetch={false}
-        >
-          <Button variant="contained" fullWidth startIcon={<AddIcon />}>
-            tạo công việc
-          </Button>
-        </Link>
+        {pathname !== '/recruitments/create' && (
+          <Link
+            href="/recruitments/create"
+            style={{ width: '100%' }}
+            prefetch={false}
+          >
+            <Button variant="contained" fullWidth startIcon={<AddIcon />}>
+              tạo công việc
+            </Button>
+          </Link>
+        )}
       </StyledNav>
     </StyledNavWrapper>
   );
