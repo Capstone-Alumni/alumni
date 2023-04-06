@@ -66,6 +66,7 @@ export interface UploadAvatarProps extends DropzoneOptions {
   caption?: ReactNode;
   sx?: SxProps<Theme>;
   hideShowGuideText?: boolean;
+  disabled?: boolean;
 }
 
 export default function UploadAvatar({
@@ -73,6 +74,7 @@ export default function UploadAvatar({
   file,
   caption,
   sx,
+  disabled,
   hideShowGuideText,
   ...other
 }: UploadAvatarProps) {
@@ -122,51 +124,62 @@ export default function UploadAvatar({
   return (
     <>
       <RootStyle sx={sx}>
-        <DropZoneStyle
-          {...getRootProps()}
-          sx={{
-            ...(isDragActive && { opacity: 0.72 }),
-            ...((isDragReject || error) && {
-              color: 'error.main',
-              borderColor: 'error.light',
-              bgcolor: 'error.lighter',
-            }),
-          }}
-        >
-          <input {...getInputProps()} />
-
-          {file && (
+        {disabled ? (
+          file && (
             <Box
               component="img"
               alt="avatar"
               src={isString(file) ? file : file.preview}
               sx={{ zIndex: 8, objectFit: 'cover' }}
             />
-          )}
-
-          <PlaceholderStyle
-            className="placeholder"
+          )
+        ) : (
+          <DropZoneStyle
+            {...getRootProps()}
             sx={{
-              ...(file && {
-                opacity: 0,
-                color: 'common.white',
-                bgcolor: 'grey.900',
-                '&:hover': { opacity: 0.72 },
+              ...(isDragActive && { opacity: 0.72 }),
+              ...((isDragReject || error) && {
+                color: 'error.main',
+                borderColor: 'error.light',
+                bgcolor: 'error.lighter',
               }),
             }}
           >
-            <Box
-              component={Icon}
-              icon={roundAddAPhoto}
-              sx={{ width: 24, height: 24, mb: 1 }}
-            />
-            {!hideShowGuideText ? (
-              <Typography variant="caption">
-                {file ? 'Cập nhập' : 'Tải ảnh lên'}
-              </Typography>
-            ) : null}
-          </PlaceholderStyle>
-        </DropZoneStyle>
+            <input {...getInputProps()} />
+
+            {file && (
+              <Box
+                component="img"
+                alt="avatar"
+                src={isString(file) ? file : file.preview}
+                sx={{ zIndex: 8, objectFit: 'cover' }}
+              />
+            )}
+
+            <PlaceholderStyle
+              className="placeholder"
+              sx={{
+                ...(file && {
+                  opacity: 0,
+                  color: 'common.white',
+                  bgcolor: 'grey.900',
+                  '&:hover': { opacity: 0.72 },
+                }),
+              }}
+            >
+              <Box
+                component={Icon}
+                icon={roundAddAPhoto}
+                sx={{ width: 24, height: 24, mb: 1 }}
+              />
+              {!hideShowGuideText ? (
+                <Typography variant="caption">
+                  {file ? 'Cập nhập' : 'Tải ảnh lên'}
+                </Typography>
+              ) : null}
+            </PlaceholderStyle>
+          </DropZoneStyle>
+        )}
       </RootStyle>
 
       {caption}

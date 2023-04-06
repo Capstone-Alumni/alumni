@@ -12,6 +12,7 @@ type TextInputProps<T extends FieldValues> = {
   inputProps?: Omit<UploadAvatarProps, 'file'> & {
     label?: string;
     onChange?: (url: string) => void;
+    disabled?: boolean;
   };
   containerSx?: SxProps;
 };

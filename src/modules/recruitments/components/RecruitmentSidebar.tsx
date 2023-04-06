@@ -71,6 +71,8 @@ const RecruitmentSidebar = () => {
   const theme = useTheme();
   const pathname = usePathname();
 
+  console.log(pathname);
+
   return (
     <StyledNavWrapper>
       <StyledNav>
@@ -97,16 +99,17 @@ const RecruitmentSidebar = () => {
             </Link>
           );
         })}
-
-        <Link
-          href="/recruitments/create"
-          style={{ width: '100%' }}
-          prefetch={false}
-        >
-          <Button variant="contained" fullWidth startIcon={<AddIcon />}>
-            tạo công việc
-          </Button>
-        </Link>
+        {pathname !== '/recruitments/create' && (
+          <Link
+            href="/recruitments/create"
+            style={{ width: '100%' }}
+            prefetch={false}
+          >
+            <Button variant="contained" fullWidth startIcon={<AddIcon />}>
+              tạo công việc
+            </Button>
+          </Link>
+        )}
       </StyledNav>
     </StyledNavWrapper>
   );
