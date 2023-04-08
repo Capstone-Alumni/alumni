@@ -3,8 +3,6 @@ import { ReactNode, useMemo, forwardRef } from 'react';
 import {
   createTheme,
   CssBaseline,
-  StyledEngineProvider,
-  ThemeOptions,
   ThemeProvider,
 } from '@mui/material';
 import shape from './shape';
@@ -55,12 +53,10 @@ export default function ThemeConfig({
   theme.components = componentsOverride(theme);
 
   return (
-    <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <GlobalStyles />
         {children}
       </ThemeProvider>
-    </StyledEngineProvider>
   );
 }
