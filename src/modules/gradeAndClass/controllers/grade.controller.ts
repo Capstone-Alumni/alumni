@@ -51,6 +51,31 @@ export default class GradeController {
     }
   };
 
+  static createMany = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const { data } = req.body;
+      const prisma = await getPrismaClient(req.tenantId);
+      const newGrade = await GradeService.createMany(prisma, { data });
+
+      return res.status(201).json({
+        status: true,
+        data: newGrade,
+      });
+    } catch (error) {
+      if (error.message?.includes('existed')) {
+        return res.status(400).json({
+          status: false,
+          message: "Grade's code is existed",
+        });
+      }
+
+      throw error;
+    }
+  };
+
   static getById = async (
     req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,

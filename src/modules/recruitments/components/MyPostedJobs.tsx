@@ -8,6 +8,7 @@ import {
   Pagination,
   Typography,
 } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import Link from 'next/link';
@@ -67,12 +68,15 @@ const HostingEventListPage = () => {
                     <Link
                       key="edit-btn"
                       href={`/recruitments/posted_jobs/${item.id}`}
-                      style={{ width: '100%' }}
+                      // style={{ width: '100%' }}
                       prefetch={false}
                     >
-                      <Button fullWidth variant="outlined">
+                      {/* <Button fullWidth variant="outlined">
                         Sửa
-                      </Button>
+                      </Button> */}
+                      <IconButton color="primary">
+                        <EditIcon />
+                      </IconButton>
                     </Link>,
                     <IconButton
                       key="delete-btn"

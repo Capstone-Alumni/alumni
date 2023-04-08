@@ -10,6 +10,8 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import MyAvatar from '../MyAvatar';
 import { AdminSubNav, StyledNav, StyledNavItem } from './AdminSubNav';
+import { useRecoilValue } from 'recoil';
+import { currentUserInformationDataAtom } from '@share/states';
 
 const ACCESS_NAV_ITEM = {
   id: 'request_access',
@@ -174,6 +176,8 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
   const defaultSection = pathname?.split('/')[2];
   const [sectionSelected, setSectionSelected] = useState(defaultSection);
 
+  const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
+
   const schoolItems = generateSchoolNavItems(user?.accessLevel);
   const navItems = generateNavItems(user?.accessLevel);
 
@@ -252,7 +256,10 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
           </StyledNav>
 
           <StyledAccountWrapper>
-            <MyAvatar displayName={user?.image || undefined} />
+            <MyAvatar
+              photoUrl={currentUserInformation?.avatarUrl}
+              displayName={currentUserInformation?.fullName}
+            />
             <Typography variant="body2" sx={{ wordBreak: 'break-all' }}>
               {user.email}
             </Typography>

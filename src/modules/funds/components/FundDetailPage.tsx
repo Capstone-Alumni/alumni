@@ -24,6 +24,8 @@ import FundTransactionListTab from './FundTransactionList';
 import { formatDate } from '@share/utils/formatDate';
 import { formatAmountMoney } from '../utils';
 import FundReportList from './FundReportList';
+import { useRecoilValue } from 'recoil';
+import { currentTenantDataAtom } from '@share/states';
 
 const FundDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
@@ -31,6 +33,8 @@ const FundDetailPage = () => {
   const pathname = usePathname();
 
   const fundId = pathname?.split('/')[2] || '';
+
+  const tenantData = useRecoilValue(currentTenantDataAtom);
 
   const { data, fetchApi, isLoading } = usePublicGetFundById();
   const { fetchApi: saveFund, isLoading: isSavingFund } =
@@ -138,60 +142,66 @@ const FundDetailPage = () => {
             </Stack>
           </Stack>
 
-          <Divider sx={{ width: '100%', my: 1 }} />
+          {tenantData?.vnp_tmnCode ? (
+            <>
+              <Divider sx={{ width: '100%', my: 1 }} />
 
-          <Box>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              sx={{ mb: 1 }}
-            >
-              <Typography>Mục tiêu quỹ:</Typography>
-              <Typography variant="h6">
-                {formatAmountMoney(fundData.targetBalance * 100)}
-              </Typography>
-            </Stack>
+              <Box>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{ mb: 1 }}
+                >
+                  <Typography>Mục tiêu quỹ:</Typography>
+                  <Typography variant="h6">
+                    {formatAmountMoney(fundData.targetBalance * 100)}
+                  </Typography>
+                </Stack>
 
-            <Stack direction="row" alignItems="center" gap={1}>
-              <Typography textAlign="right">{balancePercent}%</Typography>
-              <LinearProgress
-                variant="determinate"
-                value={balancePercent > 100 ? 100 : balancePercent}
-                sx={{ height: '12px', flex: 1, width: '100%', mb: 0.5 }}
-              />
-            </Stack>
+                <Stack direction="row" alignItems="center" gap={1}>
+                  <Typography textAlign="right">{balancePercent}%</Typography>
+                  <LinearProgress
+                    variant="determinate"
+                    value={balancePercent > 100 ? 100 : balancePercent}
+                    sx={{ height: '12px', flex: 1, width: '100%', mb: 0.5 }}
+                  />
+                </Stack>
 
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              sx={{ mt: 1 }}
-            >
-              <Typography>Số tiền đã quyên góp được:</Typography>
-              <Typography
-                variant="h5"
-                sx={{ color: theme.palette.primary.main }}
-              >
-                {formatAmountMoney(fundData.currentBalance)}
-              </Typography>
-            </Stack>
-          </Box>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{ mt: 1 }}
+                >
+                  <Typography>Số tiền đã quyên góp được:</Typography>
+                  <Typography
+                    variant="h5"
+                    sx={{ color: theme.palette.primary.main }}
+                  >
+                    {formatAmountMoney(fundData.currentBalance)}
+                  </Typography>
+                </Stack>
+              </Box>
+            </>
+          ) : null}
         </Box>
 
         <Stack direction="column" gap={2}>
-          <FundTransactionForm
-            fundId={fundData.id}
-            canDonate={
-              FundStatus === 'running' &&
-              fundData.currentBalance < fundData.targetBalance * 100
-            }
-            maxDonate={
-              fundData.targetBalance * 100 - fundData.currentBalance < 0
-                ? 0
-                : fundData.targetBalance * 100 - fundData.currentBalance
-            }
-          />
+          {tenantData?.vnp_tmnCode ? (
+            <FundTransactionForm
+              fundId={fundData.id}
+              canDonate={
+                FundStatus === 'running' &&
+                fundData.currentBalance < fundData.targetBalance * 100
+              }
+              maxDonate={
+                fundData.targetBalance * 100 - fundData.currentBalance < 0
+                  ? 0
+                  : fundData.targetBalance * 100 - fundData.currentBalance
+              }
+            />
+          ) : null}
 
           <Button
             fullWidth
@@ -199,7 +209,7 @@ const FundDetailPage = () => {
             startIcon={<BookmarkBorderIcon />}
             disabled={isSavingFund || isUnsavingFund}
             onClick={isSaved ? onUnsaveFund : onSaveFund}
-            sx={{ mb: 1 }}
+            sx={{ mb: 1, minWidth: '200px' }}
           >
             {isSaved ? 'Bỏ lưu' : 'Lưu'}
           </Button>
@@ -213,7 +223,9 @@ const FundDetailPage = () => {
       >
         <Tab value="description" label="Mô tả" />
         <Tab value="report" label="Hoạt động" />
-        <Tab value="transaction" label="Danh sách ủng hộ" />
+        {tenantData?.vnp_tmnCode ? (
+          <Tab value="transaction" label="Danh sách ủng hộ" />
+        ) : null}
       </Tabs>
 
       {tabKey === 'description' ? (

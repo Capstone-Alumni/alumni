@@ -2,13 +2,13 @@ import { buildAccessLevelFilter } from './../../share/helpers/prismaWhereFilterB
 import { PrismaClient } from '@prisma/client';
 import { User } from 'next-auth';
 
-const getSameClassFilter = (classId: string) => ({
+export const getSameClassFilter = (classId: string) => ({
   hostInformation: {
     alumClassId: classId,
   },
 });
 
-const getSameGradeFilter = (gradeId: string) => ({
+export const getSameGradeFilter = (gradeId: string) => ({
   hostInformation: {
     alumClass: {
       gradeId: gradeId,
@@ -16,7 +16,7 @@ const getSameGradeFilter = (gradeId: string) => ({
   },
 });
 
-const buildEventWhereFilter = async (
+export const buildEventWhereFilter = async (
   tenantPrisma: PrismaClient,
   user: User,
 ) => {
@@ -93,7 +93,15 @@ export default class AdminEventService {
           createdAt: 'desc',
         },
         include: {
-          hostInformation: true,
+          hostInformation: {
+            include: {
+              alumClass: {
+                include: {
+                  grade: true,
+                },
+              },
+            },
+          },
         },
       }),
     ]);

@@ -7,9 +7,6 @@ const nextConfig = {
     esmExternals: false,
     swcMinify: true,
   },
-  compiler: {
-    styledComponents: true,
-  },
   images: {
     domains: [
       'bka.hcmut.edu.vn',

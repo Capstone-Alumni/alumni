@@ -8,8 +8,11 @@ export const getTenantData = async (subdomain: string) => {
     return cachedValue;
   }
 
+  console.log('cached tenant data: ', cachedValue);
+
   try {
     const res = await fetch(url).then(res => res.json());
+    console.log(res);
     cacheData.put(url, res, 1000 * 60 * 60); // 1 hours
     return res;
   } catch (error) {
