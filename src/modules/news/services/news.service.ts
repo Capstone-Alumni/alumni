@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { getPageAndLimitFromParams } from 'src/utils';
 import { CreateNewsProps, GetListNewParams, UpdateNewsProps } from '../types';
 
@@ -196,7 +196,7 @@ export default class NewsService {
     const { page, limit } = getPageAndLimitFromParams(params);
 
     const { title, content } = params;
-    const whereFilter = {
+    const whereFilter: Prisma.NewsWhereInput = {
       AND: [
         { title: { contains: title, mode: 'insensitive' } },
         { content: { contains: content, mode: 'insensitive' } },

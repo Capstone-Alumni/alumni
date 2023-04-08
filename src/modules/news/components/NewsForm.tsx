@@ -131,6 +131,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
           sx={{
             width: '100%',
             display: 'flex',
+            mb: 2,
           }}
         >
           <Controller
@@ -146,7 +147,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
               return (
                 <TextField
                   sx={{
-                    width: '80%',
+                    width: '100%',
                   }}
                   fullWidth
                   label="Tiêu đề"
@@ -155,7 +156,15 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
               );
             }}
           />
-          {tags ? (
+        </Box>
+
+        {tags ? (
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+            }}
+          >
             <Controller
               control={control}
               name="tagsNews"
@@ -177,15 +186,14 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
                     />
                   )}
                   sx={{
-                    width: '20%',
+                    width: '100%',
                     height: '100%',
-                    ml: 2,
                   }}
                 />
               )}
             />
-          ) : null}
-        </Box>
+          </Box>
+        ) : null}
 
         <Controller
           control={control}
