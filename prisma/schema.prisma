@@ -31,6 +31,8 @@ model AlumClass {
   informations  Information[]
   accessRequest AccessRequest[]
 
+  @@unique([gradeId, name])
+
   @@map("alum_classes")
 }
 
