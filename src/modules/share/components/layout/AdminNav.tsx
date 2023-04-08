@@ -185,8 +185,6 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
     return null;
   }
 
-  console.log(user);
-
   return (
     <Box sx={{ position: 'fixed' }}>
       <StyledSidebar>
