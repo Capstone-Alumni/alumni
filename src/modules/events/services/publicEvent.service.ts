@@ -1,8 +1,52 @@
 import { Prisma, PrismaClient } from '@prisma/client';
+import { User } from 'next-auth';
+
+export const buildEventWhereFilter = async (
+  tenantPrisma: PrismaClient,
+  user: User,
+) => {
+  const userInformation = await tenantPrisma.information.findUnique({
+    where: {
+      userId: user.id,
+    },
+    include: {
+      alumClass: true,
+    },
+  });
+
+  if (!userInformation) {
+    throw new Error('user not exist');
+  }
+
+  const whereFilter: Prisma.EventWhereInput = {
+    OR: [
+      {
+        publicity: 'SCHOOL_ADMIN',
+      },
+      {
+        publicity: 'GRADE_MOD',
+        hostInformation: {
+          alumClass: {
+            gradeId: userInformation.alumClass?.gradeId || '',
+          },
+        },
+      },
+      {
+        publicity: 'ALUMNI',
+        hostInformation: {
+          id: userInformation.id,
+        },
+      },
+    ],
+  };
+
+  return whereFilter;
+};
 
 export default class PublicEventService {
   static getList = async (
     tenantPrisma: PrismaClient,
+    user: User,
     {
       page,
       limit,
@@ -10,8 +54,11 @@ export default class PublicEventService {
       title,
     }: { page: number; limit: number; userId?: string; title: string },
   ) => {
+    const scopeFilter = await buildEventWhereFilter(tenantPrisma, user);
+
     const whereFilter: Prisma.EventWhereInput = {
-      AND: [{ archived: false, publicity: 'SCHOOL_ADMIN' }],
+      ...scopeFilter,
+      archived: false,
       title: {
         contains: title,
       },

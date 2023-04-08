@@ -4,6 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PublicIcon from '@mui/icons-material/Public';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import LockIcon from '@mui/icons-material/Lock';
 
 import { Event } from '../types';
 import { formatDate } from '@share/utils/formatDate';
@@ -94,13 +95,21 @@ const AdminEventListItem = ({
               </Tooltip>
             ) : null} */}
             {data.publicity === 'ALUMNI' ? (
-              <Tooltip title="Chưa công khai">
-                <PublicIcon color="error" />
+              <Tooltip title="Bí mật">
+                <LockIcon />
+              </Tooltip>
+            ) : null}
+            {data.publicity === 'GRADE_MOD' ? (
+              <Tooltip title="Khối">
+                {/* <Groups2Icon /> */}
+                <Typography fontWeight={600}>
+                  {data.hostInformation?.alumClass?.grade?.code}
+                </Typography>
               </Tooltip>
             ) : null}
             {data.publicity === 'SCHOOL_ADMIN' ? (
-              <Tooltip title="Đã công khai">
-                <PublicIcon color="success" />
+              <Tooltip title="Toàn trường">
+                <PublicIcon />
               </Tooltip>
             ) : null}
           </Typography>

@@ -13,7 +13,7 @@ export default class PublicEventController {
     const { page, limit, title } = req.query;
     const { id: userId } = req.user || {};
 
-    const listData = await PublicEventService.getList(prisma, {
+    const listData = await PublicEventService.getList(prisma, req.user, {
       userId: userId,
       page: page ? parseInt(page as string, 10) : 1,
       limit: limit ? parseInt(limit as string, 10) : 10,

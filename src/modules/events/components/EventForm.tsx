@@ -11,6 +11,7 @@ import { useState } from 'react';
 import RichTextInput from '@share/components/form/RichTextInput';
 import UploadBackgroundInput from '@share/components/form/UploadBackgroundInput';
 import RadioInput from '@share/components/form/RadioInput';
+import SelectInput from '@share/components/form/SelectInput';
 
 export type EventFormValues = {
   title: string;
@@ -58,7 +59,9 @@ const EventForm = ({
       startTime: initialData?.startTime
         ? new Date(initialData.startTime)
         : new Date(),
-      endTime: initialData?.endTime ? new Date(initialData.endTime) : null,
+      endTime: initialData?.endTime
+        ? new Date(initialData.endTime)
+        : new Date(),
       isEnded: initialData?.isEnded,
       publicity: initialData?.publicity ?? 'ALUMNI',
       publicParticipant: initialData?.publicParticipant ?? false,
@@ -139,14 +142,14 @@ const EventForm = ({
             label: 'Thời gian kết thúc',
           }}
         />{' '}
-        <Checkbox
+        {/* <Checkbox
           control={control}
           name="isEnded"
           inputProps={{ label: 'Sự kiện đã kết thúc' }}
-        />
+        /> */}
       </Box>
 
-      <Box sx={{ width: '100%' }}>
+      {/* <Box sx={{ width: '100%' }}>
         <RadioInput
           control={control}
           name="publicity"
@@ -164,10 +167,10 @@ const EventForm = ({
             },
           ]}
         />
-      </Box>
+      </Box> */}
 
       <Box sx={{ width: '100%' }}>
-        {/* <SelectInput
+        <SelectInput
           control={control}
           name="publicity"
           inputProps={{
@@ -179,20 +182,20 @@ const EventForm = ({
               value: 'ALUMNI',
               name: 'Chỉ bạn nhìn thấy',
             },
-            {
-              value: 'CLASS_MOD',
-              name: 'Chỉ người cùng lớp',
-            },
+            // {
+            //   value: 'CLASS_MOD',
+            //   name: 'Chỉ người cùng lớp',
+            // },
             {
               value: 'GRADE_MOD',
               name: 'Chỉ người cùng niên khoá',
             },
             {
               value: 'SCHOOL_ADMIN',
-              name: 'Bất cứ ai',
+              name: 'Tất cả mọi người',
             },
           ]}
-        /> */}
+        />
 
         <Checkbox
           control={control}
