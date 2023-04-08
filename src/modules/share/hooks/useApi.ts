@@ -67,6 +67,7 @@ const useApi = <Params, Data, Err>(
       headers,
     }: ApiConfig): Promise<AxiosConfig> => {
       const session = await getSession();
+      console.log(session);
       const config: AxiosConfig = {
         method,
         url: params ? url + formatSearchParams(params) : url,
@@ -74,6 +75,7 @@ const useApi = <Params, Data, Err>(
           accept: 'application/json',
           'Content-Type': 'application/json',
           'tenant-subdomain': subdomain,
+          'tenant-id': session?.tenant?.tenantId,
           'tenant-userid': session?.user.id, // enhance here
           ...headers,
         },

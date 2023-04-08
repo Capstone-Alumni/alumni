@@ -29,6 +29,46 @@ export default class GradeService {
     return newGrade;
   };
 
+  static createMany = async (
+    tenantPrisma: PrismaClient,
+    { data }: { data: Array<{ gradeCode: string; className: string }> },
+  ) => {
+    const existedGrade = await tenantPrisma.$transaction(
+      data.map(({ gradeCode }) =>
+        tenantPrisma.grade.findUnique({ where: { code: gradeCode } }),
+      ),
+    );
+
+    const gradeList = await tenantPrisma.$transaction(
+      data.map(({ gradeCode, className }, index) => {
+        return tenantPrisma.alumClass.upsert({
+          where: {
+            gradeId_name: {
+              gradeId: existedGrade[index]?.id || '',
+              name: className,
+            },
+          },
+          update: {},
+          create: {
+            name: className,
+            grade: {
+              connectOrCreate: {
+                where: {
+                  code: gradeCode,
+                },
+                create: {
+                  code: gradeCode,
+                },
+              },
+            },
+          },
+        });
+      }),
+    );
+
+    return gradeList.length;
+  };
+
   static getPublicList = async (
     tenantPrisma: PrismaClient,
     { params }: GetGradeListServiceProps,

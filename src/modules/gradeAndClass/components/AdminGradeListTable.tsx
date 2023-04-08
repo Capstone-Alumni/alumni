@@ -11,9 +11,12 @@ import AdminGradeListItem from './AdminGradeListItem';
 import DataTablePagination from '@share/components/DataTablePagination';
 import { useSetRecoilState } from 'recoil';
 import { getGradeListParamsAtom } from '../state';
-import { useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { useState } from 'react';
 import SearchInput from '@share/components/SearchInput';
+import Link from 'next/link';
+import UploadGradeFileButton from './UploadGradeFileButton';
+import { TEMPLATE_FILE } from '../constants';
 
 const AdminGradeListTable = ({
   data,
@@ -34,6 +37,22 @@ const AdminGradeListTable = ({
 
   return (
     <>
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          gap: theme.spacing(2),
+          alignItems: 'center',
+          mb: 2,
+        }}
+      >
+        <UploadGradeFileButton />
+
+        <Link href={TEMPLATE_FILE} target="_blank">
+          File mẫu
+        </Link>
+      </Box>
       <form
         onSubmit={e => {
           e.preventDefault();
