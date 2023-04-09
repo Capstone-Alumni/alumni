@@ -33,41 +33,38 @@ export default class GradeService {
     tenantPrisma: PrismaClient,
     { data }: { data: Array<{ gradeCode: string; className: string }> },
   ) => {
-    const existedGrade = await tenantPrisma.$transaction(
-      data.map(({ gradeCode }) =>
-        tenantPrisma.grade.findUnique({ where: { code: gradeCode } }),
-      ),
-    );
+    const gradeCodeList = data.map(({ gradeCode }) => gradeCode);
 
-    const gradeList = await tenantPrisma.$transaction(
-      data.map(({ gradeCode, className }, index) => {
-        return tenantPrisma.alumClass.upsert({
-          where: {
-            gradeId_name: {
-              gradeId: existedGrade[index]?.id || '',
-              name: className,
-            },
-          },
-          update: {},
-          create: {
-            name: className,
-            grade: {
-              connectOrCreate: {
-                where: {
-                  code: gradeCode,
-                },
-                create: {
-                  code: gradeCode,
-                },
-              },
-            },
-          },
-        });
-      }),
-    );
+    await tenantPrisma.grade.createMany({
+      data: data.map(row => ({ code: row.gradeCode })),
+      skipDuplicates: true,
+    });
 
-    // return gradeList.length;
-    return gradeList.length;
+    const gradeListData = await tenantPrisma.grade.findMany({
+      where: {
+        code: {
+          in: gradeCodeList,
+        },
+      },
+    });
+
+    const classData = data.map(({ gradeCode, className }) => {
+      const grade = gradeListData.find(d => d.code === gradeCode);
+      if (!grade) {
+        throw new Error('grade not exist');
+      }
+      return {
+        name: className,
+        gradeId: grade?.id,
+      };
+    });
+
+    const count = await tenantPrisma.alumClass.createMany({
+      data: classData,
+      skipDuplicates: true,
+    });
+
+    return count;
   };
 
   static getPublicList = async (
