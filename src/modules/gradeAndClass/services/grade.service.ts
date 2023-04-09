@@ -39,35 +39,35 @@ export default class GradeService {
       ),
     );
 
-    // const gradeList = await tenantPrisma.$transaction(
-    //   data.map(({ gradeCode, className }, index) => {
-    //     return tenantPrisma.alumClass.upsert({
-    //       where: {
-    //         gradeId_name: {
-    //           gradeId: existedGrade[index]?.id || '',
-    //           name: className,
-    //         },
-    //       },
-    //       update: {},
-    //       create: {
-    //         name: className,
-    //         grade: {
-    //           connectOrCreate: {
-    //             where: {
-    //               code: gradeCode,
-    //             },
-    //             create: {
-    //               code: gradeCode,
-    //             },
-    //           },
-    //         },
-    //       },
-    //     });
-    //   }),
-    // );
+    const gradeList = await tenantPrisma.$transaction(
+      data.map(({ gradeCode, className }, index) => {
+        return tenantPrisma.alumClass.upsert({
+          where: {
+            gradeId_name: {
+              gradeId: existedGrade[index]?.id || '',
+              name: className,
+            },
+          },
+          update: {},
+          create: {
+            name: className,
+            grade: {
+              connectOrCreate: {
+                where: {
+                  code: gradeCode,
+                },
+                create: {
+                  code: gradeCode,
+                },
+              },
+            },
+          },
+        });
+      }),
+    );
 
     // return gradeList.length;
-    return [];
+    return gradeList.length;
   };
 
   static getPublicList = async (
