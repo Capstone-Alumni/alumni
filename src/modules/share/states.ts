@@ -1,6 +1,13 @@
 import { atom, atomFamily, RecoilState, selector } from 'recoil';
 import { Class } from '../gradeAndClass/types';
 
+export type Plan = {
+  id: string;
+  name: string;
+  duration: string | number;
+  price: string | number;
+};
+
 export type Tenant = {
   id: string;
   name: string;
@@ -14,6 +21,9 @@ export type Tenant = {
   background3?: string;
   vnp_tmnCode?: string;
   vnp_hashSecret?: string;
+  subcriptionEndTime?: string | Date;
+  planId?: string;
+  plan?: Plan | null;
 };
 
 export const _useApiDataAtomFamily = atomFamily<any, string>({
