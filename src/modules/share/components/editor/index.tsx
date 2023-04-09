@@ -63,6 +63,7 @@ export type EditorProps = {
   simple?: boolean;
   sx?: any;
   placeholder?: string;
+  onBlur?: any;
   containerSx?: SxProps;
 };
 
@@ -71,6 +72,7 @@ export default function Editor({
   error,
   value,
   onChange,
+  onBlur,
   simple,
   helperText,
   placeholder,
@@ -118,8 +120,13 @@ export default function Editor({
       const url = await handleDrop(files);
 
       const quillObj = quillRef.current?.getEditor();
-      const range = quillObj?.getSelection();
-      quillObj?.editor.insertEmbed(range?.index, 'image', url);
+
+      if (!quillObj) {
+        return;
+      }
+
+      const range = quillObj.getSelection();
+      quillObj.insertEmbed(range?.index || 0, 'image', url);
     };
   };
 
@@ -160,6 +167,7 @@ export default function Editor({
           ref={quillRef}
           value={value}
           onChange={onChange}
+          onBlur={onBlur}
           modules={modules}
           formats={formats}
           placeholder={placeholder}
