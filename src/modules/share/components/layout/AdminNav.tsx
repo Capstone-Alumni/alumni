@@ -4,7 +4,6 @@ import { Icon } from '@iconify/react';
 
 import { Box, styled, Typography, useTheme } from '@mui/material';
 import { User } from 'next-auth';
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -12,6 +11,7 @@ import MyAvatar from '../MyAvatar';
 import { AdminSubNav, StyledNav, StyledNavItem } from './AdminSubNav';
 import { useRecoilValue } from 'recoil';
 import { currentUserInformationDataAtom } from '@share/states';
+import Logo from '../Logo';
 
 const ACCESS_NAV_ITEM = {
   id: 'request_access',
@@ -196,7 +196,7 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Image src="/logo.png" alt="logo" width={32} height={32} />
+              <Logo url={tenant?.logo} />
               <Typography variant="h5" sx={{ ml: theme.spacing(1) }}>
                 {tenant?.name}
               </Typography>

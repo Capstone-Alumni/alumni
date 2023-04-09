@@ -40,7 +40,6 @@ const useGetFundReportList = (fundId: string) => {
   );
 
   useEffect(() => {
-    console.log(fundId, data);
     if (!data) {
       fetchApi();
     }

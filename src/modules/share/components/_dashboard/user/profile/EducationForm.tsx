@@ -20,8 +20,6 @@ const EducationForm = ({ defaultValues, onSave, onClose }: any) => {
     },
   });
 
-  console.log(errors);
-
   const onSubmit = (values: any) => {
     onSave(values);
   };

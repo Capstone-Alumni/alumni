@@ -45,8 +45,6 @@ const UploadGradeFileButton = () => {
       toast.warn('Sai định dạng');
     }
 
-    console.log(formattedData);
-
     // toast.update(LOADING_TOAST_ID, {
     //   render: `Đang xử lý (0/${formattedData.length})`,
     // });

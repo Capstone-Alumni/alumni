@@ -31,8 +31,6 @@ export default class PingService {
       },
     });
 
-    console.log(userInformation);
-
     if (userInformation?.phone) {
       await sendSmsService({
         to: `+84${userInformation?.phone}`,
