@@ -1,4 +1,11 @@
 /** ========================== FE ================================= */
+export type Plan = {
+  id: string;
+  name: string;
+  duration: string | number;
+  price: string | number;
+};
+
 export type Tenant = {
   id: string;
   logo: string | null;
@@ -18,6 +25,9 @@ export type Tenant = {
   background1: string | null;
   background2: string | null;
   background3: string | null;
+  subcriptionEndTime?: string | Date;
+  planId: string;
+  plan: Plan | null;
 };
 
 export type GetTenantListData = {

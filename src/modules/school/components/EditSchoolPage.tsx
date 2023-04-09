@@ -7,6 +7,7 @@ import EditSChoolForm, { EditSChoolFormValues } from './EditSchoolForm';
 import { useRecoilValue } from 'recoil';
 import { currentTenantDataAtom } from '@share/states';
 import LoadingIndicator from '@share/components/LoadingIndicator';
+import SubscriptionForm from './SubscriptionForm';
 
 const EditSchoolPage = () => {
   const theme = useTheme();
@@ -44,6 +45,8 @@ const EditSchoolPage = () => {
           Thông tin của trường
         </Typography>
       </Box>
+
+      <SubscriptionForm initialData={currentTenant} />
 
       <EditSChoolForm initialData={currentTenant} onSubmit={onUpdate} />
     </Box>
