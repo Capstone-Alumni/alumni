@@ -82,7 +82,7 @@ const AdminGradeListPage = () => {
           width: '100%',
         }}
       >
-        {isGettingGrade ? <LoadingIndicator /> : null}
+        {isGettingGrade && !gradeListData?.data ? <LoadingIndicator /> : null}
 
         {gradeListData?.data ? (
           <AdminGradeListTable
