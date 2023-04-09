@@ -21,7 +21,7 @@ import MyAvatar from '@share/components/MyAvatar';
 import DataTablePagination from '@share/components/DataTablePagination';
 import { getFundTransactionListParamsAtom } from '../states';
 import useGetFundTransactionList from '../hooks/useGetFundTransactionList';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { formatDate } from '@share/utils/formatDate';
 import { formatAmountMoney } from '../utils';
 

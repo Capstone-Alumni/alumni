@@ -14,7 +14,7 @@ import { getGradeListParamsAtom } from '../state';
 import { Box, useTheme } from '@mui/material';
 import { useState } from 'react';
 import SearchInput from '@share/components/SearchInput';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import UploadGradeFileButton from './UploadGradeFileButton';
 import { TEMPLATE_FILE } from '../constants';
 

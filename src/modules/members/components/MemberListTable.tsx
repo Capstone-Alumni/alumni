@@ -14,7 +14,7 @@ import SearchInput from '@share/components/SearchInput';
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { getMemberListParamsAtom } from '../state';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { TEMPLATE_FILE } from '../constants';
 import UploadMemeberFileButton from './UploadMemberFileButton';
 

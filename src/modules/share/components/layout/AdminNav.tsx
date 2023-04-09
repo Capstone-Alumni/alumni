@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 
 import { Box, styled, Typography, useTheme } from '@mui/material';
 import { User } from 'next-auth';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import MyAvatar from '../MyAvatar';
@@ -243,11 +243,7 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
 
         <StyledFooter>
           <StyledNav sx={{ padding: 0 }}>
-            <Link
-              href="/"
-              style={{ color: 'inherit', width: '100%' }}
-              prefetch={false}
-            >
+            <Link href="/" style={{ color: 'inherit', width: '100%' }}>
               <StyledNavItem>
                 <Icon height={24} icon="majesticons:door-exit" />
                 <Typography fontWeight={600}>Thoát bảng điều khiển</Typography>
@@ -267,7 +263,7 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
             <Box sx={{ flex: 1 }} />
 
             {/* <Tooltip title="Thoát bảng điều khiển">
-              <Link href="/" style={{ color: 'inherit' }} prefetch={false}>
+              <Link href="/" style={{ color: 'inherit' }}>
                 <Icon
                   color={theme.palette.primary.contrastText}
                   height={32}

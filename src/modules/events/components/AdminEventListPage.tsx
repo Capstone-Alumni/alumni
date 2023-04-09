@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 import { Box, Typography, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import LoadingIndicator from '@share/components/LoadingIndicator';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { useRecoilState } from 'recoil';
 import useAdminApproveEventById from '../hooks/useAdminApproveEventById';
 import useAdminGetEventList from '../hooks/useAdminGetEventList';
@@ -50,7 +50,7 @@ const AdminEventListPage = () => {
       >
         <Typography variant="h3">Sự kiện</Typography>
 
-        <Link href="/admin/action/event/create" prefetch={false}>
+        <Link href="/admin/action/event/create">
           <Button variant="contained" startIcon={<AddIcon />} role="link">
             Tạo sự kiện
           </Button>

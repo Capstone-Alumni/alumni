@@ -1,5 +1,5 @@
 import { styled } from '@mui/material';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { usePathname } from 'next/navigation';
 
 const MuiNavItem = styled('div')(({ theme }) => ({
@@ -38,7 +38,7 @@ export const NavItem = ({ label, href }: { label: string; href: string }) => {
   }
 
   return (
-    <Link href={href} style={{ color: 'inherit' }} prefetch={false}>
+    <Link href={href} style={{ color: 'inherit' }}>
       <MuiNavItem className={href?.includes(pathnameShorter) ? 'active' : ''}>
         {label}
       </MuiNavItem>

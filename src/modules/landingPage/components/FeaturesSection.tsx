@@ -2,7 +2,7 @@
 
 import { Container, Stack, styled, Typography } from '@mui/material';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 
 const StyledBox = styled('div')(({ theme }) => ({
   minWidth: '250px',

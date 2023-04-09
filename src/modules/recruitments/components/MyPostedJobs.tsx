@@ -11,7 +11,7 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { useRecoilState } from 'recoil';
 import useOwnerDeleteJobById from '../hooks/useOwnerDeleteJobById';
 import useOwnerGetJobList from '../hooks/useOwnerGetJobList';

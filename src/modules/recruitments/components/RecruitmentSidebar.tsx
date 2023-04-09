@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 import { Button, Typography } from '@mui/material';
 import { Box, styled, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { usePathname } from 'next/navigation';
 
 const StyledNavWrapper = styled(Box)(({ theme }) => ({
@@ -98,11 +98,7 @@ const RecruitmentSidebar = () => {
           );
         })}
         {pathname !== '/recruitments/create' && (
-          <Link
-            href="/recruitments/create"
-            style={{ width: '100%' }}
-            prefetch={false}
-          >
+          <Link href="/recruitments/create" style={{ width: '100%' }}>
             <Button variant="contained" fullWidth startIcon={<AddIcon />}>
               tạo công việc
             </Button>

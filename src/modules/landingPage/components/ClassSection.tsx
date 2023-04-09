@@ -10,7 +10,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { Tenant } from '@share/states';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 
 const ClassSection = ({ tenant }: { tenant: Tenant }) => {
   const theme = useTheme();
@@ -83,7 +83,6 @@ const ClassSection = ({ tenant }: { tenant: Tenant }) => {
               <Link
                 href="/sign_in"
                 style={{ textDecoration: 'none', textUnderlineOffset: 0 }}
-                prefetch={false}
               >
                 <Button
                   variant="contained"

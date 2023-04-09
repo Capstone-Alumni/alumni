@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 import { Typography } from '@mui/material';
 import { Box, styled, useTheme } from '@mui/material';
 // import AddIcon from '@mui/icons-material/Add';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { usePathname } from 'next/navigation';
 
 const StyledNavWrapper = styled(Box)(({ theme }) => ({
@@ -87,7 +87,6 @@ const EventSidebar = () => {
               key={item.id}
               href={item.link}
               style={{ color: 'inherit', width: '100%' }}
-              prefetch={false}
             >
               <StyledNavItem
                 sx={{
@@ -113,7 +112,7 @@ const EventSidebar = () => {
           );
         })}
 
-        {/* <Link href="/events/create" style={{ width: '100%' }} prefetch={false}>
+        {/* <Link href="/events/create" style={{ width: '100%' }}>
           <Button variant="contained" fullWidth startIcon={<AddIcon />}>
             tạo sự kiện
           </Button>

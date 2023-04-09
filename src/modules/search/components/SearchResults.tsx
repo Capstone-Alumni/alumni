@@ -9,7 +9,7 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import Avatar from '@share/components/MyAvatar';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { useRecoilState, useRecoilValue } from 'recoil';

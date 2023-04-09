@@ -12,7 +12,7 @@ import {
 import { useRecoilState } from 'recoil';
 import { getAdminJobListParamsAtom } from '../states';
 
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import CompanyItem from './CompanyItem';
 import { Job } from '../types';
 

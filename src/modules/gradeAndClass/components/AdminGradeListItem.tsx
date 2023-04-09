@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import { formatDate } from '@share/utils/formatDate';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { useState } from 'react';
 import { Grade } from '../types';
 import GradeForm, { GradeFormValues } from './GradeForm';

@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 import { Typography } from '@mui/material';
 import { Box, styled, useTheme } from '@mui/material';
 // import AddIcon from '@mui/icons-material/Add';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { usePathname } from 'next/navigation';
 import { User } from 'next-auth';
 

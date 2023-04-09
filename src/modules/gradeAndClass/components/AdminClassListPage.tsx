@@ -6,7 +6,7 @@ import AdminClassListTable from './AdminClassListTable';
 import { useState } from 'react';
 import ClassForm, { ClassFormValues } from './ClassForm';
 
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 // import { useRecoilState } from 'recoil';
 // import { getClassListParamsAtom } from '../state';
 import useCreateClass from '../hooks/useCreateClass';
@@ -70,10 +70,7 @@ const AdminClassListPage = () => {
         }}
       >
         <Typography variant="h3">
-          <Link href="/admin/config/grade" prefetch={false}>
-            Niên khoá
-          </Link>{' '}
-          / Lớp
+          <Link href="/admin/config/grade">Niên khoá</Link> / Lớp
         </Typography>
         <Button
           variant="contained"

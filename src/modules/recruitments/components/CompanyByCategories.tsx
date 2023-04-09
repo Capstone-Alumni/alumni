@@ -3,7 +3,7 @@
 import React from 'react';
 import { Button, Grid, styled, Typography, useTheme } from '@mui/material';
 
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import CompanyItem from './CompanyItem';
 import { Job } from '../types';
 

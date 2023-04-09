@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Button, Stack, Typography, useTheme } from '@mui/material';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import ThankYou from 'public/thankyou.svg';
 
 const TransactionSuccess = () => {

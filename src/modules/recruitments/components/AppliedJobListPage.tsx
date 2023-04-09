@@ -10,7 +10,7 @@ import {
   useTheme,
 } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { useRecoilState } from 'recoil';
 import useUserGetAppliedJobList from '../hooks/useUserGetAppliedJobList';
 import { getUserGetAppliedJobListParamsAtom } from '../states';

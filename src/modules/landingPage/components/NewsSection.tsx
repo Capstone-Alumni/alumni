@@ -2,7 +2,7 @@
 
 import { Box, Button, Container, Typography, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { useGetNewsForPublicQuery } from 'src/redux/slices/newsSlice';
 import NewsCard from './NewsCard';
 

@@ -4,7 +4,7 @@ import { Box, Button, Typography } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { User } from 'next-auth';
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
@@ -53,7 +53,7 @@ const AdminNewsDetails = () => {
             alignItems: 'center',
           }}
         >
-          <Link href="/admin/action/news" prefetch={false}>
+          <Link href="/admin/action/news">
             <Typography>Danh sách tin tức</Typography>
           </Link>
           <Box

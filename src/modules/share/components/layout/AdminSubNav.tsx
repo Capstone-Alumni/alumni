@@ -5,7 +5,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { Icon } from '@iconify/react';
 import { useTheme } from '@mui/material';
 import { usePathname } from 'next/navigation';
@@ -112,7 +112,6 @@ export const AdminSubNav = ({
                   key={item.id}
                   href={item.link}
                   style={{ color: 'inherit', width: '100%' }}
-                  prefetch={false}
                 >
                   <StyledNavItem
                     sx={{

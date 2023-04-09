@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import Logo from '../Logo';
 import { Divider, useScrollTrigger, useTheme } from '@mui/material';
 import { NavItem } from './NavItem';
@@ -128,7 +128,6 @@ const Header = ({
               <Link
                 href="/admin/access/access_request"
                 style={{ color: 'inherit', marginRight: theme.spacing(2) }}
-                prefetch={false}
               >
                 <Button
                   startIcon={<AdminPanelSettingsIcon />}
@@ -147,18 +146,13 @@ const Header = ({
                 <Link
                   href="/sign_in"
                   style={{ color: 'inherit', marginRight: theme.spacing(2) }}
-                  prefetch={false}
                 >
                   <Button color="primary" variant="contained" role="href">
                     Đăng nhập
                   </Button>
                 </Link>
 
-                <Link
-                  href="/sign_up"
-                  style={{ color: 'inherit' }}
-                  prefetch={false}
-                >
+                <Link href="/sign_up" style={{ color: 'inherit' }}>
                   <Button color="primary" variant="outlined" role="href">
                     Đăng ký
                   </Button>

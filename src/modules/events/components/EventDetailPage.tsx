@@ -16,7 +16,7 @@ import usePublicUninterestEventById from '../hooks/usePublicUninterestEventById'
 import EditorPreview from '@share/components/editor/EditorPreview';
 import MyAvatar from '@share/components/MyAvatar';
 import { formatDate } from '@share/utils/formatDate';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import usePublicUnJoinEventById from '../hooks/usePublicUnJoinEventById';
 
 type EventStatus = 'not-open' | 'opened' | 'running' | 'ended';

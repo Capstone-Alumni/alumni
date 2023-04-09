@@ -16,7 +16,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import MyAvatar from '../MyAvatar';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { Box } from '@mui/material';
 import getRoleName from '@share/utils/getRoleName';
 import { useRecoilValue } from 'recoil';
@@ -88,11 +88,7 @@ const HeaderUserOptions = ({ user }: { user?: User }) => {
           'aria-labelledby': 'header-user-option',
         }}
       >
-        <Link
-          href={`/profile/${user?.id}`}
-          style={{ color: 'inherit' }}
-          prefetch={false}
-        >
+        <Link href={`/profile/${user?.id}`} style={{ color: 'inherit' }}>
           <MenuItem>
             <ListItemIcon>
               <PersonOutlineIcon />

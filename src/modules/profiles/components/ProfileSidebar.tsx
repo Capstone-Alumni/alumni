@@ -9,7 +9,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { useCanEditProfile } from '../helpers/canEditProfile';
 import { useCanSendMessage } from '../helpers/canSendMessage';
 import { usePathname, useSearchParams } from 'next/navigation';
@@ -138,7 +138,6 @@ const ProfileSidebar = () => {
                 key={item.id}
                 href={pathname || ''}
                 style={{ color: 'inherit', width: '100%' }}
-                prefetch={false}
               >
                 <StyledNavItem
                   sx={{

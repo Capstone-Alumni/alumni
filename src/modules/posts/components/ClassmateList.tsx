@@ -1,7 +1,7 @@
 import { Stack, Typography } from '@mui/material';
 import MyAvatar from '@share/components/MyAvatar';
 import { currentUserInformationDataAtom } from '@share/states';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import useGetInformationSameClassList from '../hooks/useGetInformationSameClassList';
@@ -27,7 +27,7 @@ const ClassmateList = () => {
         <Typography fontWeight={600} color="GrayText">
           Bạn cùng lớp
         </Typography>
-        <Link href="/find" prefetch={false}>
+        <Link href="/find">
           <Typography fontWeight={600}>Xem thêm</Typography>
         </Link>
       </Stack>

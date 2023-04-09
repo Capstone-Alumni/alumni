@@ -4,7 +4,7 @@ import { Grid } from '@mui/material';
 import { Button, Pagination, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import SearchInput from '@share/components/SearchInput';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import useOwnerGetGoingEventList from '../hooks/useOwnerGetGoingEventList';

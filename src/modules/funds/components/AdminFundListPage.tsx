@@ -9,7 +9,7 @@ import useAdminGetFundList from '../hooks/useAdminGetFundList';
 import useAdminRejectFundById from '../hooks/useAdminRejectFundById';
 import { getAdminFundListParamsAtom } from '../states';
 import AdminFundListTable from './AdminFundListTable';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 
 const AdminFundListPage = () => {
   const theme = useTheme();
@@ -49,7 +49,7 @@ const AdminFundListPage = () => {
       >
         <Typography variant="h3">Gây quỹ</Typography>
 
-        <Link href="/admin/action/funds/create" prefetch={false}>
+        <Link href="/admin/action/funds/create">
           <Button variant="contained" startIcon={<AddIcon />} role="link">
             Thêm quỹ mới
           </Button>

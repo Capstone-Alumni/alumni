@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import useGetAccessStatus from '@share/hooks/useGetAccessStatus';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import React, { useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 
@@ -71,7 +71,7 @@ const Body = ({
           <Box sx={{ flex: 1 }} />
 
           {message === 'Hãy tìm lớp của bạn để mở nhiều chức năng hơn' ? (
-            <Link href="/verify_account" prefetch={false}>
+            <Link href="/verify_account">
               <Button variant="text">Tìm lớp ngay</Button>
             </Link>
           ) : null}

@@ -9,7 +9,7 @@ import {
   useUpdateNewsByIdMutation,
 } from 'src/redux/slices/newsSlice';
 import { useState } from 'react';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import AdminNewsListTable from './AdminNewsListTable';
 
 const AdminNewsListPage = () => {

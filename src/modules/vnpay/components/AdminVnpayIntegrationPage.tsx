@@ -3,7 +3,7 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { currentTenantDataAtom } from '@share/states';
-import Link from 'next/link';
+import Link from '@share/components/NextLinkV2';
 import { useRecoilValue } from 'recoil';
 import useUpdateTenantVnpay from '../hooks/useUpdateTenantVnpay';
 import VnpayForm from './VnpayForm';
