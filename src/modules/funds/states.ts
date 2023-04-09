@@ -34,6 +34,15 @@ export const getPublicFundListParamsAtom = atom<GetPublicFundListParams>({
   },
 });
 
+export const getPublicEndedFundListParamsAtom = atom<GetPublicFundListParams>({
+  key: 'getPublicFundListParams',
+  default: {
+    limit: 10,
+    page: 1,
+    status: 'ended',
+  },
+});
+
 export const getOwnerSavedFundListParamsAtom =
   atom<GetOwnerSavedFundListParams>({
     key: 'getOwnerInterestFundListParamsAtom',

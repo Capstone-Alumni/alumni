@@ -6,20 +6,20 @@ import { Button, Grid, IconButton, Pagination, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import Link from '@share/components/NextLinkV2';
 import { useRecoilState } from 'recoil';
-import usePublicGetFundList from '../hooks/usePublicGetFundList';
 import { getPublicFundListParamsAtom } from '../states';
 import FundCardItem from './FundCardItem';
 import usePublicInterestFundById from '../hooks/usePublicSaveFundById';
 import usePublicUninterestFundById from '../hooks/usePublicUnsaveFundById';
 import { useEffect, useState } from 'react';
 import SearchInput from '@share/components/SearchInput';
+import usePublicGetEndedFundList from '../hooks/usePublicGetEndedFundList';
 
 const EndedFundListPage = () => {
   const [search, setSearch] = useState('');
 
   const theme = useTheme();
   const [params, setParams] = useRecoilState(getPublicFundListParamsAtom);
-  const { data, reload, isLoading } = usePublicGetFundList();
+  const { data, reload, isLoading } = usePublicGetEndedFundList();
   const { fetchApi: interestFund, isLoading: isInterestingFund } =
     usePublicInterestFundById();
   const { fetchApi: uninterestFund, isLoading: isUninterestingFund } =
