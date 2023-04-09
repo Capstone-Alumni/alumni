@@ -30,7 +30,7 @@ const AdminAccessRequestTable = () => {
     reload();
   };
 
-  if (isLoading) {
+  if (isLoading && !data?.data) {
     return <LoadingIndicator />;
   }
 
