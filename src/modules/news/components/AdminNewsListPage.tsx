@@ -75,7 +75,7 @@ const AdminNewsListPage = () => {
         </Link>
       </Box>
 
-      {isLoading ? <LoadingIndicator /> : null}
+      {isLoading && !newsListData ? <LoadingIndicator /> : null}
 
       {newsListData ? (
         // <Box

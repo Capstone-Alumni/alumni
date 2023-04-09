@@ -53,7 +53,7 @@ const AdminJobListPage = () => {
           width: '100%',
         }}
       >
-        {isLoading ? <LoadingIndicator /> : null}
+        {isLoading && !data?.data ? <LoadingIndicator /> : null}
 
         {data?.data ? (
           <AdminJobListTable

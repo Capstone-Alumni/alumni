@@ -61,7 +61,7 @@ const AdminFundListPage = () => {
           width: '100%',
         }}
       >
-        {isLoading ? <LoadingIndicator /> : null}
+        {isLoading && !data?.data ? <LoadingIndicator /> : null}
 
         {data?.data ? (
           <AdminFundListTable
