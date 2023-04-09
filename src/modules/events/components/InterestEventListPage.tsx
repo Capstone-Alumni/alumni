@@ -40,7 +40,7 @@ const InterestEventListPage = () => {
         <button type="submit" style={{ display: 'none' }}></button>
       </form>
 
-      {isLoading && !data?.data ? (
+      {isLoading ? (
         <LoadingIndicator />
       ) : (
         <>

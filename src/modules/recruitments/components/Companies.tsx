@@ -64,7 +64,7 @@ const CompaniesSlider = ({
       {data && data.items.length > 0 ? (
         <>
           <Typography variant="h5" sx={{ margin: '0' }}>
-            Việc làm hot
+            Việc làm
           </Typography>
           <Spacer />
           <Grid container spacing={2}>
