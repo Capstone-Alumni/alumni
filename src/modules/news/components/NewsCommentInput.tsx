@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Button, TextField, useTheme } from '@mui/material';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
@@ -10,6 +10,7 @@ import {
   useUpdateNewsCommentMutation,
 } from '@redux/slices/newsCommentSlice';
 import { CreateOrUpdateNewComment } from '../types';
+import useGetAccessStatus from '@share/hooks/useGetAccessStatus';
 
 const validationNewsComment = yup.object({
   commentContent: yup.string().required(),
@@ -68,6 +69,21 @@ const NewsCommentInput = ({
     setSubmitting(false);
   };
 
+  const { data } = useGetAccessStatus();
+
+  const isVerified = useMemo(() => {
+    if (!data?.data) {
+      return false;
+    }
+    if (!data.data.accessRequest) {
+      return false;
+    }
+    if (data.data.accessStatus === 'PENDING') {
+      return false;
+    }
+    return true;
+  }, [data]);
+
   return (
     <Box
       sx={{
@@ -93,7 +109,7 @@ const NewsCommentInput = ({
               multiline
               rows={4}
               fullWidth
-              disabled={!user || user.accessStatus !== 'APPROVED'}
+              disabled={!user || !isVerified}
               label={user ? 'Bình luận' : 'Đăng nhập để bình luận'}
               {...field}
             />
