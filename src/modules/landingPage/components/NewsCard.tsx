@@ -10,6 +10,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import { formatDate } from '@share/utils/formatDate';
 import { getImageOfNews } from '@share/utils/getFirstImageOfNews';
 import React from 'react';
 
@@ -90,7 +91,7 @@ const NewsCard = ({
             }}
             variant="body2"
           >
-            {new Date(item.createdAt).toDateString()}
+            {formatDate(new Date(item.createdAt))}
           </Typography>
           <Link
             href={`/news/${item.id}`}

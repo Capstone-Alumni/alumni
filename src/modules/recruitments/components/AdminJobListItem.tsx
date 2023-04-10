@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { Job } from '../types';
 import AdminJobPreview from './AdminJobPreview';
+import { formatDate } from '@share/utils/formatDate';
 
 const AdminEventListItem = ({
   data,
@@ -51,7 +52,7 @@ const AdminEventListItem = ({
           </Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>{new Date(data.createdAt).toDateString()}</Typography>
+          <Typography>{formatDate(new Date(data.createdAt))}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <AdminJobPreview data={data} isPreview>

@@ -12,6 +12,7 @@ import { News, TagsNews } from '../types';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import { useState } from 'react';
+import { formatDate } from '@share/utils/formatDate';
 
 const AdminNewsListItem = ({
   data,
@@ -42,7 +43,7 @@ const AdminNewsListItem = ({
           </Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>{new Date(data.createdAt).toDateString()}</Typography>
+          <Typography>{formatDate(new Date(data.createdAt))}</Typography>
         </TableCell>
         <TableCell>
           {data.tagsNews

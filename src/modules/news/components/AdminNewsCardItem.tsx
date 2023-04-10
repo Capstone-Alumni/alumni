@@ -14,6 +14,7 @@ import Switch from '@mui/material/Switch';
 import { News } from '../types';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useUpdateNewsByIdMutation } from 'src/redux/slices/newsSlice';
+import { formatDate } from '@share/utils/formatDate';
 
 const AdminNewsCardItem = ({ item }: { item: News }) => {
   const content = ReactHtmlParser(item.content);
@@ -120,7 +121,7 @@ const AdminNewsCardItem = ({ item }: { item: News }) => {
             }}
             variant="body2"
           >
-            Ngày đăng: {new Date(item.createdAt).toDateString()}
+            Ngày đăng: {formatDate(new Date(item.createdAt))}
           </Typography>
           <Box
             sx={{
