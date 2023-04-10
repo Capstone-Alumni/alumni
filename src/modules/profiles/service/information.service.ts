@@ -28,9 +28,6 @@ const filterInformation = (
     )
   ) {
     result = omit('phone')(result);
-    if (information.phone) {
-      result.havePhone = true;
-    }
   }
 
   if (
@@ -51,6 +48,10 @@ const filterInformation = (
     )
   ) {
     result = omit('dateOfBirth')(result);
+  }
+
+  if (information.phone) {
+    result.havePhone = true;
   }
 
   return result;
