@@ -25,13 +25,9 @@ export default withAuth(
         ? hostname.replace('.vercel.app', '')
         : hostname.replace('.localhost:3005', '');
 
-    await request.headers.set('tenant-subdomain', currentHost);
-
     const response = NextResponse.next();
-    const currentTenant = response.cookies.get('tenant-subdomain')?.value;
     const currentTenantId = response.cookies.get('tenant-id')?.value;
-    if (currentTenant !== currentHost || !currentTenantId) {
-      response.cookies.set('tenant-subdomain', currentHost);
+    if (!currentTenantId) {
       await getTenantData(currentHost).then(({ data }) =>
         response.cookies.set('tenant-id', data.tenantId),
       );

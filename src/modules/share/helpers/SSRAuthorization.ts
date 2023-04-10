@@ -1,16 +1,15 @@
 import { Tenant } from '@share/states';
+import getSubdomain from '@share/utils/getSubdomain';
 import { getTenantData } from '@share/utils/getTenantData';
 import { getServerSession } from 'next-auth';
-import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
 
 const ADMIN_OR_MOD = ['CLASS_MOD', 'GRADE_MOD', 'SCHOOL_ADMIN'];
 
 export const getTenantDataSSR = async (): Promise<Tenant> => {
-  const tenant = cookies().get('tenant-subdomain');
-  const tenantHeader = headers().get('tenant-subdomain');
-  const res = await getTenantData(tenant?.value || tenantHeader || '');
+  const subdomain = getSubdomain();
+  const res = await getTenantData(subdomain || '');
   const { data } = res;
 
   return data;

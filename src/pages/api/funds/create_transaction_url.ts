@@ -10,6 +10,7 @@ import { extractTenantId, NextApiRequestWithTenant } from '@lib/next-connect';
 import getPrismaClient from '@lib/prisma/prisma';
 import { isAuthenticatedUser } from '@lib/next-connect/apiMiddleware';
 import { getTenantVnpayData } from '@share/utils/getTenantData';
+import getSubdomain from '@share/utils/getSubdomain';
 
 const handler = nc({
   onError: onErrorAPIHandler,
@@ -24,7 +25,7 @@ handler.post(async function (req: NextApiRequestWithTenant, res) {
     req.connection.remoteAddress ||
     req.socket.remoteAddress;
 
-  const subdomain = req.cookies['tenant-subdomain'] as string;
+  const subdomain = getSubdomain();
 
   const { data } = await getTenantVnpayData(req.tenantId);
   // const tmnCode = process.env.VNPAY_TMNCODE; // config.get('vnp_TmnCode');
