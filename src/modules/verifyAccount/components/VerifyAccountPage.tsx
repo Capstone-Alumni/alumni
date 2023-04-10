@@ -20,6 +20,7 @@ import useVerifyAccount from '../hooks/useVerifyAccount';
 import { useSession } from 'next-auth/react';
 import { AccessRequest } from '../types';
 import useGetAccessStatus from '@share/hooks/useGetAccessStatus';
+import { useState } from 'react';
 
 type VerifyFormValues = {
   fullName: string;
@@ -58,6 +59,7 @@ const VerifyAccountPage = ({
 }: {
   initialData: AccessRequest | undefined;
 }) => {
+  const [submitting, setSubmitting] = useState(false);
   const resolver = useYupValidateionResolver(validationSchema);
 
   const methods = useForm<VerifyFormValues>({
@@ -79,6 +81,8 @@ const VerifyAccountPage = ({
       return;
     }
 
+    setSubmitting(true);
+
     await verifyAccount({
       userId: session.user.id,
       fullName: values.fullName,
@@ -88,6 +92,8 @@ const VerifyAccountPage = ({
     });
 
     fetchApi();
+
+    setSubmitting(false);
   };
 
   return (
@@ -98,7 +104,7 @@ const VerifyAccountPage = ({
     >
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <VeriticalLinearStepper steps={steps} />
+          <VeriticalLinearStepper steps={steps} submitting={submitting} />
         </form>
       </FormProvider>
     </Paper>
