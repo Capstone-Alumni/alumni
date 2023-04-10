@@ -95,7 +95,7 @@ const useApi = <Params, Data, Err>(
     return data;
   };
 
-  const { error, trigger, reset, isMutating } = useSWRMutation(
+  const { error, trigger, data, reset, isMutating } = useSWRMutation(
     apiName,
     fetcher,
     {
@@ -111,6 +111,8 @@ const useApi = <Params, Data, Err>(
       onError,
     },
   );
+
+  console.log(apiName, dataAtom, data);
 
   // cache
   useEffect(

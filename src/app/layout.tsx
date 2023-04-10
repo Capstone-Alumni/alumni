@@ -4,7 +4,6 @@ import CSRProvider from '../modules/share/helpers/CSRProvider';
 
 import { Providers } from '../redux/providers';
 import GetInitialUserInformation from '@share/helpers/GetInitialUserInformation';
-import SetCurrentTenant from '@share/helpers/SetCurrentTenant';
 import { getTenantDataSSR } from '@share/helpers/SSRAuthorization';
 
 import 'quill/dist/quill.snow.css';
@@ -28,10 +27,9 @@ export default async function RootLayout({
         <link rel="shortcut icon" href={data?.logo ?? '/logo.png'} />
       </head>
       <body style={{ margin: 0, minHeight: '100vh' }}>
-        <CSRProvider theme={data?.theme}>
+        <CSRProvider theme={data?.theme} tenantData={data}>
           <Providers>
             {children}
-            <SetCurrentTenant tenantData={data} />
             <GetInitialUserInformation user={session?.user} />
           </Providers>
         </CSRProvider>
