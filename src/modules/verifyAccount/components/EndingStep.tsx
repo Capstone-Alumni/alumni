@@ -3,7 +3,13 @@ import { Box, Paper, Typography } from '@mui/material';
 
 import DoneSVG from 'public/done.svg';
 
-const EndingStep = ({ reset }: { reset?: () => void }) => {
+const EndingStep = ({
+  reset,
+  loading,
+}: {
+  reset?: () => void;
+  loading: boolean;
+}) => {
   const theme = useTheme();
 
   return (
@@ -20,7 +26,7 @@ const EndingStep = ({ reset }: { reset?: () => void }) => {
         <Button variant="outlined" onClick={reset}>
           Điền lại
         </Button>
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" disabled={loading}>
           Nộp
         </Button>
       </Box>

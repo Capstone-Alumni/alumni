@@ -25,9 +25,13 @@ export type Step = {
 
 interface VerifyAccountPageProps {
   steps: Step[];
+  submitting: boolean;
 }
 
-const VeriticalLinearStepper = ({ steps }: VerifyAccountPageProps) => {
+const VeriticalLinearStepper = ({
+  steps,
+  submitting,
+}: VerifyAccountPageProps) => {
   const theme = useTheme();
   const { reset: resetForm } = useFormContext();
   const resetSelectedGrade = useResetRecoilState(selectedGradeAtom);
@@ -166,7 +170,7 @@ const VeriticalLinearStepper = ({ steps }: VerifyAccountPageProps) => {
             </Box>
           </>
         ) : (
-          <EndingStep reset={handleReset} />
+          <EndingStep reset={handleReset} loading={submitting} />
         )}
       </Paper>
     </Box>
