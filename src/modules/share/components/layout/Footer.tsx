@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Container, Typography, useTheme } from '@mui/material';
-import { Tenant } from '@redux/slices/currentTenantSlice';
+import { Tenant } from '@share/states';
 import Logo from '../Logo';
 
 const Footer = ({ tenant }: { tenant?: Tenant }) => {
@@ -79,7 +79,11 @@ const Footer = ({ tenant }: { tenant?: Tenant }) => {
           <Box sx={{ textAlign: 'right', maxWidth: '20rem' }}>
             <Typography variant="h6">Địa chỉ</Typography>
             <Typography color="GrayText" variant="body2" gutterBottom>
-              Lô E2a7, đường D1, khu công nghệ cao, Quận 9
+              {tenant?.address}
+              <br />
+              {tenant?.provinceName}
+              <br />
+              {tenant?.cityName}
             </Typography>
           </Box>
         </Box>

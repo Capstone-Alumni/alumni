@@ -20,7 +20,7 @@ const IntroductionSection = ({ tenant }: { tenant: Tenant }) => {
     >
       <Container
         sx={{
-          minHeight: '100vh',
+          minHeight: '80vh',
           display: 'flex',
           flexDirection: 'row',
           paddingTop: theme.spacing(10),
@@ -54,19 +54,6 @@ const IntroductionSection = ({ tenant }: { tenant: Tenant }) => {
               </Typography>
             </Typography>
           </Box>
-
-          {/* <Typography fontSize={18}>{tenant.description}</Typography> */}
-
-          {/* <Box>
-            <Link
-              href="/sign_in"
-              style={{ textDecoration: 'none', textUnderlineOffset: 0 }}
-            >
-              <Button variant="contained" size="large">
-                
-              </Button>
-            </Link>
-          </Box> */}
         </Box>
       </Container>
     </Box>

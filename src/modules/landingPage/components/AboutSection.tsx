@@ -2,7 +2,7 @@
 
 import { CardMedia } from '@mui/material';
 import { Box, Card, Container, Typography, useTheme } from '@mui/material';
-import { Tenant } from '@redux/slices/currentTenantSlice';
+import { Tenant } from '@share/states';
 import EditorPreview from '@share/components/editor/EditorPreview';
 
 const AboutSection = ({ tenant }: { tenant: Tenant }) => {
@@ -18,8 +18,8 @@ const AboutSection = ({ tenant }: { tenant: Tenant }) => {
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          paddingTop: theme.spacing(8),
-          paddingBottom: theme.spacing(10),
+          paddingTop: theme.spacing(4),
+          paddingBottom: theme.spacing(8),
         }}
       >
         <Box
