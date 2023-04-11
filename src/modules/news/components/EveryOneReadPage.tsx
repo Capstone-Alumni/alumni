@@ -58,69 +58,6 @@ const EveryOneReadPage = () => {
                 }}
               >
                 {newsListExceptCurrentNews.slice(0, 3).map((item: News) => (
-                  // <Card
-                  //   sx={{
-                  //     display: 'flex',
-                  //     marginTop: 3,
-                  //   }}
-                  //   key={row.id}
-                  // >
-                  //   <Typography
-                  //     sx={{
-                  //       color: '#bfbfbf',
-                  //       fontFamily: 'Merriweather',
-                  //       fontSize: '56px',
-                  //       fontWeight: 600,
-                  //       marginRight: '32px',
-                  //       width: '40px',
-                  //       marginLeft: 0.5,
-                  //     }}
-                  //   >
-                  //     {index + 1}
-                  //   </Typography>
-                  //   <Box
-                  //     sx={{
-                  //       height: 150,
-                  //       padding: 2,
-                  //       display: 'flex',
-                  //     }}
-                  //   >
-                  //     <Box
-                  //       sx={{
-                  //         width: 200,
-                  //         height: 100,
-                  //         backgroundImage: `url(${
-                  //           row.newsImageUrl
-                  //             ? row.newsImageUrl
-                  //             : getImageOfNews(row.content)
-                  //         })`,
-                  //         backgroundPosition: 'center',
-                  //         backgroundSize: 'cover',
-                  //         backgroundRepeat: 'no-repeat',
-                  //         margin: 'auto',
-                  //       }}
-                  //     />
-                  //     <Typography
-                  //       variant="h4"
-                  //       sx={{
-                  //         fontSize: '20px',
-                  //         fontWeight: 600,
-                  //         paddingLeft: 3,
-                  //         cursor: 'pointer',
-                  //       }}
-                  //     >
-                  //       <Link
-                  //         href={`/news/${row.id}`}
-                  //         sx={{
-                  //           color: 'black',
-                  //           textDecoration: 'none',
-                  //         }}
-                  //       >
-                  //         {row.title}
-                  //       </Link>
-                  //     </Typography>
-                  //   </Box>
-                  // </Card>
                   <NewsCard
                     key={item.id}
                     item={item}

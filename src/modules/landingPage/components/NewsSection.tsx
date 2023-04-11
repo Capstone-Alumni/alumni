@@ -33,7 +33,7 @@ const NewsSection = () => {
   const { data: newsListData, isLoading } = useGetNewsForPublicQuery({
     params: {
       page: 1,
-      limit: 3,
+      limit: 4,
       title: '',
       content: '',
     },
@@ -76,7 +76,7 @@ const NewsSection = () => {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'center',
-                gap: theme.spacing(6),
+                gap: theme.spacing(3),
               }}
             >
               {isLoading ? <LoadingIndicator /> : null}
@@ -84,10 +84,11 @@ const NewsSection = () => {
                 <NewsCard
                   key={item.id}
                   item={item}
+                  totalItems={4}
                   sx={{
                     width: '45%',
                     height: '300px',
-                    imgWidth: 500,
+                    imgWidth: 300,
                     imgHeight: 300,
                     typoVariant: 'h5',
                     marginImg: 2,
