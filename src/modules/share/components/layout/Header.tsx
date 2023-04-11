@@ -93,9 +93,11 @@ const Header = ({
                 <Logo url={tenant?.logo} />
               </IconButton>
             </Link>
-            <Typography variant="h6" component="div" color="primary">
-              {tenant?.name}
-            </Typography>
+            <Link href="/">
+              <Typography variant="h6" component="div" color="primary">
+                {tenant?.name}
+              </Typography>
+            </Link>
 
             <Divider
               orientation="vertical"
