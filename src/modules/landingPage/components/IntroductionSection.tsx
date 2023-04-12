@@ -55,6 +55,7 @@ const IntroductionSection = ({ tenant }: { tenant: Tenant }) => {
               <Typography
                 variant="h2"
                 component="span"
+                textTransform="capitalize"
                 sx={{ color: theme.palette.primary.light }}
               >
                 {tenant.name}

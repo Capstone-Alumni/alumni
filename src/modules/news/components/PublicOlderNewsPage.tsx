@@ -45,10 +45,9 @@ const PublicOlderNewsPage = ({
           className="older-news"
           sx={{
             display: 'flex',
-            gap: '60px',
-            marginTop: 4,
-            height: '250px',
-            marginBottom: 4,
+            gap: '1.5rem',
+            marginTop: 2,
+            marginBottom: 2,
           }}
         >
           {newsList.map((item: News) => (
