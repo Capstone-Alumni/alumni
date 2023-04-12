@@ -63,6 +63,9 @@ export default class ClassService {
         skip: (page - 1) * limit,
         take: limit,
         where: whereFilter,
+        orderBy: {
+          name: 'asc',
+        },
       }),
     ]);
 
