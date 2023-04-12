@@ -42,7 +42,11 @@ const AboutSection = ({ tenant }: { tenant: Tenant }) => {
             }}
           >
             <Box sx={{ maxWidth: '40vw' }}>
-              <Typography variant="h3" sx={{ mb: theme.spacing(2) }}>
+              <Typography
+                variant="h3"
+                sx={{ mb: theme.spacing(2) }}
+                color="primary"
+              >
                 {tenant.name}
               </Typography>
 
@@ -57,7 +61,7 @@ const AboutSection = ({ tenant }: { tenant: Tenant }) => {
                   height: theme.spacing(70),
                   width: theme.spacing(55),
                   backgroundImage: `url(${
-                    tenant.background2 ?? '/side_background.png'
+                    tenant.background3 ?? '/side_background.png'
                   })`,
                   backgroundSize: 'cover',
                 }}

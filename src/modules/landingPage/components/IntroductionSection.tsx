@@ -1,11 +1,17 @@
 'use client';
 
-import { Box, Container, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardMedia,
+  Container,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { Tenant } from '@share/states';
 
 const IntroductionSection = ({ tenant }: { tenant: Tenant }) => {
   const theme = useTheme();
-
   return (
     <Box
       sx={{
@@ -20,10 +26,11 @@ const IntroductionSection = ({ tenant }: { tenant: Tenant }) => {
     >
       <Container
         sx={{
-          minHeight: '80vh',
+          height: '80vh',
           display: 'flex',
           flexDirection: 'row',
-          paddingTop: theme.spacing(10),
+          alignItems: 'flex-start',
+          paddingTop: theme.spacing(15),
         }}
       >
         <Box
@@ -32,7 +39,7 @@ const IntroductionSection = ({ tenant }: { tenant: Tenant }) => {
             display: 'flex',
             flexDirection: 'column',
             gap: theme.spacing(2),
-            margin: 'auto',
+            margin: theme.spacing(8),
           }}
         >
           <Box
@@ -54,6 +61,33 @@ const IntroductionSection = ({ tenant }: { tenant: Tenant }) => {
               </Typography>
             </Typography>
           </Box>
+        </Box>
+        <Box
+          sx={{
+            width: '30vw',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: theme.spacing(2),
+            margin: 'auto',
+            height: '100%',
+          }}
+        >
+          <Card
+            raised
+            sx={{ height: '80%', borderRadius: '12px', width: '300px' }}
+          >
+            <CardMedia
+              title="about-school-page"
+              component="div"
+              sx={{
+                height: '100%',
+                width: '300px',
+                backgroundImage: `url(${
+                  tenant.background2 ?? '/side_background.png'
+                })`,
+              }}
+            />
+          </Card>
         </Box>
       </Container>
     </Box>

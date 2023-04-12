@@ -15,25 +15,12 @@ const Footer = ({ tenant }: { tenant?: Tenant }) => {
     >
       <Container
         sx={{
-          // position: 'relative',
           display: 'flex',
           flexDirection: 'column',
           gap: theme.spacing(2),
           paddingY: theme.spacing(4),
         }}
       >
-        {/* <Box
-          sx={{
-            position: 'absolute',
-            top: -30,
-            left: -30,
-            zIndex: 0,
-            width: 300,
-            height: 330,
-            clipPath: 'polygon(55% 2%, 89% 53%, 48% 100%, 6% 100%, 17% 25%)',
-            backgroundColor: theme.palette.primary.lighter,
-          }}
-        /> */}
         <Box
           sx={{
             display: 'flex',
@@ -57,23 +44,14 @@ const Footer = ({ tenant }: { tenant?: Tenant }) => {
                 gap: theme.spacing(1),
               }}
             >
-              <Logo url={tenant?.logo} sx={{ zIndex: 1 }} />
-              <Typography variant="h6">{tenant?.name}</Typography>
+              <Logo
+                url={tenant?.logo}
+                sx={{ zIndex: 1, borderRadius: '8px', overflow: 'hidden' }}
+              />
+              <Typography variant="h6" color="primary">
+                {tenant?.name}
+              </Typography>
             </Box>
-            {/* <Typography color="GrayText" variant="body2" gutterBottom>
-              Lô E2a7, đường D1, khu công nghệ cao, Quận 9, Thành phố Thủ Đức Lô
-              E2a7, đường D1, khu công nghệ cao, Quận 9, Thành phố Thủ Đức Lô
-              E2a7, đường D1, khu công nghệ ca
-            </Typography> */}
-            {/* <Box>
-              <Button
-                variant="outlined"
-                color="secondary"
-                startIcon={<FacebookIcon />}
-              >
-                Facebook
-              </Button>
-            </Box> */}
           </Box>
 
           <Box sx={{ textAlign: 'right', maxWidth: '20rem' }}>

@@ -84,23 +84,22 @@ const Header = ({
         <AppBar color="inherit">
           <Toolbar>
             <Link href="/">
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
+              <Box
+                sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
               >
-                <Logo url={tenant?.logo} />
-              </IconButton>
+                <Logo
+                  url={tenant?.logo}
+                  sx={{ borderRadius: '8px', overflow: 'hidden' }}
+                />
+                <Typography variant="h6" component="div" color="primary">
+                  {tenant?.name}
+                </Typography>
+              </Box>
             </Link>
-            <Typography variant="h6" component="div" color="primary">
-              {tenant?.name}
-            </Typography>
-
             <Divider
               orientation="vertical"
               flexItem
-              sx={{ marginX: theme.spacing(2) }}
+              sx={{ marginX: theme.spacing(2), opacity: '0' }}
             />
 
             <Box
