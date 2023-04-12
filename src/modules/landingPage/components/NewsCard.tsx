@@ -83,12 +83,6 @@ const NewsCard = ({
             >
               {formatDate(new Date(item.createdAt))}
             </Typography>
-            {/* <Link
-            href={`/news/${item.id}`}
-            style={{ textDecoration: 'underline' }}
-          >
-            <Typography variant="button">Đọc tiếp</Typography>
-          </Link> */}
           </Box>
         </CardContent>{' '}
       </Link>

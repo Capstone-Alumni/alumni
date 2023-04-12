@@ -50,68 +50,86 @@ const SectionTemplate = ({
   footer = true,
   headerContent,
   switchSvg,
+  onlyFooter,
 }: {
   svgLeft?: string;
   svgRight?: string;
   footer?: boolean;
-  headerContent: React.ReactNode;
+  headerContent?: React.ReactNode;
   children: React.ReactNode;
   switchSvg?: boolean;
+  onlyFooter?: boolean;
 }) => {
   const theme = useTheme();
 
   return (
     <>
-      <Box
-        sx={{
-          paddingX: theme.spacing(2),
-        }}
-      >
-        <Container
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            paddingTop: theme.spacing(0),
-            paddingBottom: theme.spacing(4),
-          }}
-        >
+      {onlyFooter ? (
+        <>
+          {children}
+          <StyledFooterSectionBox sx={{ marginTop: '5rem' }}>
+            <StyledLine />
+          </StyledFooterSectionBox>
+        </>
+      ) : (
+        <>
           <Box
             sx={{
+              paddingX: theme.spacing(2),
               width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: theme.spacing(2),
-              margin: 'auto',
             }}
           >
-            <StyledHeaderSectionBox>
-              {switchSvg ? (
-                <>
-                  <img
-                    src={svgRight ? svgRight : `./heading-img-1-right.svg`}
-                  />
-                  {headerContent}
-                  <img src={svgLeft ? svgLeft : `./heading-img-1-left.svg`} />
-                </>
-              ) : (
-                <>
-                  <img src={svgLeft ? svgLeft : `./heading-img-1-left.svg`} />
-                  {headerContent}
-                  <img
-                    src={svgRight ? svgRight : `./heading-img-1-right.svg`}
-                  />
-                </>
-              )}
-            </StyledHeaderSectionBox>
-            {children}
+            <Container
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                paddingTop: theme.spacing(0),
+                paddingBottom: theme.spacing(4),
+              }}
+            >
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: theme.spacing(2),
+                  margin: 'auto',
+                }}
+              >
+                <StyledHeaderSectionBox>
+                  {switchSvg ? (
+                    <>
+                      <img
+                        src={svgRight ? svgRight : `./heading-img-1-right.svg`}
+                      />
+                      {headerContent}
+                      <img
+                        src={svgLeft ? svgLeft : `./heading-img-1-left.svg`}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <img
+                        src={svgLeft ? svgLeft : `./heading-img-1-left.svg`}
+                      />
+                      {headerContent}
+                      <img
+                        src={svgRight ? svgRight : `./heading-img-1-right.svg`}
+                      />
+                    </>
+                  )}
+                </StyledHeaderSectionBox>
+                {children}
+              </Box>
+            </Container>
           </Box>
-        </Container>
-      </Box>
-      {footer && (
-        <StyledFooterSectionBox>
-          <StyledLine />
-        </StyledFooterSectionBox>
+          {footer && (
+            <StyledFooterSectionBox>
+              <StyledLine />
+            </StyledFooterSectionBox>
+          )}
+        </>
       )}
     </>
   );

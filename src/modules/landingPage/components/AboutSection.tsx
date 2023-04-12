@@ -46,6 +46,7 @@ const AboutSection = ({ tenant }: { tenant: Tenant }) => {
                 variant="h3"
                 sx={{ mb: theme.spacing(2) }}
                 color="primary"
+                textTransform="capitalize"
               >
                 {tenant.name}
               </Typography>

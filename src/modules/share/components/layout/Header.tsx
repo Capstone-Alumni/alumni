@@ -91,7 +91,12 @@ const Header = ({
                   url={tenant?.logo}
                   sx={{ borderRadius: '8px', overflow: 'hidden' }}
                 />
-                <Typography variant="h6" component="div" color="primary">
+                <Typography
+                  variant="h6"
+                  component="div"
+                  color="primary"
+                  textTransform="capitalize"
+                >
                   {tenant?.name}
                 </Typography>
               </Box>

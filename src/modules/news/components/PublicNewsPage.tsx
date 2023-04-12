@@ -102,19 +102,28 @@ const PublicNewsPage = () => {
                 <Box
                   sx={{
                     display: 'flex',
-                    width: '40%',
                     marginLeft: 'auto',
                   }}
                 >
                   <SearchInput
-                    placeholder="Tìm kiếm tin tức"
+                    placeholder="Tìm kiếm tin tức..."
                     onKeyDown={(event) => onPressSearchNews(event)}
                     value={titleSearch}
                     onChange={(event) => {
                       setTitleSearch(event.target.value);
                     }}
+                    sx={{
+                      width: '300px',
+                      '& .MuiInputBase-input': {
+                        width: 'calc(100%)',
+                        paddingRight: '1rem',
+                        '&:focus': {
+                          width: 'calc(100%)',
+                        },
+                      },
+                    }}
                   />
-                  <Button
+                  {/* <Button
                     sx={{
                       ml: 1,
                       borderRadius: 2,
@@ -124,7 +133,7 @@ const PublicNewsPage = () => {
                     onClick={handleSearchNews}
                   >
                     Tìm
-                  </Button>
+                  </Button> */}
                 </Box>
               ) : null}
             </Box>

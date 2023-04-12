@@ -101,7 +101,7 @@ const FeaturesSection = () => {
           </Stack>
         </SectionTemplate>
       ) : (
-        <>
+        <SectionTemplate onlyFooter>
           <Typography variant="h4" textAlign="center" sx={{ mb: 2, mt: 8 }}>
             Hãy <Link href="/verify_account">xác thực</Link> tài khoản để sử
             dụng nhiều tín năng hơn
@@ -134,7 +134,7 @@ const FeaturesSection = () => {
               <Typography variant="h4">Bài đăng</Typography>
             </StyledBox>
           </Stack>
-        </>
+        </SectionTemplate>
       )}
     </Container>
   );

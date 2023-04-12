@@ -77,6 +77,7 @@ const NewsSection = () => {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 gap: theme.spacing(3),
+                width: '100%',
               }}
             >
               {isLoading ? <LoadingIndicator /> : null}
@@ -86,7 +87,7 @@ const NewsSection = () => {
                   item={item}
                   totalItems={4}
                   sx={{
-                    width: '45%',
+                    width: '100%',
                     height: '300px',
                     imgWidth: 300,
                     imgHeight: 300,
