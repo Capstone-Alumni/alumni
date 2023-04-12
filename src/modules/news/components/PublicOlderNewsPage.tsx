@@ -45,7 +45,7 @@ const PublicOlderNewsPage = ({
           className="older-news"
           sx={{
             display: 'flex',
-            gap: '1.5rem',
+            gap: '0.75rem',
             marginTop: 2,
             marginBottom: 2,
           }}
@@ -55,7 +55,7 @@ const PublicOlderNewsPage = ({
               key={item.id}
               item={item}
               sx={{
-                width: '25%',
+                width: '33%',
                 height: '150px',
                 imgWidth: 350,
                 imgHeight: 150,

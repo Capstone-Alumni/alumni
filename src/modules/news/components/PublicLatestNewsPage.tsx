@@ -41,7 +41,7 @@ const PublicLatestNewsPage = ({ newsList }: { newsList: News[] }) => {
         className="next-four-news"
         sx={{
           display: 'flex',
-          gap: '1.5rem',
+          gap: '0.75rem',
           marginTop: 4,
         }}
       >
@@ -50,7 +50,7 @@ const PublicLatestNewsPage = ({ newsList }: { newsList: News[] }) => {
             key={item.id}
             item={item}
             sx={{
-              width: '33%',
+              width: '25%',
               height: '150px',
               imgWidth: 250,
               imgHeight: 150,

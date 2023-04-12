@@ -16,6 +16,10 @@ const PublicNewsCardItems = ({ item, sx }: { item: News; sx?: any }) => {
     <Box
       sx={{
         width: sx.width,
+        '&:hover': {
+          opacity: '0.85',
+          transition: 'all 0.2s',
+        },
       }}
     >
       <Link
@@ -31,7 +35,7 @@ const PublicNewsCardItems = ({ item, sx }: { item: News; sx?: any }) => {
         <Box>
           <Typography
             sx={{
-              marginTop: sx.marginImg,
+              marginTop: '0.5rem',
               cursor: 'pointer',
               wordBreak: 'break-word',
             }}
