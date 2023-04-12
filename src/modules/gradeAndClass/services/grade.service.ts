@@ -47,18 +47,6 @@ export default class GradeService {
       throw new Error('not exist');
     }
 
-    const nextGrade = await tenantPrisma.grade.findFirst({
-      where: {
-        startYear: grade?.startYear + 1,
-        endYear: grade?.endYear + 1,
-        archived: false,
-      },
-    });
-
-    if (nextGrade) {
-      throw new Error('grade existed');
-    }
-
     const newGrade = await tenantPrisma.grade.upsert({
       where: {
         startYear_endYear: {
@@ -72,7 +60,6 @@ export default class GradeService {
         endYear: grade?.endYear + 1,
       },
       update: {
-        code: `K${grade?.endYear + 1}`,
         archived: false,
       },
     });
@@ -82,6 +69,7 @@ export default class GradeService {
         name: c.name,
         gradeId: newGrade.id,
       })),
+      skipDuplicates: true,
     });
 
     await tenantPrisma.$disconnect();
@@ -113,17 +101,6 @@ export default class GradeService {
         endYear: parseInt(row.endYear),
       })),
       skipDuplicates: true,
-    });
-
-    await tenantPrisma.grade.updateMany({
-      where: {
-        startYear: {
-          in: gradeStartYearList,
-        },
-      },
-      data: {
-        archived: false,
-      },
     });
 
     const gradeListData = await tenantPrisma.grade.findMany({
@@ -207,7 +184,7 @@ export default class GradeService {
           },
         },
         orderBy: {
-          createdAt: 'desc',
+          endYear: 'desc',
         },
       }),
     ]);

@@ -47,6 +47,7 @@ export default class GradeController {
         data: newGrade,
       });
     } catch (error) {
+      console.log(error);
       if (error.message?.includes('not exist')) {
         return res.status(400).json({
           status: false,
