@@ -73,7 +73,7 @@ const useApi = <Params, Data, Err>(
         headers: {
           accept: 'application/json',
           'Content-Type': 'application/json',
-          'tenant-id': session?.tenant?.tenantId,
+          'tenant-id': session?.currentTenant?.tenantId,
           'tenant-userid': session?.user.id, // enhance here
           ...headers,
         },
@@ -111,8 +111,6 @@ const useApi = <Params, Data, Err>(
       onError,
     },
   );
-
-  console.log(apiName, dataAtom, data);
 
   // cache
   useEffect(

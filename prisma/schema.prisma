@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["filteredRelationCount"]
 }
 
 datasource db {
@@ -8,47 +9,67 @@ datasource db {
 }
 
 model Grade {
-  id            String          @id @default(cuid())
-  archived      Boolean         @default(false)
-  createdAt     DateTime        @default(now()) @map("created_at")
-  updatedAt     DateTime        @default(now()) @updatedAt @map("updated_at")
-  code          String          @unique
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  code      String? @unique
+  startYear Int     @map("start_year")
+  endYear   Int     @map("end_year")
+
   alumClasses   AlumClass[]
   accessRequest AccessRequest[]
 
+  @@unique([startYear, endYear])
   @@map("grades")
 }
 
 model AlumClass {
-  id            String          @id @default(cuid())
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  name String
+
   gradeId       String          @map("grade_id")
-  archived      Boolean         @default(false)
-  createdAt     DateTime        @default(now()) @map("created_at")
-  updatedAt     DateTime        @default(now()) @updatedAt @map("updated_at")
-  name          String
-  description   String?
-  grade         Grade           @relation(fields: [gradeId], references: [id])
-  informations  Information[]
-  accessRequest AccessRequest[]
+  grade         Grade           @relation(fields: [gradeId], references: [id], onDelete: Cascade)
+  informations  Information[] // bỏ
+  accessRequest AccessRequest[] // bỏ
+
+  alumniToClass AlumniToClass[]
 
   @@unique([gradeId, name])
-
   @@map("alum_classes")
 }
 
+model AlumniToClass {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  alumClassId String    @map("alum_class_id")
+  alumClass   AlumClass @relation(fields: [alumClassId], references: [id])
+  alumniId    String    @map("alumni_id")
+  alumni      Alumni    @relation(fields: [alumniId], references: [id])
+
+  @@map("alumni_to_class")
+}
+
 model Alumni {
-  id           String @id @default(cuid())
-  tenantId     String @map("tenant_id")
-  accountId    String @map("account_id") @unique
-  accountEmail String @map("account_email")
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  accessLevel  AccessLevel  @default(ALUMNI) @map("access_level")
-  accessStatus AccessStatus @default(PENDING) @map("access_status")
+  tenantId  String  @map("tenant_id")
+  accountId String? @unique @map("account_id")
 
-  archived    Boolean      @default(false)
-  createdAt   DateTime     @default(now()) @map("created_at")
-  updatedAt   DateTime     @default(now()) @updatedAt @map("updated_at")
   information Information?
+
+  alumniToClass AlumniToClass[]
 
   @@map("alumni")
 }
@@ -78,7 +99,7 @@ model Information {
   fullName             String?
   avatarUrl            String?            @map("avatar_url")
   coverImageUrl        String?            @map("cover_image_url")
-  email                String             @unique @map("email")
+  email                String?            @unique @map("email")
   phone                String?
   phonePublicity       ScopePublicity     @default(PRIVATE) @map("phone_publicity")
   facebookUrl          String?            @map("facebook_url")

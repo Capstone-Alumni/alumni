@@ -1,5 +1,6 @@
 import useApi from 'src/modules/share/hooks/useApi';
 import { ClassFormValues } from '../components/ClassForm';
+import { toast } from 'react-toastify';
 
 type CreateClassParams = {
   gradeId: string;
@@ -14,14 +15,22 @@ const useCreateClass = () => {
     CreateClassParams,
     CreateClassResponse,
     CreateClassError
-  >('createClass', ({ gradeId, name }) => ({
-    method: 'POST',
-    url: '/api/classes',
-    data: {
-      name,
-      gradeId,
+  >(
+    'createClass',
+    ({ gradeId, name }) => ({
+      method: 'POST',
+      url: '/api/classes',
+      data: {
+        name,
+        gradeId,
+      },
+    }),
+    {
+      onError: () => {
+        toast.error('Xảy ra lỗi, vui lòng thử lại');
+      },
     },
-  }));
+  );
 
   return {
     isLoading,

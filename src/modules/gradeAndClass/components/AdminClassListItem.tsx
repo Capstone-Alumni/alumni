@@ -32,6 +32,9 @@ const AdminClassListItem = ({
           <Typography>{data.name}</Typography>
         </TableCell>
         <TableCell align="left">
+          <Typography>{data.name}</Typography>
+        </TableCell>
+        <TableCell align="left">
           <Typography>{formatDate(new Date(data.createdAt))}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>

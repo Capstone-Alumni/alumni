@@ -12,7 +12,7 @@ export const extractTenantId = async (
   res: NextApiResponse,
   next: NextHandler,
 ) => {
-  const tenantId = req.cookies['tenant-id'];
+  const tenantId = req.headers['tenant-id'] as string;
 
   if (!tenantId) {
     throw new Error('unauthorized');

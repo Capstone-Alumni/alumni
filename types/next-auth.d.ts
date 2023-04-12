@@ -19,7 +19,7 @@ declare module 'next-auth' {
     id?: string;
     accessToken?: string;
     user: User;
-    tenant?: Tenant;
+    currentTenant?: Tenant;
   }
 
   interface User extends NextUser {

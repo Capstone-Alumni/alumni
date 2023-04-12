@@ -4,15 +4,16 @@ import { Box, Button, Typography, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import AdminGradeListTable from './AdminGradeListTable';
 import { useState } from 'react';
-import GradeForm, { GradeFormValues } from './GradeForm';
+import GradeForm from './GradeForm';
 
-import useCreateGrade from '../hooks/useCreateGrade';
+import useCreateGrade, { CreateGradeParams } from '../hooks/useCreateGrade';
 import useGetGradeList from '../hooks/useGetGradeList';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import useDeleteGradeById from '../hooks/useDeleteGradeById';
 import useUpdateGradeById from '../hooks/useUpdateGradeById';
 import { useRecoilState } from 'recoil';
 import { getGradeListParamsAtom } from '../state';
+import AdminClassListPanel from './AdminClassListPanel';
 
 const AdminGradeListPage = () => {
   const theme = useTheme();
@@ -29,7 +30,7 @@ const AdminGradeListPage = () => {
     isLoading: isGettingGrade,
   } = useGetGradeList();
 
-  const onAddGrade = async (values: GradeFormValues) => {
+  const onAddGrade = async (values: CreateGradeParams) => {
     await createGrade(values);
     reload();
   };
@@ -39,8 +40,11 @@ const AdminGradeListPage = () => {
     reload();
   };
 
-  const onUpdate = async (gradeId: string, { code }: GradeFormValues) => {
-    await updateGradeById({ gradeId, code });
+  const onUpdate = async (
+    gradeId: string,
+    { code, startYear, endYear }: CreateGradeParams,
+  ) => {
+    await updateGradeById({ gradeId, code, startYear, endYear });
     reload();
   };
 
@@ -64,18 +68,22 @@ const AdminGradeListPage = () => {
         }}
       >
         <Typography variant="h3">Niên khoá</Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => setOpenForm(true)}
-        >
-          Thêm khoá mới
-        </Button>
+        {openForm ? null : (
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => setOpenForm(true)}
+          >
+            Thêm khoá mới
+          </Button>
+        )}
       </Box>
 
       {openForm ? (
         <GradeForm onSubmit={onAddGrade} onClose={() => setOpenForm(false)} />
       ) : null}
+
+      <AdminClassListPanel />
 
       <Box
         sx={{

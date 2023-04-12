@@ -10,6 +10,7 @@ import 'quill/dist/quill.snow.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
+import SetCurrentTenant from '@share/helpers/SetCurrentTenant';
 
 export default async function RootLayout({
   children,
@@ -30,6 +31,7 @@ export default async function RootLayout({
         <CSRProvider theme={data?.theme} tenantData={data}>
           <Providers>
             {children}
+            <SetCurrentTenant tenantData={data} />
             <GetInitialUserInformation user={session?.user} />
           </Providers>
         </CSRProvider>

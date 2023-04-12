@@ -29,6 +29,13 @@ export default class ClassController {
         });
       }
 
+      if (error.message?.includes('Unique constraint')) {
+        return res.status(400).json({
+          status: false,
+          message: 'New class is existed',
+        });
+      }
+
       if (error.message?.includes('grade')) {
         return res.status(400).json({
           status: false,

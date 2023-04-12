@@ -3,6 +3,12 @@ export type Grade = {
   id: string;
   code: string;
   createdAt: string | Date;
+  startYear: number | string;
+  endYear: number | string;
+  _count?: {
+    alumClasses: number;
+  };
+  alumClasses?: Class[];
 };
 
 export type Class = {
@@ -54,10 +60,14 @@ export type GetGradeListServiceProps = {
 
 export type CreateGradeServiceProps = {
   code: string;
+  startYear: string;
+  endYear: string;
 };
 
 export type UpdateGradeInfoByIdServiceProps = {
   code?: string;
+  startYear?: string;
+  endYear?: string;
 };
 
 // classes

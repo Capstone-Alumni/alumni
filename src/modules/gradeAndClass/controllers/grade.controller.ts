@@ -6,6 +6,68 @@ import { ApiErrorResponse, ApiSuccessResponse } from 'src/types';
 import GradeService from '../services/grade.service';
 
 export default class GradeController {
+  static create = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const prisma = await getPrismaClient(req.tenantId);
+      const newGrade = await GradeService.create(prisma, req.body);
+
+      return res.status(201).json({
+        status: true,
+        data: newGrade,
+      });
+    } catch (error) {
+      if (
+        error.message?.includes('existed') ||
+        error.message?.includes('Unique constraint')
+      ) {
+        return res.status(400).json({
+          status: false,
+          message: 'Grade is existed',
+        });
+      }
+
+      throw error;
+    }
+  };
+
+  static clone = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const { id } = req.query;
+      const prisma = await getPrismaClient(req.tenantId);
+      const newGrade = await GradeService.clone(prisma, id as string);
+
+      return res.status(201).json({
+        status: true,
+        data: newGrade,
+      });
+    } catch (error) {
+      if (error.message?.includes('not exist')) {
+        return res.status(400).json({
+          status: false,
+          message: 'Grade is not exist',
+        });
+      }
+
+      if (
+        error.message?.includes('existed') ||
+        error.message?.includes('Unique constraint')
+      ) {
+        return res.status(400).json({
+          status: false,
+          message: 'New grade is existed',
+        });
+      }
+
+      throw error;
+    }
+  };
+
   static getPublicList = async (
     req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
@@ -24,31 +86,6 @@ export default class GradeController {
       status: true,
       data: gradeListData,
     });
-  };
-
-  static create = async (
-    req: NextApiRequestWithTenant,
-    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
-  ) => {
-    try {
-      const { code } = req.body;
-      const prisma = await getPrismaClient(req.tenantId);
-      const newGrade = await GradeService.create(prisma, { code });
-
-      return res.status(201).json({
-        status: true,
-        data: newGrade,
-      });
-    } catch (error) {
-      if (error.message?.includes('existed')) {
-        return res.status(400).json({
-          status: false,
-          message: "Grade's code is existed",
-        });
-      }
-
-      throw error;
-    }
   };
 
   static createMany = async (

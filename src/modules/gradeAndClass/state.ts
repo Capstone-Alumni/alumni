@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { GetClassListParams, GetGradeListParams } from './types';
+import { GetClassListParams, GetGradeListParams, Grade } from './types';
 
 export const getGradeListParamsAtom = atom<GetGradeListParams>({
   key: 'getGradeListParams',
@@ -14,8 +14,13 @@ export const getGradeListParamsAtom = atom<GetGradeListParams>({
 export const getClassListParamsAtom = atom<GetClassListParams>({
   key: 'getClassListParams',
   default: {
-    limit: 999,
+    limit: 10,
     name: '',
     page: 1,
   },
+});
+
+export const selectedGradeAtom = atom<Grade | null>({
+  key: 'selectedGradeAtom',
+  default: null,
 });
