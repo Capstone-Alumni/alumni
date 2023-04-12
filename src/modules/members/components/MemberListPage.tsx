@@ -18,7 +18,7 @@ import { currentTenantDataAtom } from '@share/states';
 const MemberListPage = () => {
   const theme = useTheme();
   const [openForm, setOpenForm] = useState(false);
-  const { id: tenantId } = useRecoilValue(currentTenantDataAtom);
+  const { tenantId } = useRecoilValue(currentTenantDataAtom);
 
   const [params, setParams] = useRecoilState(getMemberListParamsAtom);
 
@@ -41,11 +41,8 @@ const MemberListPage = () => {
     reload();
   };
 
-  const onUpdate = async (
-    memberId: string,
-    { password, accessLevel }: MemberFormValues,
-  ) => {
-    await updateMemberById({ memberId, password, accessLevel });
+  const onUpdate = async (memberId: string, data: MemberFormValues) => {
+    await updateMemberById({ memberId, ...data });
     reload();
   };
 
@@ -77,16 +74,18 @@ const MemberListPage = () => {
         }}
       >
         <Typography variant="h3" sx={{ flex: 1 }}>
-          Cựu học sinh
+          Thành viên
         </Typography>
 
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => setOpenForm(true)}
-        >
-          Thêm
-        </Button>
+        {openForm ? null : (
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => setOpenForm(true)}
+          >
+            Thêm
+          </Button>
+        )}
       </Box>
 
       {openForm ? (

@@ -1,10 +1,9 @@
 import useApi from 'src/modules/share/hooks/useApi';
+import { MemberFormValues } from '../components/MemberForm';
 
 type UpdateMemberByIdDataParams = {
   memberId: string;
-  accessLevel: string;
-  password: string;
-};
+} & MemberFormValues;
 
 type UpdateMemberByIdDataResponse = unknown;
 
@@ -15,13 +14,10 @@ const useUpdateMemberById = () => {
     UpdateMemberByIdDataParams,
     UpdateMemberByIdDataResponse,
     UpdateMemberByIdDataError
-  >('updateMemberById', ({ memberId, password, accessLevel }) => ({
+  >('updateMemberById', ({ memberId, ...data }) => ({
     method: 'PUT',
     url: `/platformHost/api/members/${memberId}`,
-    data: {
-      password,
-      accessLevel,
-    },
+    data: data,
   }));
 
   return {

@@ -65,7 +65,7 @@ const GRADE_NAV_ITEM = {
 };
 const USER_NAV_ITEM = {
   id: 'user',
-  title: 'Mời cựu học sinh',
+  title: 'Mời thành viên',
   icon: 'ph:student-bold',
   link: '/admin/config/members',
 };

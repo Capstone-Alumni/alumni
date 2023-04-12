@@ -15,6 +15,8 @@ export const requiredEmailValidator = yup
   .email('Email không hợp lệ')
   .required('Bắt buộc');
 
+export const emailValidator = yup.string().email('Email không hợp lệ');
+
 export const requiredPasswordValidator = yup
   .string()
   .matches(

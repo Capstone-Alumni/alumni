@@ -106,12 +106,9 @@ export default class ClassService {
   };
 
   static deleteById = async (tenantPrisma: PrismaClient, id: string) => {
-    const classDeleted = await tenantPrisma.alumClass.update({
+    const classDeleted = await tenantPrisma.alumClass.delete({
       where: {
         id: id,
-      },
-      data: {
-        archived: true,
       },
     });
 

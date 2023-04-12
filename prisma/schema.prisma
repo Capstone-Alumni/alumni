@@ -96,7 +96,7 @@ model AccessRequest {
 model Information {
   id                   String             @id @default(cuid())
   bio                  String?
-  fullName             String?
+  fullName             String?            @map("full_name")
   avatarUrl            String?            @map("avatar_url")
   coverImageUrl        String?            @map("cover_image_url")
   email                String?            @unique @map("email")
@@ -107,7 +107,7 @@ model Information {
   dateOfBirth          DateTime?          @map("date_of_birth")
   dateOfBirthPublicity ScopePublicity     @default(PRIVATE) @map("date_of_birth_publicity")
   alumClassId          String?            @map("alum_class_id")
-  userId               String             @unique
+  alumniId             String?            @unique @map("alumni_id")
   careerPublicity      ScopePublicity     @default(PRIVATE) @map("career_publicity")
   educationPublicity   ScopePublicity     @default(PRIVATE) @map("education_publicity")
   alumClass            AlumClass?         @relation(fields: [alumClassId], references: [id])
@@ -128,7 +128,7 @@ model Information {
   FundReport             FundReport[]
   ping                   Ping[]
 
-  alumni Alumni @relation(fields: [userId], references: [accountId])
+  alumni Alumni? @relation(fields: [alumniId], references: [id])
 
   @@map("informations")
 }
@@ -211,7 +211,7 @@ model Event {
   publicParticipant Boolean     @default(false) @map("public_participant")
 
   userId          String      @map("user_id")
-  hostInformation Information @relation(fields: [userId], references: [userId])
+  hostInformation Information @relation(fields: [userId], references: [alumniId])
 
   eventParticipants EventParticipant[]
   eventInterests    EventInterest[]
@@ -229,7 +229,7 @@ model EventParticipant {
   event   Event  @relation(fields: [eventId], references: [id])
 
   userId                 String
-  participantInformation Information @relation(fields: [userId], references: [userId])
+  participantInformation Information @relation(fields: [userId], references: [alumniId])
 
   @@map("event_participants")
 }
@@ -244,7 +244,7 @@ model EventInterest {
   event   Event  @relation(fields: [eventId], references: [id])
 
   userId          String
-  userInformation Information @relation(fields: [userId], references: [userId])
+  userInformation Information @relation(fields: [userId], references: [alumniId])
 
   @@map("event_interests")
 }
@@ -265,7 +265,7 @@ model Fund {
   publicParticipant Boolean     @default(false) @map("public_participant")
 
   userId          String      @map("user_id")
-  hostInformation Information @relation(fields: [userId], references: [userId])
+  hostInformation Information @relation(fields: [userId], references: [alumniId])
 
   fundSaved        FundSaved[]
   fundTransactions FundTransaction[]
@@ -284,7 +284,7 @@ model FundSaved {
   fund   Fund   @relation(fields: [fundId], references: [id])
 
   userId          String      @map("user_id")
-  userInformation Information @relation(fields: [userId], references: [userId])
+  userInformation Information @relation(fields: [userId], references: [alumniId])
 
   @@map("fund_saved")
 }
@@ -317,7 +317,7 @@ model FundTransaction {
   fundId          String      @map("fund_id")
   userId          String      @map("user_id")
   fund            Fund        @relation(fields: [fundId], references: [id])
-  userInformation Information @relation(fields: [userId], references: [userId])
+  userInformation Information @relation(fields: [userId], references: [alumniId])
 
   @@map("fund_transactions")
 }
@@ -335,7 +335,7 @@ model FundReport {
   userId String @map("user_id")
 
   fund            Fund        @relation(fields: [fundId], references: [id])
-  userInformation Information @relation(fields: [userId], references: [userId])
+  userInformation Information @relation(fields: [userId], references: [alumniId])
 
   @@map("fund_reports")
 }
@@ -350,7 +350,7 @@ model Post {
   publicity AccessLevel @default(ALUMNI)
 
   authorId          String      @map("author_id")
-  authorInformation Information @relation(fields: [authorId], references: [userId])
+  authorInformation Information @relation(fields: [authorId], references: [alumniId])
 
   postComments PostComment[]
   postLikes    PostLike[]
@@ -369,7 +369,7 @@ model PostComment {
   authorId String @map("author_id")
   postId   String @map("post_id")
 
-  authorInformation Information @relation(fields: [authorId], references: [userId])
+  authorInformation Information @relation(fields: [authorId], references: [alumniId])
   post              Post        @relation(fields: [postId], references: [id])
 
   @@map("post_comments")
@@ -384,7 +384,7 @@ model PostLike {
   authorId String @map("author_id")
   postId   String @map("post_id")
 
-  authorInformation Information @relation(fields: [authorId], references: [userId])
+  authorInformation Information @relation(fields: [authorId], references: [alumniId])
   post              Post        @relation(fields: [postId], references: [id])
 
   @@unique([authorId, postId])
@@ -429,7 +429,7 @@ model RecruitmentApplication {
   recruitment   Recruitment @relation(fields: [recruitmentId], references: [id])
 
   applicationOwnerId   String
-  applicationOwnerInfo Information @relation(fields: [applicationOwnerId], references: [userId])
+  applicationOwnerInfo Information @relation(fields: [applicationOwnerId], references: [alumniId])
 
   @@map("recruitment_applications")
 }
@@ -457,7 +457,7 @@ model Ping {
   pingAlumniInfoId String
   pingerInfoId     String
 
-  pingerInfo Information? @relation(fields: [pingerInfoId], references: [userId])
+  pingerInfo Information? @relation(fields: [pingerInfoId], references: [alumniId])
 
   @@map("pings")
 }
