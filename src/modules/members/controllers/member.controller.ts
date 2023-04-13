@@ -12,100 +12,17 @@ export default class MemberController {
   ) => {
     try {
       const prisma = await getPrismaClient(req.tenantId);
-      const newClass = await MemberService.create(prisma, req.body);
+      const newMember = await MemberService.create(prisma, req.body);
 
       return res.status(201).json({
         status: true,
-        data: newClass,
+        data: newMember,
       });
     } catch (error) {
       if (error.message?.includes('invalid')) {
         return res.status(400).json({
           status: false,
           message: 'Invalid data',
-        });
-      }
-
-      if (error.message?.includes('tenant')) {
-        return res.status(400).json({
-          status: false,
-          message: 'Tenant is not exist',
-        });
-      }
-
-      if (error.message?.includes('member already existed')) {
-        return res.status(400).json({
-          status: false,
-          message: 'Member is already existed',
-        });
-      }
-
-      throw error;
-    }
-  };
-
-  static createMany = async (
-    req: NextApiRequest,
-    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
-  ) => {
-    try {
-      const { data: memberListData, tenantId } = req.body;
-      const newClass = await MemberService.createMany({
-        tenantId: tenantId as string,
-        memberListData,
-      });
-
-      return res.status(201).json({
-        status: true,
-        data: newClass,
-      });
-    } catch (error) {
-      if (error.message?.includes('invalid')) {
-        return res.status(400).json({
-          status: false,
-          message: 'Invalid email/password',
-        });
-      }
-
-      if (error.message?.includes('tenant')) {
-        return res.status(400).json({
-          status: false,
-          message: 'Tenant is not exist',
-        });
-      }
-
-      if (error.message?.includes('member already existed')) {
-        return res.status(400).json({
-          status: false,
-          message: 'Member is already existed',
-        });
-      }
-
-      throw error;
-    }
-  };
-
-  static externalCreate = async (
-    req: NextApiRequest,
-    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
-  ) => {
-    try {
-      const { email, password, tenantId } = req.body;
-      const newClass = await MemberService.externalCreate({
-        tenantId: tenantId as string,
-        email,
-        password,
-      });
-
-      return res.status(201).json({
-        status: true,
-        data: newClass,
-      });
-    } catch (error) {
-      if (error.message?.includes('invalid')) {
-        return res.status(400).json({
-          status: false,
-          message: 'Invalid email/password',
         });
       }
 
@@ -156,19 +73,6 @@ export default class MemberController {
     }
   };
 
-  // static getById = async (
-  //   req: NextApiRequest,
-  //   res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
-  // ) => {
-  //   const { id } = req.query;
-  //   const classGotten = await MemberService.getById(id as string);
-
-  //   return res.status(200).json({
-  //     status: true,
-  //     data: classGotten,
-  //   });
-  // };
-
   static updateInfoById = async (
     req: NextApiRequest,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
@@ -182,19 +86,6 @@ export default class MemberController {
     return res.status(200).json({
       status: true,
       data: classUpdated,
-    });
-  };
-
-  static deleteById = async (
-    req: NextApiRequest,
-    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
-  ) => {
-    const { id } = req.query;
-    const classDeleted = await MemberService.deleteById(id as string);
-
-    return res.status(200).json({
-      status: true,
-      data: classDeleted,
     });
   };
 }
