@@ -38,13 +38,16 @@ const DiscoverEventListPage = () => {
   return (
     <>
       <form
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
-          setParams(prevParams => ({ ...prevParams, title: search }));
+          setParams((prevParams) => ({ ...prevParams, title: search }));
         }}
         style={{ marginBottom: theme.spacing(2) }}
       >
-        <SearchInput value={search} onChange={e => setSearch(e.target.value)} />
+        <SearchInput
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <button type="submit" style={{ display: 'none' }}></button>
       </form>
 
@@ -59,8 +62,7 @@ const DiscoverEventListPage = () => {
               mb: 2,
             }}
           >
-            {data?.data.items.map(item => {
-              const isJoined = item.eventParticipants.length > 0;
+            {data?.data.items.map((item) => {
               const isInterested = item.eventInterests.length > 0;
 
               return (
@@ -68,16 +70,6 @@ const DiscoverEventListPage = () => {
                   key={item.id}
                   data={item}
                   actions={[
-                    <Link
-                      key="edit-btn"
-                      href={`/events/${item.id}`}
-                      style={{ width: '100%', marginRight: theme.spacing(1) }}
-                      prefetch={false}
-                    >
-                      <Button fullWidth variant="outlined">
-                        Tìm hiểu thêm
-                      </Button>
-                    </Link>,
                     isInterested ? (
                       <IconButton
                         key="unsave-btn"
@@ -113,7 +105,7 @@ const DiscoverEventListPage = () => {
             )}
             page={params.page}
             onChange={(_, nextPage) => {
-              setParams(prevParams => ({ ...prevParams, page: nextPage }));
+              setParams((prevParams) => ({ ...prevParams, page: nextPage }));
             }}
           />
         </>

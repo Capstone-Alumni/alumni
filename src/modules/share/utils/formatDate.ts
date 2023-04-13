@@ -6,3 +6,9 @@ export const formatDate = (date: Date, formatTime = 'dd MMMM, yyyy') => {
     locale: vi,
   });
 };
+
+export const formatDateEvent = (date: Date, formatTime = 'EEEE, dd MMMM') => {
+  return format(date, formatTime, {
+    locale: vi,
+  });
+};

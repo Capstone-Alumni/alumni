@@ -72,24 +72,7 @@ const IntroductionSection = ({ tenant }: { tenant: Tenant }) => {
             margin: 'auto',
             height: '100%',
           }}
-        >
-          <Card
-            raised
-            sx={{ height: '80%', borderRadius: '12px', width: '300px' }}
-          >
-            <CardMedia
-              title="about-school-page"
-              component="div"
-              sx={{
-                height: '100%',
-                width: '300px',
-                backgroundImage: `url(${
-                  tenant.background2 ?? '/side_background.png'
-                })`,
-              }}
-            />
-          </Card>
-        </Box>
+        ></Box>
       </Container>
     </Box>
   );
