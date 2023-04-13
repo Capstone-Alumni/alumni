@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Container, useTheme, styled } from '@mui/material';
+import { Box, Container, styled, useTheme } from '@mui/material';
 
 const StyledHeaderSectionBox = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -101,21 +101,21 @@ const SectionTemplate = ({
                   {switchSvg ? (
                     <>
                       <img
-                        src={svgRight ? svgRight : `./heading-img-1-right.svg`}
+                        src={svgRight ? svgRight : './heading-img-1-right.svg'}
                       />
                       {headerContent}
                       <img
-                        src={svgLeft ? svgLeft : `./heading-img-1-left.svg`}
+                        src={svgLeft ? svgLeft : './heading-img-1-left.svg'}
                       />
                     </>
                   ) : (
                     <>
                       <img
-                        src={svgLeft ? svgLeft : `./heading-img-1-left.svg`}
+                        src={svgLeft ? svgLeft : './heading-img-1-left.svg'}
                       />
                       {headerContent}
                       <img
-                        src={svgRight ? svgRight : `./heading-img-1-right.svg`}
+                        src={svgRight ? svgRight : './heading-img-1-right.svg'}
                       />
                     </>
                   )}

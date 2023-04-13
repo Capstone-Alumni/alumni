@@ -31,7 +31,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
       title: initialData?.title ?? '',
       content: initialData?.content ?? '',
       tagsNews:
-        initialData?.tagsNews?.map((tag) => tag.tagName as string) ?? undefined,
+        initialData?.tagsNews?.map(tag => tag.tagName as string) ?? undefined,
     },
   });
   const [hasValueTitle, setHasValueTitle] = useState(false);
@@ -46,7 +46,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
   const onAddNews = async (values: CreateNewsProps) => {
     await createNews(values)
       .unwrap()
-      .then((result) => {
+      .then(result => {
         if (result.status) {
           toast.success('Đăng tin thành công');
           const { id } = result.data;
@@ -64,7 +64,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
     };
     await updateNews(updateNewsParams)
       .unwrap()
-      .then((result) => {
+      .then(result => {
         if (result.status) {
           toast.success('Cập nhật tin thành công');
           handleCancel();
@@ -179,7 +179,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
                   freeSolo
                   autoHighlight
                   limitTags={2}
-                  renderInput={(params) => (
+                  renderInput={params => (
                     <TextField
                       {...params}
                       label="Thẻ tin tức"

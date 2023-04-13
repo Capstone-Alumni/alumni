@@ -107,9 +107,9 @@ const PublicNewsPage = () => {
                 >
                   <SearchInput
                     placeholder="Tìm kiếm tin tức..."
-                    onKeyDown={(event) => onPressSearchNews(event)}
+                    onKeyDown={event => onPressSearchNews(event)}
                     value={titleSearch}
-                    onChange={(event) => {
+                    onChange={event => {
                       setTitleSearch(event.target.value);
                     }}
                     sx={{
