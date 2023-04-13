@@ -55,6 +55,8 @@ model AlumniToClass {
   alumniId    String    @map("alumni_id")
   alumni      Alumni    @relation(fields: [alumniId], references: [id])
 
+  @@unique([alumClassId, alumniId])
+
   @@map("alumni_to_class")
 }
 
