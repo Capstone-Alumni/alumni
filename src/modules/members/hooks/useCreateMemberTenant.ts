@@ -2,24 +2,24 @@ import { toast } from 'react-toastify';
 import useApi from 'src/modules/share/hooks/useApi';
 import { MemberFormValues } from '../components/MemberForm';
 
-type CreateMemberParams = MemberFormValues & {
+type CreateMemberTenantParams = MemberFormValues & {
   tenantId: string;
 };
 
-type CreateMemberResponse = unknown;
+type CreateMemberTenantResponse = unknown;
 
-type CreateMemberError = unknown;
+type CreateMemberTenantError = unknown;
 
-const useCreateMember = () => {
+const useCreateMemberTenant = () => {
   const { fetchApi, isLoading } = useApi<
-    CreateMemberParams,
-    CreateMemberResponse,
-    CreateMemberError
+    CreateMemberTenantParams,
+    CreateMemberTenantResponse,
+    CreateMemberTenantError
   >(
-    'createMember',
+    'createMemberTenant',
     data => ({
       method: 'POST',
-      url: '/platformHost/api/members',
+      url: '/api/members',
       data,
     }),
     {
@@ -31,8 +31,8 @@ const useCreateMember = () => {
 
   return {
     isLoading,
-    createMember: fetchApi,
+    createMemberTenant: fetchApi,
   };
 };
 
-export default useCreateMember;
+export default useCreateMemberTenant;

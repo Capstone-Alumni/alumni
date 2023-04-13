@@ -1,3 +1,5 @@
+import { Class } from '../gradeAndClass/types';
+
 export type ACCESS_LEVEL =
   | 'SCHOOL_ADMIN'
   | 'CLASS_MOD'
@@ -8,23 +10,23 @@ export type ACCESS_STATUS = 'PENDING' | 'APPROVED';
 /** ========================== FE ================================= */
 export type Member = {
   id: string;
-  userId: string;
+  accountId?: string;
   tenantId: string;
-  accessLevel: ACCESS_LEVEL;
 
-  lastLogin?: Date | string;
-
-  account: {
-    id: string;
-    email: string;
+  information: {
+    fullName: string;
+    email?: string;
   };
+
+  alumniToClass: Array<{
+    alumClass: Class;
+  }>;
 };
 
 export type GetMemberListParams = {
   page?: number;
   limit?: number;
-  email?: string;
-  tenantId: string;
+  name?: string;
 };
 
 export type GetMemberListData = {
@@ -38,17 +40,21 @@ export type GetMemberListData = {
 export type GetMemberListServiceParams = {
   page: number;
   limit: number;
-  email: string;
+  name: string;
 };
 
-export type GetMemberListServiceProps = {
-  tenantId: string;
-  params: GetMemberListServiceParams;
-};
+export type GetMemberListServiceProps = GetMemberListServiceParams;
 
 export type CreateMemberServiceProps = {
-  email: string;
-  password: string;
+  fullName: string;
+  gradeClass: Array<{
+    grade: Array<{ id: string; value: string; label: string }>;
+    alumClass: Array<{ id: string; value: string; label: string }>;
+  }>;
+  email?: string;
+  phone?: string;
+  dateOfBirth?: Date;
+  facebook?: string;
   tenantId: string;
 };
 
