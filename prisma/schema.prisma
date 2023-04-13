@@ -51,9 +51,9 @@ model AlumniToClass {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   alumClassId String    @map("alum_class_id")
-  alumClass   AlumClass @relation(fields: [alumClassId], references: [id])
+  alumClass   AlumClass @relation(fields: [alumClassId], references: [id], onDelete: Cascade)
   alumniId    String    @map("alumni_id")
-  alumni      Alumni    @relation(fields: [alumniId], references: [id])
+  alumni      Alumni    @relation(fields: [alumniId], references: [id], onDelete: Cascade)
 
   @@unique([alumClassId, alumniId])
 
@@ -130,7 +130,7 @@ model Information {
   FundReport             FundReport[]
   ping                   Ping[]
 
-  alumni Alumni? @relation(fields: [alumniId], references: [id])
+  alumni Alumni? @relation(fields: [alumniId], references: [id], onDelete: Cascade)
 
   @@map("informations")
 }

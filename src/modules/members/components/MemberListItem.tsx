@@ -54,12 +54,14 @@ const AdminMemberListItem = ({
                 icon: <Icon height={24} icon="uil:pen" />,
                 onClick: () => setOpenEditModal(true),
               },
-              {
-                id: 'delete',
-                text: 'Xoá',
-                icon: <Icon height={24} icon="uil:trash-alt" />,
-                onClick: () => setOpenDeleteModal(true),
-              },
+              data.alumniToClass.length === 0 || session?.user.isOwner
+                ? {
+                    id: 'delete',
+                    text: 'Xoá',
+                    icon: <Icon height={24} icon="uil:trash-alt" />,
+                    onClick: () => setOpenDeleteModal(true),
+                  }
+                : null,
             ]}
           />
         </TableCell>

@@ -178,8 +178,8 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
 
   const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
 
-  const schoolItems = generateSchoolNavItems(user?.accessLevel);
-  const navItems = generateNavItems(user?.accessLevel);
+  const schoolItems = generateSchoolNavItems('SCHOOL_ADMIN'); // fix
+  const navItems = generateNavItems('SCHOOL_ADMIN'); // fix
 
   if (!user) {
     return null;

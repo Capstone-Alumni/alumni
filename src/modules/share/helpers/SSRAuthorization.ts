@@ -33,10 +33,7 @@ export const verifyAdminOrMod = async () => {
     redirect('/sign_in');
   }
 
-  if (
-    !session.user.accessLevel ||
-    !ADMIN_OR_MOD.includes(session.user.accessLevel)
-  ) {
+  if (!session.user.isOwner) {
     redirect('/403_error');
   }
 

@@ -1,4 +1,3 @@
-import { prisma } from '@lib/prisma/prisma';
 import { hashSync } from 'bcrypt';
 
 import {
