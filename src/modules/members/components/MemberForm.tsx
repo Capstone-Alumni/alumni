@@ -87,7 +87,7 @@ const MemberForm = ({
     setSubmitting(true);
     await onSubmit(values);
     setSubmitting(false);
-    // onClose?.();
+    onClose?.();
   };
 
   return (
