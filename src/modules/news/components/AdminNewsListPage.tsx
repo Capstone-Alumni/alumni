@@ -67,28 +67,17 @@ const AdminNewsListPage = () => {
           alignItems: 'center',
         }}
       >
-        <Typography variant="h3">Tin tức</Typography>
+        <Typography variant="h3">Danh sách tin tức</Typography>
         <Link href="/admin/action/news/form" prefetch={false}>
           <Button role="href" variant="contained" startIcon={<AddIcon />}>
-            Thêm tin tức
+            Thêm tin
           </Button>
         </Link>
       </Box>
 
       {isLoading && !newsListData ? <LoadingIndicator /> : null}
 
-      {newsListData ? (
-        // <Box
-        //   sx={{
-        //     width: '100%',
-        //   }}
-        // >
-        //   <AdminNewsCards
-        //     data={newsListData.data}
-        //     page={params.page}
-        //     onChange={handleChange}
-        //   />
-        // </Box>
+      {newsListData && (
         <AdminNewsListTable
           data={newsListData.data}
           page={params.page}
@@ -96,7 +85,7 @@ const AdminNewsListPage = () => {
           onPublic={handlePublicNews}
           onDelete={handleDeleteNews}
         />
-      ) : null}
+      )}
     </Box>
   );
 };
