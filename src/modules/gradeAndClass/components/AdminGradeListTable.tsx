@@ -74,10 +74,10 @@ const AdminGradeListTable = ({
               <TableCell align="left">Mã</TableCell>
               <TableCell align="center">Năm bắt đầu</TableCell>
               <TableCell align="center">Năm kết thúc</TableCell>
-              <TableCell align="left">Người đại diện</TableCell>
               <TableCell align="left">Ngày được tạo</TableCell>
               <TableCell align="center">Số lớp</TableCell>
               <TableCell align="center">Danh sách lớp</TableCell>
+              <TableCell align="center">Người đại diện</TableCell>
               <TableCell align="center">Thao tác</TableCell>
             </TableRow>
           </TableHead>

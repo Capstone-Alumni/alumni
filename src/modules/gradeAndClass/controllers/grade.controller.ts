@@ -159,4 +159,39 @@ export default class GradeController {
       data: grade,
     });
   };
+
+  static addGradeMod = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    const { id } = req.query;
+    const { alumniId } = req.body;
+    const prisma = await getPrismaClient(req.tenantId);
+    const grade = await GradeService.addGradeMod(prisma, {
+      gradeId: id as string,
+      alumniId: alumniId as string,
+    });
+
+    return res.status(200).json({
+      status: true,
+      data: grade,
+    });
+  };
+
+  static removeGradeMod = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    const { id, alumniId } = req.query;
+    const prisma = await getPrismaClient(req.tenantId);
+    const grade = await GradeService.removeGradeMod(prisma, {
+      gradeId: id as string,
+      alumniId: alumniId as string,
+    });
+
+    return res.status(200).json({
+      status: true,
+      data: grade,
+    });
+  };
 }

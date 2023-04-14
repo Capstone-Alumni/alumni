@@ -41,6 +41,8 @@ export type GetMemberListServiceParams = {
   page: number;
   limit: number;
   name: string;
+  excludeGradeId: string;
+  excludeClassId: string;
 };
 
 export type GetMemberListServiceProps = GetMemberListServiceParams;

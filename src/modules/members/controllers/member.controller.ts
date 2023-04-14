@@ -50,11 +50,13 @@ export default class MemberController {
   ) => {
     try {
       const prisma = await getPrismaClient(req.tenantId);
-      const { page, limit, name } = req.query;
+      const { page, limit, name, excludeGradeId, excludeClassId } = req.query;
       const memberListData = await MemberService.getList(prisma, {
         page: page ? parseInt(page as string, 10) : 1,
         limit: limit ? parseInt(limit as string, 10) : 20,
         name: name ? (name as string) : '',
+        excludeGradeId: excludeGradeId as string,
+        excludeClassId: excludeClassId as string,
       });
 
       return res.status(200).json({

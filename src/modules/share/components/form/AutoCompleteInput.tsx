@@ -1,8 +1,10 @@
 import {
   Autocomplete,
+  Box,
   CircularProgress,
   TextField,
   TextFieldProps,
+  Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Control, Controller } from 'react-hook-form';
@@ -17,6 +19,7 @@ type AutocompleteInputProps = {
     id: string;
     label: string;
     value: string;
+    helperText?: string;
   }>;
   getOptions?: (name: string) => void;
   isLoadingOptions?: boolean;
@@ -57,7 +60,13 @@ const AutocompleteInput = ({
           renderOption={(props, option: any) => {
             return (
               <li {...props} key={option.id}>
-                {option.label}
+                <Typography component={Box}>
+                  {option.label}
+
+                  {option.helperText ? (
+                    <Typography variant="body2">{option.helperText}</Typography>
+                  ) : null}
+                </Typography>
               </li>
             );
           }}

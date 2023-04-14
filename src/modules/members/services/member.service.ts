@@ -5,7 +5,7 @@ import {
   GetMemberListServiceProps,
   UpdateMemberInfoByIdServiceProps,
 } from '../types';
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 export default class MemberService {
   static create = async (
@@ -44,14 +44,27 @@ export default class MemberService {
     tenantPrisma: PrismaClient,
     params: GetMemberListServiceProps,
   ) => {
-    const { name, page, limit } = params;
+    const { name, page, limit, excludeGradeId, excludeClassId } = params;
 
-    const whereFilter = {
+    const whereFilter: Prisma.AlumniWhereInput = {
       information: {
-        fullName: { contains: name },
+        OR: [
+          { fullName: { contains: name } },
+          { OR: [{ email: null }, { email: { contains: name } }] },
+        ],
       },
       archived: false,
     };
+
+    if (excludeGradeId) {
+      whereFilter.GradeMod = {
+        every: {
+          gradeId: {
+            not: excludeGradeId,
+          },
+        },
+      };
+    }
 
     const [totalMemberItem, MemberItems] = await tenantPrisma.$transaction([
       tenantPrisma.alumni.count({

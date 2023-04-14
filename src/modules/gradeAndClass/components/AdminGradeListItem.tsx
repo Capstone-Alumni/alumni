@@ -1,12 +1,15 @@
 import { Icon } from '@iconify/react';
 import {
   Box,
+  Button,
   IconButton,
   Modal,
   TableCell,
   TableRow,
   Typography,
 } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import { formatDate } from '@share/utils/formatDate';
 import Link from '@share/components/NextLinkV2';
@@ -17,6 +20,7 @@ import ActionButton from '@share/components/ActionButton';
 import { CreateGradeParams } from '../hooks/useCreateGrade';
 import useCloneGrade from '../hooks/useCloneGrade';
 import useGetGradeList from '../hooks/useGetGradeList';
+import AdminGradeModBox from './AdminGradeModBox';
 
 const AdminGradeListItem = ({
   data,
@@ -29,6 +33,7 @@ const AdminGradeListItem = ({
 }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [openRoleModal, setOpenRoleModal] = useState(false);
   const { reload } = useGetGradeList();
   const { cloneGrade } = useCloneGrade();
 
@@ -50,9 +55,6 @@ const AdminGradeListItem = ({
           <Typography>{data.endYear}</Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>{data.code}</Typography>
-        </TableCell>
-        <TableCell align="left">
           <Typography>{formatDate(new Date(data.createdAt))}</Typography>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
@@ -71,6 +73,25 @@ const AdminGradeListItem = ({
             </Link>
           </IconButton>
         </TableCell>
+        <TableCell align="center">
+          {data.gradeMod.length ? (
+            <Button
+              variant="outlined"
+              startIcon={<EditIcon />}
+              onClick={() => setOpenRoleModal(true)}
+            >
+              Sửa
+            </Button>
+          ) : (
+            <Button
+              variant="outlined"
+              startIcon={<AddIcon />}
+              onClick={() => setOpenRoleModal(true)}
+            >
+              Thêm
+            </Button>
+          )}
+        </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <ActionButton
             actions={[
@@ -81,6 +102,12 @@ const AdminGradeListItem = ({
                 tooltip:
                   'Tạo niên khoá liền kề sau, sao chép thông tin về lớp hoc.',
                 onClick: () => cloneHandler(data.id),
+              },
+              {
+                id: 'edit-role-btn',
+                icon: <Icon height={24} icon="uil:pen" />,
+                text: 'Người đại diện',
+                onClick: () => setOpenRoleModal(true),
               },
               {
                 id: 'edit-grade-btn',
@@ -98,6 +125,23 @@ const AdminGradeListItem = ({
           />
         </TableCell>
       </TableRow>
+
+      <Modal open={openRoleModal} onClose={() => setOpenRoleModal(false)}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            minWidth: '50rem',
+          }}
+        >
+          <AdminGradeModBox
+            gradeId={data.id}
+            onClose={() => setOpenRoleModal(false)}
+          />
+        </Box>
+      </Modal>
 
       <Modal open={openEditModal} onClose={() => setOpenDeleteModal(false)}>
         <Box

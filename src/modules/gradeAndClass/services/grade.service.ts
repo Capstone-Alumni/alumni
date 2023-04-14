@@ -182,6 +182,15 @@ export default class GradeService {
               archived: false,
             },
           },
+          gradeMod: {
+            include: {
+              alumni: {
+                include: {
+                  information: true,
+                },
+              },
+            },
+          },
         },
         orderBy: {
           endYear: 'desc',
@@ -202,6 +211,17 @@ export default class GradeService {
     const grade = await tenanttPrisma.grade.findUnique({
       where: {
         id: id,
+      },
+      include: {
+        gradeMod: {
+          include: {
+            alumni: {
+              include: {
+                information: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -238,6 +258,51 @@ export default class GradeService {
     const grade = await tenanttPrisma.grade.delete({
       where: {
         id: id,
+      },
+    });
+
+    return grade;
+  };
+
+  static addGradeMod = async (
+    tenantPrisma: PrismaClient,
+    { gradeId, alumniId }: { gradeId: string; alumniId: string },
+  ) => {
+    const grade = await tenantPrisma.gradeMod.upsert({
+      where: {
+        gradeId_alumniId: {
+          gradeId,
+          alumniId,
+        },
+      },
+      create: {
+        grade: {
+          connect: {
+            id: gradeId,
+          },
+        },
+        alumni: {
+          connect: {
+            id: alumniId,
+          },
+        },
+      },
+      update: {},
+    });
+
+    return grade;
+  };
+
+  static removeGradeMod = async (
+    tenantPrisma: PrismaClient,
+    { gradeId, alumniId }: { gradeId: string; alumniId: string },
+  ) => {
+    const grade = await tenantPrisma.gradeMod.delete({
+      where: {
+        gradeId_alumniId: {
+          gradeId,
+          alumniId,
+        },
       },
     });
 

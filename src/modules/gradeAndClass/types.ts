@@ -1,3 +1,5 @@
+import { Information } from '../profiles/types';
+
 /** ========================== FE ================================= */
 export type Grade = {
   id: string;
@@ -9,6 +11,13 @@ export type Grade = {
     alumClasses: number;
   };
   alumClasses?: Class[];
+  gradeMod: Array<{
+    id: string;
+    alumni: {
+      id: string;
+      information: Information;
+    };
+  }>;
 };
 
 export type Class = {
