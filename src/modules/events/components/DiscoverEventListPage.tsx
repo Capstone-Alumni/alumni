@@ -2,9 +2,8 @@
 
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import { Button, Grid, IconButton, Pagination, useTheme } from '@mui/material';
+import { Grid, IconButton, Pagination, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
-import Link from '@share/components/NextLinkV2';
 import { useRecoilState } from 'recoil';
 import usePublicGetEventList from '../hooks/usePublicGetEventList';
 import { getPublicEventListParamsAtom } from '../states';
@@ -38,16 +37,13 @@ const DiscoverEventListPage = () => {
   return (
     <>
       <form
-        onSubmit={(e) => {
+        onSubmit={e => {
           e.preventDefault();
-          setParams((prevParams) => ({ ...prevParams, title: search }));
+          setParams(prevParams => ({ ...prevParams, title: search }));
         }}
         style={{ marginBottom: theme.spacing(2) }}
       >
-        <SearchInput
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <SearchInput value={search} onChange={e => setSearch(e.target.value)} />
         <button type="submit" style={{ display: 'none' }}></button>
       </form>
 
@@ -62,7 +58,7 @@ const DiscoverEventListPage = () => {
               mb: 2,
             }}
           >
-            {data?.data.items.map((item) => {
+            {data?.data.items.map(item => {
               const isInterested = item.eventInterests.length > 0;
 
               return (
@@ -105,7 +101,7 @@ const DiscoverEventListPage = () => {
             )}
             page={params.page}
             onChange={(_, nextPage) => {
-              setParams((prevParams) => ({ ...prevParams, page: nextPage }));
+              setParams(prevParams => ({ ...prevParams, page: nextPage }));
             }}
           />
         </>

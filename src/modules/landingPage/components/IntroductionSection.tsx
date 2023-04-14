@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  Box,
-  Card,
-  CardMedia,
-  Container,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Container, Typography, useTheme } from '@mui/material';
 import { Tenant } from '@share/states';
 
 const IntroductionSection = ({ tenant }: { tenant: Tenant }) => {

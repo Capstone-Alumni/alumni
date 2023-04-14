@@ -3,9 +3,9 @@ import {
   CardContent,
   CardMedia,
   Grid,
+  styled,
   Typography,
   useTheme,
-  styled,
 } from '@mui/material';
 import Link from '@share/components/NextLinkV2';
 
