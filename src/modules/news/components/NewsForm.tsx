@@ -31,7 +31,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
       title: initialData?.title ?? '',
       content: initialData?.content ?? '',
       tagsNews:
-        initialData?.tagsNews?.map(tag => tag.tagName as string) ?? undefined,
+        initialData?.tagsNews?.map((tag) => tag.tagName as string) ?? undefined,
     },
   });
   const [hasValueTitle, setHasValueTitle] = useState(false);
@@ -46,7 +46,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
   const onAddNews = async (values: CreateNewsProps) => {
     await createNews(values)
       .unwrap()
-      .then(result => {
+      .then((result) => {
         if (result.status) {
           toast.success('Đăng tin thành công');
           router.replace('/admin/action/news');
@@ -63,7 +63,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
     };
     await updateNews(updateNewsParams)
       .unwrap()
-      .then(result => {
+      .then((result) => {
         if (result.status) {
           toast.success('Cập nhật tin thành công');
           router.replace('/admin/action/news');
@@ -106,10 +106,20 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
         backgroundColor: theme.palette.background.neutral,
       }}
     >
-      <Box sx={{ width: '100%' }}>
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
         <Typography variant="h6">
           {initialData ? 'Chỉnh sửa tin tức' : 'Thêm tin tức'}
         </Typography>
+        <Button variant="text" onClick={() => router.back()}>
+          quay lại
+        </Button>
       </Box>
 
       <Box
@@ -150,7 +160,6 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
                   }}
                   fullWidth
                   label="Tiêu đề"
-                  inputProps={{ maxLength: 60 }}
                   {...field}
                 />
               );
@@ -178,7 +187,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
                   freeSolo
                   autoHighlight
                   limitTags={2}
-                  renderInput={params => (
+                  renderInput={(params) => (
                     <TextField
                       {...params}
                       label="Thẻ tin tức"
