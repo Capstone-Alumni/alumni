@@ -126,7 +126,13 @@ const AdminGradeListItem = ({
         </TableCell>
       </TableRow>
 
-      <Modal open={openRoleModal} onClose={() => setOpenRoleModal(false)}>
+      <Modal
+        open={openRoleModal}
+        onClose={() => {
+          setOpenRoleModal(false);
+          reload();
+        }}
+      >
         <Box
           sx={{
             position: 'absolute',
@@ -138,12 +144,20 @@ const AdminGradeListItem = ({
         >
           <AdminGradeModBox
             gradeId={data.id}
-            onClose={() => setOpenRoleModal(false)}
+            onClose={() => {
+              setOpenRoleModal(false);
+              reload();
+            }}
           />
         </Box>
       </Modal>
 
-      <Modal open={openEditModal} onClose={() => setOpenDeleteModal(false)}>
+      <Modal
+        open={openEditModal}
+        onClose={() => {
+          setOpenDeleteModal(false);
+        }}
+      >
         <Box
           sx={{
             position: 'absolute',
@@ -156,7 +170,9 @@ const AdminGradeListItem = ({
           <GradeForm
             initialData={data}
             onSubmit={values => onEdit(data.id, values)}
-            onClose={() => setOpenEditModal(false)}
+            onClose={() => {
+              setOpenEditModal(false);
+            }}
           />
         </Box>
       </Modal>
