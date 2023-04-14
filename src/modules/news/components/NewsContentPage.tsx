@@ -25,7 +25,7 @@ const NewsContentPage = ({ data }: { data: News }) => {
       <Box
         sx={{
           display: 'flex',
-          marginX: 'auto',
+          justifyContent: 'space-between',
           marginY: '24px',
         }}
       >

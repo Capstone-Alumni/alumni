@@ -49,8 +49,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
       .then(result => {
         if (result.status) {
           toast.success('Đăng tin thành công');
-          const { id } = result.data;
-          router.replace(`/admin/action/news/${id}`);
+          router.replace('/admin/action/news');
         } else {
           toast.error('Đăng tin thất bại');
         }
@@ -67,7 +66,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
       .then(result => {
         if (result.status) {
           toast.success('Cập nhật tin thành công');
-          handleCancel();
+          router.replace('/admin/action/news');
         } else {
           toast.error('Cập nhật tin thất bại');
         }

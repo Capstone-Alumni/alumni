@@ -1,7 +1,7 @@
 'use client';
 import {
   Chip,
-  Link,
+  styled,
   Switch,
   TableCell,
   TableRow,
@@ -10,9 +10,41 @@ import {
 } from '@mui/material';
 import { News, TagsNews } from '../types';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import { useState } from 'react';
 import { formatDate } from '@share/utils/formatDate';
+import AdminNewsPreview from './AdminNewsPreview';
+import Link from '@share/components/NextLinkV2';
+
+const StyledBoxFlex = styled('div')(({ theme }) => ({
+  gap: '0.5rem',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledIconWrapper = styled('div')(({ theme }) => ({
+  cursor: 'pointer',
+  height: '30px',
+  width: '30px',
+  backgroundColor: 'rgb(255, 198, 194)',
+  borderRadius: '4px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  boxShadow: '0 8px 16px 0 rgba(255, 72, 66, 0.24)',
+}));
+
+const StyledIconWrapper1 = styled('div')(({ theme }) => ({
+  cursor: 'pointer',
+  height: '30px',
+  width: '30px',
+  borderRadius: '4px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
 
 const AdminNewsListItem = ({
   data,
@@ -28,22 +60,26 @@ const AdminNewsListItem = ({
     <>
       <TableRow>
         <TableCell sx={{ maxWidth: '10rem' }} align="left">
-          <Link
-            sx={{
-              color: 'inherit',
-            }}
-            href={`/admin/action/news/${data.id}`}
-          >
-            <Typography noWrap>{data.title}</Typography>
-          </Link>
+          <AdminNewsPreview data={data}>
+            <Tooltip
+              title="Xem với chế độ công khai"
+              sx={{ cursor: 'pointer' }}
+            >
+              <Typography fontSize={14} noWrap>
+                {data.title}
+              </Typography>
+            </Tooltip>
+          </AdminNewsPreview>
         </TableCell>
         <TableCell sx={{ maxWidth: '10rem' }} align="left">
-          <Typography>
+          <Typography fontSize={14}>
             {data.authorInfo ? data.authorInfo.fullName : data.authorId}
           </Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>{formatDate(new Date(data.createdAt))}</Typography>
+          <Typography fontSize={14}>
+            {formatDate(new Date(data.createdAt))}
+          </Typography>
         </TableCell>
         <TableCell>
           {data.tagsNews
@@ -52,6 +88,8 @@ const AdminNewsListItem = ({
                   key={tag.id}
                   sx={{
                     margin: 0.5,
+                    height: '26px',
+                    border: '1px solid #c9c6c6',
                   }}
                   label={tag.tagName}
                 />
@@ -67,15 +105,32 @@ const AdminNewsListItem = ({
           </Tooltip>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
-          <Tooltip title="Xóa tin này!">
-            <DeleteOutlineIcon
-              sx={{
-                margin: 'auto',
-              }}
-              color="error"
-              onClick={() => setOpenDeleteModal(true)}
-            />
-          </Tooltip>
+          <StyledBoxFlex>
+            <Tooltip title="Xóa tin này">
+              <StyledIconWrapper>
+                <DeleteOutlineIcon
+                  fontSize="small"
+                  sx={{
+                    margin: 'auto',
+                    color: 'rgb(255, 72, 66)',
+                  }}
+                  onClick={() => setOpenDeleteModal(true)}
+                />
+              </StyledIconWrapper>
+            </Tooltip>
+            <Tooltip title="Chỉnh sửa tin">
+              <Link prefetch={false} href={`/admin/action/news/${data.id}`}>
+                <StyledIconWrapper1>
+                  <EditOutlinedIcon
+                    fontSize="small"
+                    sx={{
+                      margin: 'auto',
+                    }}
+                  />
+                </StyledIconWrapper1>
+              </Link>
+            </Tooltip>
+          </StyledBoxFlex>
         </TableCell>
       </TableRow>
       <ConfirmDeleteModal
