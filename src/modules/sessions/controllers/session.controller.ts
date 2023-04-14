@@ -3,7 +3,7 @@ import { ApiErrorResponse, ApiSuccessResponse } from 'src/types';
 import SessionService from '../services/session.service';
 import { NextApiRequestWithTenant } from '../../../lib/next-connect/index';
 import getPrismaClient from '@lib/prisma/prisma';
-import getSubdomain from '@share/utils/getSubdomain';
+import getSubdomainByReq from '@share/utils/getSubdomainByReq';
 
 export default class SessionController {
   static signUp = async (
@@ -56,7 +56,7 @@ export default class SessionController {
     req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
-    const subdomain = getSubdomain();
+    const subdomain = getSubdomainByReq(req);
 
     const result = await SessionService.updatePassword({
       ...req.body,
