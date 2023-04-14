@@ -10,7 +10,6 @@ import { extractTenantId, NextApiRequestWithTenant } from '@lib/next-connect';
 import getPrismaClient from '@lib/prisma/prisma';
 import { isAuthenticatedUser } from '@lib/next-connect/apiMiddleware';
 import { getTenantVnpayData } from '@share/utils/getTenantData';
-import getSubdomain from '@share/utils/getSubdomain';
 
 const handler = nc({
   onError: onErrorAPIHandler,
@@ -25,7 +24,12 @@ handler.post(async function (req: NextApiRequestWithTenant, res) {
     req.connection.remoteAddress ||
     req.socket.remoteAddress;
 
-  const subdomain = getSubdomain();
+  const hostname = req.headers.host || 'demo.vercel.app';
+
+  const subdomain =
+    process.env.NODE_ENV === 'production' && process.env.VERCEL === '1'
+      ? hostname.replace('.vercel.app', '')
+      : hostname.replace('.localhost:3005', '');
 
   const { data } = await getTenantVnpayData(req.tenantId);
   // const tmnCode = process.env.VNPAY_TMNCODE; // config.get('vnp_TmnCode');
