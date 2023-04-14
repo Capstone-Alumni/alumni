@@ -1,11 +1,12 @@
-import { TableCell, TableRow, Tooltip, Typography } from '@mui/material';
+import { TableCell, TableRow, Tooltip, Typography, Box } from '@mui/material';
 
+import Image from 'next/image';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import PublicIcon from '@mui/icons-material/Public';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
-import LockIcon from '@mui/icons-material/Lock';
-
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import LiveGIF from '../../../assets/live-gif.gif';
 import { Event } from '../types';
 import { formatDate } from '@share/utils/formatDate';
 import ActionButton from '@share/components/ActionButton';
@@ -14,6 +15,13 @@ import { useMemo, useState } from 'react';
 import useAdminGetEventList from '../hooks/useAdminGetEventList';
 import useOwnerDeleteEventById from '../hooks/useOwnerDeleteEventById';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
+import {
+  StyledIconWrapperMainShadow,
+  StyledIconWrapperRedShadow,
+  StyledBoxFlex,
+} from '@share/components/styled';
+import Link from '@share/components/NextLinkV2';
+import AdminEventPreview from './AdminEventPreview';
 
 const AdminEventListItem = ({
   data,
@@ -57,25 +65,29 @@ const AdminEventListItem = ({
 
   return (
     <>
-      <TableRow>
+      <TableRow sx={{ fontSize: '14px' }}>
         <TableCell align="left" sx={{ maxWidth: '200px' }}>
-          <Typography>{data.title}</Typography>
+          <AdminEventPreview data={data}>
+            <Tooltip
+              title="Xem với chế độ công khai"
+              sx={{ cursor: 'pointer' }}
+            >
+              <Typography fontSize={'inherit'}>{data.title}</Typography>
+            </Tooltip>
+          </AdminEventPreview>
         </TableCell>
         <TableCell align="left">
-          <Typography>{data.hostInformation?.email}</Typography>
+          <Typography fontSize={'inherit'}>
+            {data.hostInformation?.fullName}
+          </Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>
+          <Typography fontSize={'inherit'}>
             {formatDate(new Date(data.startTime), 'dd/MM/yyyy - HH:ss')}
           </Typography>
         </TableCell>
         <TableCell align="center">
-          <Typography>
-            {/* {data.approvedStatus === -1 ? (
-              <Tooltip title="Đang chờ xác nhận">
-                <MoreHorizIcon />
-              </Tooltip>
-            ) : null} */}
+          <Typography fontSize={'inherit'}>
             {eventStatus === 'ended' ? (
               <Tooltip title="Đã kết thúc">
                 <DirectionsRunIcon color="error" />
@@ -85,82 +97,43 @@ const AdminEventListItem = ({
                 <DirectionsRunIcon color="success" />
               </Tooltip>
             )}
-          </Typography>
-        </TableCell>
-        <TableCell align="center">
-          <Typography>
-            {/* {data.approvedStatus === -1 ? (
-              <Tooltip title="Đang chờ xác nhận">
-                <MoreHorizIcon />
-              </Tooltip>
-            ) : null} */}
-            {data.publicity === 'ALUMNI' ? (
-              <Tooltip title="Bí mật">
-                <LockIcon />
-              </Tooltip>
-            ) : null}
-            {data.publicity === 'GRADE_MOD' ? (
-              <Tooltip title="Khối">
-                {/* <Groups2Icon /> */}
-                <Typography fontWeight={600}>
-                  {data.hostInformation?.alumClass?.grade?.code}
-                </Typography>
-              </Tooltip>
-            ) : null}
-            {data.publicity === 'SCHOOL_ADMIN' ? (
-              <Tooltip title="Toàn trường">
-                <PublicIcon />
-              </Tooltip>
-            ) : null}
-          </Typography>
-        </TableCell>
-        <TableCell align="center">
-          <ActionButton
-            actions={[
-              {
-                id: 'edit',
-                text: 'Chỉnh sửa',
-                onClick: () => router.push(`/admin/action/event/${data.id}`),
-                icon: <EditIcon />,
-              },
-              {
-                id: 'delete',
-                text: 'Xoá ',
-                onClick: () => setOpenDeleteModal(true),
-                icon: <DeleteIcon color="error" />,
-              },
-            ]}
-          />
-        </TableCell>
-        {/* <TableCell align="center">
-          <Typography>
-            {data.publicity === 'ALUMNI' ? (
-              <Tooltip title="Bí mật">
-                <DirectionsRunIcon color="error" />
-              </Tooltip>
-            ) : null}
-            {data.publicity === 'SCHOOL_ADMIN' ? (
-              <Tooltip title="Công khai">
-                <DirectionsRunIcon color="success" />
-              </Tooltip>
-            ) : null}
-            {data.approvedStatus === 1 ? (
-              <Tooltip title="Đã được xác nhận">
-                <DoneOutlineIcon color="success" />
-              </Tooltip>
-            ) : null}
+            {/* <Image alt="live" src={LiveGIF} width="100" height="50" /> */}
           </Typography>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
-          <IconButton onClick={() => onApprove(data.id)}>
-            <DoneOutlineIcon />
-          </IconButton>
+          <StyledBoxFlex>
+            <Tooltip title="Chỉnh sửa sự kiện">
+              <StyledIconWrapperMainShadow>
+                <Link prefetch={false} href={`/admin/action/event/${data.id}`}>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <EditOutlinedIcon
+                      fontSize="small"
+                      sx={{
+                        margin: 'auto',
+                      }}
+                    />
+                  </Box>
+                </Link>
+              </StyledIconWrapperMainShadow>
+            </Tooltip>
+            <Tooltip title="Xóa sự kiện">
+              <StyledIconWrapperRedShadow>
+                <DeleteOutlineIcon
+                  fontSize="small"
+                  sx={{
+                    margin: 'auto',
+                    color: 'rgb(255, 72, 66)',
+                  }}
+                  onClick={() => setOpenDeleteModal(true)}
+                />
+              </StyledIconWrapperRedShadow>
+            </Tooltip>
+          </StyledBoxFlex>
         </TableCell>
-        <TableCell align="center" sx={{ maxWidth: '3rem' }}>
-          <IconButton onClick={() => onReject(data.id)}>
-            <CancelIcon />
-          </IconButton>
-        </TableCell> */}
       </TableRow>
 
       <ConfirmDeleteModal

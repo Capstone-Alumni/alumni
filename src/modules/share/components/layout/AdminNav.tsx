@@ -196,8 +196,14 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Logo url={tenant?.logo} />
-              <Typography variant="h5" sx={{ ml: theme.spacing(1) }}>
+              <Logo
+                url={tenant?.logo}
+                sx={{ borderRadius: '8px', overflow: 'hidden' }}
+              />
+              <Typography
+                variant="h5"
+                sx={{ ml: theme.spacing(1), textTransform: 'capitalize' }}
+              >
                 {tenant?.name}
               </Typography>
             </Box>
@@ -209,7 +215,7 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
               items={schoolItems}
               open={sectionSelected === 'config'}
               onToggle={() =>
-                setSectionSelected(prevState =>
+                setSectionSelected((prevState) =>
                   prevState === 'config' ? '' : 'config',
                 )
               }
@@ -222,7 +228,7 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
               items={navItems}
               open={sectionSelected === 'action'}
               onToggle={() =>
-                setSectionSelected(prevState =>
+                setSectionSelected((prevState) =>
                   prevState === 'action' ? '' : 'action',
                 )
               }
@@ -234,7 +240,7 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
             items={[ACCESS_NAV_ITEM]}
             open={sectionSelected === 'access'}
             onToggle={() =>
-              setSectionSelected(prevState =>
+              setSectionSelected((prevState) =>
                 prevState === 'access' ? '' : 'access',
               )
             }

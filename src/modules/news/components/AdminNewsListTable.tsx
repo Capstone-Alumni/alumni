@@ -38,7 +38,7 @@ const AdminNewsListTable = ({
               <TableCell align="left">Thẻ tin</TableCell>
               <TableCell sx={{ maxWidth: '4.5rem' }}>Công khai</TableCell>
               <TableCell sx={{ maxWidth: '4rem', textAlign: 'center' }}>
-                Công cụ
+                Thao tác
               </TableCell>
             </TableRow>
           </TableHead>
