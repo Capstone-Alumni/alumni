@@ -103,6 +103,7 @@ const AdminClassListPage = () => {
             onDelete={onDelete}
             onEdit={onUpdate}
             page={params.page || 1}
+            reload={reload}
             onChangePage={nextPage => {
               setParams(prevParams => ({ ...prevParams, page: nextPage }));
             }}

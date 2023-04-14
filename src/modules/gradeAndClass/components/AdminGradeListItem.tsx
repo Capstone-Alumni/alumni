@@ -84,7 +84,7 @@ const AdminGradeListItem = ({
             </Button>
           ) : (
             <Button
-              variant="outlined"
+              variant="contained"
               startIcon={<AddIcon />}
               onClick={() => setOpenRoleModal(true)}
             >

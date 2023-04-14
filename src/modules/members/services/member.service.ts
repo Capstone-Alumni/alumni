@@ -1,5 +1,3 @@
-import { hashSync } from 'bcrypt';
-
 import {
   CreateMemberServiceProps,
   GetMemberListServiceProps,
@@ -66,6 +64,17 @@ export default class MemberService {
       };
     }
 
+    if (excludeClassId) {
+      whereFilter.alumniToClass = {
+        every: {
+          NOT: {
+            alumClassId: excludeClassId,
+            isClassMod: true,
+          },
+        },
+      };
+    }
+
     const [totalMemberItem, MemberItems] = await tenantPrisma.$transaction([
       tenantPrisma.alumni.count({
         where: whereFilter,
@@ -96,53 +105,11 @@ export default class MemberService {
     id: string,
     data: UpdateMemberInfoByIdServiceProps,
   ) => {
-    let member = await prisma.alumni.findUnique({
+    const member = await prisma.alumni.findUnique({
       where: {
         id: id,
       },
-      include: {
-        tenant: true,
-      },
     });
-
-    if (data.password) {
-      const encryptedPassword = hashSync(data.password, 10);
-
-      await prisma.account.update({
-        where: {
-          id: member?.accountId,
-        },
-        data: {
-          password: encryptedPassword,
-        },
-      });
-    }
-
-    if (data.accessLevel) {
-      if (
-        member?.accessLevel === 'SCHOOL_ADMIN' ||
-        data.accessLevel === 'SCHOOL_ADMIN'
-      ) {
-        return member;
-      }
-
-      member = await prisma.alumni.update({
-        where: {
-          id: id,
-        },
-        data: {
-          accessLevel: data.accessLevel,
-        },
-        include: {
-          tenant: true,
-        },
-      });
-
-      const alumniQuery = `
-        UPDATE ${member?.tenant.tenantId}.alumni SET access_level = $1::"template"."AccessLevel" WHERE id = $2;
-      `;
-      await mainAppPrisma.$executeRawUnsafe(alumniQuery, data.accessLevel, id);
-    }
 
     return member;
   };

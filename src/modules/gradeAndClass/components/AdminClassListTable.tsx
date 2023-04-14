@@ -20,6 +20,7 @@ const AdminClassListTable = ({
   data,
   onEdit,
   onDelete,
+  reload,
   page,
   onChangePage,
 }: {
@@ -30,6 +31,7 @@ const AdminClassListTable = ({
   };
   onEdit: (id: string, data: ClassFormValues) => void;
   onDelete: (id: string) => void;
+  reload: () => void;
   page: number;
   onChangePage: (nextPage: number) => void;
 }) => {
@@ -66,10 +68,10 @@ const AdminClassListTable = ({
           <TableHead>
             <TableRow>
               <TableCell align="left">Tên lớp</TableCell>
-              <TableCell align="left">Đại diện</TableCell>
               <TableCell align="left">Ngày được tạo</TableCell>
-              <TableCell sx={{ maxWidth: '3rem' }} />
-              <TableCell sx={{ maxWidth: '3rem' }} />
+              <TableCell align="center">Số thành viên</TableCell>
+              <TableCell align="center">Người đại diện</TableCell>
+              <TableCell align="center">Thao tác</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -79,12 +81,13 @@ const AdminClassListTable = ({
                 data={row}
                 onDelete={onDelete}
                 onEdit={onEdit}
+                reload={reload}
               />
             ))}
           </TableBody>
 
           <DataTablePagination
-            colSpan={5}
+            colSpan={4}
             currentPage={page}
             totalPage={Math.ceil(data.totalItems / data.itemPerPage)}
             onChangePage={onChangePage}

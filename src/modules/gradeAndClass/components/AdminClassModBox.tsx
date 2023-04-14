@@ -17,18 +17,18 @@ import AutocompleteInput from '@share/components/form/AutoCompleteInput';
 import { useForm } from 'react-hook-form';
 import useGetMemberListForRole from 'src/modules/members/hooks/useGetMemberListForRole';
 import { useEffect, useMemo, useState } from 'react';
-import useAddGradeMod from '../hooks/useAddGradeMod';
+import useAddClassMod from '../hooks/useAddClassMod';
 import { TableHead } from '@mui/material';
 import { TableRow } from '@mui/material';
-import useRemoveGradeMod from '../hooks/useRemoveGradeMod';
-import useGetGradeById from '../hooks/useGetGradeById';
+import useRemoveClassMod from '../hooks/useRemoveClassMod';
+import useGetClassById from '../hooks/useGetClassById';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 
-const AdminGradeModBox = ({
-  gradeId,
+const AdminClassModBox = ({
+  classId,
   onClose,
 }: {
-  gradeId: string;
+  classId: string;
   onClose?: () => void;
 }) => {
   const [removeId, setRemoveId] = useState('');
@@ -37,13 +37,13 @@ const AdminGradeModBox = ({
   const { control, handleSubmit, reset } = useForm();
 
   const {
-    getGradeById,
-    data: gradeData,
+    getClassById,
+    data: classData,
     isLoading: getting,
-  } = useGetGradeById(gradeId);
+  } = useGetClassById(classId);
   const { getMemberListForRole, data, isLoading } = useGetMemberListForRole();
-  const { addGradeMod, isLoading: adding } = useAddGradeMod();
-  const { removeGradeMod } = useRemoveGradeMod();
+  const { addClassMod, isLoading: adding } = useAddClassMod();
+  const { removeClassMod } = useRemoveClassMod();
 
   const options = useMemo(() => {
     if (!data?.data?.items) {
@@ -58,21 +58,21 @@ const AdminGradeModBox = ({
     }));
   }, [data]);
 
-  const onAddGradeMod = async (values: any) => {
+  const onAddClassMod = async (values: any) => {
     reset();
-    await addGradeMod({ alumniId: values.alumni.id, gradeId });
-    getGradeById();
+    await addClassMod({ alumniId: values.alumni.id, classId });
+    getClassById();
   };
 
-  const onDeleteGradeMod = async (id: string) => {
+  const onDeleteClassMod = async (id: string) => {
     setRemoveId(id);
-    await removeGradeMod({ alumniId: id, gradeId });
+    await removeClassMod({ alumniId: id, classId });
     setRemoveId('');
-    getGradeById();
+    getClassById();
   };
 
   useEffect(() => {
-    getGradeById();
+    getClassById();
   }, []);
 
   return (
@@ -96,10 +96,8 @@ const AdminGradeModBox = ({
       </IconButton>
 
       <Typography variant="h4">Danh sách người đại diện</Typography>
-      {gradeData?.data ? (
-        <Typography sx={{ mb: 2 }}>
-          Niên khoá: {gradeData?.data?.startYear} - {gradeData.data.endYear}
-        </Typography>
+      {classData?.data.name ? (
+        <Typography sx={{ mb: 2 }}>Lớp: {classData.data.name}</Typography>
       ) : null}
 
       <Stack direction="row" gap={1} sx={{ mb: 2 }}>
@@ -117,7 +115,7 @@ const AdminGradeModBox = ({
           }}
           options={options}
           getOptions={name => {
-            getMemberListForRole({ name: name, excludeGradeId: gradeId });
+            getMemberListForRole({ name: name, excludeClassId: classId });
           }}
           isLoadingOptions={isLoading}
         />
@@ -125,17 +123,17 @@ const AdminGradeModBox = ({
         <Button
           disabled={adding}
           variant="contained"
-          onClick={handleSubmit(onAddGradeMod)}
+          onClick={handleSubmit(onAddClassMod)}
         >
           Thêm
         </Button>
       </Stack>
 
-      {getting || !gradeData?.data ? (
+      {getting || !classData?.data ? (
         <LoadingIndicator />
       ) : (
         <TableContainer component={Paper}>
-          <Table aria-label="grade table">
+          <Table aria-label="Class table">
             <TableHead>
               <TableRow>
                 <TableCell align="left">Họ tên</TableCell>
@@ -145,14 +143,14 @@ const AdminGradeModBox = ({
             </TableHead>
 
             <TableBody>
-              {gradeData.data.gradeMod?.map(item => (
+              {classData.data.alumniToClass?.map(item => (
                 <TableRow key={item.id}>
                   <TableCell>{item.alumni.information.fullName}</TableCell>
                   <TableCell>{item.alumni.information?.email}</TableCell>
                   <TableCell align="center">
                     <IconButton
                       disabled={removeId === item.alumni.id}
-                      onClick={() => onDeleteGradeMod(item.alumni.id)}
+                      onClick={() => onDeleteClassMod(item.alumni.id)}
                     >
                       <DeleteIcon color="error" />
                     </IconButton>
@@ -164,7 +162,7 @@ const AdminGradeModBox = ({
         </TableContainer>
       )}
 
-      {gradeData?.data.gradeMod?.length === 0 ? (
+      {classData?.data.alumniToClass?.length === 0 ? (
         <Typography textAlign="center" sx={{ mt: 2 }}>
           Không có người đại diện
         </Typography>
@@ -173,4 +171,4 @@ const AdminGradeModBox = ({
   );
 };
 
-export default AdminGradeModBox;
+export default AdminClassModBox;

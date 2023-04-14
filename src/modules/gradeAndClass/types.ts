@@ -26,6 +26,17 @@ export type Class = {
   createdAt: string | Date;
   gradeId: string;
   grade?: Grade;
+  _count?: {
+    alumniToClass: number;
+  };
+  alumniToClass?: Array<{
+    id: string;
+    isClassMod: boolean;
+    alumni: {
+      id: string;
+      information: Information;
+    };
+  }>;
 };
 
 export type GetGradeListData = {

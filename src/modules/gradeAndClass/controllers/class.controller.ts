@@ -124,4 +124,39 @@ export default class ClassController {
       data: classDeleted,
     });
   };
+
+  static addClassMod = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    const { id } = req.query;
+    const { alumniId } = req.body;
+    const prisma = await getPrismaClient(req.tenantId);
+    const grade = await ClassService.addClassMod(prisma, {
+      classId: id as string,
+      alumniId: alumniId as string,
+    });
+
+    return res.status(200).json({
+      status: true,
+      data: grade,
+    });
+  };
+
+  static removeClassMod = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    const { id, alumniId } = req.query;
+    const prisma = await getPrismaClient(req.tenantId);
+    const grade = await ClassService.removeClassMod(prisma, {
+      classId: id as string,
+      alumniId: alumniId as string,
+    });
+
+    return res.status(200).json({
+      status: true,
+      data: grade,
+    });
+  };
 }

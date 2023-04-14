@@ -1,8 +1,8 @@
 import { extractTenantId } from '@lib/next-connect';
+import onErrorAPIHandler from '@lib/next-connect/onErrorAPIHandler';
+import onNoMatchAPIHandler from '@lib/next-connect/onNoMatchAPIHandler';
 import nc from 'next-connect';
 import ClassController from 'src/modules/gradeAndClass/controllers/class.controller';
-import onErrorAPIHandler from '../../../../lib/next-connect/onErrorAPIHandler';
-import onNoMatchAPIHandler from '../../../../lib/next-connect/onNoMatchAPIHandler';
 
 const handler = nc({
   onError: onErrorAPIHandler,
@@ -10,8 +10,7 @@ const handler = nc({
 }).use(extractTenantId);
 
 handler
-  .get(ClassController.getById)
-  .put(ClassController.updateInfoById)
-  .delete(ClassController.deleteById);
+  .post(ClassController.addClassMod)
+  .delete(ClassController.removeClassMod);
 
 export default handler;
