@@ -15,6 +15,7 @@ const NewsContentPage = ({ data }: { data: News }) => {
             fontSize: '40px',
             lineHeight: '54px',
             color: '#292929',
+            wordBreak: 'break-word',
           }}
           variant="h3"
         >

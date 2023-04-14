@@ -39,7 +39,7 @@ const PublicSearchNewsResult = ({
       >
         <Box
           sx={{
-            gap: '60px',
+            gap: '32px',
             marginTop: 4,
             display: 'flex',
             flexWrap: 'wrap',

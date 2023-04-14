@@ -73,7 +73,7 @@ export default class PublicEventService {
         take: limit,
         where: whereFilter,
         orderBy: {
-          createdAt: 'desc',
+          startTime: 'desc',
         },
         include: {
           eventParticipants: {

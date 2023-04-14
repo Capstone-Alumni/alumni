@@ -151,6 +151,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
                   }}
                   fullWidth
                   label="Tiêu đề"
+                  inputProps={{ maxLength: 60 }}
                   {...field}
                 />
               );

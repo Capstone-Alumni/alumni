@@ -19,7 +19,7 @@ const PublicLatestNewsPage = ({ newsList }: { newsList: News[] }) => {
         sx={{
           display: 'flex',
           gap: '16px',
-          marginTop: 4,
+          marginTop: 2,
         }}
       >
         {newsList.slice(0, 2).map((item: News) => (
@@ -27,7 +27,7 @@ const PublicLatestNewsPage = ({ newsList }: { newsList: News[] }) => {
             key={item.id}
             item={item}
             sx={{
-              width: '45%',
+              width: '50%',
               height: '250px',
               imgWidth: 500,
               imgHeight: 250,
@@ -41,7 +41,7 @@ const PublicLatestNewsPage = ({ newsList }: { newsList: News[] }) => {
         className="next-four-news"
         sx={{
           display: 'flex',
-          gap: '40px',
+          gap: '0.75rem',
           marginTop: 4,
         }}
       >
@@ -50,7 +50,7 @@ const PublicLatestNewsPage = ({ newsList }: { newsList: News[] }) => {
             key={item.id}
             item={item}
             sx={{
-              width: '20%',
+              width: '25%',
               height: '150px',
               imgWidth: 250,
               imgHeight: 150,

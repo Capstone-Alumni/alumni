@@ -6,22 +6,22 @@ import {
   Card,
   CardContent,
   CardMedia,
-  Link,
   Typography,
   useTheme,
 } from '@mui/material';
 import { formatDate } from '@share/utils/formatDate';
 import { getImageOfNews } from '@share/utils/getFirstImageOfNews';
 import React from 'react';
+import Link from '@share/components/NextLinkV2';
 
 const NewsCard = ({
   item,
-  sx,
-  relativeImg = false,
+  totalItems = 3,
 }: {
   item: any;
   sx?: any;
   relativeImg?: boolean;
+  totalItems?: number;
 }) => {
   const theme = useTheme();
 
@@ -30,77 +30,62 @@ const NewsCard = ({
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        width: theme.spacing(35),
+        width: `calc(100% / ${totalItems})`,
+        boxShadow: 'none',
+        '&:hover': {
+          opacity: '0.5',
+          transition: 'all 0.2s',
+        },
       }}
     >
-      <CardMedia
-        title="news image"
-        component="div"
-        sx={{
-          height: theme.spacing(23),
-          padding: theme.spacing(2),
-          backgroundImage: `url(${
-            item.newsImageUrl ? item.newsImageUrl : getImageOfNews(item.content)
-          })`,
-        }}
-      />
-      {/* {!srcImg.startsWith('/logo') ? (
-        <div
-          style={{
-            height: '100%',
-          }}
-        >
-          {parse(srcImg)}
-        </div>
-      ) : (
-        <Image
-          src={srcImg}
-          alt="logo"
-          width={sx.imgWidth}
-          height={sx.imgHeight}
-        />
-      )} */}
-
-      <CardContent
-        sx={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: theme.spacing(1),
-        }}
-      >
-        <Typography fontSize={20} fontWeight={600}>
-          {item.title}
-        </Typography>
-        {/* <Typography variant="body2">{item.content}</Typography> */}
-
-        <Box sx={{ flex: 1 }} />
-
-        <Box
+      <Link prefetch={false} href={`/news/${item.id}`}>
+        <CardMedia
+          title={item.title}
+          component="div"
           sx={{
+            height: theme.spacing(23),
+            padding: theme.spacing(2),
+            borderRadius: '12px',
+            backgroundImage: `url(${
+              item.newsImageUrl
+                ? item.newsImageUrl
+                : getImageOfNews(item.content)
+            })`,
+          }}
+        />
+        <CardContent
+          sx={{
+            flex: 1,
             display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            gap: theme.spacing(1),
+            backgroundColor: 'rgba(0,0,0,0)',
           }}
         >
-          <Typography
-            sx={{
-              fontWeight: 600,
-              color: alpha(theme.palette.common.black, 0.6),
-            }}
-            variant="body2"
-          >
-            {formatDate(new Date(item.createdAt))}
+          <Typography fontSize={18} fontWeight={600}>
+            {item.title}
           </Typography>
-          <Link
-            href={`/news/${item.id}`}
-            style={{ textDecoration: 'underline' }}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
           >
-            <Typography variant="button">Đọc tiếp</Typography>
-          </Link>
-        </Box>
-      </CardContent>
+            <Typography
+              sx={{
+                fontWeight: 600,
+                color: alpha(theme.palette.common.black, 0.6),
+              }}
+              variant="body2"
+            >
+              {formatDate(new Date(item.createdAt))}
+            </Typography>
+          </Box>
+        </CardContent>{' '}
+      </Link>
     </Card>
   );
 };
