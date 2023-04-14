@@ -106,10 +106,20 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
         backgroundColor: theme.palette.background.neutral,
       }}
     >
-      <Box sx={{ width: '100%' }}>
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
         <Typography variant="h6">
           {initialData ? 'Chỉnh sửa tin tức' : 'Thêm tin tức'}
         </Typography>
+        <Button variant="text" onClick={() => router.back()}>
+          quay lại
+        </Button>
       </Box>
 
       <Box
@@ -150,7 +160,6 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
                   }}
                   fullWidth
                   label="Tiêu đề"
-                  inputProps={{ maxLength: 60 }}
                   {...field}
                 />
               );

@@ -1,7 +1,7 @@
 'use client';
 import {
+  Box,
   Chip,
-  styled,
   Switch,
   TableCell,
   TableRow,
@@ -16,35 +16,11 @@ import { useState } from 'react';
 import { formatDate } from '@share/utils/formatDate';
 import AdminNewsPreview from './AdminNewsPreview';
 import Link from '@share/components/NextLinkV2';
-
-const StyledBoxFlex = styled('div')(({ theme }) => ({
-  gap: '0.5rem',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledIconWrapper = styled('div')(({ theme }) => ({
-  cursor: 'pointer',
-  height: '30px',
-  width: '30px',
-  backgroundColor: 'rgb(255, 198, 194)',
-  borderRadius: '4px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  boxShadow: '0 8px 16px 0 rgba(255, 72, 66, 0.24)',
-}));
-
-const StyledIconWrapper1 = styled('div')(({ theme }) => ({
-  cursor: 'pointer',
-  height: '30px',
-  width: '30px',
-  borderRadius: '4px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
+import {
+  StyledBoxFlex,
+  StyledIconWrapperMainShadow,
+  StyledIconWrapperRedShadow,
+} from '@share/components/styled';
 
 const AdminNewsListItem = ({
   data,
@@ -59,42 +35,56 @@ const AdminNewsListItem = ({
   return (
     <>
       <TableRow>
-        <TableCell sx={{ maxWidth: '10rem' }} align="left">
+        <TableCell sx={{ maxWidth: '10rem', fontSize: '14px' }} align="left">
           <AdminNewsPreview data={data}>
             <Tooltip
               title="Xem với chế độ công khai"
               sx={{ cursor: 'pointer' }}
             >
-              <Typography fontSize={14} noWrap>
+              <Typography fontSize="inherit" noWrap>
                 {data.title}
               </Typography>
             </Tooltip>
           </AdminNewsPreview>
         </TableCell>
-        <TableCell sx={{ maxWidth: '10rem' }} align="left">
-          <Typography fontSize={14}>
+        <TableCell sx={{ maxWidth: '6rem' }} align="left">
+          <Typography fontSize="inherit">
             {data.authorInfo ? data.authorInfo.fullName : data.authorId}
           </Typography>
         </TableCell>
-        <TableCell align="left">
-          <Typography fontSize={14}>
+        <TableCell align="left" sx={{ maxWidth: '7rem' }}>
+          <Typography fontSize="inherit">
             {formatDate(new Date(data.createdAt))}
           </Typography>
         </TableCell>
-        <TableCell>
-          {data.tagsNews
-            ? data.tagsNews.map((tag: TagsNews) => (
-                <Chip
-                  key={tag.id}
-                  sx={{
-                    margin: 0.5,
-                    height: '26px',
-                    border: '1px solid #c9c6c6',
-                  }}
-                  label={tag.tagName}
-                />
-              ))
-            : null}
+        <TableCell sx={{ maxWidth: '10rem' }}>
+          {data.tagsNews ? (
+            <Box display="flex" alignItems="center">
+              {data.tagsNews
+                .slice(0, data.tagsNews.length > 2 ? 2 : 1)
+                .map((tag: TagsNews) => (
+                  <Chip
+                    key={tag.id}
+                    sx={{
+                      margin: 0.5,
+                      height: '26px',
+                      border: '1px solid #c9c6c6',
+                    }}
+                    label={tag.tagName}
+                  />
+                ))}
+              {data.tagsNews.length > 2 && (
+                <Typography
+                  fontSize="inherit"
+                  color="#c9c6c6"
+                  variant="caption"
+                  sx={{ marginLeft: '0.25rem' }}
+                >
+                  +5
+                </Typography>
+              )}
+            </Box>
+          ) : null}
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <Tooltip title="Công khai tin này cho mọi người.">
@@ -106,8 +96,26 @@ const AdminNewsListItem = ({
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <StyledBoxFlex>
+            <Tooltip title="Chỉnh sửa tin">
+              <StyledIconWrapperMainShadow>
+                <Link prefetch={false} href={`/admin/action/news/${data.id}`}>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <EditOutlinedIcon
+                      fontSize="small"
+                      sx={{
+                        margin: 'auto',
+                      }}
+                    />
+                  </Box>
+                </Link>
+              </StyledIconWrapperMainShadow>
+            </Tooltip>
             <Tooltip title="Xóa tin này">
-              <StyledIconWrapper>
+              <StyledIconWrapperRedShadow>
                 <DeleteOutlineIcon
                   fontSize="small"
                   sx={{
@@ -116,19 +124,7 @@ const AdminNewsListItem = ({
                   }}
                   onClick={() => setOpenDeleteModal(true)}
                 />
-              </StyledIconWrapper>
-            </Tooltip>
-            <Tooltip title="Chỉnh sửa tin">
-              <Link prefetch={false} href={`/admin/action/news/${data.id}`}>
-                <StyledIconWrapper1>
-                  <EditOutlinedIcon
-                    fontSize="small"
-                    sx={{
-                      margin: 'auto',
-                    }}
-                  />
-                </StyledIconWrapper1>
-              </Link>
+              </StyledIconWrapperRedShadow>
             </Tooltip>
           </StyledBoxFlex>
         </TableCell>
