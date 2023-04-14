@@ -21,6 +21,18 @@ import { Box } from '@mui/material';
 import MyAvatar from '@share/components/MyAvatar';
 import { getShortTitle60 } from '@share/utils/getShortTitle';
 
+const StyledDiv = styled('div')(({ theme }) => ({
+  height: theme.spacing(8),
+}));
+
+const StyledTypography = styled(Typography)(({ theme }) => ({
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  display: '-webkit-box',
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: 'vertical',
+}));
+
 const BoxLayerCardMedia = styled(Box)(({ theme }) => ({
   position: 'absolute',
   bottom: '0',
@@ -31,6 +43,15 @@ const BoxLayerCardMedia = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: '0 12px',
+}));
+
+const LineRed = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  bottom: '0',
+  left: '0',
+  width: '100%',
+  height: '3px',
+  backgroundColor: 'rgb(255,72,67)',
 }));
 
 const EventCardItem = ({
@@ -56,6 +77,10 @@ const EventCardItem = ({
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
+          '&:hover': {
+            opacity: '0.7',
+            transition: 'all 0.2s',
+          },
         }}
       >
         <Link
@@ -109,14 +134,21 @@ const EventCardItem = ({
               },
             }}
           >
-            <Stack direction="row" alignItems="center" color="#919eab">
-              <Typography variant="body2">
+            <Stack direction="row" alignItems="center">
+              <Typography
+                variant="body2"
+                color={isEnded ? '#919eab' : 'primary'}
+              >
                 {formatDateEvent(new Date(data.startTime))}
               </Typography>
               <Box sx={{ flex: 1 }} />
               {actions}
             </Stack>
-            <Typography variant="h6">{getShortTitle60(data.title)}</Typography>
+            <StyledDiv>
+              <StyledTypography variant="h6">
+                {getShortTitle60(data.title)}
+              </StyledTypography>
+            </StyledDiv>
             <Box sx={{ flex: 1 }} />
             <Stack
               direction="row"
@@ -142,6 +174,7 @@ const EventCardItem = ({
                   </Typography>
                 ) : null}
               </Stack>
+              {isEnded && <LineRed />}
             </Stack>
           </CardContent>
         </Link>

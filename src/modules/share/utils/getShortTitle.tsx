@@ -13,7 +13,7 @@ export const getShortTitle = (title: string) => {
 };
 
 export const getShortTitle60 = (title: string) => {
-  if (title.length > 30) {
+  if (title.length > 60) {
     const shortTitle = `${title.substring(0, 60)}...`;
     return (
       <Tooltip title={title}>
