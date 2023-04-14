@@ -43,7 +43,7 @@ const AdminNewsListTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.items.map((row) => (
+            {data.items.map(row => (
               <AdminNewsListItem
                 key={row.id}
                 data={row}

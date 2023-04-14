@@ -36,7 +36,7 @@ const AdminEventListTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.items.map((row) => (
+            {data.items.map(row => (
               <AdminEventListItem
                 key={row.id}
                 data={row}

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { Form, FormikProvider, useFormik } from 'formik';
-import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 // material

@@ -2,7 +2,6 @@
 import {
   Box,
   Chip,
-  styled,
   Switch,
   TableCell,
   TableRow,
@@ -18,9 +17,9 @@ import { formatDate } from '@share/utils/formatDate';
 import AdminNewsPreview from './AdminNewsPreview';
 import Link from '@share/components/NextLinkV2';
 import {
+  StyledBoxFlex,
   StyledIconWrapperMainShadow,
   StyledIconWrapperRedShadow,
-  StyledBoxFlex,
 } from '@share/components/styled';
 
 const AdminNewsListItem = ({

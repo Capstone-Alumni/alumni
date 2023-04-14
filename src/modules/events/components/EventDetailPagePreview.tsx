@@ -1,23 +1,15 @@
 'use client';
 
-import { Button, Stack, Tab, Tabs, useTheme } from '@mui/material';
+import { Stack, Tab, Tabs, useTheme } from '@mui/material';
 import { Box, Typography } from '@mui/material';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import LoadingIndicator from '@share/components/LoadingIndicator';
 import { usePathname } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
-import usePublicGetEventById from '../hooks/usePublicGetEventById';
+import { useMemo, useState } from 'react';
 import Image from 'next/image';
-import usePublicJoinEventById from '../hooks/usePublicJoinEventById';
 import EventParticipantListTab from './EventParticipantListTab';
-import usePublicInterestEventById from '../hooks/usePublicInterestEventById';
-import usePublicUninterestEventById from '../hooks/usePublicUninterestEventById';
 import EditorPreview from '@share/components/editor/EditorPreview';
 import MyAvatar from '@share/components/MyAvatar';
 import { formatDate } from '@share/utils/formatDate';
 import Link from '@share/components/NextLinkV2';
-import usePublicUnJoinEventById from '../hooks/usePublicUnJoinEventById';
 import { Event } from '../types';
 
 type EventStatus = 'not-open' | 'opened' | 'running' | 'ended';

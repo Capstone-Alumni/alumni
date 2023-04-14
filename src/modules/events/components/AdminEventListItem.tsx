@@ -1,24 +1,19 @@
-import { TableCell, TableRow, Tooltip, Typography, Box } from '@mui/material';
+import { Box, TableCell, TableRow, Tooltip, Typography } from '@mui/material';
 
-import Image from 'next/image';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import LiveGIF from '../../../assets/live-gif.gif';
 import { Event } from '../types';
 import { formatDate } from '@share/utils/formatDate';
-import ActionButton from '@share/components/ActionButton';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import useAdminGetEventList from '../hooks/useAdminGetEventList';
 import useOwnerDeleteEventById from '../hooks/useOwnerDeleteEventById';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import {
+  StyledBoxFlex,
   StyledIconWrapperMainShadow,
   StyledIconWrapperRedShadow,
-  StyledBoxFlex,
 } from '@share/components/styled';
 import Link from '@share/components/NextLinkV2';
 import AdminEventPreview from './AdminEventPreview';
