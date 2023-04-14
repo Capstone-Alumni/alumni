@@ -27,7 +27,9 @@ const StyledBoxFlex = styled('div')(({ theme }) => ({
 
 const StyledIconWrapper = styled('div')(({ theme }) => ({
   cursor: 'pointer',
-  height: '30px',
+  minHeight: '30px',
+  hight: '30px',
+  minWidth: '30px',
   width: '30px',
   borderRadius: '4px',
   display: 'flex',
@@ -38,7 +40,9 @@ const StyledIconWrapper = styled('div')(({ theme }) => ({
 
 const StyledIconWrapper1 = styled('div')(({ theme }) => ({
   cursor: 'pointer',
-  height: '30px',
+  minHeight: '30px',
+  hight: '30px',
+  minWidth: '30px',
   width: '30px',
   borderRadius: '4px',
   display: 'flex',
@@ -59,7 +63,7 @@ const AdminNewsListItem = ({
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   return (
     <>
-      <TableRow>
+      <TableRow sx={{ verticalAlign: 'baseline' }}>
         <TableCell sx={{ maxWidth: '10rem' }} align="left">
           <AdminNewsPreview data={data}>
             <Tooltip
@@ -72,17 +76,17 @@ const AdminNewsListItem = ({
             </Tooltip>
           </AdminNewsPreview>
         </TableCell>
-        <TableCell sx={{ maxWidth: '10rem' }} align="left">
+        <TableCell sx={{ maxWidth: '6rem' }} align="left">
           <Typography fontSize={14}>
             {data.authorInfo ? data.authorInfo.fullName : data.authorId}
           </Typography>
         </TableCell>
-        <TableCell align="left">
+        <TableCell align="left" sx={{ maxWidth: '7rem' }}>
           <Typography fontSize={14}>
             {formatDate(new Date(data.createdAt))}
           </Typography>
         </TableCell>
-        <TableCell>
+        <TableCell sx={{ maxWidth: '10rem' }}>
           {data.tagsNews
             ? data.tagsNews.map((tag: TagsNews) => (
                 <Chip
