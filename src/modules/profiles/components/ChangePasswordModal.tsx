@@ -105,10 +105,10 @@ export default function ChangePasswordModal({
     setSubmitting,
   } = formik;
 
-  const handleLogout = async () => {
-    await signOut({ redirect: false });
-    router.push('/');
-  };
+  // const handleLogout = async () => {
+  //   await signOut({ redirect: false });
+  //   router.push('/');
+  // };
 
   useEffect(() => {
     if ((error as any)?.response?.data.data.message === WRONG_PASSWORD) {
@@ -123,7 +123,6 @@ export default function ChangePasswordModal({
       setSubmitting(false);
       resetForm();
       handleClose();
-      handleLogout();
     }
   }, [error, data]);
 

@@ -1,5 +1,6 @@
 'use client';
 import {
+  Box,
   Chip,
   styled,
   Switch,
@@ -28,7 +29,6 @@ const StyledIconWrapper = styled('div')(({ theme }) => ({
   cursor: 'pointer',
   height: '30px',
   width: '30px',
-  backgroundColor: 'rgb(255, 198, 194)',
   borderRadius: '4px',
   display: 'flex',
   alignItems: 'center',
@@ -44,6 +44,7 @@ const StyledIconWrapper1 = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  boxShadow: `0 8px 16px 0 ${theme.palette.primary.lighter}`,
 }));
 
 const AdminNewsListItem = ({
@@ -119,16 +120,22 @@ const AdminNewsListItem = ({
               </StyledIconWrapper>
             </Tooltip>
             <Tooltip title="Chỉnh sửa tin">
-              <Link prefetch={false} href={`/admin/action/news/${data.id}`}>
-                <StyledIconWrapper1>
-                  <EditOutlinedIcon
-                    fontSize="small"
-                    sx={{
-                      margin: 'auto',
-                    }}
-                  />
-                </StyledIconWrapper1>
-              </Link>
+              <StyledIconWrapper1>
+                <Link prefetch={false} href={`/admin/action/news/${data.id}`}>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <EditOutlinedIcon
+                      fontSize="small"
+                      sx={{
+                        margin: 'auto',
+                      }}
+                    />
+                  </Box>
+                </Link>
+              </StyledIconWrapper1>
             </Tooltip>
           </StyledBoxFlex>
         </TableCell>
