@@ -10,25 +10,11 @@ import {
   Typography,
 } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
-import useApproveAccessRequest from '../hooks/useApproveAccessRequest';
 import useGetAccessRequestList from '../hooks/useGetAccessRequestList';
-import useRejcetAccessRequest from '../hooks/useRejectAccessRequest';
 import AdminAccessRequestListItem from './AdminAccessRequestListItem';
 
 const AdminAccessRequestTable = () => {
-  const { data, isLoading, reload } = useGetAccessRequestList();
-  const { reject } = useRejcetAccessRequest();
-  const { approve } = useApproveAccessRequest();
-
-  const onApprove = async (id: string) => {
-    await approve({ id });
-    reload();
-  };
-
-  const onReject = async (id: string) => {
-    await reject({ id });
-    reload();
-  };
+  const { data, isLoading } = useGetAccessRequestList();
 
   if (isLoading && !data?.data) {
     return <LoadingIndicator />;
@@ -52,24 +38,23 @@ const AdminAccessRequestTable = () => {
           {accessRequestListData.totalItems}
         </Typography>
       </Box>
+
       <TableContainer component={Paper}>
         <Table aria-label="access-request-table">
           <TableHead>
             <TableRow>
               <TableCell align="left">Họ và tên</TableCell>
+              <TableCell align="left">Email</TableCell>
+              <TableCell align="left">Niên khoá</TableCell>
+              <TableCell align="center">Lớp</TableCell>
+              <TableCell align="center">Trạng thái</TableCell>
               <TableCell align="left">Ngày được tạo</TableCell>
-              <TableCell sx={{ maxWidth: '3rem' }} />
-              <TableCell sx={{ maxWidth: '3rem' }} />
+              <TableCell align="center"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {accessRequestListData.items.map(row => (
-              <AdminAccessRequestListItem
-                key={row.id}
-                data={row}
-                onApprove={onApprove}
-                onReject={onReject}
-              />
+              <AdminAccessRequestListItem key={row.id} data={row} />
             ))}
           </TableBody>
         </Table>

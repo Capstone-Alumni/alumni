@@ -4,6 +4,7 @@ import { MemberFormValues } from '../components/MemberForm';
 
 type CreateMemberPlatformParams = MemberFormValues & {
   tenantId: string;
+  password?: string;
 };
 
 type CreateMemberPlatformResponse = unknown;
@@ -24,7 +25,7 @@ const useCreateMemberPlatform = () => {
     }),
     {
       onError: () => {
-        toast.error('Tao thanh vien that bai');
+        toast.error('Xảy ra lỗi');
       },
     },
   );

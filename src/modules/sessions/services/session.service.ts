@@ -1,4 +1,3 @@
-import { hashSync } from 'bcrypt';
 import { omit } from 'lodash';
 import {
   SignInRequestBody,
@@ -27,7 +26,7 @@ export default class SessionService {
       where: {
         email: email,
         alumniId: null,
-        isApproved: false,
+        requestStatus: 0,
       },
     });
 
@@ -35,7 +34,7 @@ export default class SessionService {
       throw new Error('existed');
     }
 
-    const passwordEncrypted = hashSync(password, 10);
+    // const passwordEncrypted = hashSync(password, 10);
 
     const newAccessRequest = await tenantPrisma.accessRequest.create({
       data: {
@@ -44,7 +43,7 @@ export default class SessionService {
         dateOfBirth,
         alumClassId: gradeClass[0].alumClass.id,
         email,
-        password: passwordEncrypted,
+        password: password, // passwordEncrypted,
       },
     });
 

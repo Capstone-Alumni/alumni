@@ -106,7 +106,7 @@ model AccessRequest {
   email       String
   password String?
   
-  isApproved  Boolean @default(false) @map("is_approved")
+  requestStatus  Int @default(0) @map("request_status")
 
   alumClassId String  @map("alum_class_id")
   alumClass AlumClass @relation(fields: [alumClassId], references: [id], onDelete: Cascade)

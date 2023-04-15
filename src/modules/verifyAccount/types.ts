@@ -1,3 +1,5 @@
+import { Class } from '../gradeAndClass/types';
+
 export type VerifyAccountInfoServiceProps = {
   userId: string;
   accessLevel: string;
@@ -14,9 +16,14 @@ export type GetAccessRequestListParams = {
 
 export type AccessRequest = {
   id: string;
-  userId: string;
   alumClassId: string;
-  gradeId: string;
+  alumClass?: Class;
+  alumniId?: string;
   fullName: string;
+  email: string;
+  phone?: string;
+  dateOfBirth?: Date | string;
+  requestStatus: number;
   createdAt: string;
+  password?: string;
 };

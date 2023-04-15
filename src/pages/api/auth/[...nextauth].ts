@@ -55,7 +55,6 @@ export const nextAuthOptions = {
   },
   callbacks: {
     jwt({ token, user, trigger, session }) {
-      console.log('jwt', trigger, session);
       if (user) {
         token.user = user;
         token.currentTenant = user.tenant || null;
@@ -66,7 +65,6 @@ export const nextAuthOptions = {
       return token;
     },
     session({ session, token }) {
-      console.log('update session');
       session.user = token.user;
       session.currentTenant = token.currentTenant;
 

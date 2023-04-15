@@ -1,9 +1,9 @@
 import { VerifyAccountInfoServiceProps } from '../types';
 import { PrismaClient } from '@prisma/client';
 import { User } from 'next-auth';
-import { sendMailService } from 'src/utils/emailSmsService';
 
 export default class AccessRequestService {
+  // bỏ, thay bằng sync information
   static verifyAccount = async (
     tenantPrisma: PrismaClient,
     data: VerifyAccountInfoServiceProps,
@@ -76,28 +76,37 @@ export default class AccessRequestService {
 
   static getAccessRequestList = async (
     tenantPrisma: PrismaClient,
-    { userId, page, limit }: { userId: string; page: number; limit: number },
+    {
+      accountId,
+      page,
+      limit,
+    }: { accountId: string; page: number; limit: number },
   ) => {
-    const user = await tenantPrisma.information.findUnique({
+    const alumni = await tenantPrisma.alumni.findUnique({
       where: {
-        userId: userId,
+        accountId: accountId,
       },
       include: {
-        alumClass: true,
+        GradeMod: true,
+        alumniToClass: {
+          where: {
+            isClassMod: true,
+          },
+        },
       },
     });
 
-    if (!user || !user.alumClass) {
-      throw new Error('404 user');
+    if (!alumni) {
+      throw new Error('404 alumni');
     }
 
-    const classId = user.alumClass.id;
+    const classIdList = alumni.alumniToClass.map(cl => cl.alumClassId);
+    const gradeIdList = alumni.GradeMod.map(gr => gr.gradeId);
 
     const whereFilter = {
-      AND: [
-        { alumClassId: classId },
-        { isApproved: false },
-        { archived: false },
+      OR: [
+        { alumClassId: { in: classIdList } },
+        { alumClass: { gradeId: { in: gradeIdList } } },
       ],
     };
 
@@ -114,8 +123,11 @@ export default class AccessRequestService {
             createdAt: 'desc',
           },
           include: {
-            alumClass: true,
-            grade: true,
+            alumClass: {
+              include: {
+                grade: true,
+              },
+            },
           },
         }),
       ]);
@@ -181,17 +193,7 @@ export default class AccessRequestService {
         id: id,
       },
       data: {
-        isApproved: false,
-        archived: true,
-      },
-    });
-
-    await tenantPrisma.alumni.update({
-      where: {
-        accountId: accessRequest.userId,
-      },
-      data: {
-        accessStatus: 'PENDING',
+        requestStatus: 2,
       },
     });
 
@@ -209,33 +211,9 @@ export default class AccessRequestService {
         id: id,
       },
       data: {
-        isApproved: true,
+        requestStatus: 1,
       },
     });
-
-    await tenantPrisma.alumni.update({
-      where: {
-        accountId: accessRequest.userId,
-      },
-      data: {
-        accessStatus: 'APPROVED',
-      },
-    });
-
-    const user = await tenantPrisma.information.findUnique({
-      where: {
-        userId: accessRequest.userId,
-      },
-    });
-
-    // TODO: change the subject and text to be more realistics
-    if (accessRequest?.email) {
-      await sendMailService({
-        to: accessRequest.email,
-        subject: 'Đơn tham gia của bạn đã được duyệt',
-        text: `Cảm ơn bạn ${accessRequest.fullName} đã nộp đơn tham gia vào hội alumni của trường. Đơn tham gia của bạn đã được duyệt. Xin cảm ơn bạn.`,
-      });
-    }
 
     await tenantPrisma.$disconnect();
 

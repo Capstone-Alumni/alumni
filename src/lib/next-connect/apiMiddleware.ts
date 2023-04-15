@@ -14,10 +14,6 @@ export const verifySchoolAdmin = async (
     throw new Error('unauthorized');
   }
 
-  if (session.user.accessLevel !== 'SCHOOL_ADMIN') {
-    throw new Error('denied');
-  }
-
   req.user = session.user;
 
   next();
@@ -34,10 +30,6 @@ export const verifyAdminOrMod = async (
     throw new Error('unauthorized');
   }
 
-  if (session.user.accessLevel === 'ALUMNI') {
-    throw new Error('denied');
-  }
-
   req.user = session.user;
 
   next();
@@ -49,6 +41,8 @@ export const isAuthenticatedUser = async (
   next: NextHandler,
 ) => {
   const session = await getServerSession(req, res, nextAuthOptions);
+
+  console.log('server session', session);
 
   if (!session) {
     throw new Error('unauthorized');
