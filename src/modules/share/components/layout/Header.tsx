@@ -14,7 +14,7 @@ import { NavItem } from './NavItem';
 import HeaderUserOptions from './HeaderUserOption';
 import React, { useMemo } from 'react';
 import { User } from 'next-auth';
-import { Tenant, currentUserInformationDataAtom } from '@share/states';
+import { currentUserInformationDataAtom, Tenant } from '@share/states';
 import { usePathname } from 'next/navigation';
 import { useRecoilValue } from 'recoil';
 
@@ -52,7 +52,9 @@ function ElevationScroll(props: Props) {
 
 const Header = ({ user, tenant }: { user?: User; tenant?: Tenant }) => {
   const theme = useTheme();
-  const { GradeMod } = useRecoilValue(currentUserInformationDataAtom);
+  const currentUserInformationData = useRecoilValue(
+    currentUserInformationDataAtom,
+  );
 
   const pathname = usePathname();
 
@@ -110,15 +112,15 @@ const Header = ({ user, tenant }: { user?: User; tenant?: Tenant }) => {
                   <NavItem label="Sự kiện" href="/events/discover" />
                   <NavItem label="Tuyển dụng" href="/recruitments/discover" />
                   <NavItem label="Gây quỹ" href="/funds/going" />
-                  <NavItem label="Bài đăng" href="/posts" />
-                  <NavItem label="Tìm bạn" href="/find" />
+                  <NavItem label="Bạn bè" href="/social" />
                 </>
               ) : null}
             </Box>
 
             <Box sx={{ flex: 1 }} />
 
-            {user && (user.isOwner || GradeMod.length) ? (
+            {user &&
+            (user.isOwner || currentUserInformationData?.GradeMod?.length) ? (
               <Link
                 href="/admin/access/access_request"
                 style={{ color: 'inherit', marginRight: theme.spacing(2) }}

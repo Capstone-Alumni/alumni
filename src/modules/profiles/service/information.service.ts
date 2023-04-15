@@ -87,7 +87,11 @@ export default class InformationService {
         information: true,
         alumniToClass: {
           include: {
-            alumClass: true,
+            alumClass: {
+              include: {
+                grade: true,
+              },
+            },
           },
         },
         GradeMod: {
