@@ -62,6 +62,7 @@ export default class OwnerFundService {
       endTime,
       targetBalance,
       publicity,
+      backgroundImage,
     }: {
       title: string;
       description?: string;
@@ -69,6 +70,7 @@ export default class OwnerFundService {
       endTime?: Date;
       targetBalance: number;
       publicity?: AccessLevel;
+      backgroundImage?: string;
     },
   ) => {
     const data = await tenantPrisma.fund.create({
@@ -79,6 +81,7 @@ export default class OwnerFundService {
         endTime,
         targetBalance,
         publicity,
+        backgroundImage,
         hostInformation: {
           connect: {
             userId: userId,
@@ -103,6 +106,7 @@ export default class OwnerFundService {
       endTime?: Date;
       targetBalance: number;
       publicity?: AccessLevel;
+      backgroundImage?: string;
     },
   ) => {
     const fund = await tenantPrisma.fund.findUnique({

@@ -4,18 +4,20 @@ import * as yup from 'yup';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 import { Fund } from '../types';
 import TextInput from '@share/components/form/TextInput';
-import { Box, Button, InputAdornment, useTheme } from '@mui/material';
-import DateTimeInput from '@share/components/form/DateTimeInput';
+import { Box, Button, useTheme } from '@mui/material';
 // import SelectInput from '@share/components/form/SelectInput';
 // import { Typography } from '@mui/material';
 import { useState } from 'react';
 import RichTextInput from '@share/components/form/RichTextInput';
 import RadioInput from '@share/components/form/RadioInput';
+import UploadBackgroundInput from '@share/components/form/UploadBackgroundInput';
+import CurrencyInput from '@share/components/CurrencyInput';
+import DateInput from '@share/components/form/DateInput';
 
 export type FundFormValues = {
   title: string;
   description?: string;
-  startTime: Date;
+  backgroundImage?: string;
   endTime: Date;
   targetBalance: number;
   publicity: AccessLevel;
@@ -23,7 +25,6 @@ export type FundFormValues = {
 
 const validationSchema = yup.object({
   title: yup.string().required(),
-  startTime: yup.date().required(),
   endTime: yup.date().required(),
   publicity: yup.string().required(),
   targetBalance: yup.number().required(),
@@ -45,6 +46,7 @@ const FundForm = ({
     resolver,
     defaultValues: {
       title: initialData?.title ?? '',
+      backgroundImage: initialData?.backgroundImage ?? '',
       description: initialData?.description,
       startTime: initialData?.startTime
         ? new Date(initialData.startTime)
@@ -83,17 +85,19 @@ const FundForm = ({
         inputProps={{ label: 'Tên quỹ', fullWidth: true }}
       />
 
-      <TextInput
+      <CurrencyInput
         control={control}
         name="targetBalance"
         inputProps={{
+          placeholder: 'Số tiền mục tiêu',
           label: 'Số tiền mục tiêu',
-          fullWidth: true,
-          type: 'number',
-          InputProps: {
-            endAdornment: <InputAdornment position="end">VNĐ</InputAdornment>,
-          },
         }}
+      />
+      <UploadBackgroundInput
+        control={control}
+        name="backgroundImage"
+        inputProps={{ label: 'Hình ảnh đại diện bài gây quỹ' }}
+        containerSx={{ width: '100%' }}
       />
 
       <RichTextInput
@@ -102,16 +106,16 @@ const FundForm = ({
         inputProps={{ placeholder: 'Mô tả', containerSx: { width: '100%' } }}
       />
 
-      <DateTimeInput
+      {/* <DateTimeInput
         control={control}
         name="startTime"
         inputProps={{
           fullWidth: true,
           label: 'Thời gian bắt đầu',
         }}
-      />
+      /> */}
 
-      <DateTimeInput
+      <DateInput
         control={control}
         name="endTime"
         inputProps={{

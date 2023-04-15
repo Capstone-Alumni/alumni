@@ -1,16 +1,14 @@
 import {
+  Button,
   // IconButton,
   TableCell,
   TableRow,
-  Tooltip,
   Typography,
 } from '@mui/material';
 // import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 // import CancelIcon from '@mui/icons-material/Cancel';
-import PublicIcon from '@mui/icons-material/Public';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 // import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Fund } from '../types';
 import ActionButton from '@share/components/ActionButton';
@@ -41,6 +39,31 @@ const AdminFundListItem = ({
     reload();
   };
 
+  const getFundStatus = () => {
+    if (data.publicity === 'ALUMNI') {
+      return 'Chưa công khai';
+    }
+    const currentDate = new Date();
+    if (data.publicity === 'SCHOOL_ADMIN') {
+      if (currentDate > new Date(data.endTime)) {
+        return 'Đã kết thúc';
+      }
+      return 'Đang diễn ra';
+    }
+  };
+
+  const getFundStatusColor = () => {
+    if (data.publicity === 'ALUMNI') {
+      return 'info';
+    }
+    const currentDate = new Date();
+    if (data.publicity === 'SCHOOL_ADMIN') {
+      if (currentDate > new Date(data.endTime)) {
+        return 'warning';
+      }
+    }
+  };
+
   return (
     <>
       <TableRow>
@@ -48,7 +71,7 @@ const AdminFundListItem = ({
           <Typography>{getShortTitle(data.title)}</Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>{data.hostInformation?.email}</Typography>
+          <Typography>{data.hostInformation?.fullName}</Typography>
         </TableCell>
         <TableCell align="left">
           <Typography>{formatAmountMoney(data.targetBalance * 100)}</Typography>
@@ -58,44 +81,14 @@ const AdminFundListItem = ({
         </TableCell>
         <TableCell align="left">
           <Typography>
-            {formatDate(new Date(data.createdAt), 'dd/MM/yyyy - HH:ss')}
+            {formatDate(new Date(data.endTime), 'dd/MM/yyyy')}
           </Typography>
         </TableCell>
         <TableCell align="center">
           <Typography>
-            {/* {data.approvedStatus === -1 ? (
-              <Tooltip title="Đang chờ xác nhận">
-                <MoreHorizIcon />
-              </Tooltip>
-            ) : null} */}
-            {new Date(data.endTime) < new Date() ? (
-              <Tooltip title="Đã kết thúc">
-                <DirectionsRunIcon color="error" />
-              </Tooltip>
-            ) : (
-              <Tooltip title="Chưa kết thúc">
-                <DirectionsRunIcon color="success" />
-              </Tooltip>
-            )}
-          </Typography>
-        </TableCell>
-        <TableCell align="center">
-          <Typography>
-            {/* {data.approvedStatus === -1 ? (
-              <Tooltip title="Đang chờ xác nhận">
-                <MoreHorizIcon />
-              </Tooltip>
-            ) : null} */}
-            {data.publicity === 'ALUMNI' ? (
-              <Tooltip title="Chưa sẵn sàng nhận ủng hộ">
-                <PublicIcon color="error" />
-              </Tooltip>
-            ) : null}
-            {data.publicity === 'SCHOOL_ADMIN' ? (
-              <Tooltip title="Sẵn sàng nhận ủng hộ">
-                <PublicIcon color="success" />
-              </Tooltip>
-            ) : null}
+            <Button color={getFundStatusColor()} variant="outlined">
+              {getFundStatus()}
+            </Button>
           </Typography>
         </TableCell>
         <TableCell align="center">

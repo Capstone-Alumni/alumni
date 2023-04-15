@@ -4,17 +4,19 @@ import * as yup from 'yup';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 import useCreateFundTransaction from '../hooks/useCreateFundTransaction';
 import { useForm } from 'react-hook-form';
-import TextInput from '@share/components/form/TextInput';
 import Checkbox from '@share/components/form/Checkbox';
+import CurrencyInput from '@share/components/CurrencyInput';
 
 const FundTransactionForm = ({
   fundId,
   maxDonate,
   canDonate,
+  reminingAmount,
 }: {
   fundId: string;
   maxDonate: number;
   canDonate: boolean;
+  reminingAmount: number;
 }) => {
   const { fetchApi, isLoading } = useCreateFundTransaction();
 
@@ -43,7 +45,7 @@ const FundTransactionForm = ({
     amount: number;
     incognito: boolean;
   }) => {
-    if (canDonate) {
+    if (canDonate && amount <= reminingAmount) {
       await fetchApi({ fundId: fundId, amount: amount, incognito: incognito });
     } else {
       toast.info(
@@ -54,12 +56,11 @@ const FundTransactionForm = ({
 
   return (
     <Stack direction="column" gap={1}>
-      <TextInput
+      <CurrencyInput
         control={control}
         name="amount"
         inputProps={{
           label: 'Số tiền ủng hộ',
-          type: 'number',
         }}
       />
       <Checkbox
