@@ -80,7 +80,7 @@ export default class OwnerFundService {
         startTime,
         endTime,
         targetBalance,
-        publicity,
+        publicity: AccessLevel.SCHOOL_ADMIN,
         backgroundImage,
         hostInformation: {
           connect: {

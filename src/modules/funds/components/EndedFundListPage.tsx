@@ -78,7 +78,7 @@ const EndedFundListPage = () => {
                       prefetch={false}
                     >
                       <Button fullWidth variant="outlined">
-                        Ủng hộ
+                        Xem thông tin
                       </Button>
                     </Link>,
                     isSaved ? (

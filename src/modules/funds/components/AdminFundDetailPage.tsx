@@ -1,65 +1,43 @@
-'use client';
-
 import {
-  Button,
+  Box,
   Divider,
   LinearProgress,
   Stack,
   Tab,
   Tabs,
+  Typography,
   useTheme,
 } from '@mui/material';
-import { Box, Typography } from '@mui/material';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import LoadingIndicator from '@share/components/LoadingIndicator';
-import { usePathname } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
-import usePublicGetFundById from '../hooks/usePublicGetFundById';
-import usePublicInterestFundById from '../hooks/usePublicSaveFundById';
-import usePublicUninterestFundById from '../hooks/usePublicUnsaveFundById';
-import EditorPreview from '@share/components/editor/EditorPreview';
+import { Fund } from '../types';
+import { useState } from 'react';
 import { renderEventStatus } from 'src/modules/events/components/EventDetailPage';
-import FundTransactionForm from './FundTransactionForm';
-import FundTransactionListTab from './FundTransactionList';
+
 import { formatDate } from '@share/utils/formatDate';
-import { formatAmountMoney } from '../utils';
-import FundReportList from './FundReportList';
 import { useRecoilValue } from 'recoil';
 import { currentTenantDataAtom } from '@share/states';
+import EditorPreview from '@share/components/editor/EditorPreview';
+import {
+  Timeline,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDot,
+  TimelineItem,
+  timelineItemClasses,
+  TimelineSeparator,
+} from '@mui/lab';
+import LoadingIndicator from '@share/components/LoadingIndicator';
+import useGetFundReportList from '../hooks/useGetFundReportList';
+import { formatAmountMoney } from '../utils';
 import Image from 'next/image';
 import MyAvatar from '@share/components/MyAvatar';
 import Link from '@share/components/NextLinkV2';
 
-const FundDetailPage = () => {
+const AdminFundDetailPage = ({ fundData }: { fundData: Fund }) => {
   const [tabKey, setTabKey] = useState('description');
-  const theme = useTheme();
-  const pathname = usePathname();
-
-  const fundId = pathname?.split('/')[2] || '';
-
   const tenantData = useRecoilValue(currentTenantDataAtom);
+  const theme = useTheme();
 
-  const { data, fetchApi, isLoading } = usePublicGetFundById();
-  const { fetchApi: saveFund, isLoading: isSavingFund } =
-    usePublicInterestFundById();
-  const { fetchApi: unsaveFund, isLoading: isUnsavingFund } =
-    usePublicUninterestFundById();
-
-  useEffect(() => {
-    fetchApi({ fundId: fundId });
-  }, []);
-
-  const isSaved = useMemo(() => {
-    return data?.data?.fundSaved?.length && data?.data?.fundSaved?.length > 0;
-  }, [data?.data]);
-
-  const FundStatus = useMemo(() => {
-    if (!data?.data) {
-      return 'not-open';
-    }
-
-    const { data: fundData } = data;
-
+  const fundStatus = () => {
     if (new Date(fundData.startTime) > new Date()) {
       return 'opened';
     }
@@ -69,27 +47,59 @@ const FundDetailPage = () => {
     }
 
     return 'ended';
-  }, [data?.data]);
-
-  const onSaveFund = async () => {
-    await saveFund({ fundId: fundId });
-    fetchApi({ fundId: fundId });
   };
 
-  const onUnsaveFund = async () => {
-    await unsaveFund({ fundId: fundId });
-    fetchApi({ fundId: fundId });
+  const { data: fundReport, isLoading: loadingReportList } =
+    useGetFundReportList(fundData.id || '');
+
+  const renderFundReport = () => {
+    if (loadingReportList || !fundData.id) {
+      return <LoadingIndicator />;
+    }
+    return (
+      <Timeline
+        nonce={undefined}
+        onResize={undefined}
+        onResizeCapture={undefined}
+        sx={{
+          [`& .${timelineItemClasses.root}:before`]: {
+            flex: 0,
+            padding: 0,
+          },
+        }}
+      >
+        {fundReport?.data.items.map(report => (
+          <TimelineItem key={report.id}>
+            <TimelineSeparator>
+              <TimelineDot color="primary" />
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent>
+              <Typography color="text.secondary">
+                {formatDate(new Date(report.createdAt))}
+              </Typography>
+              <Typography variant="h6">{report.title}</Typography>
+              <EditorPreview value={report.content} />
+            </TimelineContent>
+          </TimelineItem>
+        ))}
+        <TimelineItem>
+          <TimelineSeparator>
+            <TimelineDot />
+          </TimelineSeparator>
+        </TimelineItem>
+      </Timeline>
+    );
   };
 
-  if (isLoading || !data?.data) {
-    return <LoadingIndicator />;
-  }
-
-  const { data: fundData } = data;
   const balancePercent = fundData.currentBalance / fundData.targetBalance;
 
   return (
-    <Box>
+    <Box
+      sx={{
+        width: '100%',
+      }}
+    >
       <Box
         sx={{
           position: 'relative',
@@ -105,11 +115,9 @@ const FundDetailPage = () => {
           style={{ objectFit: 'cover' }}
         />
       </Box>
-
       <Typography variant="h3" sx={{ mb: 1 }}>
         {fundData.title}
       </Typography>
-
       <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 2 }}>
         <MyAvatar
           displayName={fundData.hostInformation?.fullName}
@@ -128,11 +136,10 @@ const FundDetailPage = () => {
           <Typography>{fundData.hostInformation?.email}</Typography>
         </Stack>
       </Stack>
-
       <Box
         sx={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
           gap: theme.spacing(2),
           mb: 2,
         }}
@@ -148,7 +155,7 @@ const FundDetailPage = () => {
           <Stack direction="column">
             <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 0.5 }}>
               <Typography fontWeight={600}>Tình trạng</Typography>
-              <Typography>{renderEventStatus(FundStatus)}</Typography>
+              <Typography>{renderEventStatus(fundStatus())}</Typography>
             </Stack>
             <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 0.5 }}>
               <Typography fontWeight={600}>Bắt đầu</Typography>
@@ -163,7 +170,6 @@ const FundDetailPage = () => {
               </Typography>
             </Stack>
           </Stack>
-
           {tenantData?.vnp_tmnCode ? (
             <>
               <Divider sx={{ width: '100%', my: 1 }} />
@@ -208,72 +214,27 @@ const FundDetailPage = () => {
             </>
           ) : null}
         </Box>
+        <Tabs
+          value={tabKey}
+          onChange={(_, key) => setTabKey(key)}
+          aria-label="wrapped tabs"
+        >
+          <Tab value="description" label="Mô tả" />
+          <Tab value="report" label="Hoạt động" />
+        </Tabs>
 
-        {new Date() <= new Date(fundData.endTime) ? (
-          <Stack direction="column" gap={2}>
-            {tenantData?.vnp_tmnCode ? (
-              <FundTransactionForm
-                fundId={fundData.id}
-                canDonate={
-                  FundStatus === 'running' &&
-                  fundData.currentBalance < fundData.targetBalance * 100
-                }
-                reminingAmount={
-                  fundData.targetBalance - fundData.currentBalance
-                }
-                maxDonate={
-                  fundData.targetBalance * 100 - fundData.currentBalance < 0
-                    ? 0
-                    : fundData.targetBalance * 100 - fundData.currentBalance
-                }
-              />
-            ) : null}
+        {tabKey === 'description' ? (
+          <Box sx={{ my: 2 }}>
+            <EditorPreview value={fundData?.description || ''} />
+          </Box>
+        ) : null}
 
-            <Button
-              fullWidth
-              variant={isSaved ? 'contained' : 'outlined'}
-              startIcon={<BookmarkBorderIcon />}
-              disabled={isSavingFund || isUnsavingFund}
-              onClick={isSaved ? onUnsaveFund : onSaveFund}
-              sx={{ mb: 1, minWidth: '200px' }}
-            >
-              {isSaved ? 'Bỏ lưu' : 'Lưu'}
-            </Button>
-          </Stack>
+        {tabKey === 'report' ? (
+          <Box sx={{ my: 2 }}>{renderFundReport()}</Box>
         ) : null}
       </Box>
-
-      <Tabs
-        value={tabKey}
-        onChange={(_, key) => setTabKey(key)}
-        aria-label="wrapped tabs"
-      >
-        <Tab value="description" label="Mô tả" />
-        <Tab value="report" label="Hoạt động" />
-        {tenantData?.vnp_tmnCode ? (
-          <Tab value="transaction" label="Danh sách ủng hộ" />
-        ) : null}
-      </Tabs>
-
-      {tabKey === 'description' ? (
-        <Box sx={{ my: 2 }}>
-          <EditorPreview value={fundData?.description || ''} />
-        </Box>
-      ) : null}
-
-      {tabKey === 'report' ? (
-        <Box sx={{ my: 2 }}>
-          <FundReportList />
-        </Box>
-      ) : null}
-
-      {tabKey === 'transaction' ? (
-        <Box sx={{ my: 2 }}>
-          <FundTransactionListTab />
-        </Box>
-      ) : null}
     </Box>
   );
 };
 
-export default FundDetailPage;
+export default AdminFundDetailPage;
