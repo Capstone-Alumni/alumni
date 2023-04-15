@@ -8,11 +8,18 @@ import { Class } from '../gradeAndClass/types';
 
 export type Information = {
   id: string;
-  userId: string;
-  email: string;
+  alumniId: string;
+  email: string | null;
   fullName: string;
-  alumClass?: Class;
-  avatarUrl?: string;
+  alumClass?: Class | null;
+  avatarUrl?: string | null;
+
+  phone?: string | null;
+  phonePublicity: ScopePublicity;
+  facebookUrl?: string | null;
+  facebookPublicity: ScopePublicity;
+  dateOfBirth?: string | Date | null;
+  dateOfBirthPublicity: ScopePublicity;
 };
 
 export type GetInformationParams = {

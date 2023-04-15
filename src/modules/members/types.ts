@@ -1,4 +1,5 @@
 import { Class } from '../gradeAndClass/types';
+import { Information } from '../profiles/types';
 
 export type ACCESS_LEVEL =
   | 'SCHOOL_ADMIN'
@@ -10,15 +11,13 @@ export type ACCESS_STATUS = 'PENDING' | 'APPROVED';
 /** ========================== FE ================================= */
 export type Member = {
   id: string;
-  accountId?: string;
+  accountId?: string | null;
   tenantId: string;
 
-  information: {
-    fullName: string;
-    email?: string;
-  };
+  information: Information | null;
 
   alumniToClass: Array<{
+    alumClassId: string;
     alumClass: Class;
   }>;
 };

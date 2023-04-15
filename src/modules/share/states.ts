@@ -1,5 +1,6 @@
 import { atom, atomFamily, RecoilState, selector } from 'recoil';
 import { Class } from '../gradeAndClass/types';
+import { Member } from '../members/types';
 
 export type Plan = {
   id: string;
@@ -73,13 +74,7 @@ export type UserInformation = {
   ping: any[];
 };
 
-export const currentUserInformationDataAtom = atom<UserInformation>({
+export const currentUserInformationDataAtom = atom<Member | null>({
   key: 'currentUserInformation',
-  default: {
-    id: '',
-    userId: '',
-    email: '',
-    fullName: '',
-    ping: [],
-  },
+  default: null,
 });

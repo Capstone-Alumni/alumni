@@ -1,30 +1,33 @@
 import {
   GetUsersInformationListServiceParams,
-  InformationIncludeClass,
   UpdateInformationProps,
 } from '../types';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { User } from 'next-auth';
 import { omit } from 'lodash/fp';
 import { canViewInformationDetail } from '../helpers/canViewInformationDetail';
+import { Member } from 'src/modules/members/types';
 
 const filterInformation = (
-  information: InformationIncludeClass | null,
-  requesterInformation: InformationIncludeClass | null,
+  alumniInformation: Member | null,
+  requesterInformation: Member | null,
 ) => {
-  if (!information) {
+  const { information } = alumniInformation || {};
+
+  if (!information || !alumniInformation) {
     return null;
   }
 
-  if (information.userId === requesterInformation?.userId) {
-    return information;
+  if (alumniInformation.id === requesterInformation?.id) {
+    return requesterInformation;
   }
+
   let result = { ...information } as any;
   if (
     !canViewInformationDetail(
       information.phonePublicity,
-      information?.alumClass || null,
-      requesterInformation?.alumClass || null,
+      alumniInformation,
+      requesterInformation,
     )
   ) {
     result = omit('phone')(result);
@@ -33,8 +36,8 @@ const filterInformation = (
   if (
     !canViewInformationDetail(
       information.facebookPublicity,
-      information?.alumClass || null,
-      requesterInformation?.alumClass || null,
+      alumniInformation,
+      requesterInformation,
     )
   ) {
     result = omit('facebookUrl')(result);
@@ -43,8 +46,8 @@ const filterInformation = (
   if (
     !canViewInformationDetail(
       information.dateOfBirthPublicity,
-      information?.alumClass || null,
-      requesterInformation?.alumClass || null,
+      alumniInformation,
+      requesterInformation,
     )
   ) {
     result = omit('dateOfBirth')(result);
@@ -54,7 +57,10 @@ const filterInformation = (
     result.havePhone = true;
   }
 
-  return result;
+  return {
+    ...alumniInformation,
+    information: result,
+  };
 };
 
 export default class InformationService {
@@ -73,41 +79,43 @@ export default class InformationService {
   static getInformationByUserId = async (
     tenantPrisma: PrismaClient,
     user: User,
-    id: string,
+    alumniId: string,
   ) => {
-    const requesterInformation = await tenantPrisma.information.findUnique({
-      where: { userId: user.id },
+    const requester = await tenantPrisma.alumni.findUnique({
+      where: { id: user.id },
       include: {
-        alumClass: {
+        information: true,
+        alumniToClass: {
           include: {
-            grade: true,
+            alumClass: true,
           },
         },
-        ping: {
+        GradeMod: {
           include: {
-            pingerInfo: true,
+            grade: true,
           },
         },
       },
     });
 
-    const userInformation = await tenantPrisma.information.findUnique({
-      where: { userId: id },
+    const userInformation = await tenantPrisma.alumni.findUnique({
+      where: { id: alumniId },
       include: {
-        alumClass: {
+        information: true,
+        alumniToClass: {
           include: {
-            grade: true,
+            alumClass: true,
           },
         },
-        ping: {
+        GradeMod: {
           include: {
-            pingerInfo: true,
+            grade: true,
           },
         },
       },
     });
 
-    return filterInformation(userInformation, requesterInformation);
+    return filterInformation(userInformation, requester);
   };
 
   static getUserInformationList = async (

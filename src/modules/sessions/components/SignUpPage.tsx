@@ -1,15 +1,21 @@
 'use client';
 
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, useTheme } from '@mui/material';
 import { BrowserView, MobileView } from 'react-device-detect';
 import SignUpForm from './SignUpForm';
 import { useRecoilValue } from 'recoil';
 import { currentTenantDataAtom } from '@share/states';
 
 const SignInPage = () => {
+  const theme = useTheme();
   const { background3 } = useRecoilValue(currentTenantDataAtom);
+
   return (
-    <>
+    <Box
+      sx={{
+        paddingTop: theme.spacing(8),
+      }}
+    >
       <MobileView>
         <Box>
           <SignUpForm />
@@ -33,7 +39,7 @@ const SignInPage = () => {
           />
         </Grid>
       </BrowserView>
-    </>
+    </Box>
   );
 };
 

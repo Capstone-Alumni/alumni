@@ -14,8 +14,9 @@ import { NavItem } from './NavItem';
 import HeaderUserOptions from './HeaderUserOption';
 import React, { useMemo } from 'react';
 import { User } from 'next-auth';
-import { Tenant } from '@share/states';
-import useGetAccessStatus from '@share/hooks/useGetAccessStatus';
+import { Tenant, currentUserInformationDataAtom } from '@share/states';
+import { usePathname } from 'next/navigation';
+import { useRecoilValue } from 'recoil';
 
 interface Props {
   /**
@@ -25,10 +26,11 @@ interface Props {
   window?: () => Window;
   children: React.ReactElement;
   hasAnimation: boolean;
+  disabledColorChange: boolean;
 }
 
 function ElevationScroll(props: Props) {
-  const { children, window, hasAnimation } = props;
+  const { children, window, hasAnimation, disabledColorChange } = props;
   // Note that you normally won't need to set the window ref as useScrollTrigger
   // will default to window.
   // This is only being set here because the demo is in an iframe.
@@ -42,45 +44,35 @@ function ElevationScroll(props: Props) {
     elevation: trigger || !hasAnimation ? 4 : 0,
     sx: {
       backgroundColor: trigger || !hasAnimation ? '#fff' : 'transparent',
-      color: trigger || !hasAnimation ? 'inherit' : '#fff',
+      color:
+        trigger || !hasAnimation || disabledColorChange ? 'inherit' : '#fff',
     },
   });
 }
 
-const Header = ({
-  user,
-  tenant,
-  hasAnimation,
-}: {
-  user?: User;
-  tenant?: Tenant;
-  hasAnimation: boolean;
-}) => {
+const Header = ({ user, tenant }: { user?: User; tenant?: Tenant }) => {
   const theme = useTheme();
+  const { GradeMod } = useRecoilValue(currentUserInformationDataAtom);
 
-  const { data } = useGetAccessStatus();
+  const pathname = usePathname();
 
-  const isVerified = useMemo(() => {
-    if (!data?.data) {
-      return false;
-    }
-    if (!data.data.accessRequest) {
-      return false;
-    }
-    if (data.data.accessStatus === 'PENDING') {
-      return false;
-    }
-    return true;
-  }, [data]);
+  const hasAnimation = useMemo(
+    () =>
+      pathname === '/' || pathname === '/sign_up' || pathname === '/sign_in',
+    [pathname],
+  );
+  const hidden = useMemo(() => pathname?.startsWith('/admin'), [pathname]);
+  const disabledColorChange = useMemo(
+    () => pathname === '/sign_up' || pathname === '/sign_in',
+    [pathname],
+  );
 
-  // const searchParams = useSearchParams();
-  // const name = searchParams.get('name');
-  // const [search, setSearch] = useState<string>(name ?? '');
-  // const router = useRouter();
-
-  return (
+  return hidden ? null : (
     <Box sx={{ flexGrow: 1 }}>
-      <ElevationScroll hasAnimation={hasAnimation}>
+      <ElevationScroll
+        hasAnimation={hasAnimation}
+        disabledColorChange={disabledColorChange}
+      >
         <AppBar color="inherit">
           <Toolbar>
             <Link href="/">
@@ -113,11 +105,11 @@ const Header = ({
               }}
             >
               <NavItem label="Tin tức" href="/news" />
-              {user && isVerified ? (
+              {user ? (
                 <>
                   <NavItem label="Sự kiện" href="/events/discover" />
-                  <NavItem label="Gây quỹ" href="/funds/going" />
                   <NavItem label="Tuyển dụng" href="/recruitments/discover" />
+                  <NavItem label="Gây quỹ" href="/funds/going" />
                   <NavItem label="Bài đăng" href="/posts" />
                   <NavItem label="Tìm bạn" href="/find" />
                 </>
@@ -126,7 +118,7 @@ const Header = ({
 
             <Box sx={{ flex: 1 }} />
 
-            {user && user.accessLevel !== 'ALUMNI' ? (
+            {user && (user.isOwner || GradeMod.length) ? (
               <Link
                 href="/admin/access/access_request"
                 style={{ color: 'inherit', marginRight: theme.spacing(2) }}

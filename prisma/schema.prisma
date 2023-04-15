@@ -124,8 +124,8 @@ model Information {
   avatarUrl            String?            @map("avatar_url")
   coverImageUrl        String?            @map("cover_image_url")
   email                String?            @unique @map("email")
-  phone                String?
 
+  phone                String?
   phonePublicity       ScopePublicity     @default(PRIVATE) @map("phone_publicity")
   facebookUrl          String?            @map("facebook_url")
   facebookPublicity    ScopePublicity     @default(PRIVATE) @map("facebook_publicity")

@@ -11,6 +11,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a lo
 import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
 import SetCurrentTenant from '@share/helpers/SetCurrentTenant';
+import Header from '@share/components/layout/Header';
 
 export default async function RootLayout({
   children,
@@ -30,6 +31,7 @@ export default async function RootLayout({
       <body style={{ margin: 0, minHeight: '100vh' }}>
         <CSRProvider theme={data?.theme} tenantData={data}>
           <Providers>
+            <Header user={session?.user} tenant={data} />
             {children}
             <SetCurrentTenant tenantData={data} />
             <GetInitialUserInformation user={session?.user} />
