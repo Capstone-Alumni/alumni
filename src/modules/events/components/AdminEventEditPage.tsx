@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import useOwnerGetEventById from '../hooks/useOwnerGetEventById';
 import useOwnerUpdateEventById from '../hooks/useOwnerUpdateEventById';
 import EventForm, { EventFormValues } from './EventForm';
-import EventParticipantListTab from './EventParticipantListTab';
+// import EventParticipantListTab from './EventParticipantListTab';
 
 const AdminEventEditPage = () => {
   const [tabKey, setTabKey] = useState('info');
@@ -41,9 +41,7 @@ const AdminEventEditPage = () => {
   return (
     <Box>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          Chỉnh sửa thông tin sự kiện
-        </Typography>
+        <Typography variant="h6">Chỉnh sửa thông tin sự kiện</Typography>
         <Button variant="text" onClick={() => router.back()}>
           quay lại
         </Button>
@@ -55,16 +53,16 @@ const AdminEventEditPage = () => {
         aria-label="wrapped tabs"
       >
         <Tab value="info" label="Thông tin cơ bản" />
-        <Tab value="participant" label="Người tham gia" />
+        {/* <Tab value="participant" label="Người tham gia" /> */}
       </Tabs>
 
       {tabKey === 'info' ? (
         <EventForm initialData={data?.data} onSubmit={onUpdateEvent} />
       ) : null}
 
-      {tabKey === 'participant' ? (
+      {/* {tabKey === 'participant' ? (
         <EventParticipantListTab eventId={eventId} />
-      ) : null}
+      ) : null} */}
     </Box>
   );
 };

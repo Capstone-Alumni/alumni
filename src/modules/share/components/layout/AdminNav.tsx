@@ -196,8 +196,14 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Logo url={tenant?.logo} />
-              <Typography variant="h5" sx={{ ml: theme.spacing(1) }}>
+              <Logo
+                url={tenant?.logo}
+                sx={{ borderRadius: '8px', overflow: 'hidden' }}
+              />
+              <Typography
+                variant="h5"
+                sx={{ ml: theme.spacing(1), textTransform: 'capitalize' }}
+              >
                 {tenant?.name}
               </Typography>
             </Box>
