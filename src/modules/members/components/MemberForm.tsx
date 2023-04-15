@@ -203,7 +203,7 @@ const MemberForm = ({
   );
 };
 
-const GradeClassForm = () => {
+export const GradeClassForm = ({ multiple = true }: { multiple?: boolean }) => {
   const { control, watch, setValue } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
@@ -227,16 +227,18 @@ const GradeClassForm = () => {
         sx={{ width: '100%', mt: 2 }}
       >
         <Typography variant="h6">Niên khoá và lớp</Typography>
-        <Button
-          size="small"
-          type="button"
-          variant="outlined"
-          onClick={() => {
-            append({ gradeYear: [], alumClass: [] });
-          }}
-        >
-          Thêm
-        </Button>
+        {multiple ? (
+          <Button
+            size="small"
+            type="button"
+            variant="outlined"
+            onClick={() => {
+              append({ gradeYear: [], alumClass: [] });
+            }}
+          >
+            Thêm
+          </Button>
+        ) : null}
       </Stack>
 
       {fields.map((item, index) => {
@@ -279,7 +281,7 @@ const GradeClassForm = () => {
                 size: 'medium',
               }}
               inputProps={{
-                multiple: true,
+                multiple: multiple,
                 sx: {
                   width: '100%',
                 },

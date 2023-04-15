@@ -67,7 +67,7 @@
     "lodash-es": "4.17.21",
     "memory-cache": "0.2.0",
     "next": "13.1.6",
-    "next-auth": "4.20.1",
+    "next-auth": "4.21.1",
     "next-connect": "0.13.0",
     "next-swagger-doc": "0.3.6",
     "numeral": "2.0.6",

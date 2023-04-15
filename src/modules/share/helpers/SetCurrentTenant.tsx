@@ -7,7 +7,9 @@ import { useSetRecoilState } from 'recoil';
 const SetCurrentTenant = ({ tenantData }: { tenantData: Tenant }) => {
   const setCurrentTenantState = useSetRecoilState(currentTenantDataAtom);
 
-  useEffect(() => setCurrentTenantState(tenantData), []);
+  useEffect(() => {
+    setCurrentTenantState(tenantData);
+  }, []);
 
   return null;
 };

@@ -21,7 +21,14 @@ export default class SessionController {
       if (error.message === 'existed') {
         return res.status(400).json({
           status: false,
-          message: 'Username or Email is already existed',
+          message: 'Email is already existed',
+        });
+      }
+
+      if (error.message === 'invalid') {
+        return res.status(400).json({
+          status: false,
+          message: 'Data is not valid',
         });
       }
 
@@ -33,23 +40,22 @@ export default class SessionController {
     req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
-    try {
-      const prisma = await getPrismaClient(req.tenantId);
-      const user = await SessionService.signIn(prisma, req.body);
-      return res.status(200).json({
-        status: true,
-        data: user,
-      });
-    } catch (error) {
-      if (error.message === 'sign-in failed') {
-        return res.status(400).json({
-          status: false,
-          message: 'Wrong username or password',
-        });
-      }
-
-      throw error;
-    }
+    // try {
+    //   const prisma = await getPrismaClient(req.tenantId);
+    //   const user = await SessionService.signIn(prisma, req.body);
+    //   return res.status(200).json({
+    //     status: true,
+    //     data: user,
+    //   });
+    // } catch (error) {
+    //   if (error.message === 'sign-in failed') {
+    //     return res.status(400).json({
+    //       status: false,
+    //       message: 'Wrong username or password',
+    //     });
+    //   }
+    //   throw error;
+    // }
   };
 
   static updatePassword = async (

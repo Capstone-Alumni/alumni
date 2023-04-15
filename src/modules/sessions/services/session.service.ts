@@ -1,4 +1,4 @@
-import { compareSync, hashSync } from 'bcrypt';
+import { hashSync } from 'bcrypt';
 import { omit } from 'lodash';
 import {
   SignInRequestBody,
@@ -10,53 +10,65 @@ import { PrismaClient } from '@prisma/client';
 export default class SessionService {
   static signUp = async (
     tenantPrisma: PrismaClient,
-    { email, username, password }: SignUpRequestBody,
+    {
+      fullName,
+      phone,
+      dateOfBirth,
+      gradeClass,
+      email,
+      password,
+    }: SignUpRequestBody,
   ) => {
-    const existedUsers = await tenantPrisma.user.findMany({
+    if (!password || !email || gradeClass.length !== 1 || !fullName) {
+      throw new Error('invalid');
+    }
+
+    const requested = await tenantPrisma.accessRequest.findMany({
       where: {
-        OR: [{ email }, { username }],
+        email: email,
+        alumniId: null,
+        isApproved: false,
       },
     });
 
-    if (existedUsers.length) {
+    if (requested.length > 0) {
       throw new Error('existed');
     }
 
     const passwordEncrypted = hashSync(password, 10);
 
-    const newUser = await tenantPrisma.user.create({
+    const newAccessRequest = await tenantPrisma.accessRequest.create({
       data: {
-        username,
+        fullName,
+        phone,
+        dateOfBirth,
+        alumClassId: gradeClass[0].alumClass.id,
         email,
         password: passwordEncrypted,
       },
     });
 
-    return omit(newUser, 'password');
+    return omit(newAccessRequest, 'password');
   };
 
-  static signIn = async ({
-    usernameOrEmail,
-    password: passwordInputted,
-  }: SignInRequestBody) => {
-    const existedUsers = await tenantPrisma.user.findMany({
-      where: {
-        OR: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
-      },
-    });
-
-    if (existedUsers.length !== 1) {
-      throw new Error('sign-in failed');
-    }
-
-    const user = existedUsers[0];
-    const { password } = user;
-
-    if (password && compareSync(passwordInputted, password)) {
-      return omit(user, 'password');
-    }
-
-    throw new Error('sign-in failed');
+  static signIn = async (
+    tenantPrisma: PrismaClient,
+    { usernameOrEmail, password: passwordInputted }: SignInRequestBody,
+  ) => {
+    // const existedUsers = await tenantPrisma.user.findMany({
+    //   where: {
+    //     OR: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
+    //   },
+    // });
+    // if (existedUsers.length !== 1) {
+    //   throw new Error('sign-in failed');
+    // }
+    // const user = existedUsers[0];
+    // const { password } = user;
+    // if (password && compareSync(passwordInputted, password)) {
+    //   return omit(user, 'password');
+    // }
+    // throw new Error('sign-in failed');
   };
 
   static updatePassword = async ({

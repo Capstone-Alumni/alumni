@@ -2,45 +2,42 @@ import { useRouter } from 'next/navigation';
 
 import useApi from 'src/modules/share/hooks/useApi';
 
-import { SignUpFormPayload, SignUpFormValues } from '../types';
+import { SignUpFormPayload } from '../types';
+import { AxiosError } from 'axios';
+import { toast } from 'react-toastify';
 
 const useSignUp = () => {
   const router = useRouter();
 
   const { fetchApi, isLoading } = useApi(
     'sign-up',
-    (values: SignUpFormPayload & { tenantId: string }) => ({
+    (values: SignUpFormPayload) => ({
       method: 'POST',
-      url: '/platformHost/api/signup',
+      url: '/api/signup',
       data: values,
     }),
     {
       revalidate: false,
       rollbackOnError: false,
-      // TODO: add notification onError
-      onSuccess: () => router.push('/sign_in'),
+      // onSuccess: () => router.push('/sign_in'),
+      onError: (err: AxiosError) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const msg = err.response?.data?.message;
+        if (msg.includes('invalid')) {
+          toast.error('Thông tin không hợp lệ');
+        } else if (msg.includes('existed')) {
+          toast.error('Tài khoản đã tồn tại');
+        } else {
+          toast.error('Xảy ra lỗi, vui lòng thử lại sau ít phút');
+        }
+      },
     },
   );
 
-  const signUp = async ({
-    username,
-    email,
-    password,
-    tenantId,
-  }: SignUpFormValues & { tenantId: string }) => {
-    const payload = {
-      username,
-      email,
-      password,
-      tenantId,
-    };
-
-    await fetchApi(payload);
-  };
-
   return {
     isLoading,
-    signUp,
+    signUp: fetchApi,
   };
 };
 

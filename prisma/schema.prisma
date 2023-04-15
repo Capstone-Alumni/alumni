@@ -19,7 +19,6 @@ model Grade {
   endYear   Int     @map("end_year")
 
   alumClasses   AlumClass[]
-  accessRequest AccessRequest[]
   gradeMod      GradeMod[]
 
   @@unique([startYear, endYear])
@@ -36,9 +35,8 @@ model AlumClass {
 
   gradeId       String          @map("grade_id")
   grade         Grade           @relation(fields: [gradeId], references: [id], onDelete: Cascade)
-  informations  Information[] // bỏ
-  accessRequest AccessRequest[] // bỏ
 
+  accessRequest AccessRequest[]
   alumniToClass AlumniToClass[]
 
   @@unique([gradeId, name])
@@ -90,25 +88,31 @@ model Alumni {
 
   alumniToClass AlumniToClass[]
   GradeMod      GradeMod[]
+  accessRequest AccessRequest[]
 
   @@map("alumni")
 }
 
 model AccessRequest {
   id          String  @id @default(cuid())
-  fullName    String
-  email       String? @unique @map("email")
-  userId      String  @map("user_id")
-  gradeId     String  @map("grade_id")
-  alumClassId String  @map("alum_class_id")
-  isApproved  Boolean @map("is_approved")
-
   archived  Boolean  @default(false)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  grade     Grade     @relation(fields: [gradeId], references: [id])
-  alumClass AlumClass @relation(fields: [alumClassId], references: [id])
+  fullName    String @map("full_name")
+  phone String?
+  dateOfBirth DateTime? @map("date_of_birth")
+  
+  email       String
+  password String?
+  
+  isApproved  Boolean @default(false) @map("is_approved")
+
+  alumClassId String  @map("alum_class_id")
+  alumClass AlumClass @relation(fields: [alumClassId], references: [id], onDelete: Cascade)
+
+  alumniId String? @map("alumni_id") // có: register, không có: joinClass
+  alumni Alumni? @relation(fields: [alumniId], references: [id], onDelete: Cascade)
 
   @@map("access_requests")
 }
@@ -116,21 +120,20 @@ model AccessRequest {
 model Information {
   id                   String             @id @default(cuid())
   bio                  String?
-  fullName             String?            @map("full_name")
+  fullName             String            @map("full_name")
   avatarUrl            String?            @map("avatar_url")
   coverImageUrl        String?            @map("cover_image_url")
   email                String?            @unique @map("email")
   phone                String?
+
   phonePublicity       ScopePublicity     @default(PRIVATE) @map("phone_publicity")
   facebookUrl          String?            @map("facebook_url")
   facebookPublicity    ScopePublicity     @default(PRIVATE) @map("facebook_publicity")
   dateOfBirth          DateTime?          @map("date_of_birth")
   dateOfBirthPublicity ScopePublicity     @default(PRIVATE) @map("date_of_birth_publicity")
-  alumClassId          String?            @map("alum_class_id")
-  alumniId             String?            @unique @map("alumni_id")
   careerPublicity      ScopePublicity     @default(PRIVATE) @map("career_publicity")
   educationPublicity   ScopePublicity     @default(PRIVATE) @map("education_publicity")
-  alumClass            AlumClass?         @relation(fields: [alumClassId], references: [id])
+
   events               Event[]
   eventParticipants    EventParticipant[]
   eventInterests       EventInterest[]
@@ -148,6 +151,7 @@ model Information {
   FundReport             FundReport[]
   ping                   Ping[]
 
+  alumniId             String            @unique @map("alumni_id")
   alumni Alumni? @relation(fields: [alumniId], references: [id], onDelete: Cascade)
 
   @@map("informations")
