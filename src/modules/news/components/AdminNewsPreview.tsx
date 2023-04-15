@@ -51,7 +51,7 @@ export default function AdminNewsPreview({
             '& .MuiPaper-root': {
               width: '100%',
               padding: '2rem',
-              maxWidth: '100vw',
+              maxWidth: '90vw',
               height: '100vh',
             },
           },

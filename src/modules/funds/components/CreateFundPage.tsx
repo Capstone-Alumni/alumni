@@ -21,7 +21,7 @@ const CreateFundPage = () => {
           Tạo quỹ
         </Typography>
         <Button variant="text" onClick={() => router.back()}>
-          quay lại
+          Quay lại
         </Button>
       </Stack>
       <FundForm onSubmit={onCreateFund} />

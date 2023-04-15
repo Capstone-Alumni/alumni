@@ -1,17 +1,18 @@
 import { useState } from 'react';
 // material
 import { Dialog } from '@mui/material';
-import { Event } from '../types';
-import EventDetailPagePreview from './EventDetailPagePreview';
+import { Fund } from '../types';
+import AdminFundDetailPage from './AdminFundDetailPage';
 
 // ----------------------------------------------------------------------
 interface FormDialogsProps {
   isPreview?: boolean;
   children?: React.ReactNode;
-  data: Event;
+  data: Fund;
 }
 
-export default function AdminEventPreview({
+export default function AdminFundPreview({
+  isPreview,
   children,
   data,
 }: FormDialogsProps) {
@@ -36,13 +37,13 @@ export default function AdminEventPreview({
             '& .MuiPaper-root': {
               width: '100%',
               padding: '2rem',
-              maxWidth: '90vw',
+              maxWidth: '80vw',
               height: '100vh',
             },
           },
         }}
       >
-        <EventDetailPagePreview data={data} />
+        <AdminFundDetailPage fundData={data} />
       </Dialog>
     </>
   );
