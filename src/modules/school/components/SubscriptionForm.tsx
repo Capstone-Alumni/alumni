@@ -30,7 +30,7 @@ const SubscriptionForm = ({ initialData: data }: { initialData: Tenant }) => {
       <Box sx={{ width: '100%' }}>
         <Typography variant="h6">Ngày hết hạn</Typography>
         <Typography>
-          {formatDate(new Date(data.subcriptionEndTime || ''))}
+          {formatDate(new Date(data.subscriptionEndTime || ''))}
         </Typography>
       </Box>
     </Paper>

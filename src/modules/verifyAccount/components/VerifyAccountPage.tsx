@@ -66,7 +66,7 @@ const VerifyAccountPage = ({
     mode: 'onChange',
     defaultValues: {
       fullName: initialData?.fullName ?? '',
-      grade: initialData?.gradeId ?? '',
+      grade: '',
       class: initialData?.alumClassId ?? '',
     },
     resolver,

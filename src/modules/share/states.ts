@@ -1,6 +1,5 @@
 import { atom, atomFamily, RecoilState, selector } from 'recoil';
-import { Class } from '../gradeAndClass/types';
-import { Member } from '../members/types';
+import { Class, Grade } from '../gradeAndClass/types';
 
 export type Plan = {
   id: string;
@@ -22,12 +21,43 @@ export type Tenant = {
   background3?: string;
   vnp_tmnCode?: string;
   vnp_hashSecret?: string;
-  subcriptionEndTime?: string | Date;
+  subscriptionEndTime?: string | Date;
   planId?: string;
   plan?: Plan | null;
   address?: string;
+  provinceCodename?: string;
   provinceName?: string;
+  cityCodename?: string;
   cityName?: string;
+};
+
+export type UserInformation = {
+  id: string;
+  userId: string;
+  email: string;
+  fullName: string;
+  alumClass?: Class;
+  alumClassId?: string;
+  avatarUrl?: string;
+  ping: any[];
+};
+
+export type Alumni = {
+  id: string;
+  tenantId: string;
+  accountId?: string;
+
+  information?: UserInformation;
+  alumniToClass?: Array<{
+    id: string;
+    isClassMod: boolean;
+    alumClass: Class;
+  }>;
+  gradeMod?: Array<{
+    id: string;
+    gradeId: string;
+    grade: Grade;
+  }>;
 };
 
 export const _useApiDataAtomFamily = atomFamily<any, string>({
@@ -66,18 +96,7 @@ export const currentTenantThemeSelector = selector({
   },
 });
 
-export type UserInformation = {
-  id: string;
-  userId: string;
-  email: string;
-  fullName: string;
-  alumClass?: Class;
-  alumClassId?: string;
-  avatarUrl?: string;
-  ping: any[];
-};
-
-export const currentUserInformationDataAtom = atom<Member | null>({
+export const currentUserInformationDataAtom = atom<Alumni | null>({
   key: 'currentUserInformation',
   default: null,
 });

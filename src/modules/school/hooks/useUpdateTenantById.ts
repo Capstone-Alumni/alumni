@@ -7,6 +7,8 @@ import { EditSChoolFormValues } from '../components/EditSchoolForm';
 
 type UpdateTenantByIdDataParams = {
   id: string;
+  provinceName?: string;
+  cityName?: string;
 } & EditSChoolFormValues;
 
 type UpdateTenantByIdDataResponse = {

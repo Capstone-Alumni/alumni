@@ -3,9 +3,9 @@
 import { Container, Stack, styled, Typography } from '@mui/material';
 import Image from 'next/image';
 import Link from '@share/components/NextLinkV2';
-import useGetAccessStatus from '@share/hooks/useGetAccessStatus';
-import React, { useMemo } from 'react';
+import React from 'react';
 import SectionTemplate from './SectionTemplate';
+import { useSession } from 'next-auth/react';
 
 const StyledBox = styled('div')(({ theme }) => ({
   minWidth: '250px',
@@ -25,24 +25,11 @@ const StyledBox = styled('div')(({ theme }) => ({
 }));
 
 const FeaturesSection = () => {
-  const { data } = useGetAccessStatus();
-
-  const isVerified = useMemo(() => {
-    if (!data?.data) {
-      return false;
-    }
-    if (!data.data.accessRequest) {
-      return false;
-    }
-    if (data.data.accessStatus === 'PENDING') {
-      return false;
-    }
-    return true;
-  }, [data]);
+  const { data: session } = useSession();
 
   return (
     <Container sx={{ mt: 4, mb: 6 }}>
-      {isVerified ? (
+      {session?.user ? (
         <SectionTemplate
           headerContent={
             <Typography color="primary" variant="h3">

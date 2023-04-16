@@ -94,9 +94,6 @@ const Header = ({ user, tenant }: { user?: User; tenant?: Tenant }) => {
                 </Typography>
               </Box>
             </Link>
-            <Typography variant="h6" component="div" color="primary">
-              {tenant?.name}
-            </Typography>
 
             <Divider
               orientation="vertical"
