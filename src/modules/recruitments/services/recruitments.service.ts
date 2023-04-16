@@ -101,6 +101,9 @@ export default class RecruimentService {
         skip: (page - 1) * limit,
         take: limit,
         where: whereFilter,
+        include: {
+          recruitmentOwnerInfo: true,
+        },
         orderBy: [{ createdAt: 'desc' }],
       }),
     ]);

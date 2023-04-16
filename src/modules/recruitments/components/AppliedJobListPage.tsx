@@ -43,6 +43,7 @@ const AppliedJobListPage = () => {
               <CompanyItem
                 key={item.id}
                 companyDetails={item.recruitment}
+                isAppliedJobs
                 actions={[
                   <Link
                     key="edit-btn"

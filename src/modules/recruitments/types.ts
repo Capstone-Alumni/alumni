@@ -45,6 +45,7 @@ export type Job = {
   recruitmentOwnerInfo: UserInformation;
   recruitmentOwnerId: string;
   recruitmentOwnerInfoId: string;
+  yearsOfExperience?: string;
   salary: string;
   type: string;
 };
