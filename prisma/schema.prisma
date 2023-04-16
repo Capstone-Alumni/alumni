@@ -384,6 +384,7 @@ model Recruitment {
   position               String
   title                  String
   description            String?
+  yearsOfExperience      String?
   type                   String?
   startAt                DateTime?                @map("start_at")
   expiredAt              DateTime?                @map("expired_at")
