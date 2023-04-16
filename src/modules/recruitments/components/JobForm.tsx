@@ -81,7 +81,9 @@ const validationSchema = yup.object({
   address: yup.string().required('Địa chỉ công ty không được để trống'),
   type: yup.string().required('Loại hình làm việc không được để trống'),
   salary: yup.string().required('Mức lương công việc không được để trống'),
-  yearsOfExperience: yup.string().required('Yêu cầu kinh nghiệm không được để trống'),
+  yearsOfExperience: yup
+    .string()
+    .required('Yêu cầu kinh nghiệm không được để trống'),
 });
 
 const JobForm = ({
@@ -146,26 +148,30 @@ const JobForm = ({
           disabled: isPreview,
         }}
       />
-       <Box sx={{ width: '100%', gap: '1rem' }} display="flex">
+      <Box sx={{ width: '100%', gap: '1rem' }} display="flex">
         <TextInput
-            control={control}
-            name="position"
-            inputProps={{ label: 'Vị trí cần tuyển', fullWidth: true, disabled: isPreview }}
-          />
-        <SelectInput
-            control={control}
-            name="yearsOfExperience"
-            inputProps={{
-              fullWidth: true,
-              label: 'Yêu cầu kinh nghiệm',
-              disabled: isPreview,
-            }}
-            options={YEARS_OF_EXPERIENCE_LIST.map(yoe => ({
-              name: yoe,
-              value: yoe,
-            }))}
+          control={control}
+          name="position"
+          inputProps={{
+            label: 'Vị trí cần tuyển',
+            fullWidth: true,
+            disabled: isPreview,
+          }}
         />
-       </Box>
+        <SelectInput
+          control={control}
+          name="yearsOfExperience"
+          inputProps={{
+            fullWidth: true,
+            label: 'Yêu cầu kinh nghiệm',
+            disabled: isPreview,
+          }}
+          options={YEARS_OF_EXPERIENCE_LIST.map(yoe => ({
+            name: yoe,
+            value: yoe,
+          }))}
+        />
+      </Box>
       {isPreview ? (
         <Box sx={{ width: '100%' }}>
           <Typography
@@ -287,7 +293,7 @@ const JobForm = ({
           containerSx={{ width: '100%' }}
         />
       )}
-        {!isPreview && (
+      {!isPreview && (
         <>
           {/* <Box sx={{ width: '100%' }}>
             <Typography variant="body2" color={'red'}>
