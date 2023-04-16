@@ -36,7 +36,8 @@ const NewsContentPage = ({ data }: { data: News }) => {
             color: 'text.secondary',
           }}
         >
-          Tác giả: {data.authorInfo ? data.authorInfo.fullName : data.authorId}
+          Tác giả:{' '}
+          {data.author ? data.author.information.fullName : data.authorId}
         </Typography>
         <Box
           sx={{

@@ -21,37 +21,21 @@ export default class NewsService {
     authorId: string,
     body: CreateNewsProps,
   ) => {
-    const authorInformation = await tenantPrisma.information.findFirst({
-      where: { userId: authorId },
+    const newsCreated = await tenantPrisma.news.create({
+      data: {
+        ...body,
+        author: {
+          connect: { id: authorId },
+        },
+        tagsNews: {
+          connectOrCreate: body.tagsNews?.map(tag => ({
+            where: { tagName: tag },
+            create: { tagName: tag },
+          })),
+        },
+      },
     });
-    const newsCreated = authorInformation
-      ? await tenantPrisma.news.create({
-          data: {
-            ...body,
-            authorId: authorId,
-            authorInfo: {
-              connect: { id: authorInformation?.id },
-            },
-            tagsNews: {
-              connectOrCreate: body.tagsNews?.map(tag => ({
-                where: { tagName: tag },
-                create: { tagName: tag },
-              })),
-            },
-          },
-        })
-      : await tenantPrisma.news.create({
-          data: {
-            ...body,
-            authorId: authorId,
-            tagsNews: {
-              connectOrCreate: body.tagsNews?.map(tag => ({
-                where: { tagName: tag },
-                create: { tagName: tag },
-              })),
-            },
-          },
-        });
+
     return newsCreated;
   };
 
@@ -130,11 +114,15 @@ export default class NewsService {
     const news = await tenantPrisma.news.findFirst({
       where: { id: newsId },
       include: {
-        authorInfo: {
-          select: {
-            id: true,
-            fullName: true,
-            avatarUrl: true,
+        author: {
+          include: {
+            information: {
+              select: {
+                id: true,
+                fullName: true,
+                avatarUrl: true,
+              },
+            },
           },
         },
         tagsNews: true,
@@ -166,11 +154,16 @@ export default class NewsService {
         take: limit,
         where: whereFilter,
         include: {
-          authorInfo: {
+          author: {
             select: {
               id: true,
-              fullName: true,
-              avatarUrl: true,
+              information: {
+                select: {
+                  id: true,
+                  fullName: true,
+                  avatarUrl: true,
+                },
+              },
             },
           },
           tagsNews: true,
@@ -213,11 +206,16 @@ export default class NewsService {
         take: limit,
         where: whereFilter,
         include: {
-          authorInfo: {
+          author: {
             select: {
               id: true,
-              fullName: true,
-              avatarUrl: true,
+              information: {
+                select: {
+                  id: true,
+                  fullName: true,
+                  avatarUrl: true,
+                },
+              },
             },
           },
           tagsNews: true,
@@ -244,11 +242,16 @@ export default class NewsService {
     const news = await tenantPrisma.news.findFirst({
       where: { id: newsId, isPublic: true },
       include: {
-        authorInfo: {
+        author: {
           select: {
             id: true,
-            fullName: true,
-            avatarUrl: true,
+            information: {
+              select: {
+                id: true,
+                fullName: true,
+                avatarUrl: true,
+              },
+            },
           },
         },
         tagsNews: true,

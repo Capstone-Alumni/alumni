@@ -49,7 +49,7 @@ const AdminNewsListItem = ({
         </TableCell>
         <TableCell sx={{ maxWidth: '6rem' }} align="left">
           <Typography fontSize="inherit">
-            {data.authorInfo ? data.authorInfo.fullName : data.authorId}
+            {data.author ? data.author.information.fullName : data.authorId}
           </Typography>
         </TableCell>
         <TableCell align="left" sx={{ maxWidth: '7rem' }}>

@@ -4,15 +4,17 @@ export type News = {
   id: string;
   title: string;
   content: string;
-  authorId: string;
   createdAt: Date;
   updatedAt: Date;
   archived: boolean;
   tagsNews?: TagsNews[];
   isPublic: boolean;
   newsImageUrl?: string;
-  authorInfoId?: string;
-  authorInfo?: AuthorInfo;
+  authorId?: string;
+  author?: {
+    id: string;
+    information: AuthorInfo;
+  };
 };
 
 export type TagsNews = {
@@ -60,9 +62,11 @@ type CommenterInfor = {
 export type NewsComment = {
   archived: boolean;
   commentContent: string;
-  commenterId: string;
-  commenterInfo: CommenterInfor;
-  commenterInfoId: string;
+  commenterId?: string;
+  commenter?: {
+    id: string;
+    information: CommenterInfor;
+  };
   createdAt: string;
   id: string;
   newsId: string;
