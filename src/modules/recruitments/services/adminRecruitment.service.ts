@@ -40,7 +40,11 @@ export default class AdminRecruitmentService {
         where: whereFilter,
         orderBy: [{ createdAt: 'desc' }],
         include: {
-          recruitmentOwnerInfo: true,
+          recruitmentOwner: {
+            include: {
+              information: true,
+            },
+          },
         },
       }),
     ]);

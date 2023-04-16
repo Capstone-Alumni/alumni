@@ -217,11 +217,11 @@ const JobDetailPage = () => {
           </Grid>
         </StyledGeneralInfomation>
         {currentUserInformation &&
-        jobData.recruitmentOwnerInfoId &&
+        jobData.recruitmentOwnerId &&
         Boolean(dataGetAppliedJobListById?.status) &&
         handleCheckUserIsJobOwner(
           currentUserInformation.id,
-          jobData.recruitmentOwnerInfoId,
+          jobData.recruitmentOwnerId,
         ) ? (
           <Box>
             <UsersAppliedJobPreview data={dataGetAppliedJobListById}>
@@ -239,7 +239,7 @@ const JobDetailPage = () => {
           Boolean(dataGetAppliedJobListById?.status) &&
           dataGetAppliedJobListById?.data &&
           !handleCheckUserAppliedJob(
-            currentUserInformation.userId,
+            currentUserInformation.id,
             dataGetAppliedJobListById,
           ) ? (
           <Box>
@@ -281,7 +281,7 @@ const JobDetailPage = () => {
             Boolean(dataGetAppliedJobListById?.status) &&
             dataGetAppliedJobListById?.data &&
             handleCheckUserAppliedJob(
-              currentUserInformation.userId,
+              currentUserInformation.id,
               dataGetAppliedJobListById,
             ) && (
             <Box>
@@ -299,7 +299,7 @@ const JobDetailPage = () => {
                     handlePutResume(
                       value,
                       getApplicationId(
-                        currentUserInformation.userId,
+                        currentUserInformation.id,
                         dataGetAppliedJobListById,
                       ),
                     )

@@ -37,9 +37,9 @@ export default class ApplicationService {
             id: recruitmentId,
           },
         },
-        applicationOwnerInfo: {
+        applicationOwner: {
           connect: {
-            userId: userId,
+            id: userId,
           },
         },
       },
@@ -124,11 +124,9 @@ export default class ApplicationService {
           createdAt: 'desc',
         },
         include: {
-          applicationOwnerInfo: {
-            select: {
-              fullName: true,
-              email: true,
-              phone: true,
+          applicationOwner: {
+            include: {
+              information: true,
             },
           },
         },

@@ -66,7 +66,7 @@ export default class ApplicationController {
     try {
       const session = await getServerSession(req, res, nextAuthOptions);
 
-      const isSchoolAdmin = session?.user.accessLevel === 'SCHOOL_ADMIN';
+      const isSchoolAdmin = session?.user.isOwner || false;
 
       const prisma = await getPrismaClient(req.tenantId);
       const { applicationId } = req.query;
