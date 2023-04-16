@@ -50,6 +50,7 @@ export type GetGradeListParams = {
   limit?: number;
   code?: string;
   name?: string;
+  isAdminMode?: boolean;
 };
 
 export type GetClassListData = {
@@ -71,6 +72,7 @@ export type GetGradeListServiceParams = {
   page: number;
   limit: number;
   code: string;
+  alumniId?: string;
 };
 
 export type GetGradeListServiceProps = {

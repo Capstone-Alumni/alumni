@@ -21,7 +21,7 @@ const useGetGradeList = () => {
     GetGradeListDataParams,
     GetGradeListDataResponse,
     GetGradeListDataError
-  >('getGradeList', ({ page, limit, name, code }) => ({
+  >('getGradeList', ({ page, limit, name, code, isAdminMode }) => ({
     method: 'GET',
     url: '/api/grades',
     params: {
@@ -29,6 +29,7 @@ const useGetGradeList = () => {
       limit,
       name,
       code,
+      isAdminMode,
     },
   }));
 

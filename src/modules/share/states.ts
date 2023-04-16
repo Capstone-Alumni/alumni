@@ -33,11 +33,9 @@ export type Tenant = {
 
 export type UserInformation = {
   id: string;
-  userId: string;
+  alumniId: string;
   email: string;
   fullName: string;
-  alumClass?: Class;
-  alumClassId?: string;
   avatarUrl?: string;
   ping: any[];
 };

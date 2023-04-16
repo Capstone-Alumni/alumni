@@ -94,7 +94,7 @@ export default class InformationService {
             },
           },
         },
-        GradeMod: {
+        gradeMod: {
           include: {
             grade: true,
           },
@@ -111,7 +111,7 @@ export default class InformationService {
             alumClass: true,
           },
         },
-        GradeMod: {
+        gradeMod: {
           include: {
             grade: true,
           },

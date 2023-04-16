@@ -1,4 +1,3 @@
-import { AccessLevel } from '@prisma/client';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
@@ -7,12 +6,17 @@ import TextInput from '@share/components/form/TextInput';
 import { Box, Button, useTheme } from '@mui/material';
 import Checkbox from '@share/components/form/Checkbox';
 import DateTimeInput from '@share/components/form/DateTimeInput';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RichTextInput from '@share/components/form/RichTextInput';
 import UploadBackgroundInput from '@share/components/form/UploadBackgroundInput';
 import RadioInput from '@share/components/form/RadioInput';
-import SelectInput from '@share/components/form/SelectInput';
 import { useRouter } from 'next/navigation';
+import useGetGradeList from 'src/modules/gradeAndClass/hooks/useGetGradeList';
+import AutocompleteInput from '@share/components/form/AutoCompleteInput';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { getGradeListParamsAtom } from 'src/modules/gradeAndClass/state';
+import { currentUserInformationDataAtom } from '@share/states';
+import { getGradeLongName } from '@share/utils/getGradeName';
 
 export type EventFormValues = {
   title: string;
@@ -21,9 +25,11 @@ export type EventFormValues = {
   isOffline: boolean;
   location?: string;
   startTime: Date;
-  endTime?: Date;
-  isEnded?: boolean;
-  publicity: AccessLevel;
+  endTime: Date;
+  gradeId?: string;
+  grade: {
+    id: string;
+  };
   publicParticipant: boolean;
 };
 
@@ -45,7 +51,6 @@ const validationSchema = yup.object({
         return startTime && value && value > startTime;
       },
     ),
-  publicity: yup.string().required(),
 });
 
 const EventForm = ({
@@ -58,6 +63,7 @@ const EventForm = ({
   const [isSaving, setIsSaving] = useState(false);
   const theme = useTheme();
   const router = useRouter();
+  const currentUser = useRecoilValue(currentUserInformationDataAtom);
 
   const resolver = useYupValidateionResolver(validationSchema);
 
@@ -75,15 +81,35 @@ const EventForm = ({
       endTime: initialData?.endTime
         ? new Date(initialData.endTime)
         : new Date(),
-      isEnded: initialData?.isEnded,
-      publicity: initialData?.publicity ?? 'ALUMNI',
+      grade: initialData?.grade
+        ? {
+            id: initialData.gradeId,
+            label: getGradeLongName(initialData.grade),
+            value: initialData.gradeId,
+          }
+        : {
+            id: 'all',
+            label: 'Tất cả',
+            value: 'all',
+          },
       publicParticipant: initialData?.publicParticipant ?? false,
     },
   });
 
+  const { data: gradeList, isLoading: isLoadingGrade } = useGetGradeList();
+  const setParams = useSetRecoilState(getGradeListParamsAtom);
+
+  useEffect(() => {
+    setParams(() => ({ page: 1, limit: 999, alumniId: currentUser?.id }));
+  }, []);
+
   const onSubmitWithStatus = async (values: InternalFormValues) => {
     setIsSaving(true);
-    await onSubmit({ ...values, isOffline: values.isOffline === 'true' });
+    await onSubmit({
+      ...values,
+      isOffline: values.isOffline === 'true',
+      gradeId: values.grade.id,
+    });
     setIsSaving(false);
   };
 
@@ -154,51 +180,22 @@ const EventForm = ({
             fullWidth: true,
             label: 'Thời gian kết thúc',
           }}
-        />{' '}
-        {/* <Checkbox
-          control={control}
-          name="isEnded"
-          inputProps={{ label: 'Sự kiện đã kết thúc' }}
-        /> */}
+        />
       </Box>
 
-      {/* <Box sx={{ width: '100%' }}>
-        <RadioInput
-          control={control}
-          name="publicity"
-          inputProps={{
-            label: 'Trạng thái',
-          }}
-          options={[
-            {
-              value: 'ALUMNI',
-              name: 'Bí mật',
-            },
-            {
-              value: 'SCHOOL_ADMIN',
-              name: 'Công khai',
-            },
-          ]}
-        />
-      </Box> */}
-
       <Box sx={{ width: '100%' }}>
-        <SelectInput
+        {/* <SelectInput
           control={control}
-          name="publicity"
+          name="gradeId"
           inputProps={{
             fullWidth: true,
-            label: 'Ai có thể nhìn thấy và tham gia sự kiện này',
+            label: 'Dành cho niên khoá',
           }}
           options={[
             {
-              value: 'ALUMNI',
-              name: 'Chỉ bạn nhìn thấy',
+              value: 'all',
+              name: 'Tất cả',
             },
-            // {
-            //   value: 'CLASS_MOD',
-            //   name: 'Chỉ người cùng lớp',
-            // },
             {
               value: 'GRADE_MOD',
               name: 'Chỉ người cùng niên khoá',
@@ -208,6 +205,46 @@ const EventForm = ({
               name: 'Tất cả mọi người',
             },
           ]}
+        /> */}
+
+        <AutocompleteInput
+          control={control}
+          name="grade"
+          textProps={{
+            label: 'Danh cho niên khoá',
+            size: 'medium',
+          }}
+          inputProps={{
+            sx: {
+              width: '100%',
+            },
+          }}
+          options={
+            gradeList
+              ? [
+                  {
+                    id: 'all',
+                    label: 'Tất cả',
+                    value: 'all',
+                  },
+                ].concat(
+                  gradeList?.data.items.map(grade => ({
+                    id: grade.id,
+                    label: `${grade.code ? grade.code + ': ' : ''}${
+                      grade.startYear
+                    } - ${grade.endYear}`,
+                    value: grade.id,
+                  })),
+                )
+              : [
+                  {
+                    id: 'all',
+                    label: 'Tất cả',
+                    value: 'all',
+                  },
+                ]
+          }
+          isLoadingOptions={isLoadingGrade}
         />
 
         <Checkbox
@@ -222,6 +259,7 @@ const EventForm = ({
           nhìn thấy và tham gia sự kiện của bạn.
         </Typography> */}
       </Box>
+
       <Box
         sx={{
           display: 'flex',

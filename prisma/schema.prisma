@@ -21,6 +21,7 @@ model Grade {
   alumClasses AlumClass[]
   gradeMod    GradeMod[]
   post        Post[]
+  event       Event[]
 
   @@unique([startYear, endYear])
   @@map("grades")
@@ -85,6 +86,8 @@ model Alumni {
 
   tenantId  String  @map("tenant_id")
   accountId String? @unique @map("account_id")
+
+  isOwner Boolean @default(false) @map("is_owner")
 
   information Information?
 
@@ -235,13 +238,14 @@ model Event {
   location          String?
   startTime         DateTime    @default(now()) @map("start_time")
   endTime           DateTime?   @map("end_time")
-  isEnded           Boolean     @default(false) @map("is_ended")
-  approvedStatus    Int         @default(-1) @map("approved_status")
-  publicity         AccessLevel @default(ALUMNI)
   publicParticipant Boolean     @default(false) @map("public_participant")
 
   hostId String @map("host_id")
   host   Alumni @relation(fields: [hostId], references: [id])
+
+  gradeId        String? @map("grade_id")
+  grade          Grade?  @relation(fields: [gradeId], references: [id])
+  isPublicSchool Boolean @default(false) @map("is_public_school")
 
   eventParticipants EventParticipant[]
   eventInterests    EventInterest[]

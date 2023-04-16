@@ -19,14 +19,12 @@ import { formatDate } from '@share/utils/formatDate';
 import Link from '@share/components/NextLinkV2';
 import usePublicUnJoinEventById from '../hooks/usePublicUnJoinEventById';
 
-type EventStatus = 'not-open' | 'opened' | 'running' | 'ended';
+type EventStatus = 'not-started' | 'running' | 'ended';
 
 export const renderEventStatus = (status: EventStatus) => {
   switch (status) {
-    case 'not-open':
-      return 'Chưa mở đăng ký';
-    case 'opened':
-      return 'Sắp diễn ra';
+    case 'not-started':
+      return 'Chưa bắt đầu';
     case 'running':
       return 'Đang diễn ra';
     case 'ended':
@@ -75,20 +73,16 @@ const EventDetailPage = () => {
 
   const eventStatus = useMemo(() => {
     if (!data?.data) {
-      return 'not-open';
+      return 'not-started';
     }
 
     const { data: eventData } = data;
 
-    if (new Date(eventData.startTime) >= new Date()) {
-      return 'opened';
+    if (new Date(eventData.startTime) > new Date()) {
+      return 'not-started';
     }
 
     if (eventData.endTime && new Date(eventData.endTime) > new Date()) {
-      return 'running';
-    }
-
-    if (!eventData.endTime && !eventData.isEnded) {
       return 'running';
     }
 
@@ -145,8 +139,8 @@ const EventDetailPage = () => {
 
       <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 2 }}>
         <MyAvatar
-          displayName={eventData.hostInformation?.fullName}
-          photoUrl={eventData.hostInformation?.avatarUrl}
+          displayName={eventData.host?.information?.fullName}
+          photoUrl={eventData.host?.information?.avatarUrl}
         />
 
         <Stack direction="column">
@@ -155,10 +149,10 @@ const EventDetailPage = () => {
             prefetch={false}
           >
             <Typography fontWeight={600}>
-              {eventData.hostInformation?.fullName}
+              {eventData.host?.information?.fullName}
             </Typography>
           </Link>
-          <Typography>{eventData.hostInformation?.email}</Typography>
+          <Typography>{eventData.host?.information?.email}</Typography>
         </Stack>
       </Stack>
 
@@ -250,12 +244,7 @@ const EventDetailPage = () => {
           <Button
             fullWidth
             variant={isJoined ? 'outlined' : 'contained'}
-            disabled={
-              eventStatus === 'not-open' ||
-              eventStatus === 'ended' ||
-              joiningEvent ||
-              unjoiningEvent
-            }
+            disabled={eventStatus === 'ended' || joiningEvent || unjoiningEvent}
             startIcon={<AppRegistrationIcon />}
             sx={{ mb: 1 }}
             onClick={isJoined ? onUnjoinEvent : onJoinEvent}

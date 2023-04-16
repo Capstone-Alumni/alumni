@@ -140,7 +140,7 @@ export default class GradeService {
     tenantPrisma: PrismaClient,
     { params }: GetGradeListServiceProps,
   ) => {
-    const { code, page, limit } = params;
+    const { code, page, limit, alumniId } = params;
 
     const whereFilter: Prisma.GradeWhereInput = {
       OR: [{ code: { contains: code } }],
@@ -157,6 +157,16 @@ export default class GradeService {
           endYear: parseInt(code, 10),
         },
       ];
+    }
+
+    if (alumniId) {
+      const alumni = await tenantPrisma.alumni.findUnique({
+        where: { id: alumniId },
+        include: { gradeMod: true },
+      });
+      if (alumni && !alumni.isOwner) {
+        whereFilter.id = { in: alumni.gradeMod.map(({ gradeId }) => gradeId) };
+      }
     }
 
     const [totalGradeItem, gradeItems] = await tenantPrisma.$transaction([

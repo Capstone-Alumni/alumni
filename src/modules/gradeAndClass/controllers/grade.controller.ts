@@ -74,12 +74,13 @@ export default class GradeController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const prisma = await getPrismaClient(req.tenantId);
-    const { page, limit, code } = req.query;
+    const { page, limit, code, alumniId } = req.query;
     const gradeListData = await GradeService.getPublicList(prisma, {
       params: {
         page: page ? parseInt(page as string, 10) : 1,
         limit: limit ? parseInt(limit as string, 10) : 20,
         code: code ? (code as string) : '',
+        alumniId: alumniId as string,
       },
     });
 
