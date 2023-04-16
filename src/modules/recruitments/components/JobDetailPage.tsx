@@ -52,6 +52,7 @@ const validationSchema = yup.object({
 
 const JobDetailPage = () => {
   const [tabKey, setTabKey] = useState('description');
+  const [postCVSuccess, setPostCVSuccess] = useState(false);
   const theme = useTheme();
   const pathname = usePathname();
   const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
@@ -60,7 +61,7 @@ const JobDetailPage = () => {
 
   const resolver = useYupValidateionResolver(validationSchema);
 
-  const { control, handleSubmit } = useForm({
+  const { control } = useForm({
     resolver,
     defaultValues: {
       resumeUrl: '',
@@ -81,12 +82,13 @@ const JobDetailPage = () => {
   }, []);
 
   const handlePostResume = async (value: string) => {
-    postApplyJobApi({ jobId, resumeUrl: value });
-    getAppliedJobListByIdApi({ jobId });
+    setPostCVSuccess(true);
+    await postApplyJobApi({ jobId, resumeUrl: value });
+    await getAppliedJobListByIdApi({ jobId });
   };
 
   const handlePutResume = async (value: string, applicationId: string) => {
-    putUpdateResumeByIdApi({ jobId, applicationId, resumeUrl: value });
+    await putUpdateResumeByIdApi({ jobId, applicationId, resumeUrl: value });
   };
 
   const handleCheckUserAppliedJob = (
@@ -276,12 +278,12 @@ const JobDetailPage = () => {
           </Box>
         ) : (
           currentUserInformation &&
-          Boolean(dataGetAppliedJobListById?.status) &&
-          dataGetAppliedJobListById?.data &&
-          handleCheckUserAppliedJob(
-            currentUserInformation.userId,
-            dataGetAppliedJobListById,
-          ) && (
+            Boolean(dataGetAppliedJobListById?.status) &&
+            dataGetAppliedJobListById?.data &&
+            handleCheckUserAppliedJob(
+              currentUserInformation.userId,
+              dataGetAppliedJobListById,
+            ) && (
             <Box>
               <Button
                 fullWidth
@@ -323,9 +325,22 @@ const JobDetailPage = () => {
                   }}
                 />
               </Button>
+                <Typography variant="body2" color="#919eab" textAlign="center">
+                  Hỗ trợ định dạng .pdf
+                </Typography>
             </Box>
           )
         )}
+      </Box>
+
+      <Box
+        sx={{
+          width: '100%',
+        }}
+      >
+        <Typography variant="h4" sx={{ mb: 1 }}>
+          {jobData.title}
+        </Typography>
       </Box>
 
       <Tabs

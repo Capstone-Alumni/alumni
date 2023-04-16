@@ -1,21 +1,19 @@
 import { useState } from 'react';
 // material
 import { Dialog } from '@mui/material';
-import JobForm from './JobForm';
 import { Job } from '../types';
+import JobDetailPagePreview from './JobDetailPagePreview';
 
 // ----------------------------------------------------------------------
-interface FormDialogsProps {
-  isPreview?: boolean;
+interface AdminJobPreviewProps {
   children?: React.ReactNode;
   data: Job;
 }
 
 export default function AdminJobPreview({
-  isPreview,
   children,
   data,
-}: FormDialogsProps) {
+}: AdminJobPreviewProps) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -25,17 +23,26 @@ export default function AdminJobPreview({
   const handleClose = () => {
     setOpen(false);
   };
-
+  console.log(data);
   return (
-    <div>
+    <>
       <div onClick={handleClickOpen}>{children}</div>
       <Dialog
         open={open}
         onClose={handleClose}
-        sx={{ width: '700px', margin: '0 auto' }}
+        sx={{
+          '& .MuiDialog-container': {
+            '& .MuiPaper-root': {
+              width: '100%',
+              padding: '1rem',
+              maxWidth: '90vw',
+              height: '100vh',
+            },
+          },
+        }}
       >
-        <JobForm isPreview={isPreview} initialData={data} />
+        <JobDetailPagePreview data={data} />
       </Dialog>
-    </div>
+    </>
   );
 }

@@ -47,7 +47,7 @@ const HostingEventListPage = () => {
               mb: 2,
             }}
           >
-            {data?.data.items.map(item => (
+            {data?.data.items.map((item) => (
               <>
                 <CompanyItem
                   isPostedJobs
@@ -68,12 +68,8 @@ const HostingEventListPage = () => {
                     <Link
                       key="edit-btn"
                       href={`/recruitments/posted_jobs/${item.id}`}
-                      // style={{ width: '100%' }}
                       prefetch={false}
                     >
-                      {/* <Button fullWidth variant="outlined">
-                        Sửa
-                      </Button> */}
                       <IconButton color="primary">
                         <EditIcon />
                       </IconButton>
@@ -110,7 +106,7 @@ const HostingEventListPage = () => {
             count={Math.ceil(data?.data.totalItems / data?.data.itemPerPage)}
             page={params.page}
             onChange={(_, nextPage) => {
-              setParams(prevParams => ({ ...prevParams, page: nextPage }));
+              setParams((prevParams) => ({ ...prevParams, page: nextPage }));
             }}
           />
         </>

@@ -22,6 +22,7 @@ const AdminEventListTable = ({
   page: number;
   onChangePage: (nextPage: number) => void;
 }) => {
+  console.log(data);
   return (
     <>
       <TableContainer component={Paper}>
@@ -30,17 +31,20 @@ const AdminEventListTable = ({
             <TableRow>
               <TableCell align="left">Tên công việc</TableCell>
               <TableCell align="left">Người gửi yêu cầu</TableCell>
-              <TableCell align="left">Trạng thái</TableCell>
-              <TableCell align="left">Ngày được tạo</TableCell>
-              <TableCell sx={{ maxWidth: '2.5rem' }}>Xem trước</TableCell>
-              <TableCell sx={{ maxWidth: '2.5rem' }}>
+              <TableCell sx={{ maxWidth: '8rem' }} align="center">
+                Trạng thái
+              </TableCell>
+              <TableCell sx={{ maxWidth: '1rem' }} align="left">
+                Ngày được tạo
+              </TableCell>
+              <TableCell sx={{ maxWidth: '8rem' }}>
                 Công khai công việc
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.items.map(
-              row =>
+              (row) =>
                 !row.archived && (
                   <AdminEventListItem
                     key={row.id}

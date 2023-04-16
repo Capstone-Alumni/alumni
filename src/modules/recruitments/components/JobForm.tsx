@@ -36,6 +36,15 @@ const JOB_LIST = [
   'Khác',
 ];
 
+const YEARS_OF_EXPERIENCE_LIST = [
+  'Dưới 1 năm',
+  '1 năm',
+  '2 năm',
+  '3 năm',
+  '4 năm',
+  'Trên 5 năm',
+];
+
 const JOB_TYPES = [
   'Toàn thời gian',
   'Bán thời gian',
@@ -59,18 +68,20 @@ export type JobFormValues = {
   salary: string;
   startAt?: Date;
   expiredAt?: Date;
+  yearsOfExperience?: string;
 };
 
 const validationSchema = yup.object({
-  title: yup.string().required(),
-  companyName: yup.string().required(),
-  description: yup.string().required(),
-  position: yup.string().required(),
-  job: yup.string().required(),
-  website: yup.string().required(),
-  address: yup.string().required(),
-  type: yup.string().required(),
-  salary: yup.string().required(),
+  title: yup.string().required("Tiêu đề công việc không được để trống"),
+  companyName: yup.string().required("Tên công ty không được để trống"),
+  description: yup.string().required("Mô tả công việc không được để trống"),
+  position: yup.string().required("Vị trí công việc không được để trống"),
+  job: yup.string().required("Tên công việc không được để trống"),
+  website: yup.string().required("Địa chỉ website không được để trống"),
+  address: yup.string().required("Địa chỉ công ty không được để trống"),
+  type: yup.string().required("Loại hình làm việc không được để trống"),
+  salary: yup.string().required("Mức lương công việc không được để trống"),
+  yearsOfExperience: yup.string().required("Yêu cầu kinh nghiệm không được để trống"),
 });
 
 const JobForm = ({
@@ -100,6 +111,7 @@ const JobForm = ({
       address: initialData?.address,
       type: initialData?.type,
       salary: initialData?.salary,
+      yearsOfExperience: initialData?.yearsOfExperience,
       startAt: initialData?.startTime
         ? new Date(initialData.startTime)
         : new Date(),
@@ -134,16 +146,26 @@ const JobForm = ({
           disabled: isPreview,
         }}
       />
-      <TextInput
-        control={control}
-        name="companyName"
-        inputProps={{
-          label: 'Tên công ty',
-          fullWidth: true,
-          disabled: isPreview,
-        }}
-      />
-
+       <Box sx={{ width: '100%', gap: '1rem' }} display="flex">
+        <TextInput
+            control={control}
+            name="position"
+            inputProps={{ label: 'Vị trí cần tuyển', fullWidth: true, disabled: isPreview }}
+          />
+        <SelectInput
+            control={control}
+            name="yearsOfExperience"
+            inputProps={{
+              fullWidth: true,
+              label: 'Yêu cầu kinh nghiệm',
+              disabled: isPreview,
+            }}
+            options={YEARS_OF_EXPERIENCE_LIST.map(yoe => ({
+              name: yoe,
+              value: yoe,
+            }))}
+        />
+       </Box>
       {isPreview ? (
         <Box sx={{ width: '100%' }}>
           <Typography
@@ -167,9 +189,73 @@ const JobForm = ({
         <RichTextInput
           control={control}
           name="description"
-          inputProps={{ placeholder: 'Mô tả' }}
+          inputProps={{ placeholder: 'Mô tả công việc' }}
         />
       )}
+      <Box sx={{ width: '100%', gap: '1rem' }} display="flex">
+        <SelectInput
+          control={control}
+          name="job"
+          inputProps={{
+            fullWidth: true,
+            label: 'Ngành nghề cần tuyển',
+            disabled: isPreview,
+          }}
+          options={JOB_LIST.map(job => ({
+            name: job,
+            value: job,
+          }))}
+        />
+      </Box>
+      <Box sx={{ width: '100%', gap: '1rem' }} display="flex">
+        <SelectInput
+          control={control}
+          name="type"
+          inputProps={{
+            fullWidth: true,
+            label: 'Loại hình làm việc',
+            disabled: isPreview,
+          }}
+          options={JOB_TYPES.map(type => ({
+            name: type,
+            value: type,
+          }))}
+        />
+        <TextInput
+          control={control}
+          name="salary"
+          inputProps={{
+            label: 'Mức lương',
+            fullWidth: true,
+            disabled: isPreview,
+          }}
+        />
+      </Box>
+      <Box sx={{ width: '100%', gap: '1rem' }} display="flex">
+        <TextInput
+          control={control}
+          name="website"
+          inputProps={{
+            label: 'Website công ty',
+            fullWidth: true,
+            disabled: isPreview,
+          }}
+        />
+        <TextInput
+          control={control}
+          name="companyName"
+          inputProps={{
+            label: 'Tên công ty',
+            fullWidth: true,
+            disabled: isPreview,
+          }}
+        />
+      </Box>
+      <TextInput
+        control={control}
+        name="address"
+        inputProps={{ label: 'Địa chỉ', fullWidth: true, disabled: isPreview }}
+      />
       {isPreview ? (
         <Box sx={{ width: '100%' }}>
           <Typography
@@ -197,71 +283,11 @@ const JobForm = ({
         <UploadBackgroundInput
           control={control}
           name="companyImageUrl"
-          inputProps={{ label: 'Hình công ty' }}
+          inputProps={{ label: 'Hình ảnh tuyển dụng' }}
           containerSx={{ width: '100%' }}
         />
       )}
-      <Box sx={{ width: '100%', gap: '1rem' }} display="flex">
-        <SelectInput
-          control={control}
-          name="job"
-          inputProps={{
-            fullWidth: true,
-            label: 'Ngành nghề cần tuyển',
-            disabled: isPreview,
-          }}
-          options={JOB_LIST.map(job => ({
-            name: job,
-            value: job,
-          }))}
-        />
-        <TextInput
-          control={control}
-          name="position"
-          inputProps={{ label: 'Vị trí', fullWidth: true, disabled: isPreview }}
-        />
-      </Box>
-
-      <TextInput
-        control={control}
-        name="website"
-        inputProps={{
-          label: 'Website công ty',
-          fullWidth: true,
-          disabled: isPreview,
-        }}
-      />
-      <TextInput
-        control={control}
-        name="address"
-        inputProps={{ label: 'Địa chỉ', fullWidth: true, disabled: isPreview }}
-      />
-
-      <Box sx={{ width: '100%', gap: '1rem' }} display="flex">
-        <SelectInput
-          control={control}
-          name="type"
-          inputProps={{
-            fullWidth: true,
-            label: 'Loại hình làm việc',
-            disabled: isPreview,
-          }}
-          options={JOB_TYPES.map(type => ({
-            name: type,
-            value: type,
-          }))}
-        />
-        <TextInput
-          control={control}
-          name="salary"
-          inputProps={{
-            label: 'Mức lương',
-            fullWidth: true,
-            disabled: isPreview,
-          }}
-        />
-      </Box>
-      {!isPreview && (
+        {!isPreview && (
         <>
           {/* <Box sx={{ width: '100%' }}>
             <Typography variant="body2" color={'red'}>
