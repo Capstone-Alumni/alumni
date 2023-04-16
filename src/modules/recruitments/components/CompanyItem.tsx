@@ -2,26 +2,23 @@
 
 import React, { ReactNode } from 'react';
 import {
+  Box,
   Card,
+  CardActions,
   CardContent,
   CardMedia,
-  CardActions,
   Grid,
   Stack,
   styled,
   Typography,
   useTheme,
-  Box,
 } from '@mui/material';
 import Link from '@share/components/NextLinkV2';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Job } from '../types';
 import { formatDistanceToNow } from '@share/utils/formatDate';
-import data from '@iconify/icons-eva/close-circle-fill';
 import MyAvatar from '@share/components/MyAvatar';
 
 const defaultCompanyImage =

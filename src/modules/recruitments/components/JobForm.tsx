@@ -72,16 +72,16 @@ export type JobFormValues = {
 };
 
 const validationSchema = yup.object({
-  title: yup.string().required("Tiêu đề công việc không được để trống"),
-  companyName: yup.string().required("Tên công ty không được để trống"),
-  description: yup.string().required("Mô tả công việc không được để trống"),
-  position: yup.string().required("Vị trí công việc không được để trống"),
-  job: yup.string().required("Tên công việc không được để trống"),
-  website: yup.string().required("Địa chỉ website không được để trống"),
-  address: yup.string().required("Địa chỉ công ty không được để trống"),
-  type: yup.string().required("Loại hình làm việc không được để trống"),
-  salary: yup.string().required("Mức lương công việc không được để trống"),
-  yearsOfExperience: yup.string().required("Yêu cầu kinh nghiệm không được để trống"),
+  title: yup.string().required('Tiêu đề công việc không được để trống'),
+  companyName: yup.string().required('Tên công ty không được để trống'),
+  description: yup.string().required('Mô tả công việc không được để trống'),
+  position: yup.string().required('Vị trí công việc không được để trống'),
+  job: yup.string().required('Tên công việc không được để trống'),
+  website: yup.string().required('Địa chỉ website không được để trống'),
+  address: yup.string().required('Địa chỉ công ty không được để trống'),
+  type: yup.string().required('Loại hình làm việc không được để trống'),
+  salary: yup.string().required('Mức lương công việc không được để trống'),
+  yearsOfExperience: yup.string().required('Yêu cầu kinh nghiệm không được để trống'),
 });
 
 const JobForm = ({

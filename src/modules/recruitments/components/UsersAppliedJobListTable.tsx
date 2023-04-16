@@ -36,7 +36,7 @@ const AdminEventListTable = ({
             </TableHead>
             <TableBody>
               {data.data.items.map(
-                (row) =>
+                row =>
                   !row.archived && (
                     <UsersAppliedJobListItem key={row.id} data={row} />
                   ),

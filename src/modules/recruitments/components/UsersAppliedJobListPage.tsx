@@ -48,8 +48,8 @@ const UsersAppliedJobListPage = ({
         <UsersAppliedJobListTable
           data={data}
           page={params.page}
-          onChangePage={(nextPage) => {
-            setParams((prevParams) => ({ ...prevParams, page: nextPage }));
+          onChangePage={nextPage => {
+            setParams(prevParams => ({ ...prevParams, page: nextPage }));
           }}
         />
       </Box>

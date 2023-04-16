@@ -1,7 +1,5 @@
-import { Icon } from '@iconify/react';
 import {
   Button,
-  IconButton,
   Switch,
   TableCell,
   TableRow,
