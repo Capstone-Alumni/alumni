@@ -129,6 +129,7 @@ export type CreateRecruitmentProps = {
   salary: string;
   startAt?: string | null;
   expiredAt?: string | null;
+  yearsOfExperience?: string | null;
 };
 
 export type UpdateRecruitmentProps = {
