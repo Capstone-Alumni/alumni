@@ -120,7 +120,7 @@ const Header = ({ user, tenant }: { user?: User; tenant?: Tenant }) => {
             <Box sx={{ flex: 1 }} />
 
             {user &&
-            (user.isOwner || currentUserInformationData?.GradeMod?.length) ? (
+            (user.isOwner || currentUserInformationData?.gradeMod?.length) ? (
               <Link
                 href="/admin/access/access_request"
                 style={{ color: 'inherit', marginRight: theme.spacing(2) }}

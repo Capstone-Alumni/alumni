@@ -55,7 +55,7 @@ export default class MemberService {
     };
 
     if (excludeGradeId) {
-      whereFilter.GradeMod = {
+      whereFilter.gradeMod = {
         every: {
           gradeId: {
             not: excludeGradeId,

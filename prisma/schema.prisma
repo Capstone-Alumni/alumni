@@ -18,8 +18,9 @@ model Grade {
   startYear Int     @map("start_year")
   endYear   Int     @map("end_year")
 
-  alumClasses   AlumClass[]
-  gradeMod      GradeMod[]
+  alumClasses AlumClass[]
+  gradeMod    GradeMod[]
+  post        Post[]
 
   @@unique([startYear, endYear])
   @@map("grades")
@@ -33,11 +34,12 @@ model AlumClass {
 
   name String
 
-  gradeId       String          @map("grade_id")
-  grade         Grade           @relation(fields: [gradeId], references: [id], onDelete: Cascade)
+  gradeId String @map("grade_id")
+  grade   Grade  @relation(fields: [gradeId], references: [id], onDelete: Cascade)
 
   accessRequest AccessRequest[]
   alumniToClass AlumniToClass[]
+  post          Post[]
 
   @@unique([gradeId, name])
   @@map("alum_classes")
@@ -86,73 +88,73 @@ model Alumni {
 
   information Information?
 
-  alumniToClass AlumniToClass[]
-  GradeMod      GradeMod[]
-  accessRequest AccessRequest[]
+  alumniToClass          AlumniToClass[]
+  gradeMod               GradeMod[]
+  accessRequest          AccessRequest[]
+  career                 Career[]
+  education              Education[]
+  news                   News[]
+  newsComment            NewsComment[]
+  event                  Event[]
+  eventParticipant       EventParticipant[]
+  eventInterest          EventInterest[]
+  fund                   Fund[]
+  fundSaved              FundSaved[]
+  fundTransaction        FundTransaction[]
+  post                   Post[]
+  postComment            PostComment[]
+  postLike               PostLike[]
+  recruitment            Recruitment[]
+  recruitmentApplication RecruitmentApplication[]
+  pingReceived           Ping[]                   @relation("ping_alumni")
+  pingSent               Ping[]                   @relation("pinger")
 
   @@map("alumni")
 }
 
 model AccessRequest {
-  id          String  @id @default(cuid())
+  id        String   @id @default(cuid())
   archived  Boolean  @default(false)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  fullName    String @map("full_name")
-  phone String?
+  fullName    String    @map("full_name")
+  phone       String?
   dateOfBirth DateTime? @map("date_of_birth")
-  
-  email       String
-  password String?
-  
-  requestStatus  Int @default(0) @map("request_status")
 
-  alumClassId String  @map("alum_class_id")
-  alumClass AlumClass @relation(fields: [alumClassId], references: [id], onDelete: Cascade)
+  email    String
+  password String?
+
+  requestStatus Int @default(0) @map("request_status")
+
+  alumClassId String    @map("alum_class_id")
+  alumClass   AlumClass @relation(fields: [alumClassId], references: [id], onDelete: Cascade)
 
   alumniId String? @map("alumni_id") // có: register, không có: joinClass
-  alumni Alumni? @relation(fields: [alumniId], references: [id], onDelete: Cascade)
+  alumni   Alumni? @relation(fields: [alumniId], references: [id], onDelete: Cascade)
 
   @@map("access_requests")
 }
 
 model Information {
-  id                   String             @id @default(cuid())
-  bio                  String?
-  fullName             String            @map("full_name")
-  avatarUrl            String?            @map("avatar_url")
-  coverImageUrl        String?            @map("cover_image_url")
-  email                String?            @unique @map("email")
+  id            String  @id @default(cuid())
+  bio           String?
+  fullName      String  @map("full_name")
+  avatarUrl     String? @map("avatar_url")
+  coverImageUrl String? @map("cover_image_url")
+  email         String? @unique @map("email")
 
   phone                String?
-  phonePublicity       ScopePublicity     @default(PRIVATE) @map("phone_publicity")
-  facebookUrl          String?            @map("facebook_url")
-  facebookPublicity    ScopePublicity     @default(PRIVATE) @map("facebook_publicity")
-  dateOfBirth          DateTime?          @map("date_of_birth")
-  dateOfBirthPublicity ScopePublicity     @default(PRIVATE) @map("date_of_birth_publicity")
-  careerPublicity      ScopePublicity     @default(PRIVATE) @map("career_publicity")
-  educationPublicity   ScopePublicity     @default(PRIVATE) @map("education_publicity")
+  phonePublicity       ScopePublicity @default(PRIVATE) @map("phone_publicity")
+  facebookUrl          String?        @map("facebook_url")
+  facebookPublicity    ScopePublicity @default(PRIVATE) @map("facebook_publicity")
+  dateOfBirth          DateTime?      @map("date_of_birth")
+  dateOfBirthPublicity ScopePublicity @default(PRIVATE) @map("date_of_birth_publicity")
+  careerPublicity      ScopePublicity @default(PRIVATE) @map("career_publicity")
+  educationPublicity   ScopePublicity @default(PRIVATE) @map("education_publicity")
 
-  events               Event[]
-  eventParticipants    EventParticipant[]
-  eventInterests       EventInterest[]
-  News                 News[]
-  NewsComment          NewsComment[]
-  fund                 Fund[]
-  fundSaved            FundSaved[]
-  Recruitment          Recruitment[]
-
-  posts                  Post[]
-  postComments           PostComment[]
-  postLikes              PostLike[]
-  RecruitmentApplication RecruitmentApplication[]
-  fundTransactions       FundTransaction[]
-  FundReport             FundReport[]
-  ping                   Ping[]
-
-  alumniId             String            @unique @map("alumni_id")
-  alumni Alumni? @relation(fields: [alumniId], references: [id], onDelete: Cascade)
+  alumniId String  @unique @map("alumni_id")
+  alumni   Alumni? @relation(fields: [alumniId], references: [id], onDelete: Cascade)
 
   @@map("informations")
 }
@@ -163,8 +165,10 @@ model Career {
   company   String
   startDate DateTime? @map("start_date")
   endDate   DateTime? @map("end_date")
-  userId    String    @map("user_id")
   archived  Boolean   @default(false)
+
+  alumniId String @map("alumni_id")
+  alumni   Alumni @relation(fields: [alumniId], references: [id])
 
   @@map("careers")
 }
@@ -176,7 +180,9 @@ model Education {
   startDate DateTime? @map("start_date")
   endDate   DateTime? @map("end_date")
   archived  Boolean   @default(false)
-  userId    String    @map("user_id")
+
+  alumniId String @map("alumni_id")
+  alumni   Alumni @relation(fields: [alumniId], references: [id])
 
   @@map("educations")
 }
@@ -188,30 +194,30 @@ model News {
   updatedAt    DateTime      @default(now()) @updatedAt @map("updated_at")
   title        String
   content      String
-  authorId     String        @map("author_id")
   newsImageUrl String?       @map("news_image_url")
   isPublic     Boolean       @default(false) @map("is_public")
-  NewsComment  NewsComment[]
-  authorInfoId String?       @map("author_info_id")
+
+  newsComment  NewsComment[]
   tagsNews     TagsNews[]    @relation("news_to_tag_news")
 
-  authorInfo Information? @relation(fields: [authorInfoId], references: [id])
+  authorId String  @map("author_id")
+  author   Alumni? @relation(fields: [authorId], references: [id])
 
   @@map("news")
 }
 
 model NewsComment {
-  id              String   @id @default(cuid())
-  archived        Boolean  @default(false)
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
-  commentContent  String   @map("comment_content")
-  commenterId     String   @map("commenter_id")
-  commenterInfoId String?  @map("commenter_info_id")
-  newsId          String   @map("news_id")
+  id             String   @id @default(cuid())
+  archived       Boolean  @default(false)
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at")
+  commentContent String   @map("comment_content")
 
-  news          News         @relation(fields: [newsId], references: [id])
-  commenterInfo Information? @relation(fields: [commenterInfoId], references: [id])
+  newsId String @map("news_id")
+  news   News   @relation(fields: [newsId], references: [id])
+
+  commenterId String  @map("commenter_id")
+  commenter   Alumni? @relation(fields: [commenterId], references: [id])
 
   @@map("news_comment")
 }
@@ -234,8 +240,8 @@ model Event {
   publicity         AccessLevel @default(ALUMNI)
   publicParticipant Boolean     @default(false) @map("public_participant")
 
-  userId          String      @map("user_id")
-  hostInformation Information @relation(fields: [userId], references: [alumniId])
+  hostId String @map("host_id")
+  host   Alumni @relation(fields: [hostId], references: [id])
 
   eventParticipants EventParticipant[]
   eventInterests    EventInterest[]
@@ -252,8 +258,8 @@ model EventParticipant {
   eventId String
   event   Event  @relation(fields: [eventId], references: [id])
 
-  userId                 String
-  participantInformation Information @relation(fields: [userId], references: [alumniId])
+  participantId String @map("participant_id")
+  participant   Alumni @relation(fields: [participantId], references: [id])
 
   @@map("event_participants")
 }
@@ -267,8 +273,8 @@ model EventInterest {
   eventId String
   event   Event  @relation(fields: [eventId], references: [id])
 
-  userId          String
-  userInformation Information @relation(fields: [userId], references: [alumniId])
+  interesterId String
+  interester   Alumni @relation(fields: [interesterId], references: [id])
 
   @@map("event_interests")
 }
@@ -288,12 +294,12 @@ model Fund {
   publicity         AccessLevel @default(ALUMNI)
   publicParticipant Boolean     @default(false) @map("public_participant")
 
-  userId          String      @map("user_id")
-  hostInformation Information @relation(fields: [userId], references: [alumniId])
+  hostId String @map("user_id")
+  host   Alumni @relation(fields: [hostId], references: [id])
 
   fundSaved        FundSaved[]
   fundTransactions FundTransaction[]
-  FundReport       FundReport[]
+  fundReport       FundReport[]
 
   @@map("funds")
 }
@@ -307,8 +313,8 @@ model FundSaved {
   fundId String @map("fund_id")
   fund   Fund   @relation(fields: [fundId], references: [id])
 
-  userId          String      @map("user_id")
-  userInformation Information @relation(fields: [userId], references: [alumniId])
+  saverId String @map("saver_id")
+  saver   Alumni @relation(fields: [saverId], references: [id])
 
   @@map("fund_saved")
 }
@@ -338,10 +344,10 @@ model FundTransaction {
   paymentStatus Int     @default(0) @map("payment_status")
   incognito     Boolean @default(false)
 
-  fundId          String      @map("fund_id")
-  userId          String      @map("user_id")
-  fund            Fund        @relation(fields: [fundId], references: [id])
-  userInformation Information @relation(fields: [userId], references: [alumniId])
+  fundId   String @map("fund_id")
+  fund     Fund   @relation(fields: [fundId], references: [id])
+  alumniId String @map("alumni_id")
+  alumni   Alumni @relation(fields: [alumniId], references: [id])
 
   @@map("fund_transactions")
 }
@@ -356,10 +362,7 @@ model FundReport {
   content String?
 
   fundId String @map("fund_id")
-  userId String @map("user_id")
-
-  fund            Fund        @relation(fields: [fundId], references: [id])
-  userInformation Information @relation(fields: [userId], references: [alumniId])
+  fund   Fund   @relation(fields: [fundId], references: [id])
 
   @@map("fund_reports")
 }
@@ -370,11 +373,15 @@ model Post {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  content   String
-  publicity AccessLevel @default(ALUMNI)
+  content String
 
-  authorId          String      @map("author_id")
-  authorInformation Information @relation(fields: [authorId], references: [alumniId])
+  gradeId        String?    @map("grade_id")
+  grade          Grade?     @relation(fields: [gradeId], references: [id])
+  alumClassId    String?    @map("alum_class_id")
+  alumClass      AlumClass? @relation(fields: [alumClassId], references: [id])
+  isPublicSchool Boolean    @default(false) @map("is_public_school")
+  authorId       String     @map("author_id")
+  author         Alumni     @relation(fields: [authorId], references: [id])
 
   postComments PostComment[]
   postLikes    PostLike[]
@@ -390,11 +397,10 @@ model PostComment {
 
   content String
 
-  authorId String @map("author_id")
   postId   String @map("post_id")
-
-  authorInformation Information @relation(fields: [authorId], references: [alumniId])
-  post              Post        @relation(fields: [postId], references: [id])
+  post     Post   @relation(fields: [postId], references: [id])
+  authorId String @map("author_id")
+  author   Alumni @relation(fields: [authorId], references: [id])
 
   @@map("post_comments")
 }
@@ -405,38 +411,37 @@ model PostLike {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  authorId String @map("author_id")
   postId   String @map("post_id")
-
-  authorInformation Information @relation(fields: [authorId], references: [alumniId])
-  post              Post        @relation(fields: [postId], references: [id])
+  post     Post   @relation(fields: [postId], references: [id])
+  authorId String @map("author_id")
+  author   Alumni @relation(fields: [authorId], references: [id])
 
   @@unique([authorId, postId])
   @@map("post_likes")
 }
 
 model Recruitment {
-  id                     String                   @id @default(cuid())
-  archived               Boolean                  @default(false)
-  createdAt              DateTime                 @default(now()) @map("created_at")
-  updatedAt              DateTime                 @default(now()) @updatedAt @map("updated_at")
-  companyName            String                   @map("company_name")
-  companyImageUrl        String?                  @map("company_image_url")
-  website                String?
-  job                    String
-  address                String
-  position               String
-  title                  String
-  description            String?
-  type                   String?
-  startAt                DateTime?                @map("start_at")
-  expiredAt              DateTime?                @map("expired_at")
-  salary                 String                   @default("negotiate")
-  isApproved             Boolean                  @default(false)
-  recruitmentOwnerId     String?                  @map("recruitment_owner_id")
-  recruitmentOwnerInfoId String?                  @map("recruitment_owner_info_id")
-  recruitmentOwnerInfo   Information?             @relation(fields: [recruitmentOwnerInfoId], references: [id])
-  RecruitmentApplication RecruitmentApplication[]
+  id              String    @id @default(cuid())
+  archived        Boolean   @default(false)
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at")
+  companyName     String    @map("company_name")
+  companyImageUrl String?   @map("company_image_url")
+  website         String?
+  job             String
+  address         String
+  position        String
+  title           String
+  description     String?
+  type            String?
+  startAt         DateTime? @map("start_at")
+  expiredAt       DateTime? @map("expired_at")
+  salary          String    @default("negotiate")
+  isApproved      Boolean   @default(false)
+
+  recruitmentOwnerId     String                   @map("recruitment_owner_id")
+  recruitmentOwner       Alumni                   @relation(fields: [recruitmentOwnerId], references: [id])
+  recruitmentApplication RecruitmentApplication[]
 
   @@map("recruitments")
 }
@@ -452,8 +457,8 @@ model RecruitmentApplication {
   recruitmentId String
   recruitment   Recruitment @relation(fields: [recruitmentId], references: [id])
 
-  applicationOwnerId   String
-  applicationOwnerInfo Information @relation(fields: [applicationOwnerId], references: [alumniId])
+  applicationOwnerId String
+  applicationOwner   Alumni @relation(fields: [applicationOwnerId], references: [id])
 
   @@map("recruitment_applications")
 }
@@ -478,10 +483,10 @@ model Ping {
 
   message String
 
-  pingAlumniInfoId String
-  pingerInfoId     String
-
-  pingerInfo Information? @relation(fields: [pingerInfoId], references: [alumniId])
+  pingAlumniId String
+  pingAlumni   Alumni  @relation("ping_alumni", fields: [pingAlumniId], references: [id])
+  pingerId     String
+  pinger       Alumni? @relation("pinger", fields: [pingerId], references: [id])
 
   @@map("pings")
 }

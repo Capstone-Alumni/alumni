@@ -101,7 +101,7 @@ export default class AccessRequestService {
     }
 
     const classIdList = alumni.alumniToClass.map(cl => cl.alumClassId);
-    const gradeIdList = alumni.GradeMod.map(gr => gr.gradeId);
+    const gradeIdList = alumni.gradeMod.map(gr => gr.gradeId);
 
     const whereFilter = {
       OR: [
