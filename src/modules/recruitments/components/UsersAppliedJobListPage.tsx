@@ -42,6 +42,7 @@ const UsersAppliedJobListPage = ({
       <Box
         sx={{
           width: '100%',
+          minHeight: '50vh',
         }}
       >
         <UsersAppliedJobListTable

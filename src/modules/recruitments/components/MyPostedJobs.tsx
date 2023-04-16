@@ -68,12 +68,8 @@ const HostingEventListPage = () => {
                     <Link
                       key="edit-btn"
                       href={`/recruitments/posted_jobs/${item.id}`}
-                      // style={{ width: '100%' }}
                       prefetch={false}
                     >
-                      {/* <Button fullWidth variant="outlined">
-                        Sửa
-                      </Button> */}
                       <IconButton color="primary">
                         <EditIcon />
                       </IconButton>

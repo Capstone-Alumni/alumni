@@ -1,7 +1,5 @@
-import { Icon } from '@iconify/react';
 import {
   Button,
-  IconButton,
   Switch,
   TableCell,
   TableRow,
@@ -23,19 +21,21 @@ const AdminEventListItem = ({
 }) => {
   return (
     <>
-      <TableRow>
+      <TableRow sx={{ fontSize: '14px' }}>
         <TableCell align="left" sx={{ cursor: 'pointer' }}>
-          <AdminJobPreview data={data} isPreview>
+          <AdminJobPreview data={data}>
             <Tooltip title="Xem tóm tắt công việc">
-              <Typography>{data.title}</Typography>
+              <Typography fontSize="inherit">{data.title}</Typography>
             </Tooltip>
           </AdminJobPreview>
         </TableCell>
         <TableCell align="left">
-          <Typography>{data.recruitmentOwnerInfo?.fullName}</Typography>
+          <Typography fontSize="inherit">
+            {data.recruitmentOwnerInfo?.fullName}
+          </Typography>
         </TableCell>
-        <TableCell align="left">
-          <Typography>
+        <TableCell align="center" sx={{ maxWidth: '8rem' }}>
+          <Typography fontSize="inherit">
             {data.archived ? (
               <Button variant="outlined" size="small" color="error">
                 Đã từ chối
@@ -46,24 +46,17 @@ const AdminEventListItem = ({
               </Button>
             ) : (
               <Button variant="outlined" size="small" color="warning">
-                Đang chờ xác nhận
+                Chờ xác nhận
               </Button>
             )}
           </Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>{formatDate(new Date(data.createdAt))}</Typography>
+          <Typography fontSize="inherit">
+            {formatDate(new Date(data.createdAt))}
+          </Typography>
         </TableCell>
-        <TableCell align="center" sx={{ maxWidth: '3rem' }}>
-          <AdminJobPreview data={data} isPreview>
-            <Tooltip title="Xem tóm tắt công việc">
-              <IconButton>
-                <Icon height={24} icon="uil:eye" />
-              </IconButton>
-            </Tooltip>
-          </AdminJobPreview>
-        </TableCell>
-        <TableCell align="center" sx={{ maxWidth: '3rem' }}>
+        <TableCell align="center" sx={{ maxWidth: '8rem' }}>
           <Tooltip
             title={
               data?.isApproved

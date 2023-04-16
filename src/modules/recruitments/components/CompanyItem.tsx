@@ -2,6 +2,7 @@
 
 import React, { ReactNode } from 'react';
 import {
+  Box,
   Card,
   CardActions,
   CardContent,
@@ -12,20 +13,16 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import Link from '@share/components/NextLinkV2';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Job } from '../types';
+import { formatDistanceToNow } from '@share/utils/formatDate';
+import MyAvatar from '@share/components/MyAvatar';
 
 const defaultCompanyImage =
   'https://bka.hcmut.edu.vn/FileManager/Download/?filename=%5cimage_upload%5ce6475845-00ab-4b0d-931e-8fe744c5db11.png';
-
-const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
-  width: '80%',
-  height: '100%',
-  backgroundSize: 'contain',
-  margin: 'auto',
-}));
 
 const StyledDiv = styled('div')(({ theme }) => ({
   height: theme.spacing(8),
@@ -47,18 +44,40 @@ const StyledTypographyCompanyName = styled(Typography)(({ theme }) => ({
   WebkitBoxOrient: 'vertical',
 }));
 
+const BoxLayerCardMedia = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  bottom: '0',
+  left: '0',
+  width: '100%',
+  height: '26px',
+  backgroundColor: 'rgba(0,0,0,0.3)',
+  display: 'flex',
+  alignItems: 'center',
+  padding: '0 12px',
+}));
+
+const StyledCardContent = styled(CardContent)(({ theme }) => ({
+  '&:last-child': {
+    paddingBottom: '12px',
+  },
+}));
+
 const Company = ({
   companyDetails,
   isSlide,
   actions,
   isPostedJobs,
+  isAppliedJobs,
 }: {
   companyDetails: Job;
   isSlide?: boolean;
   actions: ReactNode;
   isPostedJobs?: boolean;
+  isAppliedJobs?: boolean;
 }) => {
   const theme = useTheme();
+
+  console.log(isAppliedJobs);
 
   return (
     <Grid
@@ -82,57 +101,145 @@ const Company = ({
               ? 'none'
               : '0 0 2px 0 rgba(145, 158, 171, 0.24),0 16px 32px -4px rgba(145, 158, 171, 0.24)'
           }`,
+          ...(!isPostedJobs &&
+            !isAppliedJobs && {
+              '&:hover': {
+                opacity: '0.7',
+                transition: 'all 0.2s',
+              },
+            }),
         }}
       >
-        <StyledCardMedia
-          title="news image"
-          sx={{
-            height: theme.spacing(18),
-            padding: theme.spacing(0),
-            width: '100%',
-            margin: '0',
-            backgroundImage: `url(${
-              companyDetails.companyImageUrl || defaultCompanyImage
-            })`,
-          }}
-        />
-        <CardContent>
-          {isPostedJobs && (
-            <Stack direction="row" alignItems="center" gap="0.5rem">
-              <FiberManualRecordIcon
-                fontSize="small"
-                color={companyDetails.isApproved ? 'success' : 'warning'}
-              />
-              <Typography variant="body2">
-                {companyDetails.isApproved ? 'Đã duyệt' : 'Đang xét duyệt'}
-              </Typography>
-            </Stack>
-          )}
-          <StyledDiv>
-            <StyledTypography variant="h6">
-              {companyDetails.title}
-            </StyledTypography>
-          </StyledDiv>
-          <Grid container>
-            <Grid item xs={1}>
-              <AccountBalanceIcon fontSize="small" sx={{ color: '#64748b' }} />
-            </Grid>
-            <Grid item xs={11}>
-              <StyledTypographyCompanyName variant="body2">
-                &nbsp;&nbsp;{companyDetails.companyName}
-              </StyledTypographyCompanyName>
-            </Grid>
-            <Grid item xs={1}>
-              <LocationOnIcon fontSize="small" sx={{ color: '#64748b' }} />
-            </Grid>
-            <Grid item xs={11}>
-              <Typography variant="body2">
-                &nbsp;&nbsp;{companyDetails.address}
-              </Typography>
-            </Grid>
-          </Grid>
-        </CardContent>
-        <CardActions>{actions}</CardActions>
+        {!isPostedJobs && !isAppliedJobs ? (
+          <Link
+            href={`/recruitments/job_details/${companyDetails.id}`}
+            style={{ textDecoration: 'none', color: 'inherit' }}
+            prefetch={false}
+          >
+            <CardMedia
+              title="news image"
+              sx={{
+                height: theme.spacing(18),
+                padding: theme.spacing(2),
+                backgroundImage: `url(${
+                  companyDetails.companyImageUrl || defaultCompanyImage
+                })`,
+                position: 'relative',
+              }}
+            >
+              <BoxLayerCardMedia>
+                <>
+                  <LocationOnOutlinedIcon
+                    fontSize="small"
+                    sx={{ color: '#fff', marginRight: '0.25rem' }}
+                  />
+                  <Typography variant="caption" color="#fff">
+                    {companyDetails.address}
+                  </Typography>
+                </>
+              </BoxLayerCardMedia>
+            </CardMedia>
+            <CardContent>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                sx={{ mb: 0.5 }}
+              >
+                <Typography variant="body2" color="#919eab">
+                  {companyDetails?.createdAt &&
+                    formatDistanceToNow(new Date(companyDetails.createdAt))}
+                </Typography>
+              </Stack>
+              <StyledDiv>
+                <StyledTypography variant="h6">
+                  {companyDetails.title}
+                </StyledTypography>
+              </StyledDiv>
+              <Stack flexDirection="row" alignItems="center">
+                <StyledTypographyCompanyName variant="body2" color="#919eab">
+                  {companyDetails.companyName}
+                </StyledTypographyCompanyName>
+              </Stack>
+              <Stack
+                flexDirection="row"
+                alignItems="center"
+                gap="0.5rem"
+                sx={{ marginTop: '0.5rem' }}
+              >
+                <MyAvatar
+                  size="small"
+                  displayName={companyDetails.recruitmentOwnerInfo?.fullName}
+                  photoUrl={companyDetails.recruitmentOwnerInfo?.avatarUrl}
+                />
+                <Typography variant="body2" fontWeight="bold">
+                  {companyDetails.recruitmentOwnerInfo?.fullName}
+                </Typography>
+              </Stack>
+            </CardContent>
+          </Link>
+        ) : (
+          <>
+            <CardMedia
+              title="news image"
+              sx={{
+                height: theme.spacing(18),
+                padding: theme.spacing(2),
+                backgroundImage: `url(${
+                  companyDetails.companyImageUrl || defaultCompanyImage
+                })`,
+                position: 'relative',
+              }}
+            >
+              <BoxLayerCardMedia>
+                <>
+                  <LocationOnOutlinedIcon
+                    fontSize="small"
+                    sx={{ color: '#fff', marginRight: '0.25rem' }}
+                  />
+                  <Typography variant="caption" color="#fff">
+                    {companyDetails.address}
+                  </Typography>
+                </>
+              </BoxLayerCardMedia>
+            </CardMedia>
+            <StyledCardContent>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                sx={{ mb: 0.5 }}
+              >
+                <Typography variant="body2" color="#919eab">
+                  {companyDetails?.createdAt &&
+                    formatDistanceToNow(new Date(companyDetails.createdAt))}
+                </Typography>
+                <Stack direction="row" alignItems="center" gap="0.25rem">
+                  <FiberManualRecordIcon
+                    fontSize="small"
+                    color={companyDetails.isApproved ? 'success' : 'warning'}
+                  />
+                  <Typography variant="body2" color="#919eab">
+                    {companyDetails.isApproved ? 'Đã duyệt' : 'Đang xét duyệt'}
+                  </Typography>
+                </Stack>
+              </Stack>
+              <StyledDiv>
+                <StyledTypography variant="h6">
+                  {companyDetails.title}
+                </StyledTypography>
+              </StyledDiv>
+              <Stack flexDirection="row" alignItems="center">
+                <StyledTypographyCompanyName variant="body2" color="#919eab">
+                  {companyDetails.companyName}
+                </StyledTypographyCompanyName>
+              </Stack>
+              <CardActions style={{ padding: '8px 0 0 0' }}>
+                {actions}
+              </CardActions>
+            </StyledCardContent>
+          </>
+        )}
       </Card>
     </Grid>
   );
