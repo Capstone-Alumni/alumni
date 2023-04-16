@@ -1,53 +1,5 @@
-import { buildAccessLevelFilter } from './../../share/helpers/prismaWhereFilterBuilder';
 import { PrismaClient } from '@prisma/client';
 import { User } from 'next-auth';
-
-const getSameClassFilter = (classId: string) => ({
-  hostInformation: {
-    alumClassId: classId,
-  },
-});
-
-const getSameGradeFilter = (gradeId: string) => ({
-  hostInformation: {
-    alumClass: {
-      gradeId: gradeId,
-    },
-  },
-});
-
-const buildFundWhereFilter = async (tenantPrisma: PrismaClient, user: User) => {
-  const userInformation = await tenantPrisma.information.findUnique({
-    where: {
-      userId: user.id,
-    },
-    include: {
-      alumClass: true,
-    },
-  });
-
-  if (!userInformation) {
-    throw new Error('user not exist');
-  }
-
-  const publicityFilter = buildAccessLevelFilter('publicity', 'SCHOOL_ADMIN');
-  let gradeClassFilter = {};
-  if (user.accessLevel === 'CLASS_MOD') {
-    gradeClassFilter = getSameClassFilter(userInformation.alumClassId || '');
-  }
-  if (user.accessLevel === 'GRADE_MOD') {
-    gradeClassFilter = getSameGradeFilter(
-      userInformation.alumClass?.gradeId || '',
-    );
-  }
-
-  const whereFilter = {
-    ...publicityFilter,
-    ...gradeClassFilter,
-  };
-
-  return whereFilter;
-};
 
 export default class AdminFundService {
   static getList = async (
@@ -64,12 +16,9 @@ export default class AdminFundService {
       title: string;
     },
   ) => {
-    const whereFilter = await buildFundWhereFilter(tenantPrisma, user);
-
     const [totalItems, items] = await tenantPrisma.$transaction([
       tenantPrisma.fund.count({
         where: {
-          ...whereFilter,
           archived: false,
           title: {
             contains: title,
@@ -80,7 +29,6 @@ export default class AdminFundService {
         skip: (page - 1) * limit,
         take: limit,
         where: {
-          ...whereFilter,
           archived: false,
           title: {
             contains: title,
@@ -90,7 +38,11 @@ export default class AdminFundService {
           createdAt: 'desc',
         },
         include: {
-          hostInformation: true,
+          host: {
+            include: {
+              information: true,
+            },
+          },
         },
       }),
     ]);
@@ -108,28 +60,25 @@ export default class AdminFundService {
     tenantPrisma: PrismaClient,
     { user, fundId }: { user: User; fundId: string },
   ) => {
-    const whereFilter = await buildFundWhereFilter(tenantPrisma, user);
-
     const Fund = await tenantPrisma.fund.findFirst({
       where: {
-        ...whereFilter,
         id: fundId,
+        archived: false,
       },
     });
 
     return Fund;
   };
 
+  // Bỏ
   static approve = async (
     tenantPrisma: PrismaClient,
     { user, fundId }: { user: User; fundId: string },
   ) => {
-    const whereFilter = await buildFundWhereFilter(tenantPrisma, user);
-
     await tenantPrisma.fund.updateMany({
       where: {
-        ...whereFilter,
         id: fundId,
+        archived: false,
       },
       data: {
         // approvedStatus: 1,
@@ -139,15 +88,13 @@ export default class AdminFundService {
     return null;
   };
 
+  // Bỏ
   static reject = async (
     tenantPrisma: PrismaClient,
     { user, fundId }: { user: User; fundId: string },
   ) => {
-    const whereFilter = await buildFundWhereFilter(tenantPrisma, user);
-
     await tenantPrisma.fund.updateMany({
       where: {
-        ...whereFilter,
         id: fundId,
       },
       data: {

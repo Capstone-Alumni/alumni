@@ -39,7 +39,7 @@ const AdminFundDetailPage = ({ fundData }: { fundData: Fund }) => {
 
   const fundStatus = () => {
     if (new Date(fundData.startTime) > new Date()) {
-      return 'opened';
+      return 'not-started';
     }
 
     if (fundData.endTime && new Date(fundData.endTime) > new Date()) {
@@ -120,20 +120,20 @@ const AdminFundDetailPage = ({ fundData }: { fundData: Fund }) => {
       </Typography>
       <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 2 }}>
         <MyAvatar
-          displayName={fundData.hostInformation?.fullName}
-          photoUrl={fundData.hostInformation?.avatarUrl}
+          displayName={fundData.host?.information?.fullName}
+          photoUrl={fundData.host?.information?.avatarUrl}
         />
 
         <Stack direction="column">
           <Link
-            href={`/profile/${fundData.userId}?profile_tab=information`}
+            href={`/profile/${fundData.hostId}?profile_tab=information`}
             prefetch={false}
           >
             <Typography fontWeight={600}>
-              {fundData.hostInformation?.fullName}
+              {fundData.host?.information?.fullName}
             </Typography>
           </Link>
-          <Typography>{fundData.hostInformation?.email}</Typography>
+          <Typography>{fundData.host?.information?.email}</Typography>
         </Stack>
       </Stack>
       <Box

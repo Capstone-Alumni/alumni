@@ -96,8 +96,8 @@ handler.post(async function (req: NextApiRequestWithTenant, res) {
       fund: {
         connect: { id: req.body.fundId },
       },
-      userInformation: {
-        connect: { userId: req.user.id },
+      alumni: {
+        connect: { id: req.user.id },
       },
     },
   });

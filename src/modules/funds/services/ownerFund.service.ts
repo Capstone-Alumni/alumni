@@ -43,7 +43,7 @@ export default class OwnerFundService {
       },
     });
 
-    if (fund?.userId !== userId) {
+    if (fund?.hostId !== userId) {
       throw new Error('denied');
     }
 
@@ -61,7 +61,6 @@ export default class OwnerFundService {
       startTime,
       endTime,
       targetBalance,
-      publicity,
       backgroundImage,
     }: {
       title: string;
@@ -69,7 +68,6 @@ export default class OwnerFundService {
       startTime: Date;
       endTime?: Date;
       targetBalance: number;
-      publicity?: AccessLevel;
       backgroundImage?: string;
     },
   ) => {
@@ -80,11 +78,10 @@ export default class OwnerFundService {
         startTime,
         endTime,
         targetBalance,
-        publicity: AccessLevel.SCHOOL_ADMIN,
         backgroundImage,
-        hostInformation: {
+        host: {
           connect: {
-            userId: userId,
+            id: userId,
           },
         },
       },
@@ -138,14 +135,8 @@ export default class OwnerFundService {
   ) => {
     const fund = await tenantPrisma.fund.updateMany({
       where: {
-        AND: [
-          {
-            id: fundId,
-          },
-          {
-            userId: userId,
-          },
-        ],
+        id: fundId,
+        hostId: userId,
       },
       data: {
         archived: true,
@@ -167,7 +158,7 @@ export default class OwnerFundService {
     }: { userId: string; page: number; limit: number; title: string },
   ) => {
     const whereFilter = {
-      userId: userId,
+      saverId: userId,
       fund: {
         title: {
           contains: title,

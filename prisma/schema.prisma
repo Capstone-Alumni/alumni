@@ -292,12 +292,10 @@ model Fund {
   title             String
   description       String?
   startTime         DateTime    @default(now()) @map("start_time")
-  endTime           DateTime?   @default(now()) @map("end_time")
+  endTime           DateTime   @default(now()) @map("end_time")
   targetBalance     Int         @default(0) @map("target_balance")
   currentBalance    Int         @default(0) @map("currect_balance")
-  publicity         AccessLevel @default(ALUMNI)
-  publicParticipant Boolean     @default(false) @map("public_participant")
-  backgroundImage   String?
+  backgroundImage   String? @map("background_image")
 
   hostId String @map("user_id")
   host   Alumni @relation(fields: [hostId], references: [id])
@@ -494,23 +492,6 @@ model Ping {
   pinger       Alumni? @relation("pinger", fields: [pingerId], references: [id])
 
   @@map("pings")
-}
-
-enum AccessLevel {
-  ALUMNI
-  CLASS_MOD
-  GRADE_MOD
-  SCHOOL_ADMIN
-}
-
-enum AccessStatus {
-  PENDING
-  APPROVED
-}
-
-enum AccessMode {
-  FULL_ACCESS
-  READ_ONLY
 }
 
 enum ScopePublicity {

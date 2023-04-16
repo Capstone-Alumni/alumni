@@ -84,7 +84,7 @@ const FundCardItem = ({
                 }}
               />
               <Typography variant="body2" fontWeight="bold">
-                {data.hostInformation?.fullName}
+                {data.host?.information?.fullName}
               </Typography>
             </Stack>
           </Box>

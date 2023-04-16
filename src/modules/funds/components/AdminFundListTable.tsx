@@ -48,13 +48,12 @@ const AdminFundListTable = ({
         <Table aria-label="Fund table">
           <TableHead>
             <TableRow>
-              <TableCell align="left" sx={{ maxWidth: '5rem' }}>
-                Tên quỹ
-              </TableCell>
+              <TableCell align="left">Tên quỹ</TableCell>
               <TableCell align="left">Người tạo</TableCell>
               <TableCell align="left">Số tiền mục tiêu</TableCell>
               <TableCell align="left">Số tiền hiện tại</TableCell>
-              <TableCell align="left">Thời gian Kết thúc</TableCell>
+              <TableCell align="left">Bắt đầu</TableCell>
+              <TableCell align="left">Kết thúc</TableCell>
               <TableCell align="center">Trạng thái</TableCell>
               <TableCell align="center">Thao tác</TableCell>
             </TableRow>

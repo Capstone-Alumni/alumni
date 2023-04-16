@@ -64,12 +64,13 @@ const AdminFundListItem = ({
     if (currentDate > new Date(data.endTime)) {
       return 'warning';
     }
+    return 'success';
   };
 
   return (
     <>
       <TableRow>
-        <TableCell align="left" sx={{ width: '20rem' }}>
+        <TableCell align="left">
           <AdminFundPreview data={data}>
             <Typography
               sx={{
@@ -81,13 +82,18 @@ const AdminFundListItem = ({
           </AdminFundPreview>
         </TableCell>
         <TableCell align="left">
-          <Typography>{data.hostInformation?.fullName}</Typography>
+          <Typography>{data.host?.information?.fullName}</Typography>
         </TableCell>
         <TableCell align="left">
           <Typography>{formatAmountMoney(data.targetBalance * 100)}</Typography>
         </TableCell>
         <TableCell align="left">
           <Typography>{formatAmountMoney(data.currentBalance)}</Typography>
+        </TableCell>
+        <TableCell align="left">
+          <Typography>
+            {formatDate(new Date(data.startTime), 'dd/MM/yyyy')}
+          </Typography>
         </TableCell>
         <TableCell align="left">
           <Typography>

@@ -20,7 +20,6 @@ export default class PublicFundService {
   ) => {
     const whereFilter: Prisma.FundWhereInput = {
       archived: false,
-      publicity: 'SCHOOL_ADMIN',
       title: {
         contains: title,
       },
@@ -53,10 +52,14 @@ export default class PublicFundService {
         include: {
           fundSaved: {
             where: {
-              userId: userId ?? '',
+              saverId: userId ?? '',
             },
           },
-          hostInformation: true,
+          host: {
+            include: {
+              information: true,
+            },
+          },
         },
       }),
     ]);
@@ -91,10 +94,14 @@ export default class PublicFundService {
       include: {
         fundSaved: {
           where: {
-            userId: userId ?? '',
+            saverId: userId ?? '',
           },
         },
-        hostInformation: true,
+        host: {
+          include: {
+            information: true,
+          },
+        },
       },
     });
 
@@ -119,7 +126,7 @@ export default class PublicFundService {
 
     const existedSave = await tenantPrisma.fundSaved.findFirst({
       where: {
-        userId: userId,
+        saverId: userId,
         fundId: fundId,
       },
     });
@@ -135,10 +142,8 @@ export default class PublicFundService {
             id: fundId,
           },
         },
-        userInformation: {
-          connect: {
-            userId: userId,
-          },
+        saver: {
+          connect: { id: userId },
         },
       },
     });
@@ -164,7 +169,7 @@ export default class PublicFundService {
 
     const save = await tenantPrisma.fundSaved.deleteMany({
       where: {
-        userId: userId,
+        saverId: userId,
         fundId: fundId,
       },
     });
@@ -204,13 +209,9 @@ export default class PublicFundService {
           createdAt: 'desc',
         },
         include: {
-          userInformation: {
+          alumni: {
             include: {
-              alumClass: {
-                include: {
-                  grade: true,
-                },
-              },
+              information: true,
             },
           },
         },
@@ -223,10 +224,7 @@ export default class PublicFundService {
       totalItems: totalItems,
       items: items.map(item => ({
         ...item,
-        userInformation:
-          item.incognito && user.id !== fund.userId
-            ? null
-            : item.userInformation,
+        alumni: item.incognito && user.id !== fund.hostId ? null : item.alumni,
       })),
       itemPerPage: limit,
     };
