@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { Form, FormikProvider, useFormik } from 'formik';
-import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 // material
@@ -105,10 +104,10 @@ export default function ChangePasswordModal({
     setSubmitting,
   } = formik;
 
-  const handleLogout = async () => {
-    await signOut({ redirect: false });
-    router.push('/');
-  };
+  // const handleLogout = async () => {
+  //   await signOut({ redirect: false });
+  //   router.push('/');
+  // };
 
   useEffect(() => {
     if ((error as any)?.response?.data.data.message === WRONG_PASSWORD) {
@@ -123,7 +122,6 @@ export default function ChangePasswordModal({
       setSubmitting(false);
       resetForm();
       handleClose();
-      handleLogout();
     }
   }, [error, data]);
 

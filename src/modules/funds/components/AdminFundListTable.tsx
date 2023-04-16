@@ -52,11 +52,10 @@ const AdminFundListTable = ({
                 Tên quỹ
               </TableCell>
               <TableCell align="left">Người tạo</TableCell>
-              <TableCell align="left">Mục tiêu</TableCell>
-              <TableCell align="left">Hiện tại</TableCell>
+              <TableCell align="left">Số tiền mục tiêu</TableCell>
+              <TableCell align="left">Số tiền hiện tại</TableCell>
               <TableCell align="left">Thời gian Kết thúc</TableCell>
-              <TableCell align="center">Đã kết thúc</TableCell>
-              <TableCell align="center">Ủng hộ</TableCell>
+              <TableCell align="center">Trạng thái</TableCell>
               <TableCell align="center">Thao tác</TableCell>
             </TableRow>
           </TableHead>

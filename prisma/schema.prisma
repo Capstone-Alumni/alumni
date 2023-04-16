@@ -188,17 +188,17 @@ model Education {
 }
 
 model News {
-  id           String        @id @default(cuid())
-  archived     Boolean       @default(false)
-  createdAt    DateTime      @default(now()) @map("created_at")
-  updatedAt    DateTime      @default(now()) @updatedAt @map("updated_at")
+  id           String   @id @default(cuid())
+  archived     Boolean  @default(false)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at")
   title        String
   content      String
-  newsImageUrl String?       @map("news_image_url")
-  isPublic     Boolean       @default(false) @map("is_public")
+  newsImageUrl String?  @map("news_image_url")
+  isPublic     Boolean  @default(false) @map("is_public")
 
-  newsComment  NewsComment[]
-  tagsNews     TagsNews[]    @relation("news_to_tag_news")
+  newsComment NewsComment[]
+  tagsNews    TagsNews[]    @relation("news_to_tag_news")
 
   authorId String  @map("author_id")
   author   Alumni? @relation(fields: [authorId], references: [id])
@@ -293,6 +293,7 @@ model Fund {
   currentBalance    Int         @default(0) @map("currect_balance")
   publicity         AccessLevel @default(ALUMNI)
   publicParticipant Boolean     @default(false) @map("public_participant")
+  backgroundImage   String?
 
   hostId String @map("user_id")
   host   Alumni @relation(fields: [hostId], references: [id])
@@ -421,24 +422,24 @@ model PostLike {
 }
 
 model Recruitment {
-  id              String    @id @default(cuid())
-  archived        Boolean   @default(false)
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at")
-  companyName     String    @map("company_name")
-  companyImageUrl String?   @map("company_image_url")
-  website         String?
-  job             String
-  address         String
-  position        String
-  title           String
-  description     String?
-  type            String?
-  startAt         DateTime? @map("start_at")
-  expiredAt       DateTime? @map("expired_at")
-  salary          String    @default("negotiate")
-  isApproved      Boolean   @default(false)
-
+  id                     String                   @id @default(cuid())
+  archived               Boolean                  @default(false)
+  createdAt              DateTime                 @default(now()) @map("created_at")
+  updatedAt              DateTime                 @default(now()) @updatedAt @map("updated_at")
+  companyName            String                   @map("company_name")
+  companyImageUrl        String?                  @map("company_image_url")
+  website                String?
+  job                    String
+  address                String
+  position               String
+  title                  String
+  description            String?
+  yearsOfExperience      String?
+  type                   String?
+  startAt                DateTime?                @map("start_at")
+  expiredAt              DateTime?                @map("expired_at")
+  salary                 String                   @default("negotiate")
+  isApproved             Boolean                  @default(false)
   recruitmentOwnerId     String                   @map("recruitment_owner_id")
   recruitmentOwner       Alumni                   @relation(fields: [recruitmentOwnerId], references: [id])
   recruitmentApplication RecruitmentApplication[]

@@ -24,6 +24,9 @@ export default class PublicFundService {
       title: {
         contains: title,
       },
+      startTime: {
+        lt: new Date(),
+      },
     };
 
     if (status === 'going') {

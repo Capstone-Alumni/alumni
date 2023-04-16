@@ -45,10 +45,9 @@ const PublicOlderNewsPage = ({
           className="older-news"
           sx={{
             display: 'flex',
-            gap: '60px',
-            marginTop: 4,
-            height: '250px',
-            marginBottom: 4,
+            gap: '0.75rem',
+            marginTop: 2,
+            marginBottom: 2,
           }}
         >
           {newsList.map((item: News) => (
@@ -56,7 +55,7 @@ const PublicOlderNewsPage = ({
               key={item.id}
               item={item}
               sx={{
-                width: '25%',
+                width: '33%',
                 height: '150px',
                 imgWidth: 350,
                 imgHeight: 150,

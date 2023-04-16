@@ -5,7 +5,7 @@ import NewsSection from 'src/modules/landingPage/components/NewsSection';
 import AboutSection from 'src/modules/landingPage/components/AboutSection';
 import { getTenantDataSSR } from '@share/helpers/SSRAuthorization';
 import FeaturesSection from 'src/modules/landingPage/components/FeaturesSection';
-import MembersSection from 'src/modules/landingPage/components/MembersSection';
+// import MembersSection from 'src/modules/landingPage/components/MembersSection';
 
 export default async function Page() {
   const data = await getTenantDataSSR();
@@ -13,11 +13,11 @@ export default async function Page() {
   return (
     <>
       <IntroductionSection tenant={data} />
-      <AboutSection tenant={data} />
-      {/* <ClassSection tenant={data} /> */}
-      <MembersSection />
       <NewsSection />
       <FeaturesSection />
+      <AboutSection tenant={data} />
+      {/* <ClassSection tenant={data} /> */}
+      {/* <MembersSection /> */}
       <Footer tenant={data} />
     </>
   );

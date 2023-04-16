@@ -1,4 +1,6 @@
 import {
+  Box,
+  Button,
   // IconButton,
   TableCell,
   TableRow,
@@ -7,14 +9,8 @@ import {
 } from '@mui/material';
 // import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 // import CancelIcon from '@mui/icons-material/Cancel';
-import PublicIcon from '@mui/icons-material/Public';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 // import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Fund } from '../types';
-import ActionButton from '@share/components/ActionButton';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import useOwnerDeleteFundById from '../hooks/useOwnerDeleteFundById';
@@ -22,6 +18,15 @@ import useAdminGetFundList from '../hooks/useAdminGetFundList';
 import { formatDate } from '@share/utils/formatDate';
 import { formatAmountMoney } from '../utils';
 import { getShortTitle } from '@share/utils/getShortTitle';
+import AdminFundPreview from './AdminFundPrview';
+import {
+  StyledBoxFlex,
+  StyledIconWrapperMainShadow,
+  StyledIconWrapperRedShadow,
+} from '@share/components/styled';
+import Link from '@share/components/NextLinkV2';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 const AdminFundListItem = ({
   data,
@@ -30,7 +35,6 @@ const AdminFundListItem = ({
   onApprove: (id: string) => void;
   onReject: (id: string) => void;
 }) => {
-  const router = useRouter();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const { reload } = useAdminGetFundList();
@@ -41,14 +45,43 @@ const AdminFundListItem = ({
     reload();
   };
 
+  const getFundStatus = () => {
+    const currentDate = new Date();
+    if (currentDate > new Date(data.endTime)) {
+      return 'Đã kết thúc';
+    }
+    if (currentDate < new Date(data.startTime)) {
+      return 'Chưa diễn ra';
+    }
+    return 'Đang diễn ra';
+  };
+
+  const getFundStatusColor = () => {
+    const currentDate = new Date();
+    if (currentDate < new Date(data.startTime)) {
+      return 'info';
+    }
+    if (currentDate > new Date(data.endTime)) {
+      return 'warning';
+    }
+  };
+
   return (
     <>
       <TableRow>
         <TableCell align="left" sx={{ width: '20rem' }}>
-          <Typography>{getShortTitle(data.title)}</Typography>
+          <AdminFundPreview data={data}>
+            <Typography
+              sx={{
+                cursor: 'pointer',
+              }}
+            >
+              {getShortTitle(data.title)}
+            </Typography>
+          </AdminFundPreview>
         </TableCell>
         <TableCell align="left">
-          <Typography>{data.hostInformation?.email}</Typography>
+          <Typography>{data.hostInformation?.fullName}</Typography>
         </TableCell>
         <TableCell align="left">
           <Typography>{formatAmountMoney(data.targetBalance * 100)}</Typography>
@@ -58,63 +91,49 @@ const AdminFundListItem = ({
         </TableCell>
         <TableCell align="left">
           <Typography>
-            {formatDate(new Date(data.createdAt), 'dd/MM/yyyy - HH:ss')}
+            {formatDate(new Date(data.endTime), 'dd/MM/yyyy')}
           </Typography>
         </TableCell>
         <TableCell align="center">
           <Typography>
-            {/* {data.approvedStatus === -1 ? (
-              <Tooltip title="Đang chờ xác nhận">
-                <MoreHorizIcon />
-              </Tooltip>
-            ) : null} */}
-            {new Date(data.endTime) < new Date() ? (
-              <Tooltip title="Đã kết thúc">
-                <DirectionsRunIcon color="error" />
-              </Tooltip>
-            ) : (
-              <Tooltip title="Chưa kết thúc">
-                <DirectionsRunIcon color="success" />
-              </Tooltip>
-            )}
+            <Button color={getFundStatusColor()} variant="outlined">
+              {getFundStatus()}
+            </Button>
           </Typography>
         </TableCell>
         <TableCell align="center">
-          <Typography>
-            {/* {data.approvedStatus === -1 ? (
-              <Tooltip title="Đang chờ xác nhận">
-                <MoreHorizIcon />
-              </Tooltip>
-            ) : null} */}
-            {data.publicity === 'ALUMNI' ? (
-              <Tooltip title="Chưa sẵn sàng nhận ủng hộ">
-                <PublicIcon color="error" />
-              </Tooltip>
-            ) : null}
-            {data.publicity === 'SCHOOL_ADMIN' ? (
-              <Tooltip title="Sẵn sàng nhận ủng hộ">
-                <PublicIcon color="success" />
-              </Tooltip>
-            ) : null}
-          </Typography>
-        </TableCell>
-        <TableCell align="center">
-          <ActionButton
-            actions={[
-              {
-                id: 'edit',
-                text: 'Chỉnh sửa',
-                onClick: () => router.push(`/admin/action/funds/${data.id}`),
-                icon: <EditIcon />,
-              },
-              {
-                id: 'delete',
-                text: 'Xoá ',
-                onClick: () => setOpenDeleteModal(true),
-                icon: <DeleteIcon color="error" />,
-              },
-            ]}
-          />
+          <StyledBoxFlex>
+            <Tooltip title="Chỉnh sửa quỹ">
+              <StyledIconWrapperMainShadow>
+                <Link prefetch={false} href={`/admin/action/funds/${data.id}`}>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <EditOutlinedIcon
+                      fontSize="small"
+                      sx={{
+                        margin: 'auto',
+                      }}
+                    />
+                  </Box>
+                </Link>
+              </StyledIconWrapperMainShadow>
+            </Tooltip>
+            <Tooltip title="Xóa quỹ">
+              <StyledIconWrapperRedShadow>
+                <DeleteOutlineIcon
+                  fontSize="small"
+                  sx={{
+                    margin: 'auto',
+                    color: 'rgb(255, 72, 66)',
+                  }}
+                  onClick={() => setOpenDeleteModal(true)}
+                />
+              </StyledIconWrapperRedShadow>
+            </Tooltip>
+          </StyledBoxFlex>
         </TableCell>
         {/* <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <IconButton onClick={() => onApprove(data.id)}>

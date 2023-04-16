@@ -1,31 +1,65 @@
 import {
   Card,
-  CardActions,
   CardContent,
   CardMedia,
   Grid,
+  styled,
   Typography,
   useTheme,
 } from '@mui/material';
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import Link from '@share/components/NextLinkV2';
+
+import WifiOutlinedIcon from '@mui/icons-material/WifiOutlined';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import { currentTenantDataAtom } from '@share/states';
 import { ReactNode, useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import { Event } from '../types';
-import { formatDate } from '@share/utils/formatDate';
+import { formatDateEvent } from '@share/utils/formatDate';
 import { Stack } from '@mui/material';
 import { Box } from '@mui/material';
 import MyAvatar from '@share/components/MyAvatar';
-import { getShortTitle } from '@share/utils/getShortTitle';
+import { getShortTitle60 } from '@share/utils/getShortTitle';
+
+const StyledDiv = styled('div')(({ theme }) => ({
+  height: theme.spacing(8),
+}));
+
+const StyledTypography = styled(Typography)(({ theme }) => ({
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  display: '-webkit-box',
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: 'vertical',
+}));
+
+const BoxLayerCardMedia = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  bottom: '0',
+  left: '0',
+  width: '100%',
+  height: '26px',
+  backgroundColor: 'rgba(0,0,0,0.3)',
+  display: 'flex',
+  alignItems: 'center',
+  padding: '0 12px',
+}));
+
+const LineRed = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  bottom: '0',
+  left: '0',
+  width: '100%',
+  height: '3px',
+  backgroundColor: 'rgb(255,72,67)',
+}));
 
 const EventCardItem = ({
   data,
   actions,
-  showStatus = false,
 }: {
   data: Event;
   actions?: ReactNode[];
-  showStatus?: boolean;
 }) => {
   const theme = useTheme();
   const currentTenant = useRecoilValue(currentTenantDataAtom);
@@ -43,70 +77,107 @@ const EventCardItem = ({
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
+          '&:hover': {
+            opacity: '0.7',
+            transition: 'all 0.2s',
+          },
         }}
       >
-        <CardMedia
-          title="news image"
-          sx={{
-            height: theme.spacing(18),
-            padding: theme.spacing(2),
-            backgroundImage: `url(${
-              data.backgroundImage ?? currentTenant?.background1
-            })`,
-          }}
-        />
-        <CardContent sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-          <Stack direction="row">
-            <FiberManualRecordIcon
-              fontSize="small"
-              color={data.isOffline ? 'warning' : 'success'}
-            />
-            <Typography variant="body2">
-              {data.isOffline ? 'Offline' : 'Online'}
-            </Typography>
+        <Link
+          href={`/events/${data.id}`}
+          style={{ textDecoration: 'none', color: 'inherit' }}
+          prefetch={false}
+        >
+          <CardMedia
+            title="news image"
+            sx={{
+              height: theme.spacing(18),
+              padding: theme.spacing(2),
+              backgroundImage: `url(${
+                data.backgroundImage ?? currentTenant?.background1
+              })`,
+              position: 'relative',
+            }}
+          >
+            <BoxLayerCardMedia>
+              {data.isOffline ? (
+                <>
+                  <LocationOnOutlinedIcon
+                    fontSize="small"
+                    sx={{ color: '#fff', marginRight: '0.25rem' }}
+                  />
+                  <Typography variant="caption" color="#fff">
+                    {data.location}
+                  </Typography>
+                </>
+              ) : (
+                <>
+                  <WifiOutlinedIcon
+                    fontSize="small"
+                    sx={{ color: '#fff', marginRight: '0.25rem' }}
+                  />
+                  <Typography variant="caption" color="#fff">
+                    Online
+                  </Typography>
+                </>
+              )}
+            </BoxLayerCardMedia>
+          </CardMedia>
 
-            <Box sx={{ flex: 1 }} />
-
-            <Typography variant="body2">
-              {formatDate(new Date(data.startTime))}
-            </Typography>
-          </Stack>
-
-          <Typography variant="h6">{getShortTitle(data.title)}</Typography>
-
-          {data.isOffline ? (
-            <Typography variant="body2">{data.location}</Typography>
-          ) : null}
-
-          <Box sx={{ flex: 1 }} />
-
-          {isEnded ? (
-            <Typography variant="body2" color="error">
-              Đã kết thúc
-            </Typography>
-          ) : null}
-
-          <Stack direction="row" gap={1} alignItems="center" sx={{ mt: 1 }}>
-            <MyAvatar
-              size="small"
-              displayName={data.hostInformation?.fullName}
-              photoUrl={data.hostInformation?.avatarUrl}
-            />
-            <Stack direction="column" justifyContent="center">
-              <Typography variant="body2">
-                {data.hostInformation?.fullName}
+          <CardContent
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 1,
+              '&:last-child': {
+                paddingBottom: '16px',
+              },
+            }}
+          >
+            <Stack direction="row" alignItems="center">
+              <Typography
+                variant="body2"
+                color={isEnded ? '#919eab' : 'primary'}
+              >
+                {formatDateEvent(new Date(data.startTime))}
               </Typography>
-              {data.hostInformation?.alumClass?.grade ? (
-                <Typography variant="caption">
-                  {data.hostInformation?.alumClass?.grade?.code}
-                  {' / '}
-                  {data.hostInformation?.alumClass?.name}
-                </Typography>
-              ) : null}
+              <Box sx={{ flex: 1 }} />
+              {actions}
             </Stack>
-          </Stack>
-        </CardContent>
-        <CardActions>{actions}</CardActions>
+            <StyledDiv>
+              <StyledTypography variant="h6">
+                {getShortTitle60(data.title)}
+              </StyledTypography>
+            </StyledDiv>
+            <Box sx={{ flex: 1 }} />
+            <Stack
+              direction="row"
+              gap={1}
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{ mt: 1 }}
+            >
+              <Stack flexDirection="row" alignItems="center" gap="0.5rem">
+                <MyAvatar
+                  size="small"
+                  displayName={data.hostInformation?.fullName}
+                  photoUrl={data.hostInformation?.avatarUrl}
+                />
+                <Typography variant="body2" fontWeight="bold">
+                  {data.hostInformation?.fullName}
+                </Typography>
+              </Stack>
+              <Stack justifyContent="center">
+                {isEnded ? (
+                  <Typography variant="caption" color="error" fontWeight="bold">
+                    ĐÃ KẾT THÚC
+                  </Typography>
+                ) : null}
+              </Stack>
+              {isEnded && <LineRed />}
+            </Stack>
+          </CardContent>
+        </Link>
       </Card>
     </Grid>
   );

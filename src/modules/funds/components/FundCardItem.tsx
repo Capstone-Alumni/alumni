@@ -1,4 +1,4 @@
-import { Box, Grid, LinearProgress, Stack } from '@mui/material';
+import { Box, CardMedia, Grid, LinearProgress, Stack } from '@mui/material';
 import {
   Card,
   CardActions,
@@ -6,6 +6,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import { formatDate } from '@share/utils/formatDate';
 import { ReactNode } from 'react';
 import { Fund } from '../types';
@@ -30,26 +31,63 @@ const FundCardItem = ({
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
+          '&:hover': {
+            opacity: '0.7',
+            transition: 'all 0.2s',
+            cursor: 'pointer',
+          },
         }}
       >
+        <CardMedia
+          title="fund image"
+          sx={{
+            height: theme.spacing(18),
+            padding: theme.spacing(2),
+            backgroundImage: `url(${data.backgroundImage ?? ''})`,
+            position: 'relative',
+          }}
+        />
         <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <Typography variant="h6" sx={{ mb: 1 }}>
+          <Typography noWrap variant="h6" sx={{ mb: 1 }}>
             {data.title}
           </Typography>
 
           <Box sx={{ flex: 1 }} />
-
-          <Stack direction="column" justifyContent="center" sx={{ mb: 1 }}>
-            <Typography variant="caption">
-              <strong>Bắt đầu:</strong>{' '}
-              {formatDate(new Date(data.startTime), 'HH:mm - dd/MM/yyyy')}
-            </Typography>
-            <Typography variant="caption">
-              <strong>Kết thúc:</strong>{' '}
-              {formatDate(new Date(data.endTime), 'HH:mm - dd/MM/yyyy')}
-            </Typography>
-          </Stack>
-
+          <Box
+            sx={{
+              display: 'flex',
+            }}
+          >
+            <Stack direction="column" justifyContent="center" sx={{ mb: 1 }}>
+              <Typography variant="caption">
+                <strong>Bắt đầu:</strong>{' '}
+                {formatDate(new Date(data.startTime), 'dd/MM/yyyy')}
+              </Typography>
+              <Typography variant="caption">
+                <strong>Kết thúc:</strong>{' '}
+                {formatDate(new Date(data.endTime), 'dd/MM/yyyy')}
+              </Typography>
+            </Stack>
+            <Stack
+              sx={{
+                marginX: 'auto',
+                marginBottom: 'auto',
+              }}
+              flexDirection="row"
+              alignItems="center"
+              gap="0.25rem"
+            >
+              <PermIdentityIcon
+                fontSize="small"
+                sx={{
+                  color: 'gray',
+                }}
+              />
+              <Typography variant="body2" fontWeight="bold">
+                {data.hostInformation?.fullName}
+              </Typography>
+            </Stack>
+          </Box>
           {/* <Stack direction="row" gap={1} alignItems="center" sx={{ mb: 2 }}>
             <MyAvatar
               size="small"

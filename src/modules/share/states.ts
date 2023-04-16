@@ -25,6 +25,9 @@ export type Tenant = {
   subcriptionEndTime?: string | Date;
   planId?: string;
   plan?: Plan | null;
+  address?: string;
+  provinceName?: string;
+  cityName?: string;
 };
 
 export const _useApiDataAtomFamily = atomFamily<any, string>({

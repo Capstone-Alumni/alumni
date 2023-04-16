@@ -30,7 +30,7 @@ const useCreateFund = () => {
       },
       onSuccess: () => {
         toast.success('Tạo quỹ thành công');
-        router.back();
+        router.push('/admin/action/funds');
       },
     },
   );

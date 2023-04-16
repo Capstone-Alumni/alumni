@@ -8,6 +8,7 @@ export type Fund = {
   updatedAt: string | Date;
   title: string;
   description?: string;
+  backgroundImage?: string;
   startTime: string | Date;
   endTime: string | Date;
   targetBalance: number;

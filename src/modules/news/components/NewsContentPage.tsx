@@ -15,6 +15,7 @@ const NewsContentPage = ({ data }: { data: News }) => {
             fontSize: '40px',
             lineHeight: '54px',
             color: '#292929',
+            wordBreak: 'break-word',
           }}
           variant="h3"
         >
@@ -24,7 +25,7 @@ const NewsContentPage = ({ data }: { data: News }) => {
       <Box
         sx={{
           display: 'flex',
-          marginX: 'auto',
+          justifyContent: 'space-between',
           marginY: '24px',
         }}
       >

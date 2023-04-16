@@ -12,6 +12,7 @@ import RichTextInput from '@share/components/form/RichTextInput';
 import UploadBackgroundInput from '@share/components/form/UploadBackgroundInput';
 import RadioInput from '@share/components/form/RadioInput';
 import SelectInput from '@share/components/form/SelectInput';
+import { useRouter } from 'next/navigation';
 
 export type EventFormValues = {
   title: string;
@@ -33,6 +34,17 @@ export type InternalFormValues = Omit<EventFormValues, 'isOffline'> & {
 const validationSchema = yup.object({
   title: yup.string().required('Bắt buộc'),
   startTime: yup.date().required(),
+  endTime: yup
+    .date()
+    .required('End time is required')
+    .test(
+      'is-greater',
+      'Ngày kết thúc phải lớn hơn ngày bắt đầu',
+      function (value) {
+        const { startTime } = this.parent;
+        return startTime && value && value > startTime;
+      },
+    ),
   publicity: yup.string().required(),
 });
 
@@ -45,6 +57,7 @@ const EventForm = ({
 }) => {
   const [isSaving, setIsSaving] = useState(false);
   const theme = useTheme();
+  const router = useRouter();
 
   const resolver = useYupValidateionResolver(validationSchema);
 
@@ -209,14 +222,24 @@ const EventForm = ({
           nhìn thấy và tham gia sự kiện của bạn.
         </Typography> */}
       </Box>
-
-      <Button
-        variant="contained"
-        disabled={isSaving}
-        onClick={handleSubmit(onSubmitWithStatus)}
+      <Box
+        sx={{
+          display: 'flex',
+          gap: '5px',
+        }}
       >
-        Lưu
-      </Button>
+        <Button variant="outlined" onClick={() => router.back()}>
+          Hủy
+        </Button>
+
+        <Button
+          variant="contained"
+          disabled={isSaving}
+          onClick={handleSubmit(onSubmitWithStatus)}
+        >
+          Lưu
+        </Button>
+      </Box>
     </Box>
   );
 };

@@ -1,10 +1,31 @@
 'use client';
 
-import { Box, Button, Container, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  styled,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import Link from '@share/components/NextLinkV2';
 import { useGetNewsForPublicQuery } from 'src/redux/slices/newsSlice';
+import SectionTemplate from './SectionTemplate';
 import NewsCard from './NewsCard';
+
+const StyledFooterSectionBox = styled('div')(({ theme }) => ({
+  display: 'flex',
+  gap: '3rem',
+  width: '100%',
+  alignItems: 'center',
+}));
+
+const StyledLine = styled('div')(({ theme }) => ({
+  height: '2px',
+  width: '100%',
+  backgroundColor: 'rgb(230, 235, 245)',
+}));
 
 const NewsSection = () => {
   const theme = useTheme();
@@ -12,7 +33,7 @@ const NewsSection = () => {
   const { data: newsListData, isLoading } = useGetNewsForPublicQuery({
     params: {
       page: 1,
-      limit: 3,
+      limit: 4,
       title: '',
       content: '',
     },
@@ -27,9 +48,9 @@ const NewsSection = () => {
       <Container
         sx={{
           display: 'flex',
-          flexDirection: 'row',
-          paddingTop: theme.spacing(8),
-          paddingBottom: theme.spacing(10),
+          flexDirection: 'column',
+          paddingTop: theme.spacing(2),
+          paddingBottom: theme.spacing(0),
         }}
       >
         <Box
@@ -42,59 +63,63 @@ const NewsSection = () => {
             margin: 'auto',
           }}
         >
-          <Typography variant="h2" color="primary" textAlign="center">
-            Tin tức
-          </Typography>
-
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              gap: theme.spacing(6),
-            }}
+          <SectionTemplate
+            headerContent={
+              <Typography variant="h3" color="primary" textAlign="center">
+                Tin tức mới nhất
+              </Typography>
+            }
+            footer={false}
           >
-            {isLoading ? <LoadingIndicator /> : null}
-            {newsListData?.data.items.map((item: any) => (
-              <NewsCard
-                key={item.id}
-                item={item}
-                sx={{
-                  width: '45%',
-                  height: '300px',
-                  imgWidth: 500,
-                  imgHeight: 300,
-                  typoVariant: 'h5',
-                  marginImg: 2,
-                }}
-              />
-            ))}
-          </Box>
-
-          <Link
-            href="/news"
-            style={{ textDecoration: 'none', textUnderlineOffset: 0 }}
-            prefetch={false}
-          >
-            <Button
-              variant="contained"
-              size="large"
-              sx={{ borderRadius: '1.5rem' }}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                gap: theme.spacing(3),
+                width: '100%',
+              }}
             >
-              Xem thêm
-            </Button>
-          </Link>
-
-          {/* <Box>
+              {isLoading ? <LoadingIndicator /> : null}
+              {newsListData?.data.items.map((item: any) => (
+                <NewsCard
+                  key={item.id}
+                  item={item}
+                  totalItems={4}
+                  sx={{
+                    width: '100%',
+                    height: '300px',
+                    imgWidth: 300,
+                    imgHeight: 300,
+                    typoVariant: 'h5',
+                    marginImg: 2,
+                  }}
+                />
+              ))}
+            </Box>
+          </SectionTemplate>
+          <StyledFooterSectionBox>
+            <StyledLine></StyledLine>
             <Link
-              href="/sign_in"
+              href="/news"
               style={{ textDecoration: 'none', textUnderlineOffset: 0 }}
+              prefetch={false}
             >
-              <Button variant="contained" size="large">
-                
+              <Button
+                variant="contained"
+                size="large"
+                sx={{
+                  borderRadius: '1.5rem',
+                  padding: '0 2rem',
+                  height: '40px',
+                  width: '150px',
+                }}
+              >
+                Xem thêm
               </Button>
             </Link>
-          </Box> */}
+            <StyledLine></StyledLine>
+          </StyledFooterSectionBox>
         </Box>
       </Container>
     </Box>

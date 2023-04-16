@@ -5,7 +5,6 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import Link from '@share/components/NextLinkV2';
 import Logo from '../Logo';
@@ -78,25 +77,31 @@ const Header = ({ user, tenant }: { user?: User; tenant?: Tenant }) => {
         <AppBar color="inherit">
           <Toolbar>
             <Link href="/">
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
+              <Box
+                sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
               >
-                <Logo url={tenant?.logo} />
-              </IconButton>
+                <Logo
+                  url={tenant?.logo}
+                  sx={{ borderRadius: '8px', overflow: 'hidden' }}
+                />
+                <Typography
+                  variant="h6"
+                  component="div"
+                  color="primary"
+                  textTransform="capitalize"
+                >
+                  {tenant?.name}
+                </Typography>
+              </Box>
             </Link>
-            <Link href="/">
-              <Typography variant="h6" component="div" color="primary">
-                {tenant?.name}
-              </Typography>
-            </Link>
+            <Typography variant="h6" component="div" color="primary">
+              {tenant?.name}
+            </Typography>
 
             <Divider
               orientation="vertical"
               flexItem
-              sx={{ marginX: theme.spacing(2) }}
+              sx={{ marginX: theme.spacing(2), opacity: '0' }}
             />
 
             <Box

@@ -4,18 +4,26 @@ import * as yup from 'yup';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 import { Fund } from '../types';
 import TextInput from '@share/components/form/TextInput';
-import { Box, Button, InputAdornment, useTheme } from '@mui/material';
-import DateTimeInput from '@share/components/form/DateTimeInput';
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  useTheme,
+} from '@mui/material';
 // import SelectInput from '@share/components/form/SelectInput';
 // import { Typography } from '@mui/material';
 import { useState } from 'react';
 import RichTextInput from '@share/components/form/RichTextInput';
-import RadioInput from '@share/components/form/RadioInput';
+import UploadBackgroundInput from '@share/components/form/UploadBackgroundInput';
+import CurrencyInput from '@share/components/CurrencyInput';
+import DateInput from '@share/components/form/DateInput';
+import { useRouter } from 'next/navigation';
 
 export type FundFormValues = {
   title: string;
   description?: string;
-  startTime: Date;
+  backgroundImage?: string;
   endTime: Date;
   targetBalance: number;
   publicity: AccessLevel;
@@ -23,9 +31,18 @@ export type FundFormValues = {
 
 const validationSchema = yup.object({
   title: yup.string().required(),
-  startTime: yup.date().required(),
-  endTime: yup.date().required(),
-  publicity: yup.string().required(),
+  startTime: yup.date(),
+  endTime: yup
+    .date()
+    .required('End time is required')
+    .test(
+      'is-greater',
+      'Ngày kết thúc phải lớn hơn ngày bắt đầu',
+      function (value) {
+        const { startTime } = this.parent;
+        return startTime && value && value > startTime;
+      },
+    ),
   targetBalance: yup.number().required(),
 });
 
@@ -37,7 +54,9 @@ const FundForm = ({
   onSubmit: (values: FundFormValues) => Promise<void>;
 }) => {
   const [isSaving, setIsSaving] = useState(false);
+  const [isPublicNow, setIsPublicNow] = useState(false);
   const theme = useTheme();
+  const router = useRouter();
 
   const resolver = useYupValidateionResolver(validationSchema);
 
@@ -45,6 +64,7 @@ const FundForm = ({
     resolver,
     defaultValues: {
       title: initialData?.title ?? '',
+      backgroundImage: initialData?.backgroundImage ?? '',
       description: initialData?.description,
       startTime: initialData?.startTime
         ? new Date(initialData.startTime)
@@ -53,7 +73,6 @@ const FundForm = ({
         ? new Date(initialData.endTime)
         : new Date(),
       targetBalance: initialData?.targetBalance ?? 100000,
-      publicity: initialData?.publicity ?? 'ALUMNI',
     },
   });
 
@@ -83,35 +102,54 @@ const FundForm = ({
         inputProps={{ label: 'Tên quỹ', fullWidth: true }}
       />
 
-      <TextInput
+      <CurrencyInput
         control={control}
         name="targetBalance"
         inputProps={{
+          placeholder: 'Số tiền mục tiêu',
           label: 'Số tiền mục tiêu',
-          fullWidth: true,
-          type: 'number',
-          InputProps: {
-            endAdornment: <InputAdornment position="end">VNĐ</InputAdornment>,
-          },
         }}
+      />
+      <UploadBackgroundInput
+        control={control}
+        name="backgroundImage"
+        inputProps={{ label: 'Hình ảnh đại diện bài gây quỹ' }}
+        containerSx={{ width: '100%' }}
       />
 
       <RichTextInput
         control={control}
         name="description"
-        inputProps={{ placeholder: 'Mô tả', containerSx: { width: '100%' } }}
-      />
-
-      <DateTimeInput
-        control={control}
-        name="startTime"
         inputProps={{
-          fullWidth: true,
-          label: 'Thời gian bắt đầu',
+          placeholder: 'Mô tả thông tin quỹ',
+          containerSx: { width: '100%' },
         }}
       />
 
-      <DateTimeInput
+      <Box sx={{ width: '100%' }}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={isPublicNow}
+              onChange={() => setIsPublicNow(!isPublicNow)}
+            />
+          }
+          label="Cho phép ủng hộ ngay từ bây giờ."
+        />
+      </Box>
+
+      {isPublicNow ? null : (
+        <DateInput
+          control={control}
+          name="startTime"
+          inputProps={{
+            fullWidth: true,
+            label: 'Thời gian bắt đầu',
+          }}
+        />
+      )}
+
+      <DateInput
         control={control}
         name="endTime"
         inputProps={{
@@ -119,34 +157,23 @@ const FundForm = ({
           label: 'Thời gian kết thúc',
         }}
       />
-
-      <Box sx={{ width: '100%' }}>
-        <RadioInput
-          control={control}
-          name="publicity"
-          inputProps={{
-            label: 'Cho phép mọi người nhìn thấy và ủng hộ?',
-          }}
-          options={[
-            {
-              value: 'ALUMNI',
-              name: 'Không, chưa sẵn sàng nhận ủng hộ',
-            },
-            {
-              value: 'SCHOOL_ADMIN',
-              name: 'Có, đã sẵn sàng nhận ủng hộ',
-            },
-          ]}
-        />
-      </Box>
-
-      <Button
-        variant="contained"
-        disabled={isSaving}
-        onClick={handleSubmit(onSubmitWithStatus)}
+      <Box
+        sx={{
+          display: 'flex',
+          gap: '5px',
+        }}
       >
-        Lưu
-      </Button>
+        <Button variant="outlined" onClick={() => router.back()}>
+          Hủy
+        </Button>
+        <Button
+          variant="contained"
+          disabled={isSaving}
+          onClick={handleSubmit(onSubmitWithStatus)}
+        >
+          Lưu
+        </Button>
+      </Box>
     </Box>
   );
 };

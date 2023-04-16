@@ -49,8 +49,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
       .then(result => {
         if (result.status) {
           toast.success('Đăng tin thành công');
-          const { id } = result.data;
-          router.replace(`/admin/action/news/${id}`);
+          router.replace('/admin/action/news');
         } else {
           toast.error('Đăng tin thất bại');
         }
@@ -67,7 +66,7 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
       .then(result => {
         if (result.status) {
           toast.success('Cập nhật tin thành công');
-          handleCancel();
+          router.replace('/admin/action/news');
         } else {
           toast.error('Cập nhật tin thất bại');
         }
@@ -107,10 +106,20 @@ const NewsForm = ({ initialData }: { initialData?: News }) => {
         backgroundColor: theme.palette.background.neutral,
       }}
     >
-      <Box sx={{ width: '100%' }}>
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
         <Typography variant="h6">
           {initialData ? 'Chỉnh sửa tin tức' : 'Thêm tin tức'}
         </Typography>
+        <Button variant="text" onClick={() => router.back()}>
+          quay lại
+        </Button>
       </Box>
 
       <Box

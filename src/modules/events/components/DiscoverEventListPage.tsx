@@ -2,9 +2,8 @@
 
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import { Button, Grid, IconButton, Pagination, useTheme } from '@mui/material';
+import { Grid, IconButton, Pagination, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
-import Link from '@share/components/NextLinkV2';
 import { useRecoilState } from 'recoil';
 import usePublicGetEventList from '../hooks/usePublicGetEventList';
 import { getPublicEventListParamsAtom } from '../states';
@@ -60,7 +59,6 @@ const DiscoverEventListPage = () => {
             }}
           >
             {data?.data.items.map(item => {
-              const isJoined = item.eventParticipants.length > 0;
               const isInterested = item.eventInterests.length > 0;
 
               return (
@@ -68,16 +66,6 @@ const DiscoverEventListPage = () => {
                   key={item.id}
                   data={item}
                   actions={[
-                    <Link
-                      key="edit-btn"
-                      href={`/events/${item.id}`}
-                      style={{ width: '100%', marginRight: theme.spacing(1) }}
-                      prefetch={false}
-                    >
-                      <Button fullWidth variant="outlined">
-                        Tìm hiểu thêm
-                      </Button>
-                    </Link>,
                     isInterested ? (
                       <IconButton
                         key="unsave-btn"
