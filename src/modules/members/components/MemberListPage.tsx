@@ -19,7 +19,7 @@ import useCreateMemberTenant from '../hooks/useCreateMemberTenant';
 const MemberListPage = () => {
   const theme = useTheme();
   const [openForm, setOpenForm] = useState(false);
-  const { tenantId } = useRecoilValue(currentTenantDataAtom);
+  const { id: tenantId } = useRecoilValue(currentTenantDataAtom);
 
   const [params, setParams] = useRecoilState(getMemberListParamsAtom);
 
