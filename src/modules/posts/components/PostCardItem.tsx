@@ -14,7 +14,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 // import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Post } from '../type';
 import { useSession } from 'next-auth/react';
-import { getPublicitySmallIcon } from '@share/helpers/publicityHelpers';
 import useLikePost from '../hooks/useLikePost';
 import useUnlikePost from '../hooks/useUnlikePost';
 import PostCommentForm from './PostCommentForm';
@@ -80,13 +79,12 @@ const PostCardItem = ({
       <CardHeader
         avatar={
           <MyAvatar
-            displayName={data.authorInformation.fullName}
-            photoUrl={data.authorInformation.avatarUrl}
+            displayName={data.author?.information?.fullName}
+            photoUrl={data.author?.information?.avatarUrl}
           />
         }
         action={
-          data.authorInformation.userId === session?.user.id ||
-          session?.user.accessLevel === 'SCHOOL_ADMIN' ? (
+          data.authorId === session?.user.id || session?.user.isOwner ? (
             <ActionButton
               actions={[
                 {
@@ -105,7 +103,7 @@ const PostCardItem = ({
             />
           ) : null
         }
-        title={data.authorInformation.fullName}
+        title={data.author?.information?.fullName}
         subheader={
           <Stack direction="row" alignItems="center" gap="5px">
             <Typography
@@ -115,9 +113,7 @@ const PostCardItem = ({
               display="block"
             >
               {formatDate(new Date(data.createdAt))}{' '}
-              {/* <>{getPublicitySmallIcon(data.publicity)}</> */}
             </Typography>
-            <>{getPublicitySmallIcon(data.publicity)}</>
             {data.createdAt !== data.updatedAt ? (
               <Typography variant="body2" sx={{ ml: 1 }}>
                 Đã chỉnh sửa

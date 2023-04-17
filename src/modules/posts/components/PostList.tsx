@@ -1,19 +1,34 @@
 import { Typography } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
-import { useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import useGetPostList from '../hooks/useGetPostList';
 import useUpdatePost from '../hooks/useUpdatePost';
-import { postListAtom } from '../state';
+import { getPostListParams, postListAtom } from '../state';
 import PostCardItem from './PostCardItem';
 import PostForm from './PostForm';
+import { useSearchParams } from 'next/navigation';
 
 const PostList = () => {
   const [selectedPostId, setSelectedPostId] = useState('');
 
+  const [params, setParams] = useRecoilState(getPostListParams);
   const postListData = useRecoilValue(postListAtom);
-  const { loadMore, isLoading, loadedAll } = useGetPostList();
+  const { loadMore, isLoading, loadedAll, refresh } = useGetPostList();
   const { fetchApi } = useUpdatePost();
+
+  const searchParam = useSearchParams();
+  const gradeSearchParams = searchParam.get('grade') || 'all';
+  const classSearchParams = searchParam.get('class') || 'all';
+
+  useEffect(() => {
+    refresh();
+    setParams(prev => ({
+      ...prev,
+      gradeId: gradeSearchParams,
+      alumClassId: classSearchParams,
+    }));
+  }, [gradeSearchParams, classSearchParams]);
 
   return (
     <>

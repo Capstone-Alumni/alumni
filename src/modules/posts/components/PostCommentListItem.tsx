@@ -26,8 +26,8 @@ const PostCommentListItem = ({
     <Stack key={comment.id} direction="row" gap={1}>
       <MyAvatar
         size="small"
-        displayName={comment.authorInformation.fullName}
-        photoUrl={comment.authorInformation.avatarUrl}
+        displayName={comment.author?.information?.fullName}
+        photoUrl={comment.author?.information?.avatarUrl}
       />
       <Box
         sx={{
@@ -39,7 +39,7 @@ const PostCommentListItem = ({
         }}
       >
         <Typography variant="body2" fontWeight={600}>
-          {comment.authorInformation.fullName}{' '}
+          {comment.author?.information?.fullName}{' '}
         </Typography>
         <Typography variant="body2">{comment.content}</Typography>
         <Typography variant="caption" fontWeight={400}>
