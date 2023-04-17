@@ -1,5 +1,5 @@
-import onErrorAPIHandler from '@share/utils/onErrorAPIHandler';
-import onNoMatchAPIHandler from '@share/utils/onNoMatchAPIHandler';
+import onErrorAPIHandler from '@lib/next-connect/onErrorAPIHandler';
+import onNoMatchAPIHandler from '@lib/next-connect/onNoMatchAPIHandler';
 import nc from 'next-connect';
 import MemberController from 'src/modules/members/controllers/member.controller';
 
@@ -8,7 +8,6 @@ const handler = nc({
   onNoMatch: onNoMatchAPIHandler,
 })
   // .get(MemberController.getById)
-  .put(MemberController.updateInfoById)
-  .delete(MemberController.deleteById);
+  .put(MemberController.updateInfoById);
 
 export default handler;
