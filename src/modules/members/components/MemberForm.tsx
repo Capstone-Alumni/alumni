@@ -204,7 +204,13 @@ const MemberForm = ({
   );
 };
 
-export const GradeClassForm = ({ multiple = true }: { multiple?: boolean }) => {
+export const GradeClassForm = ({
+  multiple = true,
+  getAll = false,
+}: {
+  multiple?: boolean;
+  getAll?: boolean;
+}) => {
   const { control, watch, setValue } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
@@ -219,7 +225,13 @@ export const GradeClassForm = ({ multiple = true }: { multiple?: boolean }) => {
   const setParams = useSetRecoilState(getGradeListParamsAtom);
 
   useEffect(() => {
-    setParams(() => ({ page: 1, limit: 999, alumniId: session?.user?.id }));
+    setParams(() => {
+      const params: any = { page: 1, limit: 999 };
+      if (!getAll) {
+        params.alumniId = session?.user?.id;
+      }
+      return params;
+    });
   }, [session?.user]);
 
   return (
@@ -227,7 +239,7 @@ export const GradeClassForm = ({ multiple = true }: { multiple?: boolean }) => {
       <Stack
         direction="row"
         justifyContent="space-between"
-        sx={{ width: '100%', mt: 2 }}
+        sx={{ width: '100%', mt: 2, mb: 1 }}
       >
         <Typography variant="h6">Niên khoá và lớp</Typography>
         {multiple ? (
@@ -300,13 +312,15 @@ export const GradeClassForm = ({ multiple = true }: { multiple?: boolean }) => {
               }
             />
 
-            <IconButton
-              type="button"
-              disabled={gradeClassWatcher.length === 1}
-              onClick={() => remove(index)}
-            >
-              <Icon height={24} icon="ic:baseline-remove-circle" />
-            </IconButton>
+            {multiple ? (
+              <IconButton
+                type="button"
+                disabled={gradeClassWatcher.length === 1}
+                onClick={() => remove(index)}
+              >
+                <Icon height={24} icon="ic:baseline-remove-circle" />
+              </IconButton>
+            ) : null}
           </Stack>
         );
       })}

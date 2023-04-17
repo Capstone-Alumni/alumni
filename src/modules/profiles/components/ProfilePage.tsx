@@ -5,6 +5,7 @@ import ProfileInformationTab from './information/ProfileInformationTab';
 import { Box, Stack } from '@mui/material';
 import ProfileCareerTab from './career/ProfileCareerTab';
 import ProfileEducationTab from './education/ProfileEducationTab';
+import ProfileGradeClassTab from './gradeClass/ProfileGradeClassTab';
 
 const UserProfile = () => {
   return (
@@ -14,6 +15,7 @@ const UserProfile = () => {
       <Box sx={{ width: '100%' }}>
         <Stack gap={2}>
           <ProfileInformationTab />
+          <ProfileGradeClassTab />
           <ProfileCareerTab />
           <ProfileEducationTab />
         </Stack>

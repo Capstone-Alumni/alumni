@@ -41,7 +41,6 @@ const useApproveAccessRequest = () => {
   );
 
   const createAccount = async (data: AccessRequest) => {
-    // TODO: change the subject and text to be more realistics
     if (!data.alumniId && data.password) {
       await createMemberPlatform({
         fullName: data.fullName,

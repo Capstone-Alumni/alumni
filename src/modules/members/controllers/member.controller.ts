@@ -76,7 +76,7 @@ export default class MemberController {
   };
 
   static updateInfoById = async (
-    req: NextApiRequest,
+    req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id } = req.query;
@@ -88,6 +88,23 @@ export default class MemberController {
     return res.status(200).json({
       status: true,
       data: classUpdated,
+    });
+  };
+
+  static deleteAlumToClassById = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    const prisma = await getPrismaClient(req.tenantId);
+    const { id: memberId, alumToClassId } = req.query;
+    const ref = await MemberService.deleteAlumToClassById(prisma, {
+      memberId: memberId as string,
+      alumToClassId: alumToClassId as string,
+    });
+
+    return res.status(201).json({
+      status: true,
+      data: ref,
     });
   };
 }

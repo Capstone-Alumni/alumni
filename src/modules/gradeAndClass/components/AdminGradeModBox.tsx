@@ -52,8 +52,8 @@ const AdminGradeModBox = ({
 
     return data.data.items.map(item => ({
       id: item.id,
-      helperText: item.information.fullName,
-      label: item.information.email || '',
+      helperText: item?.information?.fullName,
+      label: item?.information?.email || '',
       value: item.id,
     }));
   }, [data]);

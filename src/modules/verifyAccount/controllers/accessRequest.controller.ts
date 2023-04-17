@@ -68,6 +68,68 @@ export default class AccessRequestController {
     });
   };
 
+  static requestJoinClass = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const prisma = await getPrismaClient(req.tenantId);
+
+      const accountUpdated = await AccessRequestService.requestJoinClass(
+        prisma,
+        {
+          alumniId: req.user.id,
+          alumClassId: req.body.alumClassId,
+        },
+      );
+      return res.status(200).json({
+        status: true,
+        data: accountUpdated,
+      });
+    } catch (err) {
+      if (err.message.includes('non-exist')) {
+        return res.status(400).json({
+          status: false,
+          message: 'Alumni not exist',
+        });
+      }
+      if (err.message.includes('exist')) {
+        return res.status(400).json({
+          status: false,
+          message: 'Request exist',
+        });
+      }
+      throw err;
+    }
+  };
+
+  static withdrawRequestJoinClass = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const prisma = await getPrismaClient(req.tenantId);
+
+      const accountUpdated =
+        await AccessRequestService.withdrawRequestJoinClass(prisma, {
+          alumniId: req.user.id,
+          requestId: req.query.id as string,
+        });
+      return res.status(200).json({
+        status: true,
+        data: accountUpdated,
+      });
+    } catch (err) {
+      if (err.message.includes('non-exist')) {
+        return res.status(400).json({
+          status: false,
+          message: 'Alumni or Request not exist',
+        });
+      }
+      throw err;
+    }
+  };
+
   static rejectAccessRequest = async (
     req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
@@ -87,6 +149,7 @@ export default class AccessRequestController {
     });
   };
 
+  // has callback, see useApproveAccessRequest.ts
   static approveAccessRequest = async (
     req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
