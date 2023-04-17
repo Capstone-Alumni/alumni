@@ -4,20 +4,49 @@ class PostService {
   static createPost = async (
     tenantPrisma: PrismaClient,
     user: User,
-    { content, publicity }: { content: string; publicity: AccessLevel },
+    {
+      content,
+      isPublicSchool,
+      gradeId,
+      alumClassId,
+    }: {
+      content: string;
+      isPublicSchool: boolean;
+      gradeId?: string;
+      alumClassId?: string;
+    },
   ) => {
-    const post = await tenantPrisma.post.create({
-      data: {
-        content,
-        publicity,
-        authorInformation: {
-          connect: {
-            userId: user.id,
-          },
+    const payload: Prisma.PostCreateInput = {
+      content,
+      author: {
+        connect: {
+          id: user.id,
         },
       },
+    };
+
+    if (isPublicSchool) {
+      payload.isPublicSchool = true;
+    }
+    if (gradeId) {
+      payload.grade = {
+        connect: { id: gradeId },
+      };
+    }
+    if (alumClassId) {
+      payload.alumClass = {
+        connect: { id: alumClassId },
+      };
+    }
+
+    const post = await tenantPrisma.post.create({
+      data: payload,
       include: {
-        authorInformation: true,
+        author: {
+          include: {
+            information: true,
+          },
+        },
         postLikes: true,
         postComments: true,
       },
@@ -33,68 +62,48 @@ class PostService {
     user: User,
     {
       all,
-      myGrade,
-      myClass,
+      gradeId,
+      alumClassId,
       page,
       limit,
     }: {
       all: boolean;
-      myClass: boolean;
-      myGrade: boolean;
+      gradeId: string;
+      alumClassId: string;
       page: number;
       limit: number;
     },
   ) => {
-    const userInformation = await tenantPrisma.information.findUnique({
+    const userInformation = await tenantPrisma.alumni.findUnique({
       where: {
-        userId: user.id,
+        id: user.id,
       },
       include: {
-        alumClass: true,
+        alumniToClass: {
+          include: {
+            alumClass: true,
+          },
+        },
       },
     });
+    const gradeIdList = userInformation?.alumniToClass.map(
+      ({ alumClass }) => alumClass.gradeId,
+    );
 
     if (!userInformation) {
       throw new Error('user not exist');
     }
 
     const whereFilter: Prisma.PostWhereInput = {
-      AND: [
-        { archived: false },
-        myClass
-          ? {
-              authorInformation: {
-                alumClassId: userInformation.alumClassId,
-              },
-            }
-          : { archived: false },
-        myGrade
-          ? {
-              authorInformation: {
-                alumClass: {
-                  gradeId: userInformation.alumClass?.gradeId,
-                },
-              },
-            }
-          : { archived: false },
-        {
-          OR: [
-            { publicity: 'ALUMNI', authorId: user.id },
-            {
-              publicity: 'CLASS_MOD',
-              authorInformation: { alumClassId: userInformation.alumClassId },
-            },
-            {
-              publicity: 'GRADE_MOD',
-              authorInformation: {
-                alumClass: { gradeId: userInformation.alumClass?.gradeId },
-              },
-            },
-            { publicity: 'SCHOOL_ADMIN' },
-          ],
-        },
-      ],
+      archived: false,
     };
+
+    if (all) {
+      whereFilter.isPublicSchool = true;
+    }
+    if (gradeId && gradeIdList?.find(id => id === gradeId)) {
+      whereFilter.gradeId = gradeId;
+    }
 
     const [totalItems, items] = await tenantPrisma.$transaction([
       tenantPrisma.post.count({
@@ -108,19 +117,19 @@ class PostService {
           updatedAt: 'desc',
         },
         include: {
-          authorInformation: {
+          author: {
             include: {
-              alumClass: {
-                include: {
-                  grade: true,
-                },
-              },
+              information: true,
             },
           },
           postLikes: true,
           postComments: {
             include: {
-              authorInformation: true,
+              author: {
+                include: {
+                  information: true,
+                },
+              },
             },
           },
         },

@@ -60,10 +60,7 @@ const SocialSidebar = () => {
     }
 
     const period = `${grade.startYear} - ${grade.endYear}`;
-    if (grade.code) {
-      return `Niên khoá ${grade.code}: ${period}`;
-    }
-    return `Niên khoá ${period}`;
+    return `${grade.code ? grade.code : 'Niên khoá'} ${period}`;
   };
 
   const getGradeOptions = () => {

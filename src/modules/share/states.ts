@@ -50,6 +50,7 @@ export type Alumni = {
     id: string;
     isClassMod: boolean;
     alumClass: Class;
+    alumClassId: string;
   }>;
   gradeMod?: Array<{
     id: string;

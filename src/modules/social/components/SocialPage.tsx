@@ -54,19 +54,21 @@ const SocialPage = () => {
           [theme.breakpoints.down('md')]: { width: '100%' },
         }}
       >
-        <TextField
-          size="small"
-          value={classSearchParams}
-          onChange={e => setSearchParams('class', e.target.value)}
-          select
-          type="select"
-        >
-          {getClassOption()?.map(op => (
-            <MenuItem key={op.value} value={op.value}>
-              {op.label}
-            </MenuItem>
-          ))}
-        </TextField>
+        {gradeSearchParams === 'all' ? null : (
+          <TextField
+            size="small"
+            value={classSearchParams}
+            onChange={e => setSearchParams('class', e.target.value)}
+            select
+            type="select"
+          >
+            {getClassOption()?.map(op => (
+              <MenuItem key={op.value} value={op.value}>
+                {op.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        )}
 
         <Tabs
           value={tabKey}
