@@ -35,8 +35,7 @@ export default async function RootLayout({
         <CSRProvider theme={data?.theme} tenantData={data}>
           <Providers>
             <Header user={session?.user} tenant={data} />
-            {children}
-            <SetCurrentTenant tenantData={data} />
+            <SetCurrentTenant tenantData={data}>{children}</SetCurrentTenant>
             <GetInitialUserInformation user={session?.user} />
           </Providers>
         </CSRProvider>

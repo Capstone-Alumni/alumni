@@ -129,60 +129,69 @@ export default class InformationService {
   ) => {
     const { name, page, limit, classId, gradeId } = params;
 
-    const requesterInformation = await tenantPrisma.information.findUnique({
-      where: { userId: user.id },
+    const requesterInformation = await tenantPrisma.alumni.findUnique({
+      where: { id: user.id },
       include: {
-        alumClass: {
-          include: {
-            grade: true,
+        information: true,
+        alumniToClass: {
+          select: {
+            isClassMod: true,
+            alumClassId: true,
           },
         },
       },
     });
 
-    const whereFilter: Prisma.InformationWhereInput = {
-      fullName: { contains: name, mode: 'insensitive' },
+    const whereFilter: Prisma.AlumniWhereInput = {
+      information: {
+        OR: [
+          {
+            fullName: { contains: name, mode: 'insensitive' },
+          },
+          {
+            email: { contains: name, mode: 'insensitive' },
+          },
+        ],
+      },
       NOT: {
-        userId: user.id,
+        id: user.id,
       },
     };
 
-    if (gradeId) {
-      whereFilter.alumClass = {
-        gradeId: gradeId,
+    if (classId !== 'all') {
+      whereFilter.alumniToClass = {
+        some: {
+          alumClassId: classId,
+        },
       };
-    }
-
-    if (classId) {
-      whereFilter.alumClassId = classId;
+    } else if (gradeId !== 'all') {
+      whereFilter.alumniToClass = {
+        some: {
+          alumClass: {
+            gradeId: gradeId,
+          },
+        },
+      };
     }
 
     const [totalUsersInformation, usersInformationItems] =
       await tenantPrisma.$transaction([
-        tenantPrisma.information.count({
+        tenantPrisma.alumni.count({
           where: whereFilter,
         }),
-        tenantPrisma.information.findMany({
+        tenantPrisma.alumni.findMany({
           skip: (page - 1) * limit,
           take: limit,
           where: whereFilter,
           include: {
-            alumClass: {
-              include: {
-                grade: true,
-              },
-            },
+            information: true,
           },
         }),
       ]);
 
-    const filteredInformationItems = usersInformationItems.map(information =>
-      filterInformation(information, requesterInformation),
-    );
-
     return {
       totalItems: totalUsersInformation,
-      items: filteredInformationItems,
+      items: usersInformationItems,
       itemPerPage: limit,
     };
   };
@@ -194,9 +203,14 @@ export default class InformationService {
     const { page, limit } = params;
 
     const whereFilter: Prisma.AlumniWhereInput = {
-      accessLevel: {
-        in: ['SCHOOL_ADMIN', 'GRADE_MOD'],
-      },
+      OR: [
+        {
+          gradeMod: {
+            some: {},
+          },
+        },
+        { isOwner: true },
+      ],
       information: {
         isNot: undefined,
       },
@@ -217,11 +231,6 @@ export default class InformationService {
                 avatarUrl: true,
                 fullName: true,
                 email: true,
-                alumClass: {
-                  include: {
-                    grade: true,
-                  },
-                },
               },
             },
           },

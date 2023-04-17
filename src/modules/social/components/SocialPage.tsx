@@ -7,9 +7,10 @@ import useSetSearchParams from '@share/hooks/useSetSearchParams';
 import { useRecoilValue } from 'recoil';
 import { currentUserInformationDataAtom } from '@share/states';
 import { useState } from 'react';
-import AdminAccessRequestTable from 'src/modules/verifyAccount/components/AdminRequestAccessTable';
 import AddPostButton from 'src/modules/posts/components/AddPostButton';
 import PostList from 'src/modules/posts/components/PostList';
+import Search from 'src/modules/search/components/Search';
+import SeachPage from 'src/modules/search/components/SearchResults';
 
 const SocialPage = () => {
   const [tabKey, setTabKey] = useState<'post' | 'member' | 'request'>('post');
@@ -58,7 +59,12 @@ const SocialPage = () => {
           <TextField
             size="small"
             value={classSearchParams}
-            onChange={e => setSearchParams('class', e.target.value)}
+            onChange={e =>
+              setSearchParams([
+                { key: 'grade', value: gradeSearchParams },
+                { key: 'class', value: e.target.value },
+              ])
+            }
             select
             type="select"
           >
@@ -77,7 +83,6 @@ const SocialPage = () => {
         >
           <Tab value="post" label="Bài đăng" />
           <Tab value="member" label="Thành viên" />
-          <Tab value="request" label="Yêu cầu tham gia" />
         </Tabs>
 
         {tabKey === 'post' ? (
@@ -87,9 +92,12 @@ const SocialPage = () => {
           </>
         ) : null}
 
-        {tabKey === 'member' ? <>Member tab (TBD)</> : null}
-
-        {tabKey === 'request' ? <AdminAccessRequestTable /> : null}
+        {tabKey === 'member' ? (
+          <>
+            <Search />
+            <SeachPage />
+          </>
+        ) : null}
         {/* <AddPostButton />
 
         <PostList /> */}

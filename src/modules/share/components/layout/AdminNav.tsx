@@ -15,9 +15,9 @@ import Logo from '../Logo';
 
 const ACCESS_NAV_ITEM = {
   id: 'request_access',
-  title: 'Kiểm duyệt',
+  title: 'Đơn xin tham gia',
   icon: 'grommet-icons:validate',
-  link: '/admin/access/access_request',
+  link: '/admin/config/access_request',
 };
 
 const NEWS_NAV_ITEM = {
@@ -155,15 +155,16 @@ const generateSchoolNavItems = (
     case 'ALUMNI':
       return [];
     case 'CLASS_MOD':
-      return [USER_NAV_ITEM];
+      return [USER_NAV_ITEM, ACCESS_NAV_ITEM];
     case 'GRADE_MOD':
-      return [USER_NAV_ITEM];
+      return [GRADE_NAV_ITEM, USER_NAV_ITEM, ACCESS_NAV_ITEM];
     case 'SCHOOL_ADMIN':
       return [
         SCHOOL_NAV_ITEM,
         SCHOOL_VNPAY_NAV_ITEM,
         GRADE_NAV_ITEM,
         USER_NAV_ITEM,
+        ACCESS_NAV_ITEM,
       ];
     default:
       return [];
@@ -176,7 +177,7 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
   const defaultSection = pathname?.split('/')[2];
   const [sectionSelected, setSectionSelected] = useState(defaultSection);
 
-  const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
+  const currentUser = useRecoilValue(currentUserInformationDataAtom);
 
   const schoolItems = generateSchoolNavItems('SCHOOL_ADMIN'); // fix
   const navItems = generateNavItems('SCHOOL_ADMIN'); // fix
@@ -234,17 +235,6 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
               }
             />
           ) : null}
-
-          <AdminSubNav
-            title="Quản lý lớp"
-            items={[ACCESS_NAV_ITEM]}
-            open={sectionSelected === 'access'}
-            onToggle={() =>
-              setSectionSelected(prevState =>
-                prevState === 'access' ? '' : 'access',
-              )
-            }
-          />
         </StyledNavWrapper>
 
         <StyledFooter>
@@ -259,8 +249,8 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
 
           <StyledAccountWrapper>
             <MyAvatar
-              photoUrl={currentUserInformation?.avatarUrl}
-              displayName={currentUserInformation?.fullName}
+              photoUrl={currentUser?.information?.avatarUrl}
+              displayName={currentUser?.information?.fullName}
             />
             <Typography variant="body2" sx={{ wordBreak: 'break-all' }}>
               {user.email}

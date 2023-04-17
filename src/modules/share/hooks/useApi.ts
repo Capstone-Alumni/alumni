@@ -48,7 +48,7 @@ const useApi = <Params, Data, Err>(
   const [dataAtom, setDataAtom] = useRecoilState(useApiDataAtom);
   const subdomain = useRecoilValue(currentTenantSubdomainSelector);
   const currentTenant = useRecoilValue(currentTenantDataAtom);
-  const { tenantId } = currentTenant || {};
+  const { id: tenantId } = currentTenant || {};
 
   const {
     optimisticData,

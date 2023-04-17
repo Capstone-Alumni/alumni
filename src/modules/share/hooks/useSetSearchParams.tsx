@@ -18,8 +18,15 @@ const useSetSearchParams = () => {
     [searchParams],
   );
 
-  const setSearchParams = (key: string, value: string) => {
-    router.push(pathname + '?' + createQueryString(key, value));
+  const setSearchParams = (
+    params: Array<{
+      key: string;
+      value: string;
+    }>,
+  ) => {
+    const query = params.map(({ key, value }) => `${key}=${value}`).join('&');
+    console.log(query);
+    router.push(pathname + '?' + query);
   };
 
   return {

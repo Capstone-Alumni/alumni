@@ -26,31 +26,22 @@ const Wrapper = styled('div')(({ theme }) => ({
 }));
 
 const SeachPage = () => {
-  // const searchParams = useSearchParams();
-  // const name = searchParams.get('name');
   const [params, setParams] = useRecoilState(getProfileListParamsAtom);
   const { page } = params;
-  // const usersProfileResponse = useGetUsersProfileQuery({
-  //   name: name || '',
-  //   page,
-  //   limit: 5,
-  // });
+
   const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
   const { data: profileListData, isLoading } = useGetProfileList();
 
   const handleRenderUsersProfile = () => {
     if (!isLoading && profileListData?.data && currentUserInformation) {
       return (
-        <Grid container spacing={3} maxWidth="md" sx={{ margin: 'auto' }}>
+        <Grid container maxWidth="md" sx={{ margin: 'auto' }}>
           <Grid item xs={12} md={12}>
-            <Stack sx={{ margin: '0 0 1rem 0' }}>
-              <Typography variant="h6">Kết quả tìm kiếm</Typography>
-            </Stack>
             {profileListData?.data.items.map((user: any) => {
               return (
-                <Card sx={{ margin: '1rem 0' }} key={user.userId}>
+                <Card sx={{ margin: '1rem 0' }} key={user.id}>
                   <Link
-                    href={`/profile/${user.userId}?profile_tab=information`}
+                    href={`/profile/${user.id}?profile_tab=information`}
                     prefetch={false}
                     passHref
                     style={{ color: 'inherit' }}
@@ -59,8 +50,8 @@ const SeachPage = () => {
                       <Box display={'flex'}>
                         <Avatar
                           sx={{ width: 60, height: 60 }}
-                          photoUrl={user?.avatarUrl ?? null}
-                          displayName={user?.fullName}
+                          photoUrl={user?.information.avatarUrl ?? null}
+                          displayName={user?.information.fullName}
                         />
                         <Box
                           sx={{
@@ -70,7 +61,7 @@ const SeachPage = () => {
                           }}
                         >
                           <Typography fontWeight={600}>
-                            {user.fullName}
+                            {user?.information.fullName}
                           </Typography>
                           <Box
                             display={'flex'}
@@ -116,11 +107,8 @@ const SeachPage = () => {
           {handleRenderUsersProfile()}
           <Grid
             container
-            spacing={3}
             maxWidth="md"
             sx={{
-              marginTop: '3rem',
-              margin: 'auto',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',

@@ -50,6 +50,7 @@ export type GetGradeListParams = {
   limit?: number;
   code?: string;
   name?: string;
+  alumniId?: string;
   isAdminMode?: boolean;
 };
 

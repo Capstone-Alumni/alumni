@@ -8,89 +8,35 @@ export default class AccessRequestService {
     tenantPrisma: PrismaClient,
     data: VerifyAccountInfoServiceProps,
   ) => {
-    const { userId, accessLevel } = data;
-
-    const accessRequestListData = await tenantPrisma.accessRequest.findMany({
-      where: {
-        userId: userId,
-        isApproved: false,
-        archived: false,
-      },
-    });
-
-    if (accessRequestListData.length > 0) {
-      throw new Error('400 existed access-request');
-    }
-
-    const accessRequest = await tenantPrisma.accessRequest.create({
-      data: {
-        userId: userId,
-        email: data.email,
-        fullName: data.fullName,
-        grade: {
-          connect: {
-            id: data.gradeId,
-          },
-        },
-        alumClass: {
-          connect: {
-            id: data.classId,
-          },
-        },
-        isApproved: accessLevel !== 'ALUMNI',
-      },
-    });
-
-    await tenantPrisma.information.upsert({
-      where: {
-        userId: userId,
-      },
-      update: {
-        fullName: data.fullName,
-        alumClass: {
-          connect: {
-            id: data.classId,
-          },
-        },
-      },
-      create: {
-        fullName: data.fullName,
-        email: data.email,
-        alumClass: {
-          connect: {
-            id: data.classId,
-          },
-        },
-        alumni: {
-          connect: {
-            accountId: userId,
-          },
-        },
-      },
-    });
-
     await tenantPrisma.$disconnect();
 
-    return accessRequest;
+    return null;
   };
 
   static getAccessRequestList = async (
     tenantPrisma: PrismaClient,
     {
-      accountId,
       page,
       limit,
-    }: { accountId: string; page: number; limit: number },
+      alumniId,
+    }: { page: number; limit: number; alumniId: string },
   ) => {
     const alumni = await tenantPrisma.alumni.findUnique({
       where: {
-        accountId: accountId,
+        id: alumniId,
       },
       include: {
-        GradeMod: true,
+        gradeMod: {
+          select: {
+            gradeId: true,
+          },
+        },
         alumniToClass: {
           where: {
             isClassMod: true,
+          },
+          select: {
+            alumClassId: true,
           },
         },
       },
@@ -100,15 +46,20 @@ export default class AccessRequestService {
       throw new Error('404 alumni');
     }
 
-    const classIdList = alumni.alumniToClass.map(cl => cl.alumClassId);
-    const gradeIdList = alumni.gradeMod.map(gr => gr.gradeId);
+    const classIdList = alumni.alumniToClass.map(
+      ({ alumClassId }) => alumClassId,
+    );
+    const gradeIdList = alumni.gradeMod.map(({ gradeId }) => gradeId);
 
-    const whereFilter = {
-      OR: [
-        { alumClassId: { in: classIdList } },
-        { alumClass: { gradeId: { in: gradeIdList } } },
-      ],
-    };
+    let whereFilter = {};
+    if (!alumni.isOwner) {
+      whereFilter = {
+        OR: [
+          { alumClassId: { in: classIdList } },
+          { alumClass: { gradeId: { in: gradeIdList } } },
+        ],
+      };
+    }
 
     const [totalAccessRequestList, accessRequestList] =
       await tenantPrisma.$transaction([
@@ -157,7 +108,7 @@ export default class AccessRequestService {
 
     const accessRequest = await tenantPrisma.accessRequest.findFirst({
       where: {
-        userId: user.id,
+        alumniId: user.id,
         archived: false,
       },
       include: {
@@ -167,19 +118,12 @@ export default class AccessRequestService {
             name: true,
           },
         },
-        grade: {
-          select: {
-            id: true,
-            code: true,
-          },
-        },
       },
     });
 
     await tenantPrisma.$disconnect();
 
     return {
-      accessStatus: alumni.accessStatus,
       accessRequest: accessRequest,
     };
   };
@@ -226,7 +170,7 @@ export default class AccessRequestService {
   ) => {
     const accessRequest = await tenantPrisma.accessRequest.findFirst({
       where: {
-        userId: userId,
+        alumniId: userId,
         archived: false,
       },
       include: {
@@ -234,12 +178,6 @@ export default class AccessRequestService {
           select: {
             id: true,
             name: true,
-          },
-        },
-        grade: {
-          select: {
-            id: true,
-            code: true,
           },
         },
       },

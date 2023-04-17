@@ -1,6 +1,6 @@
 'use client';
 
-import { Typography } from '@mui/material';
+import { Button, Divider, Typography } from '@mui/material';
 import { Box, styled, useTheme } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import { useSearchParams } from 'next/navigation';
@@ -80,7 +80,12 @@ const SocialSidebar = () => {
         {getGradeOptions().map(({ id, label }) => (
           <StyledNavItem
             key={id}
-            onClick={() => setSearchParams('grade', id)}
+            onClick={() =>
+              setSearchParams([
+                { key: 'grade', value: id },
+                { key: 'class', value: 'all' },
+              ])
+            }
             sx={
               gradeSearchParams === id
                 ? {
@@ -94,6 +99,10 @@ const SocialSidebar = () => {
             <Box sx={{ flex: 1 }} />
           </StyledNavItem>
         ))}
+        <Divider sx={{ width: '100%', my: 2 }} />
+        <Button variant="contained" fullWidth>
+          Thêm lớp
+        </Button>
       </StyledNav>
     </StyledNavWrapper>
   );

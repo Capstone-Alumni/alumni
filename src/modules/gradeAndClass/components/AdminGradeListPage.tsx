@@ -3,7 +3,7 @@
 import { Box, Button, Typography, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import AdminGradeListTable from './AdminGradeListTable';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import GradeForm from './GradeForm';
 
 import useCreateGrade, { CreateGradeParams } from '../hooks/useCreateGrade';
@@ -14,11 +14,13 @@ import useUpdateGradeById from '../hooks/useUpdateGradeById';
 import { useRecoilState } from 'recoil';
 import { getGradeListParamsAtom } from '../state';
 import AdminClassListPanel from './AdminClassListPanel';
+import { useSession } from 'next-auth/react';
 
 const AdminGradeListPage = () => {
   const theme = useTheme();
   const [openForm, setOpenForm] = useState(false);
 
+  const { data: session } = useSession();
   const [params, setParams] = useRecoilState(getGradeListParamsAtom);
 
   const { createGrade } = useCreateGrade();
@@ -47,6 +49,10 @@ const AdminGradeListPage = () => {
     await updateGradeById({ gradeId, code, startYear, endYear });
     reload();
   };
+
+  useEffect(() => {
+    setParams(prev => ({ ...prev, alumniId: session?.user?.id }));
+  }, [session?.user]);
 
   return (
     <Box

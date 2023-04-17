@@ -32,6 +32,7 @@ import { useSetRecoilState } from 'recoil';
 import { getGradeListParamsAtom } from 'src/modules/gradeAndClass/state';
 import { Icon } from '@iconify/react';
 import useGetClassListV2 from 'src/modules/gradeAndClass/hooks/useGetClassListV2';
+import { useSession } from 'next-auth/react';
 
 export type MemberFormValues = {
   fullName: string;
@@ -211,13 +212,15 @@ export const GradeClassForm = ({ multiple = true }: { multiple?: boolean }) => {
   });
   const gradeClassWatcher = watch('gradeClass');
 
+  const { data: session } = useSession();
+
   const { data: classList, getClassList } = useGetClassListV2();
   const { data: gradeList, isLoading: isLoadingGrade } = useGetGradeList();
   const setParams = useSetRecoilState(getGradeListParamsAtom);
 
   useEffect(() => {
-    setParams(() => ({ page: 1, limit: 999, inviteMode: true }));
-  }, []);
+    setParams(() => ({ page: 1, limit: 999, alumniId: session?.user?.id }));
+  }, [session?.user]);
 
   return (
     <>

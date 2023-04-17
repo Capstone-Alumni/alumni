@@ -16,7 +16,7 @@ type ApproveAccessRequestResponse = {
 type ApproveAccessRequestError = unknown;
 
 const useApproveAccessRequest = () => {
-  const { tenantId } = useRecoilValue(currentTenantDataAtom);
+  const { id: tenantId } = useRecoilValue(currentTenantDataAtom);
   const { createMemberPlatform } = useCreateMemberPlatform();
 
   const { fetchApi, isLoading } = useApi<
