@@ -1,17 +1,32 @@
 'use client';
 
+import LoadingIndicator from '@share/components/LoadingIndicator';
 import { currentTenantDataAtom, Tenant } from '@share/states';
-import { useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { ReactNode, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 
-const SetCurrentTenant = ({ tenantData }: { tenantData: Tenant }) => {
-  const setCurrentTenantState = useSetRecoilState(currentTenantDataAtom);
+const SetCurrentTenant = ({
+  tenantData,
+  children,
+}: {
+  tenantData: Tenant;
+  children: ReactNode;
+}) => {
+  const [currentTenant, setCurrentTenantState] = useRecoilState(
+    currentTenantDataAtom,
+  );
 
   useEffect(() => {
     setCurrentTenantState(tenantData);
   }, []);
 
-  return null;
+  console.log(currentTenant);
+
+  if (!currentTenant.id && currentTenant.id !== '') {
+    return <LoadingIndicator />;
+  }
+
+  return <>{children}</>;
 };
 
 export default SetCurrentTenant;

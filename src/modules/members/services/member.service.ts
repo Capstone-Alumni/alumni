@@ -113,4 +113,17 @@ export default class MemberService {
 
     return member;
   };
+
+  static deleteAlumToClassById = async (
+    tenantPrisma: PrismaClient,
+    { alumToClassId }: { memberId: string; alumToClassId: string },
+  ) => {
+    const member = await tenantPrisma.alumniToClass.delete({
+      where: {
+        id: alumToClassId,
+      },
+    });
+
+    return member;
+  };
 }

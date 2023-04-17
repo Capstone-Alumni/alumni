@@ -128,7 +128,7 @@ const SignUpForm = () => {
 
             <Divider />
 
-            <GradeClassForm multiple={false} />
+            <GradeClassForm multiple={false} getAll />
 
             <Divider />
 

@@ -8,6 +8,7 @@ export const getGradeListParamsAtom = atom<GetGradeListParams>({
     limit: 10,
     name: '',
     code: '',
+    alumniId: '',
     isAdminMode: false,
   },
 });

@@ -16,7 +16,7 @@ type ApproveAccessRequestResponse = {
 type ApproveAccessRequestError = unknown;
 
 const useApproveAccessRequest = () => {
-  const { tenantId } = useRecoilValue(currentTenantDataAtom);
+  const { id: tenantId } = useRecoilValue(currentTenantDataAtom);
   const { createMemberPlatform } = useCreateMemberPlatform();
 
   const { fetchApi, isLoading } = useApi<
@@ -41,7 +41,6 @@ const useApproveAccessRequest = () => {
   );
 
   const createAccount = async (data: AccessRequest) => {
-    // TODO: change the subject and text to be more realistics
     if (!data.alumniId && data.password) {
       await createMemberPlatform({
         fullName: data.fullName,

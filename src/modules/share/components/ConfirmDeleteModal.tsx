@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 import { Box, Button, Modal, Typography, useTheme } from '@mui/material';
 
@@ -9,7 +9,7 @@ const ConfirmDeleteModal = ({
   onClose,
 }: {
   open: boolean;
-  title: string;
+  title: string | ReactNode;
   onDelete: () => void;
   onClose: () => void;
 }) => {
@@ -63,7 +63,7 @@ const ConfirmDeleteModal = ({
             disabled={deleting}
             onClick={() => onDeleteHandler()}
           >
-            Xoá
+            Tiếp tục
           </Button>
         </Box>
       </Box>

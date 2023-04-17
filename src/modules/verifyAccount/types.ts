@@ -12,6 +12,7 @@ export type VerifyAccountInfoServiceProps = {
 export type GetAccessRequestListParams = {
   page?: number;
   limit?: number;
+  alumniId?: string;
 };
 
 export type AccessRequest = {

@@ -124,7 +124,7 @@ const Header = ({ user, tenant }: { user?: User; tenant?: Tenant }) => {
             {user &&
             (user.isOwner || currentUserInformationData?.gradeMod?.length) ? (
               <Link
-                href="/admin/access/access_request"
+                href="/admin/config/access_request"
                 style={{ color: 'inherit', marginRight: theme.spacing(2) }}
               >
                 <Button

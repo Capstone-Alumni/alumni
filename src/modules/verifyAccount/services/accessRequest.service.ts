@@ -8,89 +8,35 @@ export default class AccessRequestService {
     tenantPrisma: PrismaClient,
     data: VerifyAccountInfoServiceProps,
   ) => {
-    const { userId, accessLevel } = data;
-
-    const accessRequestListData = await tenantPrisma.accessRequest.findMany({
-      where: {
-        userId: userId,
-        isApproved: false,
-        archived: false,
-      },
-    });
-
-    if (accessRequestListData.length > 0) {
-      throw new Error('400 existed access-request');
-    }
-
-    const accessRequest = await tenantPrisma.accessRequest.create({
-      data: {
-        userId: userId,
-        email: data.email,
-        fullName: data.fullName,
-        grade: {
-          connect: {
-            id: data.gradeId,
-          },
-        },
-        alumClass: {
-          connect: {
-            id: data.classId,
-          },
-        },
-        isApproved: accessLevel !== 'ALUMNI',
-      },
-    });
-
-    await tenantPrisma.information.upsert({
-      where: {
-        userId: userId,
-      },
-      update: {
-        fullName: data.fullName,
-        alumClass: {
-          connect: {
-            id: data.classId,
-          },
-        },
-      },
-      create: {
-        fullName: data.fullName,
-        email: data.email,
-        alumClass: {
-          connect: {
-            id: data.classId,
-          },
-        },
-        alumni: {
-          connect: {
-            accountId: userId,
-          },
-        },
-      },
-    });
-
     await tenantPrisma.$disconnect();
 
-    return accessRequest;
+    return null;
   };
 
   static getAccessRequestList = async (
     tenantPrisma: PrismaClient,
     {
-      accountId,
       page,
       limit,
-    }: { accountId: string; page: number; limit: number },
+      alumniId,
+    }: { page: number; limit: number; alumniId: string },
   ) => {
     const alumni = await tenantPrisma.alumni.findUnique({
       where: {
-        accountId: accountId,
+        id: alumniId,
       },
       include: {
-        GradeMod: true,
+        gradeMod: {
+          select: {
+            gradeId: true,
+          },
+        },
         alumniToClass: {
           where: {
             isClassMod: true,
+          },
+          select: {
+            alumClassId: true,
           },
         },
       },
@@ -100,15 +46,20 @@ export default class AccessRequestService {
       throw new Error('404 alumni');
     }
 
-    const classIdList = alumni.alumniToClass.map(cl => cl.alumClassId);
-    const gradeIdList = alumni.gradeMod.map(gr => gr.gradeId);
+    const classIdList = alumni.alumniToClass.map(
+      ({ alumClassId }) => alumClassId,
+    );
+    const gradeIdList = alumni.gradeMod.map(({ gradeId }) => gradeId);
 
-    const whereFilter = {
-      OR: [
-        { alumClassId: { in: classIdList } },
-        { alumClass: { gradeId: { in: gradeIdList } } },
-      ],
-    };
+    let whereFilter = {};
+    if (!alumni.isOwner) {
+      whereFilter = {
+        OR: [
+          { alumClassId: { in: classIdList } },
+          { alumClass: { gradeId: { in: gradeIdList } } },
+        ],
+      };
+    }
 
     const [totalAccessRequestList, accessRequestList] =
       await tenantPrisma.$transaction([
@@ -147,30 +98,25 @@ export default class AccessRequestService {
   ) => {
     const alumni = await tenantPrisma.alumni.findFirst({
       where: {
-        accountId: user.id,
+        id: user.id,
       },
     });
 
     if (!alumni) {
-      throw new Error('alumni not existed');
+      throw new Error('alumni not exist');
     }
 
-    const accessRequest = await tenantPrisma.accessRequest.findFirst({
+    const accessRequest = await tenantPrisma.accessRequest.findMany({
       where: {
-        userId: user.id,
-        archived: false,
+        alumniId: user.id,
+        requestStatus: {
+          not: 1,
+        },
       },
       include: {
         alumClass: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-        grade: {
-          select: {
-            id: true,
-            code: true,
+          include: {
+            grade: true,
           },
         },
       },
@@ -179,9 +125,126 @@ export default class AccessRequestService {
     await tenantPrisma.$disconnect();
 
     return {
-      accessStatus: alumni.accessStatus,
-      accessRequest: accessRequest,
+      items: accessRequest,
     };
+  };
+
+  static requestJoinClass = async (
+    tenantPrisma: PrismaClient,
+    {
+      alumniId,
+      alumClassId,
+    }: {
+      alumniId: string;
+      alumClassId: string;
+    },
+  ) => {
+    const alumni = await tenantPrisma.alumni.findUnique({
+      where: {
+        id: alumniId,
+      },
+      include: {
+        information: {
+          select: {
+            fullName: true,
+            email: true,
+          },
+        },
+        alumniToClass: {
+          select: {
+            alumClassId: true,
+          },
+        },
+      },
+    });
+
+    if (!alumni) {
+      throw new Error('non-exist alumni');
+    }
+
+    const existingRequest = await tenantPrisma.accessRequest.findFirst({
+      where: {
+        alumniId: alumniId,
+        alumClassId: alumClassId,
+      },
+    });
+
+    if (
+      existingRequest ||
+      alumni.alumniToClass.find(item => item.alumClassId === alumClassId)
+    ) {
+      throw new Error('exist request');
+    }
+
+    const request = await tenantPrisma.accessRequest.create({
+      data: {
+        alumni: {
+          connect: {
+            id: alumniId,
+          },
+        },
+        alumClass: {
+          connect: {
+            id: alumClassId,
+          },
+        },
+        fullName: alumni.information?.fullName || '',
+        email: alumni.information?.email || '',
+      },
+    });
+
+    await tenantPrisma.$disconnect();
+
+    return request;
+  };
+
+  static withdrawRequestJoinClass = async (
+    tenantPrisma: PrismaClient,
+    {
+      alumniId,
+      requestId,
+    }: {
+      alumniId: string;
+      requestId: string;
+    },
+  ) => {
+    const alumni = await tenantPrisma.alumni.findUnique({
+      where: {
+        id: alumniId,
+      },
+      include: {
+        information: {
+          select: {
+            fullName: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    if (!alumni) {
+      throw new Error('non-exist alumni');
+    }
+
+    const existingRequest = await tenantPrisma.accessRequest.findUnique({
+      where: {
+        id: requestId,
+      },
+    });
+
+    if (!existingRequest || existingRequest.alumniId !== alumniId) {
+      throw new Error('non-exist request');
+    }
+
+    const req = await tenantPrisma.accessRequest.delete({
+      where: {
+        id: requestId,
+      },
+    });
+
+    await tenantPrisma.$disconnect();
+
+    return req;
   };
 
   static rejectAccessRequest = async (
@@ -215,6 +278,23 @@ export default class AccessRequestService {
       },
     });
 
+    if (accessRequest.alumniId) {
+      await tenantPrisma.alumniToClass.create({
+        data: {
+          alumni: {
+            connect: {
+              id: accessRequest.alumniId,
+            },
+          },
+          alumClass: {
+            connect: {
+              id: accessRequest.alumClassId,
+            },
+          },
+        },
+      });
+    }
+
     await tenantPrisma.$disconnect();
 
     return accessRequest;
@@ -226,7 +306,7 @@ export default class AccessRequestService {
   ) => {
     const accessRequest = await tenantPrisma.accessRequest.findFirst({
       where: {
-        userId: userId,
+        alumniId: userId,
         archived: false,
       },
       include: {
@@ -234,12 +314,6 @@ export default class AccessRequestService {
           select: {
             id: true,
             name: true,
-          },
-        },
-        grade: {
-          select: {
-            id: true,
-            code: true,
           },
         },
       },

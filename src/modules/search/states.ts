@@ -7,6 +7,8 @@ export const getProfileListParamsAtom = atom<GetProfileListParams>({
   default: {
     page: 1,
     limit: 10,
+    gradeId: 'all',
+    classId: 'all',
   },
 });
 

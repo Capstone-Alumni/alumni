@@ -11,8 +11,6 @@ const handler = nc({
   onNoMatch: onNoMatchAPIHandler,
 }).use(extractTenantId);
 
-handler
-  .get(isAuthenticatedUser, AccessRequestController.getAccessRequestList)
-  .post(isAuthenticatedUser, AccessRequestController.requestJoinClass);
+handler.get(isAuthenticatedUser, AccessRequestController.getOwnedAccessStatus);
 
 export default handler;
