@@ -8,6 +8,8 @@ import { Post } from '../type';
 type GetPostListParams = {
   page: number;
   limit: number;
+  gradeId: string;
+  alumClassId: string;
 };
 
 type GetPostListResponse = {

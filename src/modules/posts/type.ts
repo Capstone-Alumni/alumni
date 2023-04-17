@@ -23,9 +23,10 @@ export type PostComment = {
 export type Post = {
   id: string;
   content: string;
+  authorId: string;
   author: {
     id: string;
-    information: UserInformation;
+    information?: UserInformation;
   };
   grade?: Grade;
   alumClass?: Class;

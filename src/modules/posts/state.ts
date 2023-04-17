@@ -9,9 +9,8 @@ export const postListAtom = atom<Post[]>({
 export const getPostListParams = atom({
   key: 'getPostList',
   default: {
-    myClass: false,
-    myGrade: false,
-    all: true,
+    alumClassId: 'all',
+    gradeId: 'all',
     page: 1,
     limit: 4, // keep low to test load more
   },

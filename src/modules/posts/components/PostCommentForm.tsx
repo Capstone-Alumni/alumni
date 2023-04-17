@@ -49,8 +49,8 @@ const PostCommentForm = ({
     <Stack direction="row" gap={1} alignItems="center">
       <MyAvatar
         size="small"
-        displayName={currentUserInformation.fullName}
-        photoUrl={currentUserInformation.avatarUrl}
+        displayName={currentUserInformation?.information?.fullName}
+        photoUrl={currentUserInformation?.information?.avatarUrl}
       />
       <TextInput
         control={control}
@@ -67,7 +67,11 @@ const PostCommentForm = ({
           InputProps: {
             endAdornment: (
               <InputAdornment position="end">
-                <SendIcon color="primary" onClick={handleSubmit(onSubmit)} />
+                <SendIcon
+                  color="primary"
+                  onClick={handleSubmit(onSubmit)}
+                  sx={{ '&:hover': { cursor: 'pointer ' } }}
+                />
               </InputAdornment>
             ),
             style: {

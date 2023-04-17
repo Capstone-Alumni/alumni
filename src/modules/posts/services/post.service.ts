@@ -1,4 +1,4 @@
-import { AccessLevel, Prisma, PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { User } from 'next-auth';
 class PostService {
   static createPost = async (
@@ -6,12 +6,10 @@ class PostService {
     user: User,
     {
       content,
-      isPublicSchool,
       gradeId,
       alumClassId,
     }: {
       content: string;
-      isPublicSchool: boolean;
       gradeId?: string;
       alumClassId?: string;
     },
@@ -25,17 +23,17 @@ class PostService {
       },
     };
 
-    if (isPublicSchool) {
+    if (gradeId === 'all' && alumClassId === 'all') {
       payload.isPublicSchool = true;
+    }
+    if (alumClassId !== 'all') {
+      payload.alumClass = {
+        connect: { id: alumClassId },
+      };
     }
     if (gradeId) {
       payload.grade = {
         connect: { id: gradeId },
-      };
-    }
-    if (alumClassId) {
-      payload.alumClass = {
-        connect: { id: alumClassId },
       };
     }
 
@@ -61,13 +59,11 @@ class PostService {
     tenantPrisma: PrismaClient,
     user: User,
     {
-      all,
       gradeId,
       alumClassId,
       page,
       limit,
     }: {
-      all: boolean;
       gradeId: string;
       alumClassId: string;
       page: number;
@@ -86,8 +82,8 @@ class PostService {
         },
       },
     });
-    const gradeIdList = userInformation?.alumniToClass.map(
-      ({ alumClass }) => alumClass.gradeId,
+    const classIdList = userInformation?.alumniToClass.map(
+      ({ alumClassId }) => alumClassId,
     );
 
     if (!userInformation) {
@@ -98,11 +94,32 @@ class PostService {
       archived: false,
     };
 
-    if (all) {
+    if (gradeId === 'all' && alumClassId === 'all') {
       whereFilter.isPublicSchool = true;
-    }
-    if (gradeId && gradeIdList?.find(id => id === gradeId)) {
-      whereFilter.gradeId = gradeId;
+    } else if (alumClassId !== 'all') {
+      whereFilter.alumClassId = alumClassId;
+    } else if (gradeId !== 'all') {
+      whereFilter.OR = [
+        {
+          gradeId: gradeId,
+          alumClassId: null,
+          author: {
+            alumniToClass: {
+              some: {
+                alumClassId: {
+                  in: classIdList,
+                },
+              },
+            },
+          },
+        },
+        {
+          gradeId: gradeId,
+          alumClassId: {
+            in: classIdList,
+          },
+        },
+      ];
     }
 
     const [totalItems, items] = await tenantPrisma.$transaction([
@@ -167,13 +184,15 @@ class PostService {
   static updatePost = async (
     tenantPrisma: PrismaClient,
     postId: string,
-    data: { content?: string; publicity?: AccessLevel },
+    { content }: { content?: string },
   ) => {
     const post = await tenantPrisma.post.update({
       where: {
         id: postId,
       },
-      data: data,
+      data: {
+        content: content,
+      },
     });
 
     await tenantPrisma.$disconnect();

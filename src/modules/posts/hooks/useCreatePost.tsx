@@ -6,7 +6,10 @@ import { PostFormValues } from '../components/PostForm';
 import { postListAtom } from '../state';
 import { Post } from '../type';
 
-type CreatePostParams = PostFormValues;
+export type CreatePostParams = PostFormValues & {
+  gradeId: string;
+  alumClassId: string;
+};
 
 type CreatePostResponse = {
   data: Post;
