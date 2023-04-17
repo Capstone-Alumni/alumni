@@ -15,12 +15,12 @@ const UploadGradeFileButton = () => {
   const { reload } = useGetGradeList();
 
   const onUploadFile = async (file?: File) => {
-    setUploading(true);
-    toast.loading('Đang xử lý', { toastId: LOADING_TOAST_ID });
-
     if (!file) {
       return;
     }
+
+    setUploading(true);
+    toast.loading('Đang xử lý', { toastId: LOADING_TOAST_ID });
 
     const jsonData = await parseXLSX(file);
 
@@ -29,25 +29,50 @@ const UploadGradeFileButton = () => {
 
     // precheck header
     const formattedData = data.reduce((red: any[], item: any, index) => {
-      if (index === 0) {
+      if (index === 0 || index === 1) {
         return red;
       }
 
-      if (item[1].length === 0 || item[2].length === 0) {
+      // Contains all item
+      if (item.length < 4) {
         return red;
       }
 
-      return [...red, { gradeCode: item[1], className: item[2] }];
+      // Start year
+      if (typeof item[2] !== 'number') {
+        return red;
+      }
+
+      // valid class list
+      for (let i = 3; i + 1 < item.length; ++i) {
+        if (typeof item[i] !== 'string') {
+          return red;
+        }
+
+        if (item[i].length === 0 && item[i + 1].length > 0) {
+          return red;
+        }
+      }
+
+      return [
+        ...red,
+        {
+          code: item[1],
+          startYear: item[2] - 3,
+          endYear: item[2],
+          classNameList: item.slice(3, -1),
+        },
+      ];
     }, []);
 
-    if (formattedData.length === 0 && data.length > 1) {
+    if (formattedData.length < data.length - 2) {
       toast.dismiss(LOADING_TOAST_ID);
       toast.warn('Sai định dạng');
     }
 
-    // toast.update(LOADING_TOAST_ID, {
-    //   render: `Đang xử lý (0/${formattedData.length})`,
-    // });
+    toast.update(LOADING_TOAST_ID, {
+      render: `Đang xử lý (0/${formattedData.length})`,
+    });
 
     await createManyGrade({ data: formattedData });
 
@@ -64,7 +89,7 @@ const UploadGradeFileButton = () => {
       </Button>
       <input
         type="file"
-        accept="xlsx"
+        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
         disabled={uploading}
         onChange={e => onUploadFile(e.target.files?.[0])}
         style={{

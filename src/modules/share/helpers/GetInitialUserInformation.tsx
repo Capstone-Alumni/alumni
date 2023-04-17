@@ -11,7 +11,7 @@ const GetInitialUserInformation = ({ user }: { user?: User }) => {
   const { fetchApi } = useGetCurrentUserInformation();
 
   useEffect(() => {
-    if (user?.id && user?.id !== currentUserInformation.userId) {
+    if (user?.id && user?.id !== currentUserInformation?.alumniId) {
       fetchApi({ id: user.id });
     }
   }, []);

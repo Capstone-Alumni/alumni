@@ -1,5 +1,5 @@
-import { AccessLevel } from '@prisma/client';
-import { Information } from '../profiles/types';
+import { UserInformation } from '@share/type';
+import { Class, Grade } from '../gradeAndClass/types';
 
 export type PostLike = {
   id: string;
@@ -11,7 +11,10 @@ export type PostComment = {
   id: string;
   authorId: string;
   postId: string;
-  authorInformation: Information;
+  author: {
+    id: string;
+    information: UserInformation;
+  };
   content: string;
   createdAt: string | Date;
   updatedAt: string | Date;
@@ -20,8 +23,13 @@ export type PostComment = {
 export type Post = {
   id: string;
   content: string;
-  publicity: AccessLevel;
-  authorInformation: Information;
+  author: {
+    id: string;
+    information: UserInformation;
+  };
+  grade?: Grade;
+  alumClass?: Class;
+  isPublicSchool?: boolean;
   postLikes: PostLike[];
   postComments: PostComment[];
   createdAt: string | Date;

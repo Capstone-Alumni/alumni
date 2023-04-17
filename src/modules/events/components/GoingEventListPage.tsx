@@ -1,10 +1,9 @@
 'use client';
 
 import { Grid } from '@mui/material';
-import { Button, Pagination, useTheme } from '@mui/material';
+import { Pagination, useTheme } from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import SearchInput from '@share/components/SearchInput';
-import Link from '@share/components/NextLinkV2';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import useOwnerGetGoingEventList from '../hooks/useOwnerGetGoingEventList';
@@ -46,18 +45,20 @@ const GoingEventListPage = () => {
               <EventCardItem
                 key={item.id}
                 data={item}
-                actions={[
-                  <Link
-                    key="edit-btn"
-                    href={`/events/${item.id}`}
-                    style={{ width: '100%' }}
-                    prefetch={false}
-                  >
-                    <Button fullWidth variant="outlined">
-                      Xem chi tiết
-                    </Button>
-                  </Link>,
-                ]}
+                actions={
+                  [
+                    // <Link
+                    //   key="edit-btn"
+                    //   href={`/events/${item.id}`}
+                    //   style={{ width: '100%' }}
+                    //   prefetch={false}
+                    // >
+                    //   <Button fullWidth variant="outlined">
+                    //     Xem chi tiết
+                    //   </Button>
+                    // </Link>,
+                  ]
+                }
               />
             ))}
           </Grid>

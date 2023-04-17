@@ -54,10 +54,13 @@ export const nextAuthOptions = {
     signIn: 'sign_in',
   },
   callbacks: {
-    jwt({ token, user }) {
+    jwt({ token, user, trigger, session }) {
       if (user) {
         token.user = user;
         token.currentTenant = user.tenant || null;
+      }
+      if (trigger === 'update' && session?.currentTenant) {
+        token.currentTenant = session.currentTenant;
       }
       return token;
     },

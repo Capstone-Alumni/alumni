@@ -9,6 +9,7 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  Stack,
   useTheme,
 } from '@mui/material';
 // import SelectInput from '@share/components/form/SelectInput';
@@ -17,13 +18,14 @@ import { useState } from 'react';
 import RichTextInput from '@share/components/form/RichTextInput';
 import UploadBackgroundInput from '@share/components/form/UploadBackgroundInput';
 import CurrencyInput from '@share/components/CurrencyInput';
-import DateInput from '@share/components/form/DateInput';
 import { useRouter } from 'next/navigation';
+import DateTimeInput from '@share/components/form/DateTimeInput';
 
 export type FundFormValues = {
   title: string;
   description?: string;
   backgroundImage?: string;
+  startTime?: Date;
   endTime: Date;
   targetBalance: number;
   publicity: AccessLevel;
@@ -78,7 +80,10 @@ const FundForm = ({
 
   const onSubmitWithStatus = async (values: FundFormValues) => {
     setIsSaving(true);
-    await onSubmit(values);
+    await onSubmit({
+      ...values,
+      startTime: isPublicNow ? new Date() : values.startTime,
+    });
     setIsSaving(false);
   };
 
@@ -138,25 +143,28 @@ const FundForm = ({
         />
       </Box>
 
-      {isPublicNow ? null : (
-        <DateInput
+      <Stack direction="row" gap={2} sx={{ width: '100%' }}>
+        {isPublicNow ? null : (
+          <DateTimeInput
+            control={control}
+            name="startTime"
+            inputProps={{
+              label: 'Thời gian bắt đầu',
+              fullWidth: true,
+            }}
+          />
+        )}
+
+        <DateTimeInput
           control={control}
-          name="startTime"
+          name="endTime"
           inputProps={{
+            label: 'Thời gian kết thúc',
             fullWidth: true,
-            label: 'Thời gian bắt đầu',
           }}
         />
-      )}
+      </Stack>
 
-      <DateInput
-        control={control}
-        name="endTime"
-        inputProps={{
-          fullWidth: true,
-          label: 'Thời gian kết thúc',
-        }}
-      />
       <Box
         sx={{
           display: 'flex',
@@ -171,7 +179,7 @@ const FundForm = ({
           disabled={isSaving}
           onClick={handleSubmit(onSubmitWithStatus)}
         >
-          Lưu
+          {initialData ? 'Lưu' : 'Tạo'}
         </Button>
       </Box>
     </Box>

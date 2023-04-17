@@ -31,7 +31,7 @@ const AdminEventListItem = ({
         </TableCell>
         <TableCell align="left">
           <Typography fontSize="inherit">
-            {data.recruitmentOwnerInfo?.fullName}
+            {data.recruitmentOwner?.information?.fullName}
           </Typography>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '8rem' }}>

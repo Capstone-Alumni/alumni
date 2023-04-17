@@ -101,7 +101,7 @@ const ClassForm = ({
           disabled={submitting}
           onClick={handleSubmit(onSubmitHandler)}
         >
-          Lưu
+          {initialData ? 'Lưu' : 'Thêm'}
         </Button>
       </Box>
     </Box>

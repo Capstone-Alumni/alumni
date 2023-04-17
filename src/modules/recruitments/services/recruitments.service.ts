@@ -26,27 +26,18 @@ export default class RecruimentService {
     recruitmentOwnerId: string,
     body: CreateRecruitmentProps,
   ) => {
-    const recruitmentOwnerInfo = await tenantPrisma.information.findFirst({
-      where: { userId: recruitmentOwnerId },
+    const recruitmentOwnerAlumni = await tenantPrisma.alumni.findFirst({
+      where: { id: recruitmentOwnerId },
     });
-    const newRecruitment = recruitmentOwnerInfo
-      ? await tenantPrisma.recruitment.create({
-          data: {
-            ...body,
-            isApproved: true,
-            recruitmentOwnerId: recruitmentOwnerId,
-            recruitmentOwnerInfo: {
-              connect: { id: recruitmentOwnerInfo?.id },
-            },
-          },
-        })
-      : await tenantPrisma.recruitment.create({
-          data: {
-            ...body,
-            isApproved: true,
-            recruitmentOwnerId: recruitmentOwnerId,
-          },
-        });
+    const newRecruitment = await tenantPrisma.recruitment.create({
+      data: {
+        ...body,
+        isApproved: true,
+        recruitmentOwner: {
+          connect: { id: recruitmentOwnerAlumni?.id },
+        },
+      },
+    });
     return newRecruitment;
   };
 
@@ -102,7 +93,11 @@ export default class RecruimentService {
         take: limit,
         where: whereFilter,
         include: {
-          recruitmentOwnerInfo: true,
+          recruitmentOwner: {
+            include: {
+              information: true,
+            },
+          },
         },
         orderBy: [{ createdAt: 'desc' }],
       }),

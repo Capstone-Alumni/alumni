@@ -5,36 +5,31 @@ export const buildEventWhereFilter = async (
   tenantPrisma: PrismaClient,
   user: User,
 ) => {
-  const userInformation = await tenantPrisma.information.findUnique({
+  const alumni = await tenantPrisma.alumni.findUnique({
     where: {
-      userId: user.id,
+      id: user.id,
     },
     include: {
-      alumClass: true,
+      alumniToClass: {
+        include: {
+          alumClass: true,
+        },
+      },
     },
   });
 
-  if (!userInformation) {
+  if (!alumni) {
     throw new Error('user not exist');
   }
 
   const whereFilter: Prisma.EventWhereInput = {
     OR: [
       {
-        publicity: 'SCHOOL_ADMIN',
+        isPublicSchool: true,
       },
       {
-        publicity: 'GRADE_MOD',
-        hostInformation: {
-          alumClass: {
-            gradeId: userInformation.alumClass?.gradeId || '',
-          },
-        },
-      },
-      {
-        publicity: 'ALUMNI',
-        hostInformation: {
-          id: userInformation.id,
+        gradeId: {
+          in: alumni.alumniToClass.map(cl => cl.alumClass.gradeId),
         },
       },
     ],
@@ -78,21 +73,17 @@ export default class PublicEventService {
         include: {
           eventParticipants: {
             where: {
-              userId: userId ?? '',
+              participantId: userId,
             },
           },
           eventInterests: {
             where: {
-              userId: userId ?? '',
+              interesterId: userId,
             },
           },
-          hostInformation: {
+          host: {
             include: {
-              alumClass: {
-                include: {
-                  grade: true,
-                },
-              },
+              information: true,
             },
           },
         },
@@ -115,20 +106,23 @@ export default class PublicEventService {
     const event = await tenantPrisma.event.findFirst({
       where: {
         id: eventId,
-        publicity: 'SCHOOL_ADMIN',
       },
       include: {
         eventParticipants: {
           where: {
-            userId: userId ?? '',
+            participantId: userId ?? '',
           },
         },
         eventInterests: {
           where: {
-            userId: userId ?? '',
+            interesterId: userId ?? '',
           },
         },
-        hostInformation: true,
+        host: {
+          include: {
+            information: true,
+          },
+        },
       },
     });
 
@@ -147,13 +141,13 @@ export default class PublicEventService {
       },
     });
 
-    if (!event || event.publicity !== 'SCHOOL_ADMIN') {
+    if (!event) {
       throw new Error('404 not found event');
     }
 
     const existedParticipant = await tenantPrisma.eventParticipant.findFirst({
       where: {
-        userId: userId,
+        participantId: userId,
         eventId: eventId,
       },
     });
@@ -169,9 +163,9 @@ export default class PublicEventService {
             id: eventId,
           },
         },
-        participantInformation: {
+        participant: {
           connect: {
-            userId: userId,
+            id: userId,
           },
         },
       },
@@ -192,13 +186,13 @@ export default class PublicEventService {
       },
     });
 
-    if (!event || event.publicity !== 'SCHOOL_ADMIN') {
+    if (!event) {
       throw new Error('404 not found event');
     }
 
     const deletedCount = await tenantPrisma.eventParticipant.deleteMany({
       where: {
-        userId: userId,
+        participantId: userId,
         eventId: eventId,
       },
     });
@@ -230,13 +224,9 @@ export default class PublicEventService {
           createdAt: 'desc',
         },
         include: {
-          participantInformation: {
+          participant: {
             include: {
-              alumClass: {
-                include: {
-                  grade: true,
-                },
-              },
+              information: true,
             },
           },
         },
@@ -262,13 +252,13 @@ export default class PublicEventService {
       },
     });
 
-    if (!event || event.publicity !== 'SCHOOL_ADMIN') {
+    if (!event) {
       throw new Error('404 not found event');
     }
 
     const existedInterest = await tenantPrisma.eventInterest.findFirst({
       where: {
-        userId: userId,
+        interesterId: userId,
         eventId: eventId,
       },
     });
@@ -284,9 +274,9 @@ export default class PublicEventService {
             id: eventId,
           },
         },
-        userInformation: {
+        interester: {
           connect: {
-            userId: userId,
+            id: userId,
           },
         },
       },
@@ -307,13 +297,13 @@ export default class PublicEventService {
       },
     });
 
-    if (!event || event.publicity !== 'SCHOOL_ADMIN') {
+    if (!event) {
       throw new Error('404 not found event');
     }
 
     const interest = await tenantPrisma.eventInterest.deleteMany({
       where: {
-        userId: userId,
+        interesterId: userId,
         eventId: eventId,
       },
     });

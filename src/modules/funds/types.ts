@@ -1,4 +1,3 @@
-import { AccessLevel } from '@prisma/client';
 import { UserInformation } from '@share/states';
 
 export type Fund = {
@@ -13,22 +12,27 @@ export type Fund = {
   endTime: string | Date;
   targetBalance: number;
   currentBalance: number;
-  publicity: AccessLevel;
-  userId: string;
-  hostInformation?: UserInformation;
+  hostId: string;
+  host?: {
+    id: string;
+    information: UserInformation;
+  };
   fundSaved: FundSaved[];
 };
 
 export type FundSaved = {
   id: string;
-  userId: string;
-  FundId: string;
+  saverId: string;
+  fundId: string;
 };
 
 export type FundTransaction = {
   id: string;
-  userId: string;
-  userInformation?: UserInformation;
+  alumniId: string;
+  alumni?: {
+    id: string;
+    information: UserInformation;
+  };
   fundId: string;
   fund?: Fund;
   vnp_Amount: string | number;

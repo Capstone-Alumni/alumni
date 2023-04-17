@@ -1,4 +1,4 @@
-import { AccessLevel, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import 'next-auth';
 import { User as NextUser } from 'next-auth';
 import 'next-auth/jwt';
@@ -19,14 +19,14 @@ declare module 'next-auth' {
     id?: string;
     accessToken?: string;
     user: User;
-    tenant?: Tenant;
+    currentTenant?: Tenant;
   }
 
   interface User extends NextUser {
     id: string;
     email: string;
     tenant: Tenant;
-    accessLevel: AccessLevel;
+    isOwner: boolean;
   }
 }
 

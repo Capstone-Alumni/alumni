@@ -1,4 +1,4 @@
-import { AccessLevel } from '@prisma/client';
+import { AccessLevel, Prisma } from '@prisma/client';
 import { PrismaClient } from '@prisma/client';
 
 export default class OwnerEventService {
@@ -22,13 +22,9 @@ export default class OwnerEventService {
           createdAt: 'desc',
         },
         include: {
-          hostInformation: {
+          host: {
             include: {
-              alumClass: {
-                include: {
-                  grade: true,
-                },
-              },
+              information: true,
             },
           },
         },
@@ -52,6 +48,9 @@ export default class OwnerEventService {
       where: {
         id: eventId,
       },
+      include: {
+        grade: true,
+      },
     });
 
     // if (event?.userId !== userId) {
@@ -74,7 +73,7 @@ export default class OwnerEventService {
       location = '',
       startTime,
       endTime,
-      publicity,
+      gradeId,
       publicParticipant,
     }: {
       title: string;
@@ -84,23 +83,36 @@ export default class OwnerEventService {
       location?: string;
       startTime: Date;
       endTime?: Date;
-      publicity?: AccessLevel;
+      gradeId?: string;
       publicParticipant?: boolean;
     },
   ) => {
-    const data = await tenantPrisma.event.create({
-      data: {
-        userId: userId,
-        title,
-        backgroundImage,
-        description,
-        isOffline,
-        location,
-        startTime,
-        endTime,
-        publicity,
-        publicParticipant,
+    const payload: Prisma.EventCreateInput = {
+      host: {
+        connect: {
+          id: userId,
+        },
       },
+      title,
+      backgroundImage,
+      description,
+      isOffline,
+      location,
+      startTime,
+      endTime,
+      publicParticipant,
+    };
+
+    if (gradeId === 'all') {
+      payload.isPublicSchool = true;
+    } else {
+      payload.grade = {
+        connect: { id: gradeId },
+      };
+    }
+
+    const data = await tenantPrisma.event.create({
+      data: payload,
     });
 
     await tenantPrisma.$disconnect();
@@ -182,7 +194,7 @@ export default class OwnerEventService {
     }: { userId: string; page: number; limit: number; title: string },
   ) => {
     const whereFilter = {
-      userId: userId,
+      participantId: userId,
       event: {
         title: {
           contains: title,
@@ -205,13 +217,9 @@ export default class OwnerEventService {
         include: {
           event: {
             include: {
-              hostInformation: {
+              host: {
                 include: {
-                  alumClass: {
-                    include: {
-                      grade: true,
-                    },
-                  },
+                  information: true,
                 },
               },
             },
@@ -239,7 +247,7 @@ export default class OwnerEventService {
     }: { userId: string; page: number; limit: number; title: string },
   ) => {
     const whereFilter = {
-      userId: userId,
+      interesterId: userId,
       archived: false,
       event: {
         title: {
@@ -262,13 +270,9 @@ export default class OwnerEventService {
         include: {
           event: {
             include: {
-              hostInformation: {
+              host: {
                 include: {
-                  alumClass: {
-                    include: {
-                      grade: true,
-                    },
-                  },
+                  information: true,
                 },
               },
             },

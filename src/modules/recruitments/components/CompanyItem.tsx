@@ -169,11 +169,15 @@ const Company = ({
               >
                 <MyAvatar
                   size="small"
-                  displayName={companyDetails.recruitmentOwnerInfo?.fullName}
-                  photoUrl={companyDetails.recruitmentOwnerInfo?.avatarUrl}
+                  displayName={
+                    companyDetails.recruitmentOwner?.information?.fullName
+                  }
+                  photoUrl={
+                    companyDetails.recruitmentOwner?.information?.avatarUrl
+                  }
                 />
                 <Typography variant="body2" fontWeight="bold">
-                  {companyDetails.recruitmentOwnerInfo?.fullName}
+                  {companyDetails.recruitmentOwner?.information?.fullName}
                 </Typography>
               </Stack>
             </CardContent>

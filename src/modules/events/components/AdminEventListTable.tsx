@@ -30,7 +30,9 @@ const AdminEventListTable = ({
             <TableRow>
               <TableCell align="left">Tên sự kiện</TableCell>
               <TableCell align="left">Người tạo</TableCell>
-              <TableCell align="left">Ngày bắt đầu</TableCell>
+              <TableCell align="left">Niên khoá</TableCell>
+              <TableCell align="left">Bắt đầu</TableCell>
+              <TableCell align="left">Kết thúc</TableCell>
               <TableCell align="center">Trạng thái</TableCell>
               <TableCell align="center">Thao tác</TableCell>
             </TableRow>

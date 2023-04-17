@@ -1,9 +1,10 @@
-import { ListItemIcon, MenuItem } from '@mui/material';
+import { ListItemIcon, MenuItem, Tooltip } from '@mui/material';
 import { Menu } from '@mui/material';
 import { IconButton } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import React, { useState } from 'react';
 import { ListItemText } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 
 const ActionButton = ({
   actions,
@@ -12,6 +13,7 @@ const ActionButton = ({
     id: string;
     icon?: React.ReactNode;
     text: string;
+    tooltip?: string;
     onClick: () => void;
   } | null>;
 }) => {
@@ -59,6 +61,11 @@ const ActionButton = ({
             >
               <ListItemIcon>{action.icon}</ListItemIcon>
               <ListItemText>{action.text}</ListItemText>
+              {action.tooltip ? (
+                <Tooltip title={action.tooltip}>
+                  <InfoIcon color="info" fontSize="small" sx={{ ml: 2 }} />
+                </Tooltip>
+              ) : null}
             </MenuItem>
           );
         })}

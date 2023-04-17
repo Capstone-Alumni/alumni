@@ -2,7 +2,6 @@
 
 import { Stack, useTheme } from '@mui/material';
 import AddPostButton from './AddPostButton';
-import ClassmateList from './ClassmateList';
 import PostList from './PostList';
 import PostSidebar from './PostSidebar';
 
@@ -28,8 +27,6 @@ const PostListPage = () => {
 
         <PostList />
       </Stack>
-
-      <ClassmateList />
     </Stack>
   );
 };

@@ -41,9 +41,9 @@ const EventParticipantListTab = ({ eventId }: { eventId: string }) => {
           <TableHead>
             <TableRow>
               <TableCell align="left">Tên</TableCell>
-              <TableCell align="left">Ngày đăng ký</TableCell>
-              <TableCell align="center">Niên khoá</TableCell>
-              <TableCell align="center">Lớp</TableCell>
+              <TableCell align="right">Ngày đăng ký</TableCell>
+              {/* <TableCell align="center">Niên khoá</TableCell>
+              <TableCell align="center">Lớp</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -60,23 +60,25 @@ const EventParticipantListTab = ({ eventId }: { eventId: string }) => {
                   >
                     <MyAvatar />
                     <Typography>
-                      {row.participantInformation.fullName}
+                      {row.participant?.information.fullName}
                     </Typography>
                   </Box>
                 </TableCell>
-                <TableCell>{formatDate(new Date(row.createdAt))}</TableCell>
-                <TableCell align="center">
-                  {row.participantInformation.alumClass?.grade?.code}
+                <TableCell align="right">
+                  {formatDate(new Date(row.createdAt))}
+                </TableCell>
+                {/* <TableCell align="center">
+                  {row.participant?.information.alumClass?.grade?.code}
                 </TableCell>
                 <TableCell align="center">
-                  {row.participantInformation.alumClass?.name}
-                </TableCell>
+                  {row.participant?.information.alumClass?.name}
+                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>
 
           <DataTablePagination
-            colSpan={6}
+            colSpan={2}
             currentPage={params.page}
             totalPage={Math.ceil(
               data?.data.totalItems / data?.data.itemPerPage,

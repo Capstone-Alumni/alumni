@@ -5,7 +5,6 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Event } from '../types';
 import { formatDate } from '@share/utils/formatDate';
-import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import useAdminGetEventList from '../hooks/useAdminGetEventList';
 import useOwnerDeleteEventById from '../hooks/useOwnerDeleteEventById';
@@ -17,17 +16,15 @@ import {
 } from '@share/components/styled';
 import Link from '@share/components/NextLinkV2';
 import AdminEventPreview from './AdminEventPreview';
+import { getGradeLongName } from '@share/utils/getGradeName';
 
 const AdminEventListItem = ({
   data,
-  onApprove,
-  onReject,
 }: {
   data: Event;
   onApprove: (id: string) => void;
   onReject: (id: string) => void;
 }) => {
-  const router = useRouter();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const { reload } = useAdminGetEventList();
@@ -40,18 +37,14 @@ const AdminEventListItem = ({
 
   const eventStatus = useMemo(() => {
     if (!data) {
-      return 'not-open';
+      return 'not-started';
     }
 
-    if (new Date(data.startTime) >= new Date()) {
-      return 'opened';
+    if (new Date(data.startTime) > new Date()) {
+      return 'not-started';
     }
 
     if (data.endTime && new Date(data.endTime) > new Date()) {
-      return 'running';
-    }
-
-    if (!data.endTime && !data.isEnded) {
       return 'running';
     }
 
@@ -73,12 +66,26 @@ const AdminEventListItem = ({
         </TableCell>
         <TableCell align="left">
           <Typography fontSize={'inherit'}>
-            {data.hostInformation?.fullName}
+            {data.host?.information?.fullName}
+          </Typography>
+        </TableCell>
+        <TableCell align="left">
+          <Typography fontSize={'inherit'}>
+            {data.isPublicSchool
+              ? 'Tất cả'
+              : data?.grade
+              ? getGradeLongName(data.grade)
+              : ''}
           </Typography>
         </TableCell>
         <TableCell align="left">
           <Typography fontSize={'inherit'}>
             {formatDate(new Date(data.startTime), 'dd/MM/yyyy - HH:ss')}
+          </Typography>
+        </TableCell>
+        <TableCell align="left">
+          <Typography fontSize={'inherit'}>
+            {formatDate(new Date(data.endTime), 'dd/MM/yyyy - HH:ss')}
           </Typography>
         </TableCell>
         <TableCell align="center">
@@ -87,12 +94,17 @@ const AdminEventListItem = ({
               <Tooltip title="Đã kết thúc">
                 <DirectionsRunIcon color="error" />
               </Tooltip>
-            ) : (
-              <Tooltip title="Chưa kết thúc">
+            ) : null}
+            {eventStatus === 'running' ? (
+              <Tooltip title="Đang diễn ra">
                 <DirectionsRunIcon color="success" />
               </Tooltip>
-            )}
-            {/* <Image alt="live" src={LiveGIF} width="100" height="50" /> */}
+            ) : null}
+            {eventStatus === 'not-started' ? (
+              <Tooltip title="Chưa bắt đầu">
+                <DirectionsRunIcon color="warning" />
+              </Tooltip>
+            ) : null}
           </Typography>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>

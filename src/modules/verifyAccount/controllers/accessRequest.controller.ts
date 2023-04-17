@@ -34,14 +34,14 @@ export default class AccessRequestController {
     req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
-    const { id: userId } = req.user;
+    const { id: accountId } = req.user;
     const { page, limit } = req.query;
     const prisma = await getPrismaClient(req.tenantId);
 
     const accessRequestList = await AccessRequestService.getAccessRequestList(
       prisma,
       {
-        userId,
+        accountId,
         page: page ? parseInt(page as string, 10) : 1,
         limit: limit ? parseInt(limit as string, 10) : 99,
       },

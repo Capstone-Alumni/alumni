@@ -21,9 +21,9 @@ class PostLikeService {
             id: postId,
           },
         },
-        authorInformation: {
+        author: {
           connect: {
-            userId: user.id,
+            id: user.id,
           },
         },
       },

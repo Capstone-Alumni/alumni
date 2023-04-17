@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import * as yup from 'yup';
@@ -21,6 +21,8 @@ import UploadAvatarInput from '@share/components/form/UploadAvatarInput';
 import RichTextInput from '@share/components/form/RichTextInput';
 import { Tenant } from '@share/states';
 import ConfirmUpdateModal from './ConfirmUpdateModal';
+import { getCityList, getProvinceList } from '@share/utils/getLocaltionList';
+import SelectInput from '@share/components/form/SelectInput';
 
 export type EditSChoolFormValues = {
   email: string;
@@ -33,6 +35,11 @@ export type EditSChoolFormValues = {
   background1?: string;
   background2?: string;
   background3?: string;
+  provinceCodename?: string;
+  provinceName?: string;
+  cityCodename?: string;
+  cityName?: string;
+  address?: string;
 };
 
 const MAINAPP_DOMAIN = '.vercel.app';
@@ -46,6 +53,9 @@ const validationSchema = yup.object({
   background1: yup.string(),
   background2: yup.string(),
   background3: yup.string(),
+  provinceCodename: yup.string(),
+  cityCodename: yup.string(),
+  address: yup.string(),
 });
 
 const EditSChoolForm = ({
@@ -60,7 +70,7 @@ const EditSChoolForm = ({
 
   const resolver = useYupValidateionResolver(validationSchema);
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, watch } = useForm({
     defaultValues: {
       subdomain: initialData?.subdomain ?? '',
       logo: initialData?.logo ?? '',
@@ -70,12 +80,40 @@ const EditSChoolForm = ({
       background1: initialData?.background1 ?? '',
       background2: initialData?.background2 ?? '',
       background3: initialData?.background3 ?? '',
+      provinceCodename: initialData?.provinceCodename ?? '',
+      cityCodename: initialData?.cityCodename ?? '',
+      address: initialData?.address ?? '',
     },
     resolver,
   });
 
+  const planWatcher = watch('plan');
+  const provinceCodenameWatcher = watch('provinceCodename');
+
+  const provinceOptions = getProvinceList().map(p => ({
+    name: p.name,
+    value: p.codename,
+  }));
+  const cityOptions = useMemo(
+    () =>
+      getCityList(provinceCodenameWatcher)?.map(c => ({
+        name: c.name,
+        value: c.codename,
+      })),
+    [provinceCodenameWatcher],
+  );
+
   const onSubmitHandler = async (values: EditSChoolFormValues) => {
-    await onSubmit(values);
+    const provinceData = provinceOptions.find(
+      p => p.value === values.provinceCodename,
+    );
+    const cityData = cityOptions.find(c => c.value === values.cityCodename);
+
+    await onSubmit({
+      ...values,
+      provinceName: provinceData?.name,
+      cityName: cityData?.name,
+    });
   };
 
   return (
@@ -119,27 +157,46 @@ const EditSChoolForm = ({
         <UploadBackgroundInput
           control={control}
           name="background1"
-          inputProps={{ label: 'Hình nền 1', sx: { margin: 0 } }}
+          inputProps={{ label: 'Hình nền trang chủ', sx: { margin: 0 } }}
         />
 
         <UploadBackgroundInput
           control={control}
           name="background2"
-          inputProps={{ label: 'Hình nền 2', sx: { margin: 0 } }}
+          inputProps={{ label: 'Hình nền phụ', sx: { margin: 0 } }}
         />
 
         <UploadBackgroundInput
           control={control}
           name="background3"
-          inputProps={{ label: 'Hình nền 3', sx: { margin: 0 } }}
+          inputProps={{
+            label: 'Hình nền đăng nhập/đăng ký',
+            sx: { margin: 0 },
+          }}
         />
       </Box>
 
       <Controller
+        name="theme"
         control={control}
-        name="name"
         render={({ field }) => (
-          <TextField fullWidth label="Tên trường" {...field} />
+          <TextField
+            fullWidth
+            variant="outlined"
+            label="Màu chủ đạo"
+            select
+            type="select"
+            {...field}
+          >
+            {[
+              { id: 'purple', value: 'purple', label: 'Tím' },
+              { id: 'green', value: 'green', label: 'Xanh lá' },
+            ]?.map(option => (
+              <MenuItem key={option.id} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
         )}
       />
 
@@ -151,6 +208,14 @@ const EditSChoolForm = ({
           gap: theme.spacing(2),
         }}
       >
+        <Controller
+          control={control}
+          name="name"
+          render={({ field }) => (
+            <TextField fullWidth label="Tên trường" {...field} />
+          )}
+        />
+
         <Controller
           control={control}
           name="subdomain"
@@ -169,31 +234,54 @@ const EditSChoolForm = ({
             />
           )}
         />
+      </Box>
 
-        <Controller
-          name="theme"
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          gap: theme.spacing(2),
+        }}
+      >
+        <SelectInput
           control={control}
-          render={({ field }) => (
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="Màu chủ đạo"
-              select
-              type="select"
-              {...field}
-            >
-              {[
-                { id: 'purple', value: 'purple', label: 'Tím' },
-                { id: 'green', value: 'green', label: 'Xanh lá' },
-              ]?.map(option => (
-                <MenuItem key={option.id} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          )}
+          name="provinceCodename"
+          options={provinceOptions}
+          inputProps={{
+            label: 'Tỉnh',
+            sx: {
+              width: '100%',
+            },
+          }}
+        />
+
+        <SelectInput
+          control={control}
+          name="cityCodename"
+          options={cityOptions}
+          inputProps={{
+            label: 'Thành phố',
+            sx: {
+              width: '100%',
+            },
+          }}
         />
       </Box>
+
+      <Controller
+        control={control}
+        name="address"
+        render={({ field, fieldState: { error } }) => (
+          <TextField
+            fullWidth
+            label="Địa chỉ"
+            {...field}
+            error={Boolean(error?.message)}
+            helperText={error?.message}
+          />
+        )}
+      />
 
       <RichTextInput
         control={control}

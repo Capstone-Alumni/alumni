@@ -69,7 +69,7 @@ const AdminMemberListTable = ({
       <form
         onSubmit={e => {
           e.preventDefault();
-          setParams(prevParams => ({ ...prevParams, email: search }));
+          setParams(prevParams => ({ ...prevParams, name: search }));
         }}
         style={{ marginBottom: theme.spacing(2) }}
       >
@@ -80,9 +80,9 @@ const AdminMemberListTable = ({
         <Table aria-label="Member table">
           <TableHead>
             <TableRow>
+              <TableCell align="left">Họ và tên</TableCell>
               <TableCell align="left">Email</TableCell>
-              <TableCell align="left">Vai trò</TableCell>
-              <TableCell align="left">Lần cuối đăng nhập</TableCell>
+              <TableCell align="left">Lớp</TableCell>
               <TableCell align="center">Thao tác</TableCell>
             </TableRow>
           </TableHead>

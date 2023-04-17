@@ -1,6 +1,5 @@
-import { AccessLevel } from '@prisma/client';
 import { UserInformation } from '@share/states';
-import { Information } from '../profiles/types';
+import { Grade } from '../gradeAndClass/types';
 
 export type Event = {
   id: string;
@@ -14,12 +13,15 @@ export type Event = {
   location?: string;
   startTime: string | Date;
   endTime: string | Date;
-  isEnded: boolean;
-  approvedStatus: -1 | 0 | 1;
-  publicity: AccessLevel;
+  gradeId: string;
+  grade?: Grade;
+  isPublicSchool: boolean;
   publicParticipant: boolean;
   userId: string;
-  hostInformation?: UserInformation;
+  host?: {
+    id: string;
+    information: UserInformation;
+  };
   eventParticipants: EventParticipant[];
   eventInterests: EventInterest[];
 };
@@ -28,13 +30,16 @@ export type EventParticipant = {
   id: string;
   userId: string;
   eventId: string;
-  participantInformation: Information;
+  participant: {
+    id: string;
+    information: UserInformation;
+  };
   createdAt: Date | string;
 };
 
 export type EventInterest = {
   id: string;
-  userId: string;
+  interesterId: string;
   eventId: string;
 };
 

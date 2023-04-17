@@ -65,7 +65,7 @@ const GRADE_NAV_ITEM = {
 };
 const USER_NAV_ITEM = {
   id: 'user',
-  title: 'Mời cựu học sinh',
+  title: 'Mời thành viên',
   icon: 'ph:student-bold',
   link: '/admin/config/members',
 };
@@ -178,8 +178,8 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
 
   const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
 
-  const schoolItems = generateSchoolNavItems(user?.accessLevel);
-  const navItems = generateNavItems(user?.accessLevel);
+  const schoolItems = generateSchoolNavItems('SCHOOL_ADMIN'); // fix
+  const navItems = generateNavItems('SCHOOL_ADMIN'); // fix
 
   if (!user) {
     return null;

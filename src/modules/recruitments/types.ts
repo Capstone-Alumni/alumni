@@ -42,9 +42,11 @@ export type Job = {
   startTime?: string | Date;
   expiredAt?: string | Date;
   isApproved: boolean;
-  recruitmentOwnerInfo: UserInformation;
+  recruitmentOwner?: {
+    id: string;
+    information: UserInformation;
+  };
   recruitmentOwnerId: string;
-  recruitmentOwnerInfoId: string;
   yearsOfExperience?: string;
   salary: string;
   type: string;
@@ -64,7 +66,10 @@ export type JobApplierInfo = {
   resumeUrl: string;
   recruitmentId: string;
   applicationOwnerId: string;
-  applicationOwnerInfo: ApplicationOwnerInfo;
+  applicationOwner: {
+    id: string;
+    information: ApplicationOwnerInfo;
+  };
   recruitment: Job;
 };
 

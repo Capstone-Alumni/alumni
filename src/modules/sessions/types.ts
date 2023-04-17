@@ -4,6 +4,14 @@ export type SignUpFormValues = {
   email: string;
   password: string;
   confirmPassword: string;
+  fullName: string;
+  gradeClass: Array<{
+    grade: { id: string; value: string; label: string };
+    alumClass: { id: string; value: string; label: string };
+  }>;
+
+  phone?: string;
+  dateOfBirth?: Date;
 };
 
 export type LinkUpFormValues = {
@@ -23,11 +31,7 @@ export type SignUpFormPayload = {
 };
 
 // BE
-export type SignUpRequestBody = {
-  username: string;
-  email: string;
-  password: string;
-};
+export type SignUpRequestBody = SignUpFormValues;
 
 export type SignInRequestBody = {
   usernameOrEmail: string;

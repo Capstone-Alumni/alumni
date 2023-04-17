@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import {
   CreateGradeServiceProps,
   GetGradeListServiceProps,
@@ -8,56 +8,125 @@ import {
 export default class GradeService {
   static create = async (
     tenantPrisma: PrismaClient,
-    { code }: CreateGradeServiceProps,
+    { code, startYear, endYear }: CreateGradeServiceProps,
   ) => {
-    const existingGrade = await tenantPrisma.grade.findUnique({
+    const newGrade = await tenantPrisma.grade.upsert({
       where: {
+        startYear_endYear: {
+          startYear: parseInt(startYear, 10),
+          endYear: parseInt(endYear, 10),
+        },
+      },
+      create: {
         code: code,
+        startYear: parseInt(startYear, 10),
+        endYear: parseInt(endYear, 10),
+      },
+      update: {
+        code: code,
+        archived: false,
       },
     });
 
-    if (existingGrade) {
-      throw new Error('existed');
+    await tenantPrisma.$disconnect();
+
+    return newGrade;
+  };
+
+  static clone = async (tenantPrisma: PrismaClient, id: string) => {
+    const grade = await tenantPrisma.grade.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        alumClasses: true,
+      },
+    });
+
+    if (!grade || grade?.archived === true) {
+      throw new Error('not exist');
     }
 
-    const newGrade = await tenantPrisma.grade.create({
-      data: {
-        code: code,
+    const newGrade = await tenantPrisma.grade.upsert({
+      where: {
+        startYear_endYear: {
+          startYear: grade?.startYear + 1,
+          endYear: grade?.endYear + 1,
+        },
+      },
+      create: {
+        code: `K${grade?.endYear + 1}`,
+        startYear: grade?.startYear + 1,
+        endYear: grade?.endYear + 1,
+      },
+      update: {
+        archived: false,
       },
     });
+
+    await tenantPrisma.alumClass.createMany({
+      data: grade.alumClasses.map(c => ({
+        name: c.name,
+        gradeId: newGrade.id,
+      })),
+      skipDuplicates: true,
+    });
+
+    await tenantPrisma.$disconnect();
 
     return newGrade;
   };
 
   static createMany = async (
     tenantPrisma: PrismaClient,
-    { data }: { data: Array<{ gradeCode: string; className: string }> },
+    {
+      data,
+    }: {
+      data: Array<{
+        startYear: string;
+        endYear: string;
+        code?: string;
+        classNameList: string[];
+      }>;
+    },
   ) => {
-    const gradeCodeList = data.map(({ gradeCode }) => gradeCode);
+    const gradeStartYearList = data.map(({ startYear }) =>
+      parseInt(startYear, 10),
+    );
 
     await tenantPrisma.grade.createMany({
-      data: data.map(row => ({ code: row.gradeCode })),
+      data: data.map(row => ({
+        code: row.code,
+        startYear: parseInt(row.startYear),
+        endYear: parseInt(row.endYear),
+      })),
       skipDuplicates: true,
     });
 
     const gradeListData = await tenantPrisma.grade.findMany({
       where: {
-        code: {
-          in: gradeCodeList,
+        startYear: {
+          in: gradeStartYearList,
         },
       },
     });
 
-    const classData = data.map(({ gradeCode, className }) => {
-      const grade = gradeListData.find(d => d.code === gradeCode);
-      if (!grade) {
-        throw new Error('grade not exist');
-      }
-      return {
-        name: className,
-        gradeId: grade?.id,
-      };
-    });
+    const classData = data.reduce(
+      (red: any[], { startYear, endYear, classNameList }) => {
+        const grade = gradeListData.find(
+          d =>
+            d.startYear === parseInt(startYear, 10) &&
+            d.endYear === parseInt(endYear, 10),
+        );
+        if (!grade) {
+          throw new Error('grade not exist');
+        }
+        return red.concat(
+          classNameList.map(name => ({ name: name, gradeId: grade.id })),
+        );
+      },
+      [],
+    );
 
     const count = await tenantPrisma.alumClass.createMany({
       data: classData,
@@ -71,11 +140,34 @@ export default class GradeService {
     tenantPrisma: PrismaClient,
     { params }: GetGradeListServiceProps,
   ) => {
-    const { code, page, limit } = params;
+    const { code, page, limit, alumniId } = params;
 
-    const whereFilter = {
-      AND: [{ OR: [{ code: { contains: code } }] }, { archived: false }],
+    const whereFilter: Prisma.GradeWhereInput = {
+      OR: [{ code: { contains: code } }],
+      archived: false,
     };
+
+    if (parseInt(code, 10)) {
+      whereFilter.OR = [
+        { code: { contains: code } },
+        {
+          startYear: parseInt(code, 10),
+        },
+        {
+          endYear: parseInt(code, 10),
+        },
+      ];
+    }
+
+    if (alumniId) {
+      const alumni = await tenantPrisma.alumni.findUnique({
+        where: { id: alumniId },
+        include: { gradeMod: true },
+      });
+      if (alumni && !alumni.isOwner) {
+        whereFilter.id = { in: alumni.gradeMod.map(({ gradeId }) => gradeId) };
+      }
+    }
 
     const [totalGradeItem, gradeItems] = await tenantPrisma.$transaction([
       tenantPrisma.grade.count({
@@ -85,8 +177,33 @@ export default class GradeService {
         skip: (page - 1) * limit,
         take: limit,
         where: whereFilter,
+        include: {
+          _count: {
+            select: {
+              alumClasses: {
+                where: {
+                  archived: false,
+                },
+              },
+            },
+          },
+          alumClasses: {
+            where: {
+              archived: false,
+            },
+          },
+          gradeMod: {
+            include: {
+              alumni: {
+                include: {
+                  information: true,
+                },
+              },
+            },
+          },
+        },
         orderBy: {
-          createdAt: 'desc',
+          endYear: 'desc',
         },
       }),
     ]);
@@ -105,6 +222,17 @@ export default class GradeService {
       where: {
         id: id,
       },
+      include: {
+        gradeMod: {
+          include: {
+            alumni: {
+              include: {
+                information: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     return grade;
@@ -113,25 +241,78 @@ export default class GradeService {
   static updateInfoById = async (
     tenanttPrisma: PrismaClient,
     id: string,
-    data: UpdateGradeInfoByIdServiceProps,
+    { code, startYear, endYear }: UpdateGradeInfoByIdServiceProps,
   ) => {
+    let dataUpdate = {};
+    if (code) {
+      dataUpdate = { ...dataUpdate, code };
+    }
+    if (startYear) {
+      dataUpdate = { ...dataUpdate, startYear: parseInt(startYear, 10) };
+    }
+    if (endYear) {
+      dataUpdate = { ...dataUpdate, endYear: parseInt(endYear, 10) };
+    }
+
     const grade = await tenanttPrisma.grade.update({
       where: {
         id: id,
       },
-      data: data,
+      data: dataUpdate,
     });
 
     return grade;
   };
 
   static deleteById = async (tenanttPrisma: PrismaClient, id: string) => {
-    const grade = await tenanttPrisma.grade.update({
+    const grade = await tenanttPrisma.grade.delete({
       where: {
         id: id,
       },
-      data: {
-        archived: true,
+    });
+
+    return grade;
+  };
+
+  static addGradeMod = async (
+    tenantPrisma: PrismaClient,
+    { gradeId, alumniId }: { gradeId: string; alumniId: string },
+  ) => {
+    const grade = await tenantPrisma.gradeMod.upsert({
+      where: {
+        gradeId_alumniId: {
+          gradeId,
+          alumniId,
+        },
+      },
+      create: {
+        grade: {
+          connect: {
+            id: gradeId,
+          },
+        },
+        alumni: {
+          connect: {
+            id: alumniId,
+          },
+        },
+      },
+      update: {},
+    });
+
+    return grade;
+  };
+
+  static removeGradeMod = async (
+    tenantPrisma: PrismaClient,
+    { gradeId, alumniId }: { gradeId: string; alumniId: string },
+  ) => {
+    const grade = await tenantPrisma.gradeMod.delete({
+      where: {
+        gradeId_alumniId: {
+          gradeId,
+          alumniId,
+        },
       },
     });
 

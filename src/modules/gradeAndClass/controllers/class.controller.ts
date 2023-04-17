@@ -29,6 +29,13 @@ export default class ClassController {
         });
       }
 
+      if (error.message?.includes('Unique constraint')) {
+        return res.status(400).json({
+          status: false,
+          message: 'New class is existed',
+        });
+      }
+
       if (error.message?.includes('grade')) {
         return res.status(400).json({
           status: false,
@@ -115,6 +122,41 @@ export default class ClassController {
     return res.status(200).json({
       status: true,
       data: classDeleted,
+    });
+  };
+
+  static addClassMod = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    const { id } = req.query;
+    const { alumniId } = req.body;
+    const prisma = await getPrismaClient(req.tenantId);
+    const grade = await ClassService.addClassMod(prisma, {
+      classId: id as string,
+      alumniId: alumniId as string,
+    });
+
+    return res.status(200).json({
+      status: true,
+      data: grade,
+    });
+  };
+
+  static removeClassMod = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    const { id, alumniId } = req.query;
+    const prisma = await getPrismaClient(req.tenantId);
+    const grade = await ClassService.removeClassMod(prisma, {
+      classId: id as string,
+      alumniId: alumniId as string,
+    });
+
+    return res.status(200).json({
+      status: true,
+      data: grade,
     });
   };
 }

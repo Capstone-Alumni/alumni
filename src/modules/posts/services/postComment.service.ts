@@ -10,9 +10,9 @@ class PostCommentService {
     const comment = await tenantPrisma.postComment.create({
       data: {
         content,
-        authorInformation: {
+        author: {
           connect: {
-            userId: user.id,
+            id: user.id,
           },
         },
         post: {
@@ -22,7 +22,11 @@ class PostCommentService {
         },
       },
       include: {
-        authorInformation: true,
+        author: {
+          include: {
+            information: true,
+          },
+        },
       },
     });
 
@@ -51,13 +55,9 @@ class PostCommentService {
           updatedAt: 'desc',
         },
         include: {
-          authorInformation: {
+          author: {
             include: {
-              alumClass: {
-                include: {
-                  grade: true,
-                },
-              },
+              information: true,
             },
           },
         },

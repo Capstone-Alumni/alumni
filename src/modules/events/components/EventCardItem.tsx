@@ -64,10 +64,7 @@ const EventCardItem = ({
   const theme = useTheme();
   const currentTenant = useRecoilValue(currentTenantDataAtom);
 
-  const isEnded = useMemo(
-    () => data.isEnded || new Date(data.endTime) < new Date(),
-    [],
-  );
+  const isEnded = useMemo(() => new Date(data.endTime) < new Date(), []);
 
   return (
     <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
@@ -160,11 +157,11 @@ const EventCardItem = ({
               <Stack flexDirection="row" alignItems="center" gap="0.5rem">
                 <MyAvatar
                   size="small"
-                  displayName={data.hostInformation?.fullName}
-                  photoUrl={data.hostInformation?.avatarUrl}
+                  displayName={data.host?.information?.fullName}
+                  photoUrl={data.host?.information?.avatarUrl}
                 />
                 <Typography variant="body2" fontWeight="bold">
-                  {data.hostInformation?.fullName}
+                  {data.host?.information?.fullName}
                 </Typography>
               </Stack>
               <Stack justifyContent="center">

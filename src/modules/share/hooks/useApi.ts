@@ -6,6 +6,7 @@ import formatSearchParams from '../utils/formatParams';
 import { noop } from 'lodash/fp';
 import { getSession } from 'next-auth/react';
 import {
+  currentTenantDataAtom,
   currentTenantSubdomainSelector,
   useApiDataAtomFamily,
 } from '@share/states';
@@ -46,6 +47,8 @@ const useApi = <Params, Data, Err>(
   const useApiDataAtom = useApiDataAtomFamily<Data>(apiName);
   const [dataAtom, setDataAtom] = useRecoilState(useApiDataAtom);
   const subdomain = useRecoilValue(currentTenantSubdomainSelector);
+  const currentTenant = useRecoilValue(currentTenantDataAtom);
+  const { tenantId } = currentTenant || {};
 
   const {
     optimisticData,
@@ -73,7 +76,7 @@ const useApi = <Params, Data, Err>(
         headers: {
           accept: 'application/json',
           'Content-Type': 'application/json',
-          'tenant-id': session?.tenant?.tenantId,
+          'tenant-id': session?.currentTenant?.tenantId || tenantId,
           'tenant-userid': session?.user.id, // enhance here
           ...headers,
         },
@@ -95,7 +98,7 @@ const useApi = <Params, Data, Err>(
     return data;
   };
 
-  const { error, trigger, reset, isMutating } = useSWRMutation(
+  const { error, trigger, data, reset, isMutating } = useSWRMutation(
     apiName,
     fetcher,
     {

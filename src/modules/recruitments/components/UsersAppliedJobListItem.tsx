@@ -8,14 +8,14 @@ const AdminEventListItem = ({ data }: { data: JobApplierInfo }) => {
     <>
       <TableRow>
         <TableCell align="left">
-          <Typography>{data.applicationOwnerInfo.fullName}</Typography>
+          <Typography>{data.applicationOwner?.information.fullName}</Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>{data.applicationOwnerInfo?.email}</Typography>
+          <Typography>{data.applicationOwner?.information?.email}</Typography>
         </TableCell>
         <TableCell align="left">
           <Typography>
-            {data.applicationOwnerInfo?.phone || 'Chưa cập nhật'}
+            {data.applicationOwner?.information?.phone || 'Chưa cập nhật'}
           </Typography>
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '2rem' }}>

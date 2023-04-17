@@ -1,11 +1,12 @@
 import { ScopePublicity } from '@prisma/client';
-import { Class } from 'src/modules/gradeAndClass/types';
+import { Member } from 'src/modules/members/types';
+
 export const canViewInformationDetail = (
   scope: ScopePublicity,
-  ownerClass: Class | null,
-  requesterClass: Class | null,
+  owner: Member | null,
+  requester: Member | null,
 ) => {
-  if (!ownerClass) {
+  if (!owner) {
     return false;
   }
 
@@ -13,11 +14,21 @@ export const canViewInformationDetail = (
     case 'PRIVATE':
       return false;
     case 'CLASS':
-      return ownerClass.id === requesterClass?.id;
+      return owner.alumniToClass.find(cl => {
+        const sameClass = requester?.alumniToClass.find(
+          clRequester => clRequester.alumClassId === cl.alumClassId,
+        );
+        return sameClass;
+      });
     case 'GRADE':
-      return ownerClass.gradeId === requesterClass?.gradeId;
+      return owner.alumniToClass.find(cl => {
+        const sameClass = requester?.alumniToClass.find(
+          clRequester => clRequester.alumClass.gradeId === cl.alumClass.gradeId,
+        );
+        return sameClass;
+      });
     case 'SCHOOL':
-      return requesterClass;
+      return requester;
     default:
       // eslint-disable-next-line no-case-declarations
       const _exhaustiveCheck: never = scope;

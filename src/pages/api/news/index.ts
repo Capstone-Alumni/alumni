@@ -1,4 +1,4 @@
-import { extractTenantId } from '@lib/next-connect';
+import { extractTenantIdFromSession } from '@lib/next-connect';
 import {
   isAuthenticatedUser,
   verifySchoolAdmin,
@@ -11,7 +11,7 @@ import NewsController from 'src/modules/news/controller/news.controller';
 const handler = nc({
   onError: onErrorAPIHandler,
   onNoMatch: onNoMatchAPIHandler,
-}).use(extractTenantId);
+}).use(extractTenantIdFromSession);
 
 handler
   .use(isAuthenticatedUser)

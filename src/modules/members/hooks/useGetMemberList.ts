@@ -22,14 +22,13 @@ const useGetMemberList = () => {
     GetMemberListDataError
   >(
     'getMemberList',
-    ({ page, limit, email, tenantId }) => ({
+    ({ page, limit, name }) => ({
       method: 'GET',
-      url: '/platformHost/api/members',
+      url: '/api/members',
       params: {
-        tenant_id: tenantId,
         page,
         limit,
-        email,
+        name,
       },
     }),
     {
@@ -38,9 +37,7 @@ const useGetMemberList = () => {
   );
 
   useEffect(() => {
-    if (params.tenantId) {
-      fetchApi(params);
-    }
+    fetchApi(params);
   }, [params]);
 
   const reload = () => {

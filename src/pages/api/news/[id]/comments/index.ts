@@ -1,4 +1,4 @@
-import { extractTenantId } from '@lib/next-connect';
+import { extractTenantIdFromSession } from '@lib/next-connect';
 import { isAuthenticatedUser } from '@lib/next-connect/apiMiddleware';
 import onErrorAPIHandler from '@lib/next-connect/onErrorAPIHandler';
 import onNoMatchAPIHandler from '@lib/next-connect/onNoMatchAPIHandler';
@@ -8,7 +8,7 @@ import NewsCommentController from 'src/modules/news/controller/newsComment.contr
 const handler = nc({
   onError: onErrorAPIHandler,
   onNoMatch: onNoMatchAPIHandler,
-}).use(extractTenantId);
+}).use(extractTenantIdFromSession);
 
 handler
   .use(isAuthenticatedUser)

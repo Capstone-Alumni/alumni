@@ -1,38 +1,58 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import {
+  FormProvider,
+  useFieldArray,
+  useForm,
+  useFormContext,
+} from 'react-hook-form';
 
 import * as yup from 'yup';
 import {
-  passwordValidator,
-  requiredEmailValidator,
+  emailValidator,
+  requiredFullNameValidator,
 } from '@share/utils/validators';
 
 import {
   Box,
   Button,
-  MenuItem,
-  TextField,
+  IconButton,
+  Stack,
   Typography,
   useTheme,
 } from '@mui/material';
 
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 import { Member } from '../types';
-import getRoleName from '@share/utils/getRoleName';
-import { useSession } from 'next-auth/react';
-import { getLowerRole } from '../utils';
+import TextInput from '@share/components/form/TextInput';
+import DateInput from '@share/components/form/DateInput';
+import AutocompleteInput from '@share/components/form/AutoCompleteInput';
+import useGetGradeList from 'src/modules/gradeAndClass/hooks/useGetGradeList';
+import { useSetRecoilState } from 'recoil';
+import { getGradeListParamsAtom } from 'src/modules/gradeAndClass/state';
+import { Icon } from '@iconify/react';
+import useGetClassListV2 from 'src/modules/gradeAndClass/hooks/useGetClassListV2';
 
 export type MemberFormValues = {
-  email: string;
-  password: string;
-  accessLevel: string;
+  fullName: string;
+  gradeClass: Array<{
+    grade: Array<{ id: string; value: string; label: string }>;
+    alumClass: Array<{ id: string; value: string; label: string }>;
+  }>;
+  email?: string;
+  phone?: string;
+  dateOfBirth?: Date;
+  facebook?: string;
+  zalo?: string;
 };
 
 const validationSchema = yup.object({
-  email: requiredEmailValidator,
-  accessLevel: yup.string(),
-  password: passwordValidator,
+  fullName: requiredFullNameValidator,
+  gradeClass: yup.array(),
+  email: emailValidator,
+  phone: yup.string(),
+  facebook: yup.string(),
+  zalo: yup.string(),
 });
 
 const MemberForm = ({
@@ -46,20 +66,22 @@ const MemberForm = ({
 }) => {
   const theme = useTheme();
   const [submitting, setSubmitting] = useState(false);
-  const { data: session } = useSession();
-
-  const roleList = getLowerRole(session?.user.accessLevel);
 
   const resolver = useYupValidateionResolver(validationSchema);
 
-  const { control, handleSubmit } = useForm({
+  const methods = useForm({
     defaultValues: {
-      email: initialData?.account.email ?? '',
-      accessLevel: initialData?.accessLevel ?? 'ALUMNI',
-      password: undefined,
+      dateOfBirth: null,
+      gradeClass: [
+        {
+          grade: [],
+          alumClass: [],
+        },
+      ],
     },
     resolver,
   });
+  const { control, handleSubmit } = methods;
 
   const onSubmitHandler = async (values: MemberFormValues) => {
     setSubmitting(true);
@@ -69,92 +91,223 @@ const MemberForm = ({
   };
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-end',
-        gap: theme.spacing(2),
-        padding: theme.spacing(2),
-        border: 1,
-        borderColor: theme.palette.divider,
-        borderRadius: `${theme.shape.borderRadius}px`,
-        backgroundColor: theme.palette.background.neutral,
-      }}
-    >
-      <Box sx={{ width: '100%' }}>
+    <FormProvider {...methods}>
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
+          gap: theme.spacing(2),
+          padding: theme.spacing(2),
+          border: 1,
+          borderColor: theme.palette.divider,
+          borderRadius: `${theme.shape.borderRadius}px`,
+          backgroundColor: theme.palette.background.neutral,
+        }}
+      >
+        {/* <Box sx={{ width: '100%' }}>
         <Typography variant="h6">
           {initialData
             ? 'Chỉnh sửa thông tin thành viên'
             : 'Thêm thành viên mới'}
         </Typography>
-      </Box>
+      </Box> */}
 
-      <Controller
-        control={control}
-        name="email"
-        render={({ field }) => (
-          <TextField
-            fullWidth
-            label="Email"
-            {...field}
-            disabled={!!initialData?.account.email}
-          />
-        )}
-      />
+        <Box sx={{ width: '100%' }}>
+          <Typography variant="h6">Thông tin cơ bản</Typography>
+        </Box>
 
-      <Controller
-        name="accessLevel"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            fullWidth
-            variant="outlined"
-            label="Vai trò"
-            select
-            type="select"
-            {...field}
+        <TextInput
+          control={control}
+          name="fullName"
+          inputProps={{
+            label: 'Họ và tên (bắt buộc)',
+            sx: {
+              width: '100%',
+            },
+          }}
+        />
+
+        <TextInput
+          control={control}
+          name="email"
+          inputProps={{
+            label: 'Email',
+            sx: {
+              width: '100%',
+            },
+          }}
+        />
+
+        <TextInput
+          control={control}
+          name="phone"
+          inputProps={{
+            label: 'Số điện thoại',
+            sx: {
+              width: '100%',
+            },
+          }}
+        />
+
+        <DateInput
+          control={control}
+          name="dateOfBirth"
+          inputProps={{
+            label: 'Ngày sinh',
+          }}
+          textProps={{
+            sx: {
+              width: '100%',
+            },
+          }}
+        />
+
+        <TextInput
+          control={control}
+          name="facebook"
+          inputProps={{
+            label: 'Facebook',
+            sx: {
+              width: '100%',
+            },
+          }}
+        />
+
+        <GradeClassForm />
+
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: theme.spacing(2),
+            mt: 3,
+          }}
+        >
+          {onClose ? (
+            <Button variant="outlined" disabled={submitting} onClick={onClose}>
+              Huỷ
+            </Button>
+          ) : null}
+          <Button
+            variant="contained"
+            disabled={submitting}
+            onClick={handleSubmit(onSubmitHandler)}
           >
-            {roleList?.map((role: string) => (
-              <MenuItem key={role} value={role}>
-                {/** @ts-ignore */}
-                {getRoleName(role)}
-              </MenuItem>
-            ))}
-          </TextField>
-        )}
-      />
+            {initialData ? 'Lưu' : 'Thêm'}
+          </Button>
+        </Box>
+      </Box>
+    </FormProvider>
+  );
+};
 
-      <Controller
-        control={control}
-        name="password"
-        render={({ field }) => (
-          <TextField fullWidth label="Mật khẩu" type="password" {...field} />
-        )}
-      />
+export const GradeClassForm = ({ multiple = true }: { multiple?: boolean }) => {
+  const { control, watch, setValue } = useFormContext();
+  const { fields, append, remove } = useFieldArray({
+    control, // control props comes from useForm (optional: if you are using FormContext)
+    name: 'gradeClass', // unique name for your Field Array
+  });
+  const gradeClassWatcher = watch('gradeClass');
 
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: theme.spacing(2),
-        }}
+  const { data: classList, getClassList } = useGetClassListV2();
+  const { data: gradeList, isLoading: isLoadingGrade } = useGetGradeList();
+  const setParams = useSetRecoilState(getGradeListParamsAtom);
+
+  useEffect(() => {
+    setParams(() => ({ page: 1, limit: 999, inviteMode: true }));
+  }, []);
+
+  return (
+    <>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        sx={{ width: '100%', mt: 2 }}
       >
-        {onClose ? (
-          <Button variant="outlined" disabled={submitting} onClick={onClose}>
-            Huỷ
+        <Typography variant="h6">Niên khoá và lớp</Typography>
+        {multiple ? (
+          <Button
+            size="small"
+            type="button"
+            variant="outlined"
+            onClick={() => {
+              append({ gradeYear: [], alumClass: [] });
+            }}
+          >
+            Thêm
           </Button>
         ) : null}
-        <Button
-          variant="contained"
-          disabled={submitting}
-          onClick={handleSubmit(onSubmitHandler)}
-        >
-          Lưu
-        </Button>
-      </Box>
-    </Box>
+      </Stack>
+
+      {fields.map((item, index) => {
+        return (
+          <Stack key={item.id} direction="row" gap={1} sx={{ width: '100%' }}>
+            <AutocompleteInput
+              control={control}
+              name={`gradeClass[${index}].grade`}
+              textProps={{
+                label: 'Niên khoá',
+                size: 'medium',
+              }}
+              inputProps={{
+                sx: {
+                  width: '100%',
+                },
+              }}
+              options={
+                gradeList
+                  ? gradeList?.data.items.map(grade => ({
+                      id: grade.id,
+                      label: `${grade.startYear} - ${grade.endYear}`,
+                      value: grade.id,
+                    }))
+                  : []
+              }
+              isLoadingOptions={isLoadingGrade}
+              valueChangeCallback={(grade: any) => {
+                console.log(grade);
+                getClassList({ gradeId: grade?.id, name: '' });
+                setValue(`gradeClass[${index}].alumClass`, []);
+              }}
+            />
+
+            <AutocompleteInput
+              control={control}
+              name={`gradeClass[${index}].alumClass`}
+              textProps={{
+                label: 'Lớp',
+                size: 'medium',
+              }}
+              inputProps={{
+                multiple: multiple,
+                sx: {
+                  width: '100%',
+                },
+              }}
+              options={
+                classList
+                  ? classList?.data.items.map(cl => ({
+                      id: cl.id,
+                      label: cl.name,
+                      value: cl.id,
+                    }))
+                  : []
+              }
+            />
+
+            <IconButton
+              type="button"
+              disabled={gradeClassWatcher.length === 1}
+              onClick={() => remove(index)}
+            >
+              <Icon height={24} icon="ic:baseline-remove-circle" />
+            </IconButton>
+          </Stack>
+        );
+      })}
+    </>
   );
 };
 

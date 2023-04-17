@@ -1,93 +1,71 @@
 'use client';
 
-// import noop from 'lodash/fp/noop';
-
 import * as yup from 'yup';
 
-// import { signIn } from 'next-auth/react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
 
 import {
   Box,
   Button,
-  // Divider,
-  // IconButton,
+  Divider,
   Link,
-  // MenuItem,
-  // Radio,
-  // Stack,
+  Stack,
   TextField,
   Typography,
 } from '@mui/material';
 
-// import googleFill from '@iconify/icons-eva/google-fill';
-// import twitterFill from '@iconify/icons-eva/twitter-fill';
-// import facebookFill from '@iconify/icons-eva/facebook-fill';
-// import { Icon } from '@iconify/react';
-
 import {
   requiredConfirmPasswordValidator,
   requiredEmailValidator,
+  requiredFullNameValidator,
   requiredPasswordValidator,
-  // requiredUsernameValidator,
 } from 'src/modules/share/utils/validators';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 
-import { LinkUpFormValues, SignUpFormValues } from '../types';
+import { SignUpFormValues } from '../types';
 import useSignUp from '../hooks/useSignUp';
-import { useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { currentTenantDataAtom } from '@share/states';
-// import { RadioGroup } from '@mui/material';
-// import { FormControlLabel } from '@mui/material';
+import TextInput from '@share/components/form/TextInput';
+import { GradeClassForm } from 'src/modules/members/components/MemberForm';
+import DateInput from '@share/components/form/DateInput';
 
 const validationSchema = yup
   .object({
-    // username: requiredUsernameValidator,
     email: requiredEmailValidator,
     password: requiredPasswordValidator,
     confirmPassword: requiredConfirmPasswordValidator,
-  })
-  .required();
-
-const validationLinkSchema = yup
-  .object({
-    email: requiredEmailValidator,
+    fullName: requiredFullNameValidator,
+    gradeClass: yup.array(),
+    phone: yup.string(),
   })
   .required();
 
 const SignUpForm = () => {
   const { signUp, isLoading } = useSignUp();
 
-  const { id: tenantId } = useRecoilValue(currentTenantDataAtom);
-
-  const [mode, setMode] = useState('new');
-
   const resolver = useYupValidateionResolver(validationSchema);
-  const linkResolver = useYupValidateionResolver(validationLinkSchema);
 
-  const { control, handleSubmit } = useForm<SignUpFormValues>({
+  const methods = useForm<SignUpFormValues>({
     mode: 'onChange',
     defaultValues: {
-      // username: '',
+      fullName: '',
+      phone: '',
+      dateOfBirth: undefined,
       email: '',
       password: '',
       confirmPassword: '',
+      gradeClass: [
+        {
+          grade: [],
+          alumClass: [],
+        },
+      ],
     },
     resolver,
   });
-
-  const { control: linkControl, handleSubmit: linkSubmit } =
-    useForm<LinkUpFormValues>({
-      mode: 'onChange',
-      defaultValues: {
-        email: '',
-      },
-      resolver: linkResolver,
-    });
+  const { control, handleSubmit } = methods;
 
   const onSubmit = async (values: SignUpFormValues) => {
-    await signUp({ ...values, tenantId });
+    await signUp(values);
   };
 
   return (
@@ -99,137 +77,129 @@ const SignUpForm = () => {
         height: '100%',
       }}
     >
-      <Box
-        sx={{
-          margin: '2rem 10vw',
-        }}
-      >
-        <Typography mb={2} variant="h4">
-          Đăng ký
-        </Typography>
-
-        {/* <TextField select type="select">
-          <MenuItem value="new">Tạo mới</MenuItem>
-          <MenuItem value="link">
-            Link kết tài khoản trong hệ thống The Alumni App
-          </MenuItem>
-        </TextField>
-
-        <RadioGroup
-          aria-labelledby="radio-buttons-group-label"
-          defaultValue={mode}
-          value={mode}
-          onChange={e => setMode(e.target.value)}
+      <FormProvider {...methods}>
+        <Box
+          sx={{
+            margin: '2rem 10vw',
+            width: '100%',
+          }}
         >
-          <FormControlLabel value="new" control={<Radio />} label="Tạo mới" />
-          <FormControlLabel
-            value="link"
-            control={<Radio />}
-            label="Liên kết tài khoản đã có"
-          />
-        </RadioGroup> */}
-
-        {/* <Controller
-          control={control}
-          name="username"
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              fullWidth
-              label="Tên tài khoản *"
-              {...field}
-              error={Boolean(error?.message)}
-              helperText={error?.message}
-              sx={{ mb: 3 }}
-            />
-          )}
-        /> */}
-
-        <Controller
-          control={control}
-          name="email"
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              fullWidth
-              label="Email *"
-              {...field}
-              error={Boolean(error?.message)}
-              helperText={error?.message}
-              sx={{ mb: 3 }}
-            />
-          )}
-        />
-
-        <Controller
-          control={control}
-          name="password"
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              fullWidth
-              label="Mật khẩu *"
-              {...field}
-              type="password"
-              error={Boolean(error?.message)}
-              helperText={error?.message}
-              sx={{ mb: 3 }}
-            />
-          )}
-        />
-
-        <Controller
-          control={control}
-          name="confirmPassword"
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              fullWidth
-              label="Xác thực mật khẩu *"
-              type="password"
-              {...field}
-              error={Boolean(error?.message)}
-              helperText={error?.message}
-              sx={{ mb: 3 }}
-            />
-          )}
-        />
-
-        <Button
-          fullWidth
-          size="large"
-          variant="contained"
-          onClick={handleSubmit(onSubmit)}
-          disabled={isLoading}
-        >
-          Đăng ký
-        </Button>
-
-        <Box mt={5} sx={{ display: 'flex' }}>
-          <Typography sx={{ mr: 1 }} variant="body2">
-            Đã có tài khoản?
+          <Typography mb={2} variant="h4">
+            Đăng ký
           </Typography>
-          <Link variant="subtitle2" href="/sign_in">
-            Đăng nhập tại đây
-          </Link>
+
+          <Stack direction="column" gap={2} sx={{ width: '100%' }}>
+            <Typography variant="h6">Thông tin cá nhân</Typography>
+
+            <TextInput
+              control={control}
+              name="fullName"
+              inputProps={{
+                label: 'Họ và tên',
+                sx: {
+                  width: '100%',
+                },
+              }}
+            />
+
+            <TextInput
+              control={control}
+              name="phone"
+              inputProps={{
+                label: 'Số điện thoại',
+                sx: {
+                  width: '100%',
+                },
+              }}
+            />
+
+            <DateInput
+              control={control}
+              name="dateOfBirth"
+              inputProps={{
+                label: 'Ngày sinh',
+              }}
+              textProps={{
+                sx: {
+                  width: '100%',
+                },
+              }}
+            />
+
+            <Divider />
+
+            <GradeClassForm multiple={false} />
+
+            <Divider />
+
+            <Typography variant="h6">Tài khoản</Typography>
+
+            <Controller
+              control={control}
+              name="email"
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  fullWidth
+                  label="Email *"
+                  {...field}
+                  error={Boolean(error?.message)}
+                  helperText={error?.message}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="password"
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  fullWidth
+                  label="Mật khẩu *"
+                  {...field}
+                  type="password"
+                  error={Boolean(error?.message)}
+                  helperText={error?.message}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="confirmPassword"
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  fullWidth
+                  label="Xác thực mật khẩu *"
+                  type="password"
+                  {...field}
+                  error={Boolean(error?.message)}
+                  helperText={error?.message}
+                />
+              )}
+            />
+
+            <Button
+              fullWidth
+              size="large"
+              variant="contained"
+              onClick={handleSubmit(onSubmit)}
+              disabled={isLoading}
+              sx={{ mt: 2 }}
+            >
+              Đăng ký
+            </Button>
+          </Stack>
+
+          <Box mt={5} sx={{ display: 'flex' }}>
+            <Typography sx={{ mr: 1 }} variant="body2">
+              Đã có tài khoản?
+            </Typography>
+            <Link variant="subtitle2" href="/sign_in">
+              Đăng nhập tại đây
+            </Link>
+          </Box>
         </Box>
-
-        {/* <Divider sx={{ my: 3 }}>
-          <Typography sx={{ color: 'text.secondary' }} variant="body2">
-            Hoặc
-          </Typography>
-        </Divider>
-
-        <Stack direction="row" justifyContent="center" spacing={2}>
-          <IconButton onClick={() => signIn('google')} size="large">
-            <Icon color="#DF3E30" height={24} icon={googleFill} />
-          </IconButton>
-
-          <IconButton onClick={() => signIn('facebook')} size="large">
-            <Icon color="#1877F2" height={24} icon={facebookFill} />
-          </IconButton>
-
-          <IconButton onClick={noop} size="large">
-            <Icon color="#1C9CEA" height={24} icon={twitterFill} />
-          </IconButton>
-        </Stack> */}
-      </Box>
+      </FormProvider>
     </Box>
   );
 };

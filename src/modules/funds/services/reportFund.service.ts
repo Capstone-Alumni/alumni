@@ -26,11 +26,6 @@ export default class ReportFundService {
             id: fundId,
           },
         },
-        userInformation: {
-          connect: {
-            userId: userId,
-          },
-        },
       },
     });
     return created;
@@ -44,10 +39,17 @@ export default class ReportFundService {
   ) => {
     const report = await tenantPrisma.fundReport.findFirst({
       where: { AND: [{ id: reportId }, { archived: false }] },
+      include: {
+        fund: {
+          select: {
+            hostId: true,
+          },
+        },
+      },
     });
     if (!report) {
       throw new Error('report is not existed');
-    } else if (report.userId !== userId) {
+    } else if (report.fund.hostId !== userId) {
       throw new Error('you are not allowed to edit this report');
     }
     const updated = await tenantPrisma.fundReport.update({
@@ -68,10 +70,17 @@ export default class ReportFundService {
   ) => {
     const report = await tenantPrisma.fundReport.findFirst({
       where: { AND: [{ id: reportId }, { archived: false }] },
+      include: {
+        fund: {
+          select: {
+            hostId: true,
+          },
+        },
+      },
     });
     if (!report) {
       throw new Error('report is not existed');
-    } else if (report.userId !== userId) {
+    } else if (report.fund.hostId !== userId) {
       throw new Error('you are not allowed to edit this report');
     }
     const deleted = await tenantPrisma.fundReport.update({
@@ -101,9 +110,6 @@ export default class ReportFundService {
         where: { fundId: fundId, archived: false },
         orderBy: {
           createdAt: 'desc',
-        },
-        include: {
-          userInformation: true,
         },
       }),
     ]);

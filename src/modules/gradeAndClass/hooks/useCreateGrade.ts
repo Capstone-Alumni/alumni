@@ -1,14 +1,27 @@
+import { toast } from 'react-toastify';
 import useApi from 'src/modules/share/hooks/useApi';
-import { GradeFormValues } from '../components/GradeForm';
+
+export type CreateGradeParams = {
+  code: string;
+  startYear: number;
+  endYear: number;
+};
 
 const useCreateGrade = () => {
   const { fetchApi, isLoading } = useApi(
     'createGrade',
-    (values: GradeFormValues) => ({
+    (values: CreateGradeParams) => ({
       method: 'POST',
       url: '/api/grades',
       data: values,
     }),
+    {
+      onError: () => {
+        toast.error(
+          'Niên khoá không được trùng lặp cả năm bắt đầu và năm kết thúc',
+        );
+      },
+    },
   );
 
   return {

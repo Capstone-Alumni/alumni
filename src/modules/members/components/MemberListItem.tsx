@@ -1,13 +1,17 @@
 import { Icon } from '@iconify/react';
-import { Box, Modal, TableCell, TableRow, Typography } from '@mui/material';
+import {
+  Box,
+  Chip,
+  Modal,
+  TableCell,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import ActionButton from '@share/components/ActionButton';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
-import { formatDate } from '@share/utils/formatDate';
-import getRoleName from '@share/utils/getRoleName';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { Member } from '../types';
-import { compareRole } from '../utils';
 import MemberForm, { MemberFormValues } from './MemberForm';
 
 const AdminMemberListItem = ({
@@ -27,39 +31,39 @@ const AdminMemberListItem = ({
     <>
       <TableRow>
         <TableCell align="left">
-          <Typography>{data.account.email}</Typography>
+          <Typography>{data?.information?.fullName}</Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>{getRoleName(data.accessLevel)}</Typography>
+          <Typography>{data?.information?.email}</Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>
-            <Typography>
-              {data.lastLogin
-                ? formatDate(new Date(data.lastLogin), 'dd/MM/yyyy - HH:mm')
-                : 'Chưa đăng nhập'}
-            </Typography>
-          </Typography>
+          {data?.alumniToClass?.map(({ alumClass }) => (
+            <Chip
+              key={alumClass.id}
+              label={alumClass.name}
+              onDelete={() => onDelete(alumClass.id)}
+            />
+          ))}
         </TableCell>
         <TableCell align="center">
-          {compareRole(session?.user.accessLevel, data.accessLevel) > 0 ? (
-            <ActionButton
-              actions={[
-                {
-                  id: 'edit',
-                  text: 'Chỉnh sửa',
-                  icon: <Icon height={24} icon="uil:pen" />,
-                  onClick: () => setOpenEditModal(true),
-                },
-                {
-                  id: 'delete',
-                  text: 'Xoá',
-                  icon: <Icon height={24} icon="uil:trash-alt" />,
-                  onClick: () => setOpenDeleteModal(true),
-                },
-              ]}
-            />
-          ) : null}
+          <ActionButton
+            actions={[
+              {
+                id: 'edit',
+                text: 'Chỉnh sửa',
+                icon: <Icon height={24} icon="uil:pen" />,
+                onClick: () => setOpenEditModal(true),
+              },
+              data.alumniToClass.length === 0 || session?.user.isOwner
+                ? {
+                    id: 'delete',
+                    text: 'Xoá',
+                    icon: <Icon height={24} icon="uil:trash-alt" />,
+                    onClick: () => setOpenDeleteModal(true),
+                  }
+                : null,
+            ]}
+          />
         </TableCell>
       </TableRow>
 

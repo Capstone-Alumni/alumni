@@ -63,6 +63,32 @@ export default class ClassService {
         skip: (page - 1) * limit,
         take: limit,
         where: whereFilter,
+        orderBy: {
+          name: 'asc',
+        },
+        include: {
+          _count: {
+            select: {
+              alumniToClass: {
+                where: {
+                  archived: false,
+                },
+              },
+            },
+          },
+          alumniToClass: {
+            where: {
+              isClassMod: true,
+            },
+            include: {
+              alumni: {
+                include: {
+                  information: true,
+                },
+              },
+            },
+          },
+        },
       }),
     ]);
 
@@ -79,6 +105,20 @@ export default class ClassService {
     const grade = await tenantPrisma.alumClass.findUnique({
       where: {
         id: id,
+      },
+      include: {
+        alumniToClass: {
+          where: {
+            isClassMod: true,
+          },
+          include: {
+            alumni: {
+              include: {
+                information: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -103,15 +143,63 @@ export default class ClassService {
   };
 
   static deleteById = async (tenantPrisma: PrismaClient, id: string) => {
-    const classDeleted = await tenantPrisma.alumClass.update({
+    const classDeleted = await tenantPrisma.alumClass.delete({
       where: {
         id: id,
-      },
-      data: {
-        archived: true,
       },
     });
 
     return classDeleted;
+  };
+
+  static addClassMod = async (
+    tenantPrisma: PrismaClient,
+    { classId, alumniId }: { classId: string; alumniId: string },
+  ) => {
+    const grade = await tenantPrisma.alumniToClass.upsert({
+      where: {
+        alumClassId_alumniId: {
+          alumClassId: classId,
+          alumniId: alumniId,
+        },
+      },
+      create: {
+        isClassMod: true,
+        alumClass: {
+          connect: {
+            id: classId,
+          },
+        },
+        alumni: {
+          connect: {
+            id: alumniId,
+          },
+        },
+      },
+      update: {
+        isClassMod: true,
+      },
+    });
+
+    return grade;
+  };
+
+  static removeClassMod = async (
+    tenantPrisma: PrismaClient,
+    { classId, alumniId }: { classId: string; alumniId: string },
+  ) => {
+    const grade = await tenantPrisma.alumniToClass.update({
+      where: {
+        alumClassId_alumniId: {
+          alumClassId: classId,
+          alumniId: alumniId,
+        },
+      },
+      data: {
+        isClassMod: false,
+      },
+    });
+
+    return grade;
   };
 }

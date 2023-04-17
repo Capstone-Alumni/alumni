@@ -1,4 +1,3 @@
-import { buildAccessLevelFilter } from './../../share/helpers/prismaWhereFilterBuilder';
 import { PrismaClient } from '@prisma/client';
 import { User } from 'next-auth';
 
@@ -20,36 +19,40 @@ export const buildEventWhereFilter = async (
   tenantPrisma: PrismaClient,
   user: User,
 ) => {
-  const userInformation = await tenantPrisma.information.findUnique({
+  const alumni = await tenantPrisma.alumni.findUnique({
     where: {
-      userId: user.id,
+      id: user.id,
     },
     include: {
-      alumClass: true,
+      alumniToClass: {
+        include: {
+          alumClass: true,
+        },
+      },
+      gradeMod: true,
     },
   });
 
-  if (!userInformation) {
+  if (!alumni) {
     throw new Error('user not exist');
   }
 
-  const publicityFilter = buildAccessLevelFilter('publicity', 'SCHOOL_ADMIN');
-  let gradeClassFilter = {};
-  if (user.accessLevel === 'CLASS_MOD') {
-    gradeClassFilter = getSameClassFilter(userInformation.alumClassId || '');
-  }
-  if (user.accessLevel === 'GRADE_MOD') {
-    gradeClassFilter = getSameGradeFilter(
-      userInformation.alumClass?.gradeId || '',
-    );
+  if (alumni.isOwner) {
+    return {};
   }
 
-  const whereFilter = {
-    ...publicityFilter,
-    ...gradeClassFilter,
+  return {
+    OR: [
+      {
+        isPublicSchool: true,
+      },
+      {
+        gradeId: {
+          in: alumni.gradeMod.map(gr => gr.gradeId),
+        },
+      },
+    ],
   };
-
-  return whereFilter;
 };
 
 export default class AdminEventService {
@@ -93,15 +96,12 @@ export default class AdminEventService {
           createdAt: 'desc',
         },
         include: {
-          hostInformation: {
+          host: {
             include: {
-              alumClass: {
-                include: {
-                  grade: true,
-                },
-              },
+              information: true,
             },
           },
+          grade: true,
         },
       }),
     ]);
@@ -129,43 +129,5 @@ export default class AdminEventService {
     });
 
     return event;
-  };
-
-  static approve = async (
-    tenantPrisma: PrismaClient,
-    { user, eventId }: { user: User; eventId: string },
-  ) => {
-    const whereFilter = await buildEventWhereFilter(tenantPrisma, user);
-
-    await tenantPrisma.event.updateMany({
-      where: {
-        ...whereFilter,
-        id: eventId,
-      },
-      data: {
-        approvedStatus: 1,
-      },
-    });
-
-    return null;
-  };
-
-  static reject = async (
-    tenantPrisma: PrismaClient,
-    { user, eventId }: { user: User; eventId: string },
-  ) => {
-    const whereFilter = await buildEventWhereFilter(tenantPrisma, user);
-
-    await tenantPrisma.event.updateMany({
-      where: {
-        ...whereFilter,
-        id: eventId,
-      },
-      data: {
-        approvedStatus: 0,
-      },
-    });
-
-    return null;
   };
 }

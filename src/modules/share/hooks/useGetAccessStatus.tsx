@@ -19,10 +19,16 @@ const useGetAccessStatus = () => {
     GetAccessStatusParams,
     GetAccessStatusResponse,
     GetAccessStatusError
-  >('AccessStatus', () => ({
-    method: 'GET',
-    url: '/api/access_status',
-  }));
+  >(
+    'AccessStatus',
+    () => ({
+      method: 'GET',
+      url: '/api/access_status',
+    }),
+    {
+      retainOnUnmount: true,
+    },
+  );
 
   useEffect(() => {
     if (!data) {

@@ -1,17 +1,42 @@
+import { Information } from '../profiles/types';
+
 /** ========================== FE ================================= */
 export type Grade = {
   id: string;
   code: string;
   createdAt: string | Date;
+  startYear: number | string;
+  endYear: number | string;
+  _count?: {
+    alumClasses: number;
+  };
+  alumClasses?: Class[];
+  gradeMod: Array<{
+    id: string;
+    alumni: {
+      id: string;
+      information: Information;
+    };
+  }>;
 };
 
 export type Class = {
   id: string;
   name: string;
-  description: string | null;
   createdAt: string | Date;
   gradeId: string;
   grade?: Grade;
+  _count?: {
+    alumniToClass: number;
+  };
+  alumniToClass?: Array<{
+    id: string;
+    isClassMod: boolean;
+    alumni: {
+      id: string;
+      information: Information;
+    };
+  }>;
 };
 
 export type GetGradeListData = {
@@ -25,6 +50,7 @@ export type GetGradeListParams = {
   limit?: number;
   code?: string;
   name?: string;
+  isAdminMode?: boolean;
 };
 
 export type GetClassListData = {
@@ -46,6 +72,7 @@ export type GetGradeListServiceParams = {
   page: number;
   limit: number;
   code: string;
+  alumniId?: string;
 };
 
 export type GetGradeListServiceProps = {
@@ -54,10 +81,14 @@ export type GetGradeListServiceProps = {
 
 export type CreateGradeServiceProps = {
   code: string;
+  startYear: string;
+  endYear: string;
 };
 
 export type UpdateGradeInfoByIdServiceProps = {
   code?: string;
+  startYear?: string;
+  endYear?: string;
 };
 
 // classes

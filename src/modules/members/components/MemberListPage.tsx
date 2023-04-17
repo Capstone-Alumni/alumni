@@ -5,7 +5,6 @@ import AddIcon from '@mui/icons-material/Add';
 import MemberListTable from './MemberListTable';
 import { useEffect, useState } from 'react';
 
-import useCreateMember from '../hooks/useCreateMember';
 import useDeleteMemberById from '../hooks/useDeleteMemberById';
 import useUpdateMemberById from '../hooks/useUpdateMemberById';
 import useGetMemberList from '../hooks/useGetMemberList';
@@ -14,6 +13,8 @@ import MemberForm, { MemberFormValues } from './MemberForm';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { getMemberListParamsAtom } from '../state';
 import { currentTenantDataAtom } from '@share/states';
+import useCreateMemberPlatform from '../hooks/useCreateMemberPlatform';
+import useCreateMemberTenant from '../hooks/useCreateMemberTenant';
 
 const MemberListPage = () => {
   const theme = useTheme();
@@ -22,7 +23,8 @@ const MemberListPage = () => {
 
   const [params, setParams] = useRecoilState(getMemberListParamsAtom);
 
-  const { createMember } = useCreateMember();
+  const { createMemberPlatform } = useCreateMemberPlatform();
+  const { createMemberTenant } = useCreateMemberTenant();
   const { deleteMemberById } = useDeleteMemberById();
   const { updateMemberById } = useUpdateMemberById();
   const {
@@ -32,7 +34,11 @@ const MemberListPage = () => {
   } = useGetMemberList();
 
   const onAddMember = async (values: MemberFormValues) => {
-    await createMember({ ...values, tenantId });
+    if (values.email) {
+      await createMemberPlatform({ ...values, tenantId });
+    } else {
+      await createMemberTenant({ ...values, tenantId });
+    }
     reload();
   };
 
@@ -41,11 +47,8 @@ const MemberListPage = () => {
     reload();
   };
 
-  const onUpdate = async (
-    memberId: string,
-    { password, accessLevel }: MemberFormValues,
-  ) => {
-    await updateMemberById({ memberId, password, accessLevel });
+  const onUpdate = async (memberId: string, data: MemberFormValues) => {
+    await updateMemberById({ memberId, ...data });
     reload();
   };
 
@@ -77,16 +80,18 @@ const MemberListPage = () => {
         }}
       >
         <Typography variant="h3" sx={{ flex: 1 }}>
-          Cựu học sinh
+          Thành viên
         </Typography>
 
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => setOpenForm(true)}
-        >
-          Thêm
-        </Button>
+        {openForm ? null : (
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => setOpenForm(true)}
+          >
+            Thêm
+          </Button>
+        )}
       </Box>
 
       {openForm ? (

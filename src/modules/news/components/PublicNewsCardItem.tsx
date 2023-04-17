@@ -80,7 +80,9 @@ const PublicNewsCardItems = ({ item, sx }: { item: News; sx?: any }) => {
                 color="GrayText"
                 noWrap
               >
-                {item.authorInfo ? item.authorInfo.fullName : 'Chưa cập nhật'}
+                {item.author
+                  ? item.author.information.fullName
+                  : 'Chưa cập nhật'}
               </Typography>
             </Box>
           </Box>
