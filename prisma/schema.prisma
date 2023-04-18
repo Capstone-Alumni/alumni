@@ -125,7 +125,6 @@ model AccessRequest {
   dateOfBirth DateTime? @map("date_of_birth")
 
   email    String
-  password String?
 
   requestStatus Int @default(0) @map("request_status")
 

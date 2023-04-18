@@ -41,7 +41,7 @@ const useApproveAccessRequest = () => {
   );
 
   const createAccount = async (data: AccessRequest) => {
-    if (!data.alumniId && data.password) {
+    if (!data.alumniId && data.email) {
       await createMemberPlatform({
         fullName: data.fullName,
         gradeClass: [
@@ -66,7 +66,6 @@ const useApproveAccessRequest = () => {
         phone: data.phone,
         dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth) : undefined,
         tenantId: tenantId,
-        password: data.password,
       });
     }
   };

@@ -18,6 +18,7 @@ export default class SessionController {
         data: newAlum,
       });
     } catch (error) {
+      console.log(error);
       if (error.message === 'existed') {
         return res.status(400).json({
           status: false,

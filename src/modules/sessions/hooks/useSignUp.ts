@@ -32,6 +32,12 @@ const useSignUp = () => {
           toast.error('Xảy ra lỗi, vui lòng thử lại sau ít phút');
         }
       },
+      onSuccess: () => {
+        toast.success(
+          'Đăng ký thành công. Vui lòng chờ ban quản lý xét duyệt thông tin của bạn',
+        );
+        router.push('/');
+      },
     },
   );
 

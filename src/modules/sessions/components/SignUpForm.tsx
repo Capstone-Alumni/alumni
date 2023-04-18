@@ -15,10 +15,8 @@ import {
 } from '@mui/material';
 
 import {
-  requiredConfirmPasswordValidator,
   requiredEmailValidator,
   requiredFullNameValidator,
-  requiredPasswordValidator,
 } from 'src/modules/share/utils/validators';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 
@@ -31,8 +29,6 @@ import DateInput from '@share/components/form/DateInput';
 const validationSchema = yup
   .object({
     email: requiredEmailValidator,
-    password: requiredPasswordValidator,
-    confirmPassword: requiredConfirmPasswordValidator,
     fullName: requiredFullNameValidator,
     gradeClass: yup.array(),
     phone: yup.string(),
@@ -51,8 +47,6 @@ const SignUpForm = () => {
       phone: '',
       dateOfBirth: undefined,
       email: '',
-      password: '',
-      confirmPassword: '',
       gradeClass: [
         {
           grade: [],
@@ -102,6 +96,20 @@ const SignUpForm = () => {
               }}
             />
 
+            <Controller
+              control={control}
+              name="email"
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  fullWidth
+                  label="Email *"
+                  {...field}
+                  error={Boolean(error?.message)}
+                  helperText={error?.message}
+                />
+              )}
+            />
+
             <TextInput
               control={control}
               name="phone"
@@ -129,54 +137,6 @@ const SignUpForm = () => {
             <Divider />
 
             <GradeClassForm multiple={false} getAll />
-
-            <Divider />
-
-            <Typography variant="h6">Tài khoản</Typography>
-
-            <Controller
-              control={control}
-              name="email"
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  fullWidth
-                  label="Email *"
-                  {...field}
-                  error={Boolean(error?.message)}
-                  helperText={error?.message}
-                />
-              )}
-            />
-
-            <Controller
-              control={control}
-              name="password"
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  fullWidth
-                  label="Mật khẩu *"
-                  {...field}
-                  type="password"
-                  error={Boolean(error?.message)}
-                  helperText={error?.message}
-                />
-              )}
-            />
-
-            <Controller
-              control={control}
-              name="confirmPassword"
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  fullWidth
-                  label="Xác thực mật khẩu *"
-                  type="password"
-                  {...field}
-                  error={Boolean(error?.message)}
-                  helperText={error?.message}
-                />
-              )}
-            />
 
             <Button
               fullWidth
