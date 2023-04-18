@@ -84,8 +84,7 @@ model Alumni {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  tenantId  String  @map("tenant_id")
-  accountId String? @unique @map("account_id")
+  tenantId String @map("tenant_id")
 
   isOwner Boolean @default(false) @map("is_owner")
 
@@ -156,8 +155,8 @@ model Information {
   careerPublicity      ScopePublicity @default(PRIVATE) @map("career_publicity")
   educationPublicity   ScopePublicity @default(PRIVATE) @map("education_publicity")
 
-  alumniId String  @unique @map("alumni_id")
-  alumni   Alumni? @relation(fields: [alumniId], references: [id], onDelete: Cascade)
+  alumniId String @unique @map("alumni_id")
+  alumni   Alumni @relation(fields: [alumniId], references: [id], onDelete: Cascade)
 
   @@map("informations")
 }
@@ -234,11 +233,11 @@ model Event {
   title             String
   backgroundImage   String?
   description       String?
-  isOffline         Boolean     @default(false) @map("is_offline")
+  isOffline         Boolean   @default(false) @map("is_offline")
   location          String?
-  startTime         DateTime    @default(now()) @map("start_time")
-  endTime           DateTime?   @map("end_time")
-  publicParticipant Boolean     @default(false) @map("public_participant")
+  startTime         DateTime  @default(now()) @map("start_time")
+  endTime           DateTime? @map("end_time")
+  publicParticipant Boolean   @default(false) @map("public_participant")
 
   hostId String @map("host_id")
   host   Alumni @relation(fields: [hostId], references: [id])
@@ -289,13 +288,13 @@ model Fund {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  title             String
-  description       String?
-  startTime         DateTime    @default(now()) @map("start_time")
-  endTime           DateTime   @default(now()) @map("end_time")
-  targetBalance     Int         @default(0) @map("target_balance")
-  currentBalance    Int         @default(0) @map("currect_balance")
-  backgroundImage   String? @map("background_image")
+  title           String
+  description     String?
+  startTime       DateTime @default(now()) @map("start_time")
+  endTime         DateTime @default(now()) @map("end_time")
+  targetBalance   Int      @default(0) @map("target_balance")
+  currentBalance  Int      @default(0) @map("currect_balance")
+  backgroundImage String?  @map("background_image")
 
   hostId String @map("user_id")
   host   Alumni @relation(fields: [hostId], references: [id])
