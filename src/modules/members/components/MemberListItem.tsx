@@ -1,6 +1,7 @@
 import { Icon } from '@iconify/react';
 import {
   Box,
+  Button,
   Chip,
   Modal,
   TableCell,
@@ -13,6 +14,10 @@ import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { Member } from '../types';
 import MemberForm, { MemberFormValues } from './MemberForm';
+import { differenceInHours } from 'date-fns';
+import useResendInvitationMemberById from '../hooks/useResendInvitationMemberById';
+import { useRecoilValue } from 'recoil';
+import { currentTenantDataAtom } from '@share/states';
 
 const AdminMemberListItem = ({
   data,
@@ -26,6 +31,36 @@ const AdminMemberListItem = ({
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const { data: session } = useSession();
+  const { resendInvitationMemberById, isLoading: sending } =
+    useResendInvitationMemberById();
+  const { id: tenantId } = useRecoilValue(currentTenantDataAtom);
+
+  const renderStatus = (lastLogin: string | undefined, createdAt: string) => {
+    if (lastLogin) {
+      return (
+        <Button variant="outlined" color="success">
+          Đã đăng nhập
+        </Button>
+      );
+    }
+
+    const dateCreatedAt = new Date(createdAt);
+    const dateNow = new Date();
+
+    if (differenceInHours(dateNow, dateCreatedAt) <= 48) {
+      return (
+        <Button variant="outlined" color="warning">
+          Đã gửi lời mời
+        </Button>
+      );
+    }
+
+    return (
+      <Button variant="outlined" color="warning">
+        Không có phản hồi
+      </Button>
+    );
+  };
 
   return (
     <>
@@ -46,8 +81,23 @@ const AdminMemberListItem = ({
           ))}
         </TableCell>
         <TableCell align="center">
+          {renderStatus(data.lastLogin, data.createdAt)}
+        </TableCell>
+        <TableCell align="center">
           <ActionButton
             actions={[
+              data.lastLogin
+                ? null
+                : {
+                    id: 'resend',
+                    text: 'Gửi lại lời mời',
+                    icon: <Icon height={24} icon="ic:round-mail-outline" />,
+                    onClick: () =>
+                      resendInvitationMemberById({
+                        alumniId: data.id,
+                        tenantId: tenantId,
+                      }),
+                  },
               {
                 id: 'edit',
                 text: 'Chỉnh sửa',

@@ -12,6 +12,7 @@ export type ACCESS_STATUS = 'PENDING' | 'APPROVED';
 export type Member = {
   id: string;
   tenantId: string;
+  lastLogin?: string;
 
   information: Information | null;
 
@@ -19,6 +20,7 @@ export type Member = {
     alumClassId: string;
     alumClass: Class;
   }>;
+  createdAt: string;
 };
 
 export type GetMemberListParams = {

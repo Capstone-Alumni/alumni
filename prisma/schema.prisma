@@ -85,6 +85,7 @@ model Alumni {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   tenantId String @map("tenant_id")
+  lastLogin DateTime? @map("last_login")
 
   isOwner Boolean @default(false) @map("is_owner")
 
