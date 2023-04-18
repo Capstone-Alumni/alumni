@@ -1,4 +1,4 @@
-import { extractTenantId, extractTenantIdFromSession } from '@lib/next-connect';
+import { extractTenantIdFromSession } from '@lib/next-connect';
 import { extractUser } from '@lib/next-connect/apiMiddleware';
 import onErrorAPIHandler from '@lib/next-connect/onErrorAPIHandler';
 import onNoMatchAPIHandler from '@lib/next-connect/onNoMatchAPIHandler';

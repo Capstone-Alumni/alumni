@@ -25,7 +25,7 @@ export const useCanSendMessage = () => {
   if (currentUserInformation?.id) {
     canSendMessage = currentUserInformation?.id !== userProfileId;
     if (currentUserInformation?.pingSent) {
-      const array = currentUserInformation?.pingSent.filter((pingSent) => {
+      const array = currentUserInformation?.pingSent.filter(pingSent => {
         return pingSent.pingAlumniId === userProfileId;
       });
       canSendMessage = array.length === 0 && true;
