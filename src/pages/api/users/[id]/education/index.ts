@@ -1,4 +1,4 @@
-import { extractTenantId } from '@lib/next-connect';
+import { extractTenantIdFromSession } from '@lib/next-connect';
 import { extractUser } from '@lib/next-connect/apiMiddleware';
 import onErrorAPIHandler from '@lib/next-connect/onErrorAPIHandler';
 import onNoMatchAPIHandler from '@lib/next-connect/onNoMatchAPIHandler';
@@ -8,7 +8,7 @@ import EducationController from 'src/modules/profiles/controller/education.contr
 const handler = nc({
   onError: onErrorAPIHandler,
   onNoMatch: onNoMatchAPIHandler,
-}).use(extractTenantId, extractUser);
+}).use(extractTenantIdFromSession);
 
 handler
   .get(extractUser, EducationController.getEducationsByUserId)

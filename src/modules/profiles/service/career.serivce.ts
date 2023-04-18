@@ -49,7 +49,11 @@ export default class CareerService {
         company: company,
         startDate: startDate,
         endDate: endDate,
-        userId: userId,
+        alumni: {
+          connect: {
+            id: userId,
+          },
+        },
       },
     });
     return newCareer;
@@ -73,7 +77,11 @@ export default class CareerService {
             company: career.company,
             startDate: career.startDate,
             endDate: career.endDate,
-            userId,
+            alumni: {
+              connect: {
+                id: userId,
+              },
+            },
           }))
         : [],
     });
@@ -86,41 +94,45 @@ export default class CareerService {
     userId: string,
     params: GetCareerListServiceParams,
   ) => {
-    const requesterInformation = await tenantPrisma.information.findUnique({
-      where: { userId: requestUser.id },
+    const requesterInformation = await tenantPrisma.alumni.findUnique({
+      where: { id: userId },
       include: {
-        alumClass: {
-          include: {
-            grade: true,
+        information: true,
+        alumniToClass: {
+          select: {
+            isClassMod: true,
+            alumClassId: true,
           },
         },
       },
     });
 
-    const userInformation = await tenantPrisma.information.findUnique({
-      where: { userId: userId },
+    const userInformation = await tenantPrisma.alumni.findUnique({
+      where: { id: userId },
       include: {
-        alumClass: {
-          include: {
-            grade: true,
+        information: true,
+        alumniToClass: {
+          select: {
+            isClassMod: true,
+            alumClassId: true,
           },
         },
       },
     });
 
-    if (!canViewCareers(userInformation, requesterInformation)) {
-      return {
-        totalItems: 0,
-        items: {},
-        itemPerPage: 0,
-      };
-    }
+    // if (!canViewCareers(userInformation, requesterInformation)) {
+    //   return {
+    //     totalItems: 0,
+    //     items: {},
+    //     itemPerPage: 0,
+    //   };
+    // }
 
     const { jobTitle, company, page, limit } = params;
 
     const whereFilter = {
       AND: [
-        { userId: userId },
+        { alumniId: userId },
         // career is deleted -> not show on list
         { archived: false },
         { jobTitle: { contains: jobTitle } },

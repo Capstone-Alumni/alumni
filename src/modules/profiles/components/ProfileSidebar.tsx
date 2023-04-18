@@ -88,7 +88,7 @@ const ProfileSidebar = () => {
 
   const { control, setValue } = useForm({
     defaultValues: {
-      avatar: data?.data?.avatarUrl,
+      avatar: data?.data?.information.avatarUrl,
     },
   });
 
@@ -107,8 +107,8 @@ const ProfileSidebar = () => {
   };
 
   useEffect(() => {
-    setValue('avatar', data?.data?.avatarUrl);
-  }, [data?.data?.avatarUrl]);
+    setValue('avatar', data?.data?.information.avatarUrl);
+  }, [data?.data?.information.avatarUrl]);
 
   return (
     <StyledNavWrapper>

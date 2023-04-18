@@ -18,6 +18,7 @@ import {
   Button,
   IconButton,
   Stack,
+  Tooltip,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -69,16 +70,20 @@ const MemberForm = ({
   const [submitting, setSubmitting] = useState(false);
 
   const resolver = useYupValidateionResolver(validationSchema);
-
+  const initInformationData = initialData ? initialData.information : null;
   const methods = useForm({
     defaultValues: {
-      dateOfBirth: null,
+      dateOfBirth: initInformationData?.dateOfBirth || null,
       gradeClass: [
         {
           grade: [],
           alumClass: [],
         },
       ],
+      fullName: initInformationData?.fullName || '',
+      email: initInformationData?.email || '',
+      phone: initInformationData?.phone || '',
+      facebook: initInformationData?.facebookUrl || '',
     },
     resolver,
   });
@@ -243,16 +248,16 @@ export const GradeClassForm = ({
       >
         <Typography variant="h6">Niên khoá và lớp</Typography>
         {multiple ? (
-          <Button
-            size="small"
+          <IconButton
             type="button"
-            variant="outlined"
             onClick={() => {
               append({ gradeYear: [], alumClass: [] });
             }}
           >
-            Thêm
-          </Button>
+            <Tooltip title=" Thêm niên khoá và lớp">
+              <Icon height={24} icon="ic:baseline-add-circle" />
+            </Tooltip>
+          </IconButton>
         ) : null}
       </Stack>
 

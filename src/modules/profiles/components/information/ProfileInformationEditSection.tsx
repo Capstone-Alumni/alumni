@@ -42,7 +42,7 @@ const ProfileInformationEditSection = ({
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      userId: userInformation?.userId || '',
+      userId: userInformation?.alumniId || '',
       bio: userInformation?.bio || '',
       fullName: userInformation?.fullName || '',
       email: userInformation?.email || '',

@@ -57,6 +57,7 @@ export type Alumni = {
     gradeId: string;
     grade: Grade;
   }>;
+  isOwner: boolean;
 };
 
 export const _useApiDataAtomFamily = atomFamily<any, string>({

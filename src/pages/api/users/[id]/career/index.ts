@@ -1,4 +1,4 @@
-import { extractTenantId } from '@lib/next-connect';
+import { extractTenantIdFromSession } from '@lib/next-connect';
 import { extractUser } from '@lib/next-connect/apiMiddleware';
 import onErrorAPIHandler from '@lib/next-connect/onErrorAPIHandler';
 import onNoMatchAPIHandler from '@lib/next-connect/onNoMatchAPIHandler';
@@ -8,10 +8,9 @@ import CareerController from '../../../../../modules/profiles/controller/career.
 const handler = nc({
   onError: onErrorAPIHandler,
   onNoMatch: onNoMatchAPIHandler,
-}).use(extractTenantId, extractUser);
+}).use(extractTenantIdFromSession);
 
 handler
-  .use(extractTenantId)
   .get(extractUser, CareerController.getListByUserId)
   .post(CareerController.createCareer)
   .put(CareerController.updateCareers);

@@ -91,7 +91,6 @@ const CareerForm = ({ defaultValues, onSave, onClose }: any) => {
                 control={control}
                 name={item.name}
                 inputProps={{
-                  fullWidth: true,
                   label: item.label,
                   required: item.require,
                 }}

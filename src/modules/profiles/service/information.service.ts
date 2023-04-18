@@ -70,7 +70,7 @@ export default class InformationService {
     body: UpdateInformationProps,
   ) => {
     const informationUpdated = await tenantPrisma.information.update({
-      where: { userId: id },
+      where: { alumniId: id },
       data: body,
     });
     return informationUpdated;
