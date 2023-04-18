@@ -9,6 +9,7 @@ export default function useSignIn() {
   const subdomain = useRecoilValue(currentTenantSubdomainSelector);
 
   const signIn = (provider: 'credentials', value?: SignInFormValues) => {
+    router.prefetch('/');
     switch (provider) {
       case 'credentials':
         return nextSignIn('credentials', {
@@ -20,7 +21,7 @@ export default function useSignIn() {
           if (res?.error) {
             // TODO: handle error
           } else {
-            router.replace('/');
+            router.refresh();
           }
         });
       default:

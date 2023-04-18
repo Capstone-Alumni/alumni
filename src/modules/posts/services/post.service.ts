@@ -31,7 +31,7 @@ class PostService {
         connect: { id: alumClassId },
       };
     }
-    if (gradeId) {
+    if (gradeId !== 'all') {
       payload.grade = {
         connect: { id: gradeId },
       };

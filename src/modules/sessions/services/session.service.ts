@@ -1,4 +1,3 @@
-import { omit } from 'lodash';
 import {
   SignInRequestBody,
   SignUpRequestBody,
@@ -9,16 +8,9 @@ import { PrismaClient } from '@prisma/client';
 export default class SessionService {
   static signUp = async (
     tenantPrisma: PrismaClient,
-    {
-      fullName,
-      phone,
-      dateOfBirth,
-      gradeClass,
-      email,
-      password,
-    }: SignUpRequestBody,
+    { fullName, phone, dateOfBirth, gradeClass, email }: SignUpRequestBody,
   ) => {
-    if (!password || !email || gradeClass.length !== 1 || !fullName) {
+    if (!email || gradeClass.length !== 1 || !fullName) {
       throw new Error('invalid');
     }
 
@@ -26,15 +18,21 @@ export default class SessionService {
       where: {
         email: email,
         alumniId: null,
-        requestStatus: 0,
+        requestStatus: {
+          lt: 2,
+        },
       },
     });
 
-    if (requested.length > 0) {
+    const info = await tenantPrisma.information.findMany({
+      where: {
+        email: email,
+      },
+    });
+
+    if (requested.length > 0 || info.length > 0) {
       throw new Error('existed');
     }
-
-    // const passwordEncrypted = hashSync(password, 10);
 
     const newAccessRequest = await tenantPrisma.accessRequest.create({
       data: {
@@ -43,11 +41,10 @@ export default class SessionService {
         dateOfBirth,
         alumClassId: gradeClass[0].alumClass.id,
         email,
-        password: password, // passwordEncrypted,
       },
     });
 
-    return omit(newAccessRequest, 'password');
+    return newAccessRequest;
   };
 
   static signIn = async (

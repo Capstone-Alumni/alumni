@@ -43,7 +43,6 @@ export type UserInformation = {
 export type Alumni = {
   id: string;
   tenantId: string;
-  accountId?: string;
 
   information?: UserInformation;
   alumniToClass?: Array<{
