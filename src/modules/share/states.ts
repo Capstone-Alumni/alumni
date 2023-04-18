@@ -57,6 +57,8 @@ export type Alumni = {
     gradeId: string;
     grade: Grade;
   }>;
+  pingSent?: Array<any>;
+  pingReceived?: Array<any>;
   isOwner: boolean;
 };
 

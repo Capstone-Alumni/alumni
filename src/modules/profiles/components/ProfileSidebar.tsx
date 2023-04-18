@@ -82,7 +82,7 @@ const ProfileSidebar = () => {
 
   const { data } = useGetUserInformationQuery(userProfileId);
 
-  const { canSendMessage } = useCanSendMessage(data?.data?.ping);
+  const { canSendMessage } = useCanSendMessage();
 
   const [updateUserInformation] = useUpdateUserInformationMutation();
 
@@ -131,7 +131,7 @@ const ProfileSidebar = () => {
       </Card>
       <Card sx={{ width: '100%', py: 2 }}>
         <StyledNav>
-          {NAV_ITEMS.map(item => {
+          {NAV_ITEMS.map((item) => {
             const isActive = item.link && currentProfileTab === item.link;
             return (
               <Link
@@ -155,21 +155,23 @@ const ProfileSidebar = () => {
             );
           })}
           {alreadySendMessage === -1 ||
-            (canSendMessage && data?.data?.havePhone && userProfileId && (
-              <PingMessageModal
-                userProfileId={userProfileId}
-                onSendMessageSuccess={handleSendMessageSuccess}
-              >
-                <Button
-                  sx={{ width: '100%', justifyContent: 'left' }}
-                  startIcon={<SmsIcon />}
-                  variant="contained"
-                  color="warning"
+            (canSendMessage &&
+              data?.data?.information?.havePhone &&
+              userProfileId && (
+                <PingMessageModal
+                  userProfileId={userProfileId}
+                  onSendMessageSuccess={handleSendMessageSuccess}
                 >
-                  Gửi tin nhắn
-                </Button>
-              </PingMessageModal>
-            ))}
+                  <Button
+                    sx={{ width: '100%', justifyContent: 'left' }}
+                    startIcon={<SmsIcon />}
+                    variant="contained"
+                    color="warning"
+                  >
+                    Gửi tin nhắn
+                  </Button>
+                </PingMessageModal>
+              ))}
           {canEditProfile && userProfileId && (
             <ChangePasswordModal userProfileId={userProfileId}>
               <Button

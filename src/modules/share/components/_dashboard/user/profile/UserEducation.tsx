@@ -56,7 +56,7 @@ const UserEducation = ({
   const onDeleteWork = async (id: string) => {
     const currentData = [...educationData];
 
-    const deleteIndex = currentData.findIndex(item => item.id === id);
+    const deleteIndex = currentData.findIndex((item) => item.id === id);
 
     currentData.splice(deleteIndex, 1);
 
@@ -71,7 +71,7 @@ const UserEducation = ({
   const onUpdateWork = async (id: any, values: any) => {
     const currentData = [...educationData];
 
-    const updateIndex = currentData.findIndex(item => item.id === id);
+    const updateIndex = currentData.findIndex((item) => item.id === id);
 
     currentData[updateIndex] = values;
 
@@ -226,7 +226,7 @@ const UserEducation = ({
                   </div>
                 ))
               ) : (
-                <Typography>Không có thông tin</Typography>
+                <Typography>Chưa cập nhật</Typography>
               )}
             </Box>
           </div>

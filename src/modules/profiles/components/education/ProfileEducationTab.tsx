@@ -225,7 +225,7 @@ const ProfileEducationTab = () => {
               </Box>
             ))
           ) : (
-            <Typography>Không có thông tin</Typography>
+            <Typography>Chưa cập nhật</Typography>
           )}
         </Box>
       </CardContent>

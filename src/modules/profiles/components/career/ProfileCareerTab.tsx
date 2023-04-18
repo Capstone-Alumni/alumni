@@ -224,7 +224,7 @@ const ProfileCareerTab = () => {
                 </Box>
               ))
             ) : (
-              <Typography>Không có công việc</Typography>
+              <Typography>Chưa cập nhật</Typography>
             )}
           </Box>
         </CardContent>

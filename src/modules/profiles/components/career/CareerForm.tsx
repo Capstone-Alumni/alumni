@@ -94,6 +94,11 @@ const CareerForm = ({ defaultValues, onSave, onClose }: any) => {
                   label: item.label,
                   required: item.require,
                 }}
+                textProps={{
+                  sx: {
+                    width: '100%',
+                  },
+                }}
                 key={item.id}
               />
             );
