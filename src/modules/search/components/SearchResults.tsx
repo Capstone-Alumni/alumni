@@ -1,8 +1,10 @@
 'use client';
 import {
   alpha,
+  AvatarGroup,
   Box,
   Card,
+  Chip,
   Grid,
   Pagination,
   Stack,
@@ -13,9 +15,10 @@ import Link from '@share/components/NextLinkV2';
 import Avatar from '@share/components/MyAvatar';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { currentUserInformationDataAtom } from '@share/states';
+import { Alumni, currentUserInformationDataAtom } from '@share/states';
 import useGetProfileList from '../hooks/useGetProfileList';
 import { getProfileListParamsAtom } from '../states';
+import { Class } from 'src/modules/gradeAndClass/types';
 // ----------------------------------------------------------------------
 
 const Wrapper = styled('div')(({ theme }) => ({
@@ -24,6 +27,18 @@ const Wrapper = styled('div')(({ theme }) => ({
     backgroundColor: alpha(theme.palette.common.black, 0.05),
   },
 }));
+
+const getGradeClassDisplay = (alumClass: Class) => {
+  const grade = alumClass.grade;
+  if (grade?.code) {
+    return `${grade.code} - ${alumClass.name}`;
+  }
+  return `${alumClass.name} (${grade?.startYear} - ${grade?.endYear})`;
+};
+
+const getClassDisplay = (alumClass: Class) => {
+  return `${alumClass.name}`;
+};
 
 const SeachPage = () => {
   const [params, setParams] = useRecoilState(getProfileListParamsAtom);
@@ -37,7 +52,7 @@ const SeachPage = () => {
       return (
         <Grid container maxWidth="md" sx={{ margin: 'auto' }}>
           <Grid item xs={12} md={12}>
-            {profileListData?.data.items.map((user: any) => {
+            {profileListData?.data.items.map((user: Alumni) => {
               return (
                 <Card sx={{ margin: '1rem 0' }} key={user.id}>
                   <Link
@@ -50,8 +65,8 @@ const SeachPage = () => {
                       <Box display={'flex'}>
                         <Avatar
                           sx={{ width: 60, height: 60 }}
-                          photoUrl={user?.information.avatarUrl ?? null}
-                          displayName={user?.information.fullName}
+                          photoUrl={user?.information?.avatarUrl ?? undefined}
+                          displayName={user?.information?.fullName}
                         />
                         <Box
                           sx={{
@@ -61,9 +76,9 @@ const SeachPage = () => {
                           }}
                         >
                           <Typography fontWeight={600}>
-                            {user?.information.fullName}
+                            {user?.information?.fullName}
                           </Typography>
-                          <Box
+                          {/* <Box
                             display={'flex'}
                             flexDirection="column"
                             sx={{ justifyContent: 'space-between' }}
@@ -80,7 +95,23 @@ const SeachPage = () => {
                                 {user?.alumClass.name}
                               </Typography>
                             )}
-                          </Box>
+                          </Box> */}
+                          <AvatarGroup total={user?.alumniToClass?.length}>
+                            {user?.alumniToClass?.[0]?.alumClass ? (
+                              <Chip
+                                label={getGradeClassDisplay(
+                                  user.alumniToClass[0].alumClass,
+                                )}
+                              />
+                            ) : null}
+                            {user?.alumniToClass?.[1]?.alumClass ? (
+                              <Chip
+                                label={getClassDisplay(
+                                  user.alumniToClass[1].alumClass,
+                                )}
+                              />
+                            ) : null}
+                          </AvatarGroup>
                         </Box>
                       </Box>
                     </Wrapper>

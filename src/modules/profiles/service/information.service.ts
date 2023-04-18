@@ -185,6 +185,15 @@ export default class InformationService {
           where: whereFilter,
           include: {
             information: true,
+            alumniToClass: {
+              include: {
+                alumClass: {
+                  include: {
+                    grade: true,
+                  },
+                },
+              },
+            },
           },
         }),
       ]);
