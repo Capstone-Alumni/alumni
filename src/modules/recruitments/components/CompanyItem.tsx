@@ -221,10 +221,13 @@ const Company = ({
                 <Stack direction="row" alignItems="center" gap="0.25rem">
                   <FiberManualRecordIcon
                     fontSize="small"
-                    color={companyDetails.isApproved ? 'success' : 'warning'}
+                    color={companyDetails.isApproved ? 'success' : 'error'}
                   />
-                  <Typography variant="body2" color="#919eab">
-                    {companyDetails.isApproved ? 'Đã duyệt' : 'Đang xét duyệt'}
+                  <Typography
+                    variant="body2"
+                    color={companyDetails.isApproved ? '#919eab' : 'error'}
+                  >
+                    {companyDetails.isApproved ? 'ĐÃ ĐĂNG' : 'ADMIN ĐÃ TẮT'}
                   </Typography>
                 </Stack>
               </Stack>

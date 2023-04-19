@@ -46,6 +46,7 @@ export type Job = {
     id: string;
     information: UserInformation;
   };
+  recruitmentApplication: Array<{ id: string }>;
   recruitmentOwnerId: string;
   yearsOfExperience?: string;
   salary: string;

@@ -18,6 +18,7 @@ import useOwnerGetJobList from '../hooks/useOwnerGetJobList';
 import { getOwnerJobListParamsAtom } from '../states';
 import CompanyItem from './CompanyItem';
 import { useState } from 'react';
+import AdminJobPreview from './AdminJobPreview';
 
 const HostingEventListPage = () => {
   const [params, setParams] = useRecoilState(getOwnerJobListParamsAtom);
@@ -54,7 +55,7 @@ const HostingEventListPage = () => {
                   key={item.id}
                   companyDetails={item}
                   actions={[
-                    item.isApproved && (
+                    item.isApproved ? (
                       <Link
                         key="edit-btn"
                         href={`/recruitments/job_details/${item.id}`}
@@ -64,6 +65,16 @@ const HostingEventListPage = () => {
                           Xem
                         </Button>
                       </Link>
+                    ) : (
+                      <AdminJobPreview data={item}>
+                        <Button
+                          fullWidth
+                          variant="outlined"
+                          sx={{ marginRight: '2rem' }}
+                        >
+                          Xem tóm tắt
+                        </Button>
+                      </AdminJobPreview>
                     ),
                     <Link
                       key="edit-btn"

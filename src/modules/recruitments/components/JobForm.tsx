@@ -77,7 +77,7 @@ const validationSchema = yup.object({
   description: yup.string().required('Mô tả công việc không được để trống'),
   position: yup.string().required('Vị trí công việc không được để trống'),
   job: yup.string().required('Tên công việc không được để trống'),
-  website: yup.string().required('Địa chỉ website không được để trống'),
+  website: yup.string(),
   address: yup.string().required('Địa chỉ công ty không được để trống'),
   type: yup.string().required('Loại hình làm việc không được để trống'),
   salary: yup.string().required('Mức lương công việc không được để trống'),
