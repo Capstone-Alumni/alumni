@@ -225,7 +225,7 @@ const UserCareers = ({
                   </div>
                 ))
               ) : (
-                <Typography>Không có thông tin</Typography>
+                <Typography>Chưa cập nhật</Typography>
               )}
             </Box>
           </div>

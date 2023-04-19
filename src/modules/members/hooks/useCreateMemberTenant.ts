@@ -25,7 +25,10 @@ const useCreateMemberTenant = () => {
     }),
     {
       onError: () => {
-        toast.error('Tao thanh vien that bai');
+        toast.error('Thêm thành viên thất bại');
+      },
+      onSuccess: () => {
+        toast.success('Thêm thành viên thành công');
       },
     },
   );

@@ -31,7 +31,7 @@ const ProfileInformationTab = () => {
         />
       ) : (
         <ProfileInformationEditSection
-          userInformation={userInformationResponse?.data.data}
+          userInformation={userInformationResponse?.data.data.information}
           userProfileId={userProfileId}
           onSave={async values => {
             await updateUserInformation(values);

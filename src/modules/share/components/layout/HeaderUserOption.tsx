@@ -18,10 +18,10 @@ import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from '@share/components/NextLinkV2';
 import { Box } from '@mui/material';
-import getRoleName from '@share/utils/getRoleName';
 import { useRecoilValue } from 'recoil';
 import { currentUserInformationDataAtom } from '@share/states';
 import { User } from 'next-auth';
+import getRoleName from '@share/utils/getRoleName';
 
 const Wrapper = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -55,64 +55,70 @@ const HeaderUserOptions = ({ user }: { user?: User }) => {
 
   return (
     <>
-      <Wrapper
-        id="header-user-option"
-        aria-controls={open ? 'header-user-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Typography variant="subtitle2">{user?.email}</Typography>
-          <Typography variant="caption" color="warning">
-            {getRoleName(user?.accessLevel || 'ALUMNI')}
-          </Typography>
-        </Box>
-        <MyAvatar
-          displayName={currentUserInformation?.fullName}
-          photoUrl={currentUserInformation?.avatarUrl}
-        />
-      </Wrapper>
-      <Menu
-        id="header-user-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'header-user-option',
-        }}
-      >
-        <Link href={`/profile/${user?.id}`} style={{ color: 'inherit' }}>
-          <MenuItem>
-            <ListItemIcon>
-              <PersonOutlineIcon />
-            </ListItemIcon>
-            <ListItemText>Hồ sơ của tôi</ListItemText>
-          </MenuItem>
-        </Link>
-
-        <MenuItem
-          onClick={async () => {
-            await signOut({ redirect: false });
-            router.push('/');
-          }}
-        >
-          <ListItemIcon>
-            <Icon
-              color={theme.palette.common.black}
-              height={24}
-              icon="fe:logout"
+      {currentUserInformation ? (
+        <>
+          <Wrapper
+            id="header-user-option"
+            aria-controls={open ? 'header-user-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={handleClick}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <Typography variant="subtitle2">
+                {currentUserInformation?.information?.fullName}
+              </Typography>
+              <Typography variant="caption" color="warning">
+                {getRoleName(currentUserInformation)}
+              </Typography>
+            </Box>
+            <MyAvatar
+              displayName={currentUserInformation?.information?.fullName}
+              photoUrl={currentUserInformation?.information?.avatarUrl}
             />
-          </ListItemIcon>
-          <ListItemText>Đăng xuất</ListItemText>
-        </MenuItem>
-      </Menu>
+          </Wrapper>
+          <Menu
+            id="header-user-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              'aria-labelledby': 'header-user-option',
+            }}
+          >
+            <Link href={`/profile/${user?.id}`} style={{ color: 'inherit' }}>
+              <MenuItem>
+                <ListItemIcon>
+                  <PersonOutlineIcon />
+                </ListItemIcon>
+                <ListItemText>Hồ sơ của tôi</ListItemText>
+              </MenuItem>
+            </Link>
+
+            <MenuItem
+              onClick={async () => {
+                await signOut({ redirect: false });
+                router.push('/');
+              }}
+            >
+              <ListItemIcon>
+                <Icon
+                  color={theme.palette.common.black}
+                  height={24}
+                  icon="fe:logout"
+                />
+              </ListItemIcon>
+              <ListItemText>Đăng xuất</ListItemText>
+            </MenuItem>
+          </Menu>
+        </>
+      ) : null}
     </>
   );
 };

@@ -56,6 +56,9 @@ export type Alumni = {
     gradeId: string;
     grade: Grade;
   }>;
+  pingSent?: Array<any>;
+  pingReceived?: Array<any>;
+  isOwner: boolean;
 };
 
 export const _useApiDataAtomFamily = atomFamily<any, string>({

@@ -88,7 +88,11 @@ export default class MemberService {
           information: true,
           alumniToClass: {
             include: {
-              alumClass: true,
+              alumClass: {
+                include: {
+                  grade: true,
+                },
+              },
             },
           },
         },

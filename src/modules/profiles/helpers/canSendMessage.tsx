@@ -7,7 +7,7 @@ export const useCanEditProfile = () => {
   const pathname = usePathname();
   const userProfileId = pathname?.slice(pathname?.lastIndexOf('/') + 1);
 
-  const canEditProfile = currentUserInformation?.userId === userProfileId;
+  const canEditProfile = currentUserInformation?.id === userProfileId;
 
   return {
     canEditProfile,
@@ -15,18 +15,18 @@ export const useCanEditProfile = () => {
   };
 };
 
-export const useCanSendMessage = (pings: any) => {
+export const useCanSendMessage = () => {
   const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
   const pathname = usePathname();
   const userProfileId = pathname?.slice(pathname?.lastIndexOf('/') + 1);
 
   let canSendMessage = false;
 
-  if (currentUserInformation?.userId) {
-    canSendMessage = currentUserInformation?.userId !== userProfileId;
-    if (currentUserInformation?.ping) {
-      const array = currentUserInformation?.ping.filter(ping => {
-        return ping.pingAlumniInfoId === userProfileId;
+  if (currentUserInformation?.id) {
+    canSendMessage = currentUserInformation?.id !== userProfileId;
+    if (currentUserInformation?.pingSent) {
+      const array = currentUserInformation?.pingSent.filter(pingSent => {
+        return pingSent.pingAlumniId === userProfileId;
       });
       canSendMessage = array.length === 0 && true;
     }

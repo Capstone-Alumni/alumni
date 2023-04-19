@@ -82,13 +82,13 @@ const ProfileSidebar = () => {
 
   const { data } = useGetUserInformationQuery(userProfileId);
 
-  const { canSendMessage } = useCanSendMessage(data?.data?.ping);
+  const { canSendMessage } = useCanSendMessage();
 
   const [updateUserInformation] = useUpdateUserInformationMutation();
 
   const { control, setValue } = useForm({
     defaultValues: {
-      avatar: data?.data?.avatarUrl,
+      avatar: data?.data?.information.avatarUrl,
     },
   });
 
@@ -107,8 +107,8 @@ const ProfileSidebar = () => {
   };
 
   useEffect(() => {
-    setValue('avatar', data?.data?.avatarUrl);
-  }, [data?.data?.avatarUrl]);
+    setValue('avatar', data?.data?.information.avatarUrl);
+  }, [data?.data?.information.avatarUrl]);
 
   return (
     <StyledNavWrapper>
@@ -155,21 +155,23 @@ const ProfileSidebar = () => {
             );
           })}
           {alreadySendMessage === -1 ||
-            (canSendMessage && data?.data?.havePhone && userProfileId && (
-              <PingMessageModal
-                userProfileId={userProfileId}
-                onSendMessageSuccess={handleSendMessageSuccess}
-              >
-                <Button
-                  sx={{ width: '100%', justifyContent: 'left' }}
-                  startIcon={<SmsIcon />}
-                  variant="contained"
-                  color="warning"
+            (canSendMessage &&
+              data?.data?.information?.havePhone &&
+              userProfileId && (
+                <PingMessageModal
+                  userProfileId={userProfileId}
+                  onSendMessageSuccess={handleSendMessageSuccess}
                 >
-                  Gửi tin nhắn
-                </Button>
-              </PingMessageModal>
-            ))}
+                  <Button
+                    sx={{ width: '100%', justifyContent: 'left' }}
+                    startIcon={<SmsIcon />}
+                    variant="contained"
+                    color="warning"
+                  >
+                    Gửi tin nhắn
+                  </Button>
+                </PingMessageModal>
+              ))}
           {canEditProfile && userProfileId && (
             <ChangePasswordModal userProfileId={userProfileId}>
               <Button

@@ -18,6 +18,7 @@ import { differenceInHours } from 'date-fns';
 import useResendInvitationMemberById from '../hooks/useResendInvitationMemberById';
 import { useRecoilValue } from 'recoil';
 import { currentTenantDataAtom } from '@share/states';
+import { isEmpty } from 'lodash';
 
 const AdminMemberListItem = ({
   data,
@@ -62,6 +63,19 @@ const AdminMemberListItem = ({
     );
   };
 
+  const getListGrades = () => {
+    if (isEmpty(data.alumniToClass)) {
+      return [];
+    }
+    const initGradeName: string[] = [];
+    data.alumniToClass.filter(it => {
+      if (!initGradeName.includes(it.alumClass.grade?.code as string)) {
+        initGradeName.push(it.alumClass.grade?.code as string);
+      }
+    });
+    return initGradeName;
+  };
+
   return (
     <>
       <TableRow>
@@ -72,15 +86,20 @@ const AdminMemberListItem = ({
           <Typography>{data?.information?.email}</Typography>
         </TableCell>
         <TableCell align="left">
+          {getListGrades().map((code: string) => (
+            <Chip key={code || ''} label={code || ''} />
+          ))}
+        </TableCell>
+        <TableCell align="left">
           {data?.alumniToClass?.map(({ alumClass }) => (
             <Chip
               key={alumClass.id}
               label={alumClass.name}
-              onDelete={() => onDelete(alumClass.id)}
+              // onDelete={() => onDelete(alumClass.id)}
             />
           ))}
         </TableCell>
-        <TableCell align="center">
+        <TableCell align="left">
           {renderStatus(data.lastLogin, data.createdAt)}
         </TableCell>
         <TableCell align="center">

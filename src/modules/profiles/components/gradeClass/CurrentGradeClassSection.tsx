@@ -37,7 +37,7 @@ const CurrentGradeClassSection = () => {
   const { deleteAlumToClassById, isLoading: deleting } =
     useDeleteAlumToClassById();
 
-  console.log(groupedClass);
+  // console.log(groupedClass);
 
   return (
     <Card sx={{ width: '100%' }}>

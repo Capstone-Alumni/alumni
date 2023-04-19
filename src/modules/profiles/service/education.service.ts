@@ -63,7 +63,11 @@ export default class EducationServices {
     const newEducation = await tenantPrisma.education.create({
       data: {
         ...body,
-        userId: userId,
+        alumni: {
+          connect: {
+            id: userId,
+          },
+        },
       },
     });
     return newEducation;
@@ -156,40 +160,44 @@ export default class EducationServices {
   ) => {
     //await isUserExisted(userId);
 
-    const requesterInformation = await tenantPrisma.information.findUnique({
-      where: { userId: user.id },
+    const requesterInformation = await tenantPrisma.alumni.findUnique({
+      where: { id: user.id },
       include: {
-        alumClass: {
-          include: {
-            grade: true,
+        information: true,
+        alumniToClass: {
+          select: {
+            isClassMod: true,
+            alumClassId: true,
           },
         },
       },
     });
 
-    const userInformation = await tenantPrisma.information.findUnique({
-      where: { userId: userId },
+    const userInformation = await tenantPrisma.alumni.findUnique({
+      where: { id: userId },
       include: {
-        alumClass: {
-          include: {
-            grade: true,
+        information: true,
+        alumniToClass: {
+          select: {
+            isClassMod: true,
+            alumClassId: true,
           },
         },
       },
     });
 
-    if (!canViewEducation(userInformation, requesterInformation)) {
-      return {
-        totalItems: 0,
-        items: {},
-        itemPerPage: 0,
-      };
-    }
+    // if (!canViewEducation(userInformation, requesterInformation)) {
+    //   return {
+    //     totalItems: 0,
+    //     items: {},
+    //     itemPerPage: 0,
+    //   };
+    // }
     const { page, limit } = getPageAndLimitFromParams(params);
     const { school, degree, startDate, endDate } = params;
     const whereFilter = {
       AND: [
-        { userId: userId },
+        { alumniId: userId },
         { school: { contains: school } },
         { degree: degree },
         { startDate: { gte: startDate } },
