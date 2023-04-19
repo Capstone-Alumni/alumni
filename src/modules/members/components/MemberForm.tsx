@@ -212,9 +212,11 @@ const MemberForm = ({
 export const GradeClassForm = ({
   multiple = true,
   getAll = false,
+  isSignup = false,
 }: {
   multiple?: boolean;
   getAll?: boolean;
+  isSignup?: boolean;
 }) => {
   const { control, watch, setValue } = useFormContext();
   const { fields, append, remove } = useFieldArray({
@@ -225,7 +227,11 @@ export const GradeClassForm = ({
 
   const { data: session } = useSession();
 
-  const { data: classList, getClassList } = useGetClassListV2();
+  const {
+    data: classList,
+    getClassList,
+    isLoading: isLoadingClasses,
+  } = useGetClassListV2();
   const { data: gradeList, isLoading: isLoadingGrade } = useGetGradeList();
   const setParams = useSetRecoilState(getGradeListParamsAtom);
 
@@ -246,7 +252,16 @@ export const GradeClassForm = ({
         justifyContent="space-between"
         sx={{ width: '100%', mt: 2, mb: 1 }}
       >
-        <Typography variant="h6">Niên khoá và lớp</Typography>
+        <Box>
+          <Typography variant="h6">Niên khoá và lớp</Typography>
+          {isSignup ? (
+            <Typography color="text.secondary">
+              Chọn lớp và niên khóa của năm bạn tốt nghiệp hoặc năm gần nhất bạn
+              đã từng học
+            </Typography>
+          ) : null}
+        </Box>
+
         {multiple ? (
           <IconButton
             type="button"
@@ -306,6 +321,7 @@ export const GradeClassForm = ({
                   width: '100%',
                 },
               }}
+              isLoadingOptions={isLoadingClasses}
               options={
                 classList
                   ? classList?.data.items.map(cl => ({

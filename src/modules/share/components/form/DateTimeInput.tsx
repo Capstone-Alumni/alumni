@@ -16,6 +16,7 @@ const DateTimeInput = ({ control, name, inputProps }: TextInputProps) => {
       render={({ field }) => (
         <DateTimePicker
           {...field}
+          inputFormat="dd/MM/yyyy hh:mm"
           label={inputProps?.label}
           renderInput={params => <TextField {...params} {...inputProps} />}
         />

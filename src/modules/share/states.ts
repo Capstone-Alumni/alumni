@@ -37,6 +37,8 @@ export type UserInformation = {
   email: string;
   fullName: string;
   avatarUrl?: string;
+  dateOfBirth?: Date;
+  phone?: string;
   ping: any[];
 };
 

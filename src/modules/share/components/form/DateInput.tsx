@@ -24,8 +24,14 @@ const DateInput = ({
         <DatePicker
           {...field}
           {...inputProps}
+          inputFormat="dd/MM/yyyy"
           renderInput={params => (
-            <TextField {...params} type="date" {...textProps} />
+            <TextField
+              {...params}
+              type="date"
+              {...textProps}
+              fullWidth={inputProps?.fullWidth || false}
+            />
           )}
         />
       )}

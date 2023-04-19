@@ -31,6 +31,10 @@ const FundTransactionListTab = () => {
 
   const [params, setParams] = useRecoilState(getFundTransactionListParamsAtom);
   const { data, isLoading } = useGetFundTransactionList(fundId);
+  console.log(
+    '🚀 ~ file: FundTransactionList.tsx:34 ~ FundTransactionListTab ~ data:',
+    data,
+  );
 
   if (isLoading || !data?.data) {
     return <LoadingIndicator />;
@@ -78,7 +82,7 @@ const FundTransactionListTab = () => {
                     </Box>
                   ) : (
                     <Link
-                      href={`/profile/${row.userId}`}
+                      href={`/profile/${row.alumni?.id}`}
                       prefetch={false}
                       style={{ color: 'inherit' }}
                     >
@@ -91,17 +95,17 @@ const FundTransactionListTab = () => {
                         }}
                       >
                         <MyAvatar
-                          displayName={row?.userInformation?.fullName}
-                          photoUrl={row?.userInformation?.avatarUrl}
+                          displayName={row?.alumni?.information?.fullName}
+                          photoUrl={row?.alumni?.information?.avatarUrl}
                         />
                         <Box>
                           <Typography>
-                            {row?.userInformation?.fullName}
+                            {row?.alumni?.information?.fullName}
                           </Typography>
-                          <Typography variant="body2">
+                          {/* <Typography variant="body2">
                             {row?.userInformation?.alumClass?.grade?.code} /{' '}
                             {row?.userInformation?.alumClass?.name}
-                          </Typography>
+                          </Typography> */}
                         </Box>
                       </Box>
                     </Link>
