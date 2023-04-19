@@ -55,13 +55,13 @@ const FundDetailPage = () => {
 
   const FundStatus = useMemo(() => {
     if (!data?.data) {
-      return 'not-open';
+      return 'not-started';
     }
 
     const { data: fundData } = data;
 
     if (new Date(fundData.startTime) > new Date()) {
-      return 'opened';
+      return 'not-started';
     }
 
     if (fundData.endTime && new Date(fundData.endTime) > new Date()) {
@@ -112,20 +112,20 @@ const FundDetailPage = () => {
 
       <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 2 }}>
         <MyAvatar
-          displayName={fundData.hostInformation?.fullName}
-          photoUrl={fundData.hostInformation?.avatarUrl}
+          displayName={fundData.host?.information?.fullName}
+          photoUrl={fundData.host?.information?.avatarUrl}
         />
 
         <Stack direction="column">
           <Link
-            href={`/profile/${fundData.userId}?profile_tab=information`}
+            href={`/profile/${fundData.hostId}?profile_tab=information`}
             prefetch={false}
           >
             <Typography fontWeight={600}>
-              {fundData.hostInformation?.fullName}
+              {fundData.host?.information?.fullName}
             </Typography>
           </Link>
-          <Typography>{fundData.hostInformation?.email}</Typography>
+          <Typography>{fundData.host?.information?.email}</Typography>
         </Stack>
       </Stack>
 
@@ -219,7 +219,7 @@ const FundDetailPage = () => {
                   fundData.currentBalance < fundData.targetBalance * 100
                 }
                 reminingAmount={
-                  fundData.targetBalance - fundData.currentBalance
+                  fundData.targetBalance - fundData.currentBalance / 100
                 }
                 maxDonate={
                   fundData.targetBalance * 100 - fundData.currentBalance < 0
