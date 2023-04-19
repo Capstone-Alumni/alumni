@@ -8,7 +8,13 @@ import { Prisma, PrismaClient } from '@prisma/client';
 export default class MemberService {
   static create = async (
     tenantPrisma: PrismaClient,
-    { tenantId, gradeClass, alumniId, ...memberData }: CreateMemberServiceProps,
+    {
+      tenantId,
+      gradeClass,
+      alumniId,
+      facebook,
+      ...memberData
+    }: CreateMemberServiceProps,
   ) => {
     const flattenClass = gradeClass.reduce((red: any[], { alumClass }) => {
       return red.concat(alumClass.map(cl => cl.value));
@@ -33,6 +39,7 @@ export default class MemberService {
       data: {
         ...memberData,
         alumniId: member.id,
+        facebookUrl: facebook,
       },
     });
 
