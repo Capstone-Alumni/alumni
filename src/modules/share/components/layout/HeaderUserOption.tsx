@@ -20,7 +20,6 @@ import Link from '@share/components/NextLinkV2';
 import { Box } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import { currentUserInformationDataAtom } from '@share/states';
-import { User } from 'next-auth';
 import getRoleName from '@share/utils/getRoleName';
 
 const Wrapper = styled('div')(({ theme }) => ({
@@ -38,7 +37,7 @@ const Wrapper = styled('div')(({ theme }) => ({
   },
 }));
 
-const HeaderUserOptions = ({ user }: { user?: User }) => {
+const HeaderUserOptions = () => {
   const theme = useTheme();
   const router = useRouter();
 
@@ -92,7 +91,10 @@ const HeaderUserOptions = ({ user }: { user?: User }) => {
               'aria-labelledby': 'header-user-option',
             }}
           >
-            <Link href={`/profile/${user?.id}`} style={{ color: 'inherit' }}>
+            <Link
+              href={`/profile/${currentUserInformation?.id}`}
+              style={{ color: 'inherit' }}
+            >
               <MenuItem>
                 <ListItemIcon>
                   <PersonOutlineIcon />
@@ -104,7 +106,7 @@ const HeaderUserOptions = ({ user }: { user?: User }) => {
             <MenuItem
               onClick={async () => {
                 await signOut({ redirect: false });
-                router.push('/');
+                router.refresh();
               }}
             >
               <ListItemIcon>
