@@ -1,7 +1,6 @@
 'use client';
 import {
   alpha,
-  AvatarGroup,
   Box,
   Card,
   Chip,
@@ -10,6 +9,7 @@ import {
   Stack,
   styled,
   Typography,
+  useTheme,
 } from '@mui/material';
 import Link from '@share/components/NextLinkV2';
 import Avatar from '@share/components/MyAvatar';
@@ -19,6 +19,8 @@ import { Alumni, currentUserInformationDataAtom } from '@share/states';
 import useGetProfileList from '../hooks/useGetProfileList';
 import { getProfileListParamsAtom } from '../states';
 import { Class } from 'src/modules/gradeAndClass/types';
+import { groupBy } from 'lodash/fp';
+import { Button } from '@mui/material';
 // ----------------------------------------------------------------------
 
 const Wrapper = styled('div')(({ theme }) => ({
@@ -41,6 +43,7 @@ const getClassDisplay = (alumClass: Class) => {
 };
 
 const SeachPage = () => {
+  const theme = useTheme();
   const [params, setParams] = useRecoilState(getProfileListParamsAtom);
   const { page } = params;
 
@@ -53,13 +56,32 @@ const SeachPage = () => {
         <Grid container maxWidth="md" sx={{ margin: 'auto' }}>
           <Grid item xs={12} md={12}>
             {profileListData?.data.items.map((user: Alumni) => {
+              const groupedClass = groupBy<{
+                id: string;
+                isClassMod: boolean;
+                alumClass: Class;
+              }>(({ alumClass }) => alumClass.gradeId)(user?.alumniToClass);
+
+              console.log(groupedClass);
+
+              const LinkWrapper = user?.information?.email ? Link : Box;
+
               return (
                 <Card sx={{ margin: '1rem 0' }} key={user.id}>
-                  <Link
-                    href={`/profile/${user.id}?profile_tab=information`}
+                  <LinkWrapper
+                    href={
+                      user?.information?.email
+                        ? `/profile/${user.id}?profile_tab=information`
+                        : {}
+                    }
                     prefetch={false}
                     passHref
-                    style={{ color: 'inherit' }}
+                    style={{
+                      color: 'inherit',
+                      backgroundColor: user?.information?.email
+                        ? ''
+                        : theme.palette.background.neutral,
+                    }}
                   >
                     <Wrapper>
                       <Box display={'flex'}>
@@ -75,28 +97,58 @@ const SeachPage = () => {
                             width: '100%',
                           }}
                         >
-                          <Typography fontWeight={600}>
-                            {user?.information?.fullName}
-                          </Typography>
-                          {/* <Box
+                          <Stack direction="row" justifyContent="space-between">
+                            <Typography fontWeight={600} sx={{ mb: 1 }}>
+                              {user?.information?.fullName}
+                            </Typography>
+                            {user?.information?.email ? null : (
+                              <Button
+                                variant="outlined"
+                                size="small"
+                                color="warning"
+                              >
+                                Chưa gia nhập
+                              </Button>
+                            )}
+                          </Stack>
+
+                          <Box
                             display={'flex'}
                             flexDirection="column"
                             sx={{ justifyContent: 'space-between' }}
                           >
-                            {user?.alumClass && (
-                              <Typography variant="caption">
-                                <strong>Khối: </strong>
-                                {user?.alumClass.grade.code}
-                              </Typography>
-                            )}
-                            {user?.alumClass && (
-                              <Typography variant="caption">
-                                <strong>Lớp: </strong>
-                                {user?.alumClass.name}
-                              </Typography>
-                            )}
-                          </Box> */}
-                          <AvatarGroup total={user?.alumniToClass?.length}>
+                            {Object.keys(groupedClass).map((gradeId, index) => {
+                              const group = groupedClass[gradeId];
+                              const grade = group[0].alumClass?.grade;
+
+                              if (!grade) {
+                                return null;
+                              }
+
+                              return (
+                                <Stack
+                                  direction="row"
+                                  key={gradeId}
+                                  alignItems="center"
+                                  gap={1}
+                                >
+                                  <Typography>
+                                    {grade.code
+                                      ? grade.code
+                                      : `${grade?.startYear} - ${grade?.endYear}`}
+                                  </Typography>
+                                  {group.map(gr => (
+                                    <Chip
+                                      key={gr.id}
+                                      label={gr.alumClass.name}
+                                      size="small"
+                                    />
+                                  ))}
+                                </Stack>
+                              );
+                            })}
+                          </Box>
+                          {/* <AvatarGroup total={user?.alumniToClass?.length}>
                             {user?.alumniToClass?.[0]?.alumClass ? (
                               <Chip
                                 label={getGradeClassDisplay(
@@ -111,11 +163,11 @@ const SeachPage = () => {
                                 )}
                               />
                             ) : null}
-                          </AvatarGroup>
+                          </AvatarGroup> */}
                         </Box>
                       </Box>
                     </Wrapper>
-                  </Link>
+                  </LinkWrapper>
                 </Card>
               );
             })}
