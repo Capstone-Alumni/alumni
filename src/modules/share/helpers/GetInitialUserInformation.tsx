@@ -1,18 +1,17 @@
 'use client';
 
-import useGetCurrentUserInformation from '@share/hooks/useGetCurrentUserInformation';
-import { currentUserInformationDataAtom } from '@share/states';
-import { User } from 'next-auth';
+import { Alumni, currentUserInformationDataAtom } from '@share/states';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 
-const GetInitialUserInformation = ({ user }: { user?: User }) => {
-  const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
-  const { fetchApi } = useGetCurrentUserInformation();
+const GetInitialUserInformation = ({ user }: { user?: Alumni }) => {
+  const [currentUserInformation, setCurrentUserInformation] = useRecoilState(
+    currentUserInformationDataAtom,
+  );
 
   useEffect(() => {
-    if (user?.id && user?.id !== currentUserInformation?.alumniId) {
-      fetchApi({ id: user.id });
+    if (user) {
+      setCurrentUserInformation(user);
     }
   }, []);
 

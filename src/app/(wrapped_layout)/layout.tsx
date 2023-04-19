@@ -9,6 +9,8 @@ export default async function AuthorizedLayout({
 }) {
   const data = await getTenantDataSSR();
 
+  console.log('rerender wrapped layout');
+
   return (
     <>
       <Body>{children}</Body>

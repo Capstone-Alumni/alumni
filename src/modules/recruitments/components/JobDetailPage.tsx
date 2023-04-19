@@ -95,7 +95,6 @@ const JobDetailPage = () => {
     viewerId: string,
     dataGetAppliedJobListById: GetAppliedJobListByIdResponse,
   ) => {
-    const flag = false;
     for (const application of dataGetAppliedJobListById.data.items) {
       if (application.applicationOwnerId === viewerId) {
         return true;
@@ -214,6 +213,17 @@ const JobDetailPage = () => {
                 </Grid>
               </Grid>
             </StyledGridInfo>
+            <StyledGridInfo item xs={6}>
+              <Grid container spacing={0}>
+                <Grid item xs={2}>
+                  <WorkIcon fontSize="large" />
+                </Grid>
+                <Grid item xs={10}>
+                  <Typography fontWeight={600}>Yêu cầu kinh nghiệm</Typography>
+                  <Typography>{jobData.yearsOfExperience}</Typography>
+                </Grid>
+              </Grid>
+            </StyledGridInfo>
           </Grid>
         </StyledGeneralInfomation>
         {currentUserInformation &&
@@ -275,6 +285,9 @@ const JobDetailPage = () => {
                 }}
               />
             </Button>
+            <Typography variant="body2" color="#919eab" textAlign="center">
+                  Định dạng .pdf tối đa 5MB
+                </Typography>
           </Box>
         ) : (
           currentUserInformation &&
@@ -293,6 +306,7 @@ const JobDetailPage = () => {
               >
                 Chỉnh sửa CV
                 <UploadFileInput
+                  maxSize={5000000}
                   control={control}
                   fileType={{ 'application/pdf': ['.pdf'] }}
                   onSuccess={(value) =>
@@ -326,7 +340,7 @@ const JobDetailPage = () => {
                 />
               </Button>
                 <Typography variant="body2" color="#919eab" textAlign="center">
-                  Hỗ trợ định dạng .pdf
+                  Định dạng .pdf tối đa 5MB
                 </Typography>
             </Box>
           )
