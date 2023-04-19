@@ -55,7 +55,6 @@ export default class GradeService {
         },
       },
       create: {
-        code: `K${grade?.endYear + 1}`,
         startYear: grade?.startYear + 1,
         endYear: grade?.endYear + 1,
       },

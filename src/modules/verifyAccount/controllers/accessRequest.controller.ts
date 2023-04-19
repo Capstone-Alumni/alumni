@@ -3,6 +3,7 @@ import { ApiErrorResponse, ApiSuccessResponse } from 'src/types';
 import { NextApiRequestWithTenant } from '../../../lib/next-connect/index';
 import getPrismaClient from '../../../lib/prisma/prisma';
 import AccessRequestService from '../services/accessRequest.service';
+import { sendMailService } from 'src/utils/emailSmsService';
 
 export default class AccessRequestController {
   static verifyAccount = async (
@@ -143,6 +144,16 @@ export default class AccessRequestController {
         id: id as string,
       },
     );
+
+    await sendMailService({
+      to: accessRequest.email,
+      subject: 'Từ chối yêu cầu gia nhập',
+      text: `
+Yêu cầu tham gia cộng đồng cựu học sinh của bạn đã bị từ chối.
+
+      `,
+    });
+
     return res.status(200).json({
       status: true,
       data: accessRequest,

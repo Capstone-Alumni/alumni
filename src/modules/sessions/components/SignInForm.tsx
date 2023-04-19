@@ -1,15 +1,7 @@
 'use client';
 
 import { Controller, useForm } from 'react-hook-form';
-import {
-  Box,
-  Button,
-  // Checkbox,
-  // FormControlLabel,
-  // Link,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 
 import useSignIn from '../hooks/useSignIn';
 import { useState } from 'react';

@@ -2,8 +2,6 @@
 export type SignUpFormValues = {
   username: string;
   email: string;
-  password: string;
-  confirmPassword: string;
   fullName: string;
   gradeClass: Array<{
     grade: { id: string; value: string; label: string };
