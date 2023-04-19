@@ -111,6 +111,17 @@ const JobDetailPagePreview = ({ data }: { data: Job }) => {
                 </Grid>
               </Grid>
             </StyledGridInfo>
+            <StyledGridInfo item xs={6}>
+              <Grid container spacing={0}>
+                <Grid item xs={2}>
+                  <WorkIcon fontSize="large" />
+                </Grid>
+                <Grid item xs={10}>
+                  <Typography fontWeight={600}>Yêu cầu kinh nghiệm</Typography>
+                  <Typography>{data.yearsOfExperience}</Typography>
+                </Grid>
+              </Grid>
+            </StyledGridInfo>
           </Grid>
         </StyledGeneralInfomation>
       </Box>

@@ -1,5 +1,4 @@
 import {
-  Button,
   Switch,
   TableCell,
   TableRow,
@@ -34,7 +33,7 @@ const AdminEventListItem = ({
             {data.recruitmentOwner?.information?.fullName}
           </Typography>
         </TableCell>
-        <TableCell align="center" sx={{ maxWidth: '8rem' }}>
+        {/* <TableCell align="center" sx={{ maxWidth: '8rem' }}>
           <Typography fontSize="inherit">
             {data.archived ? (
               <Button variant="outlined" size="small" color="error">
@@ -50,7 +49,7 @@ const AdminEventListItem = ({
               </Button>
             )}
           </Typography>
-        </TableCell>
+        </TableCell> */}
         <TableCell align="left">
           <Typography fontSize="inherit">
             {formatDate(new Date(data.createdAt))}
@@ -58,11 +57,7 @@ const AdminEventListItem = ({
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '8rem' }}>
           <Tooltip
-            title={
-              data?.isApproved
-                ? 'Ẩn công việc.'
-                : 'Công khai công việc này cho mọi người.'
-            }
+            title={data?.isApproved ? 'Ẩn công việc.' : 'Hiện thị công việc.'}
           >
             <Switch
               checked={data.isApproved}

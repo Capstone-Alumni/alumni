@@ -16,6 +16,7 @@ type UploadFileInputProps<T extends FieldValues> = {
   containerSx?: SxProps;
   onSuccess?: (url: string) => void;
   fileType?: any;
+  maxSize?: number;
 };
 
 const UploadFileInput = <T extends FieldValues>({
@@ -25,6 +26,7 @@ const UploadFileInput = <T extends FieldValues>({
   containerSx,
   onSuccess,
   fileType,
+  maxSize,
 }: UploadFileInputProps<T>) => {
   const handleDrop = async (acceptedFiles: File[]) => {
     const { uploadFile } = setStorage();
@@ -60,6 +62,7 @@ const UploadFileInput = <T extends FieldValues>({
         render={({ field }) => (
           <UploadSingleFile
             // {...field}
+            maxSize={maxSize}
             {...inputProps}
             fileType={fileType}
             file={field.value}

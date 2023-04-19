@@ -1,6 +1,12 @@
-import { Box, TableCell, TableRow, Tooltip, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  TableCell,
+  TableRow,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 
-import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Event } from '../types';
@@ -92,17 +98,23 @@ const AdminEventListItem = ({
           <Typography fontSize={'inherit'}>
             {eventStatus === 'ended' ? (
               <Tooltip title="Đã kết thúc">
-                <DirectionsRunIcon color="error" />
+                <Button color="error" variant="outlined">
+                  Đã kết thúc
+                </Button>
               </Tooltip>
             ) : null}
             {eventStatus === 'running' ? (
               <Tooltip title="Đang diễn ra">
-                <DirectionsRunIcon color="success" />
+                <Button color="success" variant="outlined">
+                  Đang diễn ra
+                </Button>
               </Tooltip>
             ) : null}
             {eventStatus === 'not-started' ? (
               <Tooltip title="Chưa bắt đầu">
-                <DirectionsRunIcon color="warning" />
+                <Button color="warning" variant="outlined">
+                  Chưa bắt đầu
+                </Button>
               </Tooltip>
             ) : null}
           </Typography>
