@@ -11,24 +11,21 @@ export default class PingService {
     const newPing = await tenantPrisma.ping.create({
       data: {
         message: req.body.message,
-        pingerInfo: {
+        pinger: {
           connect: {
-            userId: req.user.id,
+            id: req.user.id,
           },
         },
-        pingAlumniInfoId: userId,
+        pingAlumni: {
+          connect: {
+            id: userId,
+          },
+        },
       },
     });
 
     const userInformation = await tenantPrisma.information.findUnique({
-      where: { userId },
-      include: {
-        alumClass: {
-          include: {
-            grade: true,
-          },
-        },
-      },
+      where: { alumniId: userId },
     });
 
     if (userInformation?.phone) {

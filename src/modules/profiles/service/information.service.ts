@@ -85,6 +85,8 @@ export default class InformationService {
       where: { id: user.id },
       include: {
         information: true,
+        pingReceived: true,
+        pingSent: true,
         alumniToClass: {
           include: {
             alumClass: {
@@ -106,6 +108,8 @@ export default class InformationService {
       where: { id: alumniId },
       include: {
         information: true,
+        pingReceived: true,
+        pingSent: true,
         alumniToClass: {
           include: {
             alumClass: true,

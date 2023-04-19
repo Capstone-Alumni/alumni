@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 import { ApiErrorResponse, ApiSuccessResponse } from 'src/types';
-import PingService from '../service/ping.serivce';
+import PingService from '../service/ping.service';
 import { NextApiRequestWithTenant } from '../../../lib/next-connect/index';
 import getPrismaClient from '@lib/prisma/prisma';
 // import { sendSmsService } from 'src/utils/emailSmsService';
