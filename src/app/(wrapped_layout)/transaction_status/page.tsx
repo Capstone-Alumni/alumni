@@ -4,11 +4,14 @@ import querystring from 'qs';
 import crypto from 'crypto';
 import TransactionFailed from 'src/modules/funds/components/TransactionFailed';
 import { getTenantVnpayData } from '@share/utils/getTenantData';
-import { cookies } from 'next/headers';
+// import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { getTenantDataSSR } from '@share/helpers/SSRAuthorization';
 
 const Page = async ({ searchParams }: any) => {
-  const tenantId = cookies().get('tenant-id')?.value || '';
+  const tenantData = await getTenantDataSSR();
+  const { id: tenantId } = tenantData;
+  // const tenantId = cookies().get('tenant-id')?.value || '';
 
   let vnp_Params = { ...searchParams };
 
