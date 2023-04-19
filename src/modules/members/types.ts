@@ -16,11 +16,13 @@ export type Member = {
 
   information: Information | null;
 
-  alumniToClass: Array<{
-    alumClassId: string;
-    alumClass: Class;
-  }>;
+  alumniToClass: AlumniToClass[];
   createdAt: string;
+};
+
+export type AlumniToClass = {
+  alumClassId: string;
+  alumClass: Class;
 };
 
 export type GetMemberListParams = {

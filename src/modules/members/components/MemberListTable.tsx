@@ -82,6 +82,7 @@ const AdminMemberListTable = ({
             <TableRow>
               <TableCell align="left">Họ và tên</TableCell>
               <TableCell align="left">Email</TableCell>
+              <TableCell align="left">Niên khoá</TableCell>
               <TableCell align="left">Lớp</TableCell>
               <TableCell align="left">Trạng thái</TableCell>
               <TableCell align="center">Thao tác</TableCell>
