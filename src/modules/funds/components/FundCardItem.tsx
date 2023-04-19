@@ -11,6 +11,7 @@ import { formatDate } from '@share/utils/formatDate';
 import { ReactNode } from 'react';
 import { Fund } from '../types';
 import { formatAmountMoney } from '../utils';
+import Link from '@share/components/NextLinkV2';
 
 const FundCardItem = ({
   data,
@@ -32,8 +33,6 @@ const FundCardItem = ({
           display: 'flex',
           flexDirection: 'column',
           '&:hover': {
-            opacity: '0.7',
-            transition: 'all 0.2s',
             cursor: 'pointer',
           },
         }}
@@ -48,10 +47,21 @@ const FundCardItem = ({
           }}
         />
         <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <Typography noWrap variant="h6" sx={{ mb: 1 }}>
-            {data.title}
-          </Typography>
-
+          <Link
+            key="edit-btn"
+            href={`/funds/${data.id}`}
+            style={{
+              width: '100%',
+              marginRight: theme.spacing(1),
+              textDecoration: 'none',
+              color: 'inherit',
+            }}
+            prefetch={false}
+          >
+            <Typography noWrap variant="h6" sx={{ mb: 1 }}>
+              {data.title}
+            </Typography>
+          </Link>
           <Box sx={{ flex: 1 }} />
           <Box
             sx={{
