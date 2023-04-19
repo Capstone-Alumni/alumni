@@ -58,6 +58,7 @@ export type CreateMemberServiceProps = {
   dateOfBirth?: Date;
   facebook?: string;
   tenantId: string;
+  alumniId?: string;
 };
 
 export type UpdateMemberInfoByIdServiceProps = {

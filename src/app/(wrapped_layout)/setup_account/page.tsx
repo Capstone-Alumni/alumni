@@ -14,10 +14,10 @@ export default async function Page({
     const res = await fetch(url).then(res => res.json());
 
     if (res?.data !== 'verified') {
-      redirect('/404_error');
+      redirect('/');
     }
   } catch {
-    redirect('/404_error');
+    redirect('/');
   }
 
   return <SetupPassword />;
