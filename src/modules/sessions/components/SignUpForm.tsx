@@ -136,7 +136,7 @@ const SignUpForm = () => {
 
             <Divider />
 
-            <GradeClassForm multiple={false} getAll />
+            <GradeClassForm isSignup multiple={false} getAll />
 
             <Button
               fullWidth
