@@ -27,7 +27,11 @@ export default async function RootLayout({
   const data = await getTenantDataSSR();
   const session = await getServerSession(nextAuthOptions);
 
+  console.log(session);
+
   const currentUserData = await getCurrentUserSSR(data.id, session?.user);
+
+  console.log('layout', currentUserData);
 
   return (
     <html lang="en">
@@ -42,12 +46,10 @@ export default async function RootLayout({
           tenantData={data}
           currentUserData={currentUserData}
         >
+          <GetInitialUserInformation user={currentUserData} />
           <Providers>
-            <Header />
-            <SetCurrentTenant tenantData={data}>
-              {children}
-              <GetInitialUserInformation user={currentUserData} />
-            </SetCurrentTenant>
+            <Header user={currentUserData} />
+            <SetCurrentTenant tenantData={data}>{children}</SetCurrentTenant>
           </Providers>
         </CSRProvider>
       </body>

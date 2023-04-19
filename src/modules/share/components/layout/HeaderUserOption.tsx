@@ -18,8 +18,7 @@ import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from '@share/components/NextLinkV2';
 import { Box } from '@mui/material';
-import { useRecoilValue } from 'recoil';
-import { currentUserInformationDataAtom } from '@share/states';
+import { Alumni } from '@share/states';
 import getRoleName from '@share/utils/getRoleName';
 
 const Wrapper = styled('div')(({ theme }) => ({
@@ -37,11 +36,13 @@ const Wrapper = styled('div')(({ theme }) => ({
   },
 }));
 
-const HeaderUserOptions = () => {
+const HeaderUserOptions = ({
+  user: currentUserInformation,
+}: {
+  user: Alumni;
+}) => {
   const theme = useTheme();
   const router = useRouter();
-
-  const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -106,6 +107,7 @@ const HeaderUserOptions = () => {
             <MenuItem
               onClick={async () => {
                 await signOut({ redirect: false });
+                await router.replace('/');
                 router.refresh();
               }}
             >

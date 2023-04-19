@@ -12,10 +12,7 @@ import { Divider, useScrollTrigger, useTheme } from '@mui/material';
 import { NavItem } from './NavItem';
 import HeaderUserOptions from './HeaderUserOption';
 import React, { useMemo } from 'react';
-import {
-  currentTenantDataAtom,
-  currentUserInformationDataAtom,
-} from '@share/states';
+import { Alumni, currentTenantDataAtom } from '@share/states';
 import { usePathname } from 'next/navigation';
 import { useRecoilValue } from 'recoil';
 
@@ -51,9 +48,8 @@ function ElevationScroll(props: Props) {
   });
 }
 
-const Header = () => {
+const Header = ({ user }: { user: Alumni }) => {
   const theme = useTheme();
-  const user = useRecoilValue(currentUserInformationDataAtom);
 
   const tenant = useRecoilValue(currentTenantDataAtom);
 
@@ -139,7 +135,7 @@ const Header = () => {
             ) : null}
 
             {user ? (
-              <HeaderUserOptions />
+              <HeaderUserOptions user={user} />
             ) : (
               <>
                 <Link
