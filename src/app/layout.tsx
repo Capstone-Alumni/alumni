@@ -3,8 +3,10 @@ import React from 'react';
 import CSRProvider from '../modules/share/helpers/CSRProvider';
 
 import { Providers } from '../redux/providers';
-import GetInitialUserInformation from '@share/helpers/GetInitialUserInformation';
-import { getTenantDataSSR } from '@share/helpers/SSRAuthorization';
+import {
+  getCurrentUserSSR,
+  getTenantDataSSR,
+} from '@share/helpers/SSRAuthorization';
 
 import 'quill/dist/quill.snow.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
@@ -15,6 +17,7 @@ import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from 'src/pages/api/auth/[...nextauth]';
 import SetCurrentTenant from '@share/helpers/SetCurrentTenant';
 import Header from '@share/components/layout/Header';
+import GetInitialUserInformation from '@share/helpers/GetInitialUserInformation';
 
 export default async function RootLayout({
   children,
@@ -24,6 +27,12 @@ export default async function RootLayout({
   const data = await getTenantDataSSR();
   const session = await getServerSession(nextAuthOptions);
 
+  console.log(session);
+
+  const currentUserData = await getCurrentUserSSR(data.id, session?.user);
+
+  console.log('layout', currentUserData);
+
   return (
     <html lang="en">
       <head>
@@ -32,11 +41,15 @@ export default async function RootLayout({
         <link rel="shortcut icon" href={data?.logo ?? '/logo.png'} />
       </head>
       <body style={{ margin: 0, minHeight: '100vh' }}>
-        <CSRProvider theme={data?.theme} tenantData={data}>
+        <CSRProvider
+          theme={data?.theme}
+          tenantData={data}
+          currentUserData={currentUserData}
+        >
+          <GetInitialUserInformation user={currentUserData} />
           <Providers>
-            <Header user={session?.user} tenant={data} />
+            <Header user={currentUserData} />
             <SetCurrentTenant tenantData={data}>{children}</SetCurrentTenant>
-            <GetInitialUserInformation user={session?.user} />
           </Providers>
         </CSRProvider>
       </body>
