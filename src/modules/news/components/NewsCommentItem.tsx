@@ -116,8 +116,7 @@ const NewsCommentItem = ({
                 {item.commenter ? item.commenter.information.fullName : ''}
               </Typography>
             </Link>
-            {(user && user.id === item.commenterId) ||
-            user.accessLevel === 'SCHOOL_ADMIN' ? (
+            {(user && user.id === item.commenterId) || user?.isOwner ? (
               <>
                 <IconButton
                   onClick={handleClickDropdown}

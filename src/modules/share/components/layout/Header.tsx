@@ -12,8 +12,7 @@ import { Divider, useScrollTrigger, useTheme } from '@mui/material';
 import { NavItem } from './NavItem';
 import HeaderUserOptions from './HeaderUserOption';
 import React, { useMemo } from 'react';
-import { User } from 'next-auth';
-import { currentUserInformationDataAtom, Tenant } from '@share/states';
+import { Alumni, currentTenantDataAtom } from '@share/states';
 import { usePathname } from 'next/navigation';
 import { useRecoilValue } from 'recoil';
 
@@ -49,11 +48,10 @@ function ElevationScroll(props: Props) {
   });
 }
 
-const Header = ({ user, tenant }: { user?: User; tenant?: Tenant }) => {
+const Header = ({ user }: { user: Alumni }) => {
   const theme = useTheme();
-  const currentUserInformationData = useRecoilValue(
-    currentUserInformationDataAtom,
-  );
+
+  const tenant = useRecoilValue(currentTenantDataAtom);
 
   const pathname = usePathname();
 
@@ -121,8 +119,7 @@ const Header = ({ user, tenant }: { user?: User; tenant?: Tenant }) => {
 
             <Box sx={{ flex: 1 }} />
 
-            {user &&
-            (user.isOwner || currentUserInformationData?.gradeMod?.length) ? (
+            {user && (user.isOwner || user?.gradeMod?.length) ? (
               <Link
                 href="/admin/config/access_request"
                 style={{ color: 'inherit', marginRight: theme.spacing(2) }}
