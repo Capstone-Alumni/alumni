@@ -4,6 +4,7 @@ import { MemberFormValues } from '../components/MemberForm';
 
 type CreateMemberTenantParams = MemberFormValues & {
   tenantId: string;
+  alumniId?: string;
 };
 
 type CreateMemberTenantResponse = unknown;
