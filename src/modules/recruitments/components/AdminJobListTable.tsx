@@ -31,20 +31,17 @@ const AdminEventListTable = ({
             <TableRow>
               <TableCell align="left">Tên công việc</TableCell>
               <TableCell align="left">Người gửi yêu cầu</TableCell>
-              <TableCell sx={{ maxWidth: '8rem' }} align="center">
-                Trạng thái
-              </TableCell>
               <TableCell sx={{ maxWidth: '1rem' }} align="left">
                 Ngày được tạo
               </TableCell>
-              <TableCell sx={{ maxWidth: '8rem' }}>
-                Công khai công việc
+              <TableCell sx={{ maxWidth: '8rem' }} align="center">
+                Ẩn/hiện công việc
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.items.map(
-              row =>
+              (row) =>
                 !row.archived && (
                   <AdminEventListItem
                     key={row.id}
