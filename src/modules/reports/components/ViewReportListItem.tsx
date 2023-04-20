@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, TableCell, TableRow, Tooltip, Typography } from '@mui/material';
 import { Report } from '../types';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';

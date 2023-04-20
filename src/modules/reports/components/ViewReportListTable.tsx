@@ -1,3 +1,5 @@
+'use client';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -48,7 +50,7 @@ const ViewReportListTable = ({
           </TableHead>
           <TableBody>
             {data.items.map(
-              row =>
+              (row) =>
                 !row.archived && (
                   <ViewReportListItem
                     key={row.id}
