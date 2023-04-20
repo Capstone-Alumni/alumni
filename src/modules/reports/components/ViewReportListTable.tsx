@@ -48,7 +48,7 @@ const ViewReportListTable = ({
           </TableHead>
           <TableBody>
             {data.items.map(
-              (row) =>
+              row =>
                 !row.archived && (
                   <ViewReportListItem
                     key={row.id}

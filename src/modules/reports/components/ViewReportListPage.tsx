@@ -61,8 +61,8 @@ const ViewReportListPage = () => {
             page={params.page || 1}
             onResponse={onResponse}
             onDelete={onDelete}
-            onChangePage={(nextPage) => {
-              setParams((prevParams) => ({ ...prevParams, page: nextPage }));
+            onChangePage={nextPage => {
+              setParams(prevParams => ({ ...prevParams, page: nextPage }));
             }}
           />
         ) : null}

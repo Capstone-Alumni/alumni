@@ -1,8 +1,5 @@
 import { extractTenantId } from '@lib/next-connect';
-import {
-  extractUser,
-  verifySchoolAdmin,
-} from '@lib/next-connect/apiMiddleware';
+import { verifySchoolAdmin } from '@lib/next-connect/apiMiddleware';
 import onErrorAPIHandler from '@lib/next-connect/onErrorAPIHandler';
 import onNoMatchAPIHandler from '@lib/next-connect/onNoMatchAPIHandler';
 import nc from 'next-connect';

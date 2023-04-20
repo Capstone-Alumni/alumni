@@ -1,6 +1,3 @@
-import { AccessLevel } from '@prisma/client';
-import { UserInformation } from '@share/type';
-
 export type Report = {
   id: string;
   archived: boolean;

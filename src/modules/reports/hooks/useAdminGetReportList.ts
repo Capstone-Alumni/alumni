@@ -27,7 +27,7 @@ const useAdminGetReportList = () => {
     AdminGetReportListParams,
     AdminGetReportListResponse,
     AdminGetReportListError
-  >('adminGetReportList', (params) => ({
+  >('adminGetReportList', params => ({
     method: 'GET',
     url: '/api/reports',
     params,

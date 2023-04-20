@@ -223,7 +223,7 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
               items={schoolItems}
               open={sectionSelected === 'config'}
               onToggle={() =>
-                setSectionSelected((prevState) =>
+                setSectionSelected(prevState =>
                   prevState === 'config' ? '' : 'config',
                 )
               }
@@ -236,7 +236,7 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
               items={navItems}
               open={sectionSelected === 'action'}
               onToggle={() =>
-                setSectionSelected((prevState) =>
+                setSectionSelected(prevState =>
                   prevState === 'action' ? '' : 'action',
                 )
               }

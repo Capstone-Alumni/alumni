@@ -20,7 +20,7 @@ const useSendReport = () => {
     'Report',
     ({ fullName, email, message }) => ({
       method: 'POST',
-      url: `/api/reports`,
+      url: '/api/reports',
       data: { fullName, email, message },
     }),
     {
