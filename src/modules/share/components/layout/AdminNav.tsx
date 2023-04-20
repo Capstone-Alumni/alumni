@@ -26,6 +26,12 @@ const NEWS_NAV_ITEM = {
   icon: 'fluent:news-16-filled',
   link: '/admin/action/news',
 };
+const REPORT_NAV_ITEM = {
+  id: 'news',
+  title: 'Báo lỗi',
+  icon: 'material-symbols:report-outline',
+  link: '/admin/action/reports',
+};
 const FUND_NAV_ITEM = {
   id: 'fund',
   title: 'Quỹ',
@@ -142,6 +148,7 @@ const generateNavItems = (
         EVENT_NAV_ITEM,
         FUND_NAV_ITEM,
         RECRUITMENTS_NAV_ITEM,
+        REPORT_NAV_ITEM,
       ];
     default:
       return [];
@@ -216,7 +223,7 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
               items={schoolItems}
               open={sectionSelected === 'config'}
               onToggle={() =>
-                setSectionSelected(prevState =>
+                setSectionSelected((prevState) =>
                   prevState === 'config' ? '' : 'config',
                 )
               }
@@ -229,7 +236,7 @@ const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
               items={navItems}
               open={sectionSelected === 'action'}
               onToggle={() =>
-                setSectionSelected(prevState =>
+                setSectionSelected((prevState) =>
                   prevState === 'action' ? '' : 'action',
                 )
               }
