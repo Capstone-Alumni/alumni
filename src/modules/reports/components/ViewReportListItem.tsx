@@ -41,7 +41,10 @@ const ViewReportListItem = ({
             {formatDate(new Date(data.createdAt))}
           </Typography>
         </TableCell>
-        <TableCell align="left" sx={{ maxWidth: '8rem' }}>
+        <TableCell
+          align="left"
+          sx={{ maxWidth: '8rem', wordBreak: 'break-word' }}
+        >
           <Typography fontSize="inherit">{data.message}</Typography>
         </TableCell>
         <TableCell
