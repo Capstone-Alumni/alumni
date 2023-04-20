@@ -69,8 +69,11 @@ const AdminMemberListItem = ({
     }
     const initGradeName: string[] = [];
     data.alumniToClass.filter(it => {
-      if (!initGradeName.includes(it.alumClass.grade?.code as string)) {
-        initGradeName.push(it.alumClass.grade?.code as string);
+      const code = it.alumClass.grade?.code
+        ? it.alumClass.grade?.code
+        : it.alumClass.grade?.startYear + ' - ' + it.alumClass.grade?.endYear;
+      if (!initGradeName.includes(code as string)) {
+        initGradeName.push(code as string);
       }
     });
     return initGradeName;
