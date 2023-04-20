@@ -493,6 +493,20 @@ model Ping {
   @@map("pings")
 }
 
+model Reports {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  fullName  String   @map("full_name")
+  email     String
+  message   String
+  response  String?
+
+  @@map("reports")
+}
+
 enum ScopePublicity {
   PRIVATE
   CLASS
