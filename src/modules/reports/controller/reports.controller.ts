@@ -43,7 +43,11 @@ export default class ReportsController {
         await sendMailService({
           to: updated.email,
           subject: 'Trả lời báo lỗi về việc sự cố khi sử dụng hệ thống',
-          text: updated.response,
+          text: `
+            <p>Kính gửi ${updated.fullName},</p>
+            <p>${updated.response}</p>
+            </pre>
+          `,
         });
       }
       return res.status(200).json({
