@@ -27,11 +27,7 @@ export default async function RootLayout({
   const data = await getTenantDataSSR();
   const session = await getServerSession(nextAuthOptions);
 
-  console.log(session);
-
   const currentUserData = await getCurrentUserSSR(data.id, session?.user);
-
-  console.log('layout', currentUserData);
 
   return (
     <html lang="en">

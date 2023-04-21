@@ -55,7 +55,11 @@ const ViewReportListItem = ({
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <StyledBoxFlex>
-            <Tooltip title="Chỉnh sửa câu trả lời">
+            <Tooltip
+              title={
+                data.response ? 'Chỉnh sửa câu trả lời' : 'Trả lời báo lỗi'
+              }
+            >
               <StyledIconWrapperMainShadow>
                 <Box display="flex" alignItems="center" justifyContent="center">
                   <ResponseReportModal onResponse={onResponse} data={data}>
