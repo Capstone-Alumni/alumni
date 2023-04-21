@@ -8,7 +8,7 @@ import { Typography } from '@mui/material';
 import UploadBackgroundInput from '@share/components/form/UploadBackgroundInput';
 import RichTextInput from '@share/components/form/RichTextInput';
 import SelectInput from '@share/components/form/SelectInput';
-import EditorPreview from '@share/components/editor/EditorPreview';
+import { EditorPreview } from '@share/components/editor';
 import { LoadingButton } from '@mui/lab';
 import { useRouter } from 'next/navigation';
 

@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import EventParticipantListTab from './EventParticipantListTab';
-import EditorPreview from '@share/components/editor/EditorPreview';
+import { EditorPreview } from '@share/components/editor';
 import MyAvatar from '@share/components/MyAvatar';
 import { formatDate } from '@share/utils/formatDate';
 import Link from '@share/components/NextLinkV2';

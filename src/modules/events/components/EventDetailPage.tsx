@@ -13,7 +13,7 @@ import usePublicJoinEventById from '../hooks/usePublicJoinEventById';
 import EventParticipantListTab from './EventParticipantListTab';
 import usePublicInterestEventById from '../hooks/usePublicInterestEventById';
 import usePublicUninterestEventById from '../hooks/usePublicUninterestEventById';
-import EditorPreview from '@share/components/editor/EditorPreview';
+import { EditorPreview } from '@share/components/editor';
 import MyAvatar from '@share/components/MyAvatar';
 import { formatDate } from '@share/utils/formatDate';
 import Link from '@share/components/NextLinkV2';

@@ -17,7 +17,7 @@ import { useEffect, useMemo, useState } from 'react';
 import usePublicGetFundById from '../hooks/usePublicGetFundById';
 import usePublicInterestFundById from '../hooks/usePublicSaveFundById';
 import usePublicUninterestFundById from '../hooks/usePublicUnsaveFundById';
-import EditorPreview from '@share/components/editor/EditorPreview';
+import { EditorPreview } from '@share/components/editor';
 import { renderEventStatus } from 'src/modules/events/components/EventDetailPage';
 import FundTransactionForm from './FundTransactionForm';
 import FundTransactionListTab from './FundTransactionList';

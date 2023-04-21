@@ -15,7 +15,7 @@ import { renderEventStatus } from 'src/modules/events/components/EventDetailPage
 import { formatDate } from '@share/utils/formatDate';
 import { useRecoilValue } from 'recoil';
 import { currentTenantDataAtom } from '@share/states';
-import EditorPreview from '@share/components/editor/EditorPreview';
+import { EditorPreview } from '@share/components/editor';
 import {
   Timeline,
   TimelineConnector,

@@ -1,13 +1,17 @@
 'use client';
 
 import { Box, Container, Typography, useTheme } from '@mui/material';
-import { currentUserInformationDataAtom, Tenant } from '@share/states';
+import {
+  currentTenantDataAtom,
+  currentUserInformationDataAtom,
+} from '@share/states';
 import { useRecoilValue } from 'recoil';
 import ReportModal from 'src/modules/reports/components/ReportModal';
 import Logo from '../Logo';
 
-const Footer = ({ tenant }: { tenant?: Tenant }) => {
+const Footer = () => {
   const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
+  const tenant = useRecoilValue(currentTenantDataAtom);
   const theme = useTheme();
 
   return (

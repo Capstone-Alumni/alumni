@@ -10,12 +10,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import {
-  Alumni,
-  currentTenantDataAtom,
-  currentUserInformationDataAtom,
-  Tenant,
-} from '@share/states';
+import { Alumni, Tenant } from '@share/states';
 
 export default function CSRProvider({
   children,
@@ -30,12 +25,7 @@ export default function CSRProvider({
 }) {
   return (
     <SessionProvider>
-      <RecoilRoot
-        initializeState={({ set }) => {
-          set(currentTenantDataAtom, tenantData);
-          set(currentUserInformationDataAtom, currentUserData);
-        }}
-      >
+      <RecoilRoot>
         <NextAppDirEmotionCacheProvider options={{ key: 'css' }}>
           <ThemeConfig paletteName={theme}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>

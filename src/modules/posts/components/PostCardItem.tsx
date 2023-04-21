@@ -22,7 +22,7 @@ import PostCommentList from './PostCommentList';
 import ActionButton from '@share/components/ActionButton';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import useDeletePost from '../hooks/useDeletePost';
-import EditorPreview from '@share/components/editor/EditorPreview';
+import { EditorPreview } from '@share/components/editor';
 import MyAvatar from '@share/components/MyAvatar';
 import { formatDate } from '@share/utils/formatDate';
 

@@ -7,7 +7,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import WorkIcon from '@mui/icons-material/Work';
 import LanguageIcon from '@mui/icons-material/Language';
-import EditorPreview from '@share/components/editor/EditorPreview';
+import { EditorPreview } from '@share/components/editor';
 
 import { Job } from '../types';
 

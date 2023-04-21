@@ -1,7 +1,7 @@
 'use client';
 
 import { Control, Controller } from 'react-hook-form';
-import Editor, { EditorProps } from '../editor';
+import { Editor, EditorProps } from '@share/components/editor';
 
 type RichTextInputProps = {
   control: Control;

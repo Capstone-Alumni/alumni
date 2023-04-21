@@ -8,7 +8,7 @@ import {
   TimelineSeparator,
 } from '@mui/lab';
 import { Typography } from '@mui/material';
-import EditorPreview from '@share/components/editor/EditorPreview';
+import { EditorPreview } from '@share/components/editor';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { formatDate } from '@share/utils/formatDate';
 import { usePathname } from 'next/navigation';

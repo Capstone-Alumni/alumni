@@ -3,15 +3,18 @@
 import { Icon } from '@iconify/react';
 
 import { Box, styled, Typography, useTheme } from '@mui/material';
-import { User } from 'next-auth';
 import Link from '@share/components/NextLinkV2';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import MyAvatar from '../MyAvatar';
 import { AdminSubNav, StyledNav, StyledNavItem } from './AdminSubNav';
 import { useRecoilValue } from 'recoil';
-import { currentUserInformationDataAtom } from '@share/states';
+import {
+  currentTenantDataAtom,
+  currentUserInformationDataAtom,
+} from '@share/states';
 import Logo from '../Logo';
+import { useSession } from 'next-auth/react';
 
 const ACCESS_NAV_ITEM = {
   id: 'request_access',
@@ -178,7 +181,11 @@ const generateSchoolNavItems = (
   }
 };
 
-const AdminNav = ({ user, tenant }: { user?: User; tenant: any }) => {
+const AdminNav = () => {
+  const { data: session } = useSession();
+  const user = session?.user;
+  const tenant = useRecoilValue(currentTenantDataAtom);
+
   const theme = useTheme();
   const pathname = usePathname();
   const defaultSection = pathname?.split('/')[2];

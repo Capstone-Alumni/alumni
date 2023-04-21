@@ -6,7 +6,6 @@ import { Box, styled, useTheme } from '@mui/material';
 // import AddIcon from '@mui/icons-material/Add';
 import Link from '@share/components/NextLinkV2';
 import { usePathname } from 'next/navigation';
-import { User } from 'next-auth';
 
 const StyledNavWrapper = styled(Box)(({ theme }) => ({
   minWidth: '16rem',
@@ -72,10 +71,9 @@ const FUND_HOSTING_NAV_ITEM = {
   link: '/funds/hosting',
 };
 
-const FundSidebar = ({ user }: { user: User }) => {
+const FundSidebar = () => {
   const theme = useTheme();
   const pathname = usePathname();
-  const isAlumni = user.accessLevel === 'ALUMNI';
 
   return (
     <StyledNavWrapper>

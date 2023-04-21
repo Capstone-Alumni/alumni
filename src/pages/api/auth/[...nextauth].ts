@@ -59,9 +59,6 @@ export const nextAuthOptions = {
         token.user = user;
         token.currentTenant = user.tenant || null;
       }
-      if (trigger === 'update' && session?.currentTenant) {
-        token.currentTenant = session.currentTenant;
-      }
       return token;
     },
     session({ session, token }) {
