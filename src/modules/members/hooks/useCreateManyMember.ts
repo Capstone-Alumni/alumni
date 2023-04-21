@@ -64,8 +64,9 @@ const useCreateManyMember = () => {
 
       // tao file excel existin
       const { existingAlumni } = res.data;
+      return existingAlumni;
     }
-    console.log(res);
+    return [];
   };
 
   return {

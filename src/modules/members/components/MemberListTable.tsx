@@ -8,14 +8,12 @@ import Paper from '@mui/material/Paper';
 import { Member } from '../types';
 import { MemberFormValues } from './MemberForm';
 import AdminMemberListItem from './MemberListItem';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import DataTablePagination from '@share/components/DataTablePagination';
 import SearchInput from '@share/components/SearchInput';
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { getMemberListParamsAtom } from '../state';
-import Link from '@share/components/NextLinkV2';
-import { TEMPLATE_FILE } from '../constants';
 import UploadMemeberFileButton from './UploadMemberFileButton';
 
 const AdminMemberListTable = ({
@@ -49,22 +47,7 @@ const AdminMemberListTable = ({
 
   return (
     <>
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'row',
-          gap: theme.spacing(2),
-          alignItems: 'center',
-          mb: 2,
-        }}
-      >
-        <UploadMemeberFileButton />
-
-        <Link href={TEMPLATE_FILE} target="_blank">
-          File mẫu
-        </Link>
-      </Box>
+      <UploadMemeberFileButton />
 
       <form
         onSubmit={e => {
