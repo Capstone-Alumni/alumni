@@ -142,7 +142,6 @@ export default class GradeService {
     const { code, page, limit, alumniId } = params;
 
     const whereFilter: Prisma.GradeWhereInput = {
-      OR: [{ code: { contains: code } }],
       archived: false,
     };
 
@@ -156,6 +155,8 @@ export default class GradeService {
           endYear: parseInt(code, 10),
         },
       ];
+    } else {
+      whereFilter.OR = [{ code: { contains: code } }, { archived: false }];
     }
 
     if (alumniId) {
