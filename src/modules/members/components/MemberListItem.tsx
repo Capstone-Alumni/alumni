@@ -126,7 +126,7 @@ const AdminMemberListItem = ({
                 icon: <Icon height={24} icon="uil:pen" />,
                 onClick: () => setOpenEditModal(true),
               },
-              data.alumniToClass.length === 0 || session?.user.isOwner
+              session?.user.isOwner
                 ? {
                     id: 'delete',
                     text: 'Xoá',
