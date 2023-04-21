@@ -11,6 +11,7 @@ export default class ApplicationController {
     res: NextApiResponse<ApiErrorResponse | ApiSuccessResponse>,
   ) => {
     try {
+      const host = req.headers.host;
       const prisma = await getPrismaClient(req.tenantId);
       const { id: userId } = req.user;
       const { id } = req.query;
@@ -19,6 +20,7 @@ export default class ApplicationController {
         id as string,
         userId as string,
         req.body,
+        host,
       );
       return res.status(200).json({
         data: apply,

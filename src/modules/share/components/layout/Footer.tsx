@@ -1,10 +1,13 @@
 'use client';
 
 import { Box, Container, Typography, useTheme } from '@mui/material';
-import { Tenant } from '@share/states';
+import { currentUserInformationDataAtom, Tenant } from '@share/states';
+import { useRecoilValue } from 'recoil';
+import ReportModal from 'src/modules/reports/components/ReportModal';
 import Logo from '../Logo';
 
 const Footer = ({ tenant }: { tenant?: Tenant }) => {
+  const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
   const theme = useTheme();
 
   return (
@@ -63,6 +66,29 @@ const Footer = ({ tenant }: { tenant?: Tenant }) => {
               <br />
               {tenant?.cityName}
             </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+              }}
+            >
+              <Typography sx={{ mr: 1 }} variant="body2">
+                Bạn gặp khó khăn?
+              </Typography>
+              <ReportModal
+                userInformation={currentUserInformation?.information}
+              >
+                <Typography
+                  fontWeight="bold"
+                  sx={{ cursor: 'pointer' }}
+                  variant="body2"
+                  color="error"
+                >
+                  Báo cáo tại đây
+                </Typography>
+              </ReportModal>
+            </Box>
           </Box>
         </Box>
 

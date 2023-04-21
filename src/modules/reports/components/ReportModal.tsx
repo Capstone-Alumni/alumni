@@ -18,19 +18,23 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import useSendReport from '../hooks/useSendReport';
+import { UserInformation } from '@share/states';
 
 // ----------------------------------------------------------------------
 interface ReportModalProps {
   children: React.ReactNode;
+  userInformation?: UserInformation | null;
 }
 
 const messageSchema = Yup.object().shape({
   fullName: Yup.string().required('Họ và tên không được để trống'),
-  email: Yup.string().required('Địa chỉ không được để trống'),
+  email: Yup.string()
+    .email('Không đúng định dạng email')
+    .required('Địa chỉ không được để trống'),
   message: Yup.string()
     .required('Tin nhắn không được để trống')
     .min(1)
-    .max(100, 'Tối đa 100 kí tự'),
+    .max(200, 'Tối đa 200 kí tự'),
 });
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
@@ -59,7 +63,10 @@ const StyledWrapperContent = styled('div')(({ theme }) => ({
   width: '55%',
 }));
 
-export default function ReportModal({ children }: ReportModalProps) {
+export default function ReportModal({
+  children,
+  userInformation,
+}: ReportModalProps) {
   const [open, setOpen] = useState(false);
   const { fetchApi: sendReport } = useSendReport();
 
@@ -74,8 +81,8 @@ export default function ReportModal({ children }: ReportModalProps) {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      fullName: '',
-      email: '',
+      fullName: userInformation?.fullName || '',
+      email: userInformation?.email || '',
       message: '',
     },
     validationSchema: messageSchema,
@@ -156,9 +163,9 @@ export default function ReportModal({ children }: ReportModalProps) {
                           <div>
                             <Typography variant="body2">
                               Kí tự còn lại:{' '}
-                              {100 - getFieldProps('message').value.length < 0
+                              {200 - getFieldProps('message').value.length < 0
                                 ? 0
-                                : 100 - getFieldProps('message').value.length}
+                                : 200 - getFieldProps('message').value.length}
                             </Typography>
                           </div>
                         </Box>
