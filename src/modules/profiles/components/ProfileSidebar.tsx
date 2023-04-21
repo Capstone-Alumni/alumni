@@ -131,7 +131,7 @@ const ProfileSidebar = () => {
       </Card>
       <Card sx={{ width: '100%', py: 2 }}>
         <StyledNav>
-          {NAV_ITEMS.map((item) => {
+          {NAV_ITEMS.map(item => {
             const isActive = item.link && currentProfileTab === item.link;
             return (
               <Link
