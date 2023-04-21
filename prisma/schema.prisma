@@ -437,10 +437,8 @@ model Recruitment {
   description            String?
   yearsOfExperience      String?
   type                   String?
-  startAt                DateTime?                @map("start_at")
-  expiredAt              DateTime?                @map("expired_at")
   salary                 String                   @default("negotiate")
-  isApproved             Boolean                  @default(false)
+  isPublic               Boolean                  @default(false)
   recruitmentOwnerId     String                   @map("recruitment_owner_id")
   recruitmentOwner       Alumni                   @relation(fields: [recruitmentOwnerId], references: [id])
   recruitmentApplication RecruitmentApplication[]

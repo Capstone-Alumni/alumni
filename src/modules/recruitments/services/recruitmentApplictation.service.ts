@@ -12,7 +12,7 @@ export default class ApplicationService {
   ) => {
     const recruitment = await tenantPrisma.recruitment.findFirst({
       where: {
-        AND: [{ id: recruitmentId }, { archived: false }, { isApproved: true }],
+        AND: [{ id: recruitmentId }, { archived: false }, { isPublic: true }],
       },
       include: {
         recruitmentOwner: {

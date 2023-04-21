@@ -68,7 +68,7 @@ export default class AdminRecruitmentService {
     const recruitment = await tenantPrisma.recruitment.update({
       where: { id: recruitmentId },
       data: {
-        isApproved: true,
+        isPublic: true,
       },
     });
 
@@ -81,7 +81,7 @@ export default class AdminRecruitmentService {
     const recruitment = await tenantPrisma.recruitment.update({
       where: { id: recruitmentId },
       data: {
-        isApproved: false,
+        isPublic: false,
       },
     });
 

@@ -39,7 +39,7 @@ const AdminEventListItem = ({
               <Button variant="outlined" size="small" color="error">
                 Đã từ chối
               </Button>
-            ) : data.isApproved ? (
+            ) : data.isPublic ? (
               <Button variant="outlined" size="small" color="success">
                 Đã chấp thuận
               </Button>
@@ -57,12 +57,12 @@ const AdminEventListItem = ({
         </TableCell>
         <TableCell align="center" sx={{ maxWidth: '8rem' }}>
           <Tooltip
-            title={data?.isApproved ? 'Ẩn công việc.' : 'Hiện thị công việc.'}
+            title={data?.isPublic ? 'Ẩn công việc.' : 'Hiện thị công việc.'}
           >
             <Switch
-              checked={data.isApproved}
+              checked={data.isPublic}
               onChange={() =>
-                !data.isApproved ? onApprove(data.id) : onReject(data.id)
+                !data.isPublic ? onApprove(data.id) : onReject(data.id)
               }
             />
           </Tooltip>
