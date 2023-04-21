@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   styled,
+  Tooltip,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -154,14 +155,14 @@ const ProfileSidebar = () => {
               </Link>
             );
           })}
-          {alreadySendMessage === -1 ||
-            (canSendMessage &&
-            data?.data?.information?.havePhone &&
-            userProfileId ? (
-              <PingMessageModal
-                userProfileId={userProfileId}
-                onSendMessageSuccess={handleSendMessageSuccess}
-              >
+          {canSendMessage &&
+          data?.data?.information?.havePhone &&
+          userProfileId ? (
+            <PingMessageModal
+              userProfileId={userProfileId}
+              onSendMessageSuccess={handleSendMessageSuccess}
+            >
+              <Tooltip title="Gửi tin nhắn" sx={{ cursor: 'pointer' }}>
                 <Button
                   sx={{ width: '100%', justifyContent: 'left' }}
                   startIcon={<SmsIcon />}
@@ -170,28 +171,43 @@ const ProfileSidebar = () => {
                 >
                   Gửi tin nhắn
                 </Button>
-              </PingMessageModal>
-            ) : (
-              alreadySendMessage === -1 ||
-              (!canSendMessage &&
-              data?.data?.information?.havePhone &&
-              userProfileId ? (
-                <PingMessageModal
-                  userProfileId={userProfileId}
-                  onSendMessageSuccess={handleSendMessageSuccess}
+              </Tooltip>
+            </PingMessageModal>
+          ) : !canSendMessage &&
+            data?.data?.information?.havePhone &&
+            userProfileId ? (
+            <Tooltip
+              title="Bạn đã gửi tin nhắn cho người này"
+              sx={{ cursor: 'pointer' }}
+            >
+              <Button
+                sx={{ width: '100%', justifyContent: 'left' }}
+                startIcon={<SmsIcon />}
+                variant="contained"
+                color="warning"
+                disabled={true}
+              >
+                Gửi tin nhắn
+              </Button>
+            </Tooltip>
+          ) : (
+            alreadySendMessage === -1 && (
+              <Tooltip
+                title="Gửi tin nhắn cho mỗi nguời tối đa 1 lần"
+                sx={{ cursor: 'pointer' }}
+              >
+                <Button
+                  sx={{ width: '100%', justifyContent: 'left' }}
+                  startIcon={<SmsIcon />}
+                  variant="contained"
+                  color="warning"
+                  disabled={true}
                 >
-                  <Button
-                    sx={{ width: '100%', justifyContent: 'left' }}
-                    startIcon={<SmsIcon />}
-                    variant="contained"
-                    color="warning"
-                    disabled={true}
-                  >
-                    Gửi tin nhắn
-                  </Button>
-                </PingMessageModal>
-              ) : null)
-            ))}
+                  Gửi tin nhắn
+                </Button>
+              </Tooltip>
+            )
+          )}
           {canEditProfile && userProfileId && (
             <ChangePasswordModal userProfileId={userProfileId}>
               <Button
