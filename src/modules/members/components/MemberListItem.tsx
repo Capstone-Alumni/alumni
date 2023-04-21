@@ -133,7 +133,7 @@ const AdminMemberListItem = ({
               {
                 id: 'detail',
                 text: 'Chi tiết',
-                icon: <Icon height={24} icon="uil:pen" />,
+                icon: <Icon height={24} icon="ic:outline-remove-red-eye" />,
                 onClick: () => setOpenViewModal(true),
               },
               session?.user.isOwner
