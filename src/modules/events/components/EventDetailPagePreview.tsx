@@ -32,6 +32,10 @@ export const renderEventStatus = (status: EventStatus) => {
 };
 
 const EventDetailPagePreview = ({ data }: { data: Event }) => {
+  console.log(
+    '🚀 ~ file: EventDetailPagePreview.tsx:35 ~ EventDetailPagePreview ~ data:',
+    data,
+  );
   const [tabKey, setTabKey] = useState('description');
   const theme = useTheme();
   const pathname = usePathname();
@@ -86,8 +90,8 @@ const EventDetailPagePreview = ({ data }: { data: Event }) => {
 
       <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 2 }}>
         <MyAvatar
-          displayName={eventData.hostInformation?.fullName}
-          photoUrl={eventData.hostInformation?.avatarUrl}
+          displayName={eventData.host.information?.fullName}
+          photoUrl={eventData.host.information?.avatarUrl}
         />
 
         <Stack direction="column">
@@ -96,10 +100,10 @@ const EventDetailPagePreview = ({ data }: { data: Event }) => {
             prefetch={false}
           >
             <Typography fontWeight={600}>
-              {eventData.hostInformation?.fullName}
+              {eventData.host.information?.fullName}
             </Typography>
           </Link>
-          <Typography>{eventData.hostInformation?.email}</Typography>
+          <Typography>{eventData.host.information?.email}</Typography>
         </Stack>
       </Stack>
 

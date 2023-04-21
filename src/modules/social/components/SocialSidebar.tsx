@@ -36,6 +36,7 @@ const StyledNavItem = styled(Box)(({ theme }) => ({
   paddingRight: theme.spacing(1.5),
   paddingTop: theme.spacing(1),
   paddingBottom: theme.spacing(1),
+  cursor: 'pointer',
 
   borderRadius: theme.spacing(2),
 
