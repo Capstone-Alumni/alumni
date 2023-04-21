@@ -13,12 +13,43 @@ import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { Member } from '../types';
-import MemberForm, { MemberFormValues } from './MemberForm';
+import { MemberFormValues } from './MemberForm';
 import { differenceInHours } from 'date-fns';
 import useResendInvitationMemberById from '../hooks/useResendInvitationMemberById';
 import { useRecoilValue } from 'recoil';
 import { currentTenantDataAtom } from '@share/states';
 import { isEmpty } from 'lodash';
+import MemberViewBox from './MemberViewBox';
+
+export const renderStatus = (
+  lastLogin: string | undefined,
+  createdAt: string,
+) => {
+  if (lastLogin) {
+    return (
+      <Button variant="outlined" color="success">
+        Đã đăng nhập
+      </Button>
+    );
+  }
+
+  const dateCreatedAt = new Date(createdAt);
+  const dateNow = new Date();
+
+  if (differenceInHours(dateNow, dateCreatedAt) <= 48) {
+    return (
+      <Button variant="outlined" color="warning">
+        Đã gửi lời mời
+      </Button>
+    );
+  }
+
+  return (
+    <Button variant="outlined" color="warning">
+      Không có phản hồi
+    </Button>
+  );
+};
 
 const AdminMemberListItem = ({
   data,
@@ -30,38 +61,11 @@ const AdminMemberListItem = ({
   onDelete: (id: string) => void;
 }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openViewModal, setOpenViewModal] = useState(false);
   const { data: session } = useSession();
   const { resendInvitationMemberById, isLoading: sending } =
     useResendInvitationMemberById();
   const { id: tenantId } = useRecoilValue(currentTenantDataAtom);
-
-  const renderStatus = (lastLogin: string | undefined, createdAt: string) => {
-    if (lastLogin) {
-      return (
-        <Button variant="outlined" color="success">
-          Đã đăng nhập
-        </Button>
-      );
-    }
-
-    const dateCreatedAt = new Date(createdAt);
-    const dateNow = new Date();
-
-    if (differenceInHours(dateNow, dateCreatedAt) <= 48) {
-      return (
-        <Button variant="outlined" color="warning">
-          Đã gửi lời mời
-        </Button>
-      );
-    }
-
-    return (
-      <Button variant="outlined" color="warning">
-        Không có phản hồi
-      </Button>
-    );
-  };
 
   const getListGrades = () => {
     if (isEmpty(data.alumniToClass)) {
@@ -121,10 +125,10 @@ const AdminMemberListItem = ({
                       }),
                   },
               {
-                id: 'edit',
-                text: 'Chỉnh sửa',
+                id: 'view',
+                text: 'Chi tiết',
                 icon: <Icon height={24} icon="uil:pen" />,
-                onClick: () => setOpenEditModal(true),
+                onClick: () => setOpenViewModal(true),
               },
               session?.user.isOwner
                 ? {
@@ -139,7 +143,7 @@ const AdminMemberListItem = ({
         </TableCell>
       </TableRow>
 
-      <Modal open={openEditModal} onClose={() => setOpenDeleteModal(false)}>
+      <Modal open={openViewModal} onClose={() => setOpenViewModal(false)}>
         <Box
           sx={{
             position: 'absolute',
@@ -149,11 +153,7 @@ const AdminMemberListItem = ({
             minWidth: '30rem',
           }}
         >
-          <MemberForm
-            initialData={data}
-            onSubmit={(values: MemberFormValues) => onEdit(data.id, values)}
-            onClose={() => setOpenEditModal(false)}
-          />
+          <MemberViewBox data={data} onClose={() => setOpenViewModal(false)} />
         </Box>
       </Modal>
 
