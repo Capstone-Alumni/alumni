@@ -91,7 +91,7 @@ export default class EducationServices {
 
     const newEducations = await tenantPrisma.education.createMany({
       data: educations
-        ? educations.map((education) => ({
+        ? educations.map(education => ({
             degree: education.degree,
             school: education.school,
             startDate: education.startDate,

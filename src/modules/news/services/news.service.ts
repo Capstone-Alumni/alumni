@@ -28,7 +28,7 @@ export default class NewsService {
           connect: { id: authorId },
         },
         tagsNews: {
-          connectOrCreate: body.tagsNews?.map((tag) => ({
+          connectOrCreate: body.tagsNews?.map(tag => ({
             where: { tagName: tag },
             create: { tagName: tag },
           })),
@@ -60,14 +60,14 @@ export default class NewsService {
       news?.tagsNews?.length > body.tagsNews?.length
     ) {
       const removeTags = news.tagsNews.filter(
-        (tag) => !body.tagsNews?.includes(tag.tagName),
+        tag => !body.tagsNews?.includes(tag.tagName),
       );
 
       await tenantPrisma.news.update({
         where: { id: newsId },
         data: {
           tagsNews: {
-            disconnect: removeTags.map((tag) => ({
+            disconnect: removeTags.map(tag => ({
               id: tag.id,
             })),
           },
@@ -82,7 +82,7 @@ export default class NewsService {
       data: {
         ...body,
         tagsNews: {
-          connectOrCreate: body.tagsNews?.map((tag) => ({
+          connectOrCreate: body.tagsNews?.map(tag => ({
             where: { tagName: tag },
             create: { tagName: tag },
           })),

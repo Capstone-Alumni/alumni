@@ -5,10 +5,7 @@ import LoadingIndicator from '@share/components/LoadingIndicator';
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import usePublicGetEventList from 'src/modules/recruitments/hooks/usePublicGetJobList';
-import {
-  getAdminJobListParamsAtom,
-  getPublicJobListParamsAtom,
-} from '../states';
+import { getPublicJobListParamsAtom } from '../states';
 import Companies from './Companies';
 import CompanyByCategories from './CompanyByCategories';
 import SearchInput from '@share/components/SearchInput';
@@ -24,16 +21,13 @@ const RecruitmentDiscover = () => {
   return (
     <>
       <form
-        onSubmit={(e) => {
+        onSubmit={e => {
           e.preventDefault();
-          setParams((prevParams) => ({ ...prevParams, title: search }));
+          setParams(prevParams => ({ ...prevParams, title: search }));
         }}
         style={{ marginBottom: theme.spacing(2) }}
       >
-        <SearchInput
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <SearchInput value={search} onChange={e => setSearch(e.target.value)} />
         <button type="submit" style={{ display: 'none' }}></button>
       </form>
       <Box
@@ -58,7 +52,7 @@ const RecruitmentDiscover = () => {
               )}
               page={params.page}
               onChange={(_, nextPage) => {
-                setParams((prevParams) => ({ ...prevParams, page: nextPage }));
+                setParams(prevParams => ({ ...prevParams, page: nextPage }));
               }}
             />
             <CompanyByCategories data={data?.data} />

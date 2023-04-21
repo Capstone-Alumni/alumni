@@ -75,7 +75,7 @@ export default class CareerService {
 
     const newCareers = await tenantPrisma.career.createMany({
       data: careers
-        ? careers.map((career) => ({
+        ? careers.map(career => ({
             jobTitle: career.jobTitle,
             company: career.company,
             startDate: career.startDate,
