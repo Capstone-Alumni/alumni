@@ -54,17 +54,21 @@ export default class ApplicationService {
       },
     });
     if (recruitment.recruitmentOwner.information?.email) {
-      const setupLink = `${host}/recruitments/job_details/${recruitment.id}`;
-
+      let setupLink = '';
+      if (process.env.NODE_ENV === 'production') {
+        setupLink = `https://${host}/recruitments/job_details/${recruitment.id}`;
+      } else {
+        setupLink = `http://${host}/recruitments/job_details/${recruitment.id}`;
+      }
       await sendMailService({
         to: recruitment.recruitmentOwner.information.email,
-        subject: `Vị trí cho công việc ${recruitment.recruitmentOwner} vừa có người ứng tuyển`,
+        subject: `Vị trí cho công việc ${recruitment.title} vừa có người ứng tuyển`,
         text: `
-          <pre>
-            Xin chào ${recruitment.recruitmentOwner.information.fullName},
+            <p>Xin chào ${recruitment.recruitmentOwner.information.fullName},<p>
+            <br/>
             <p>Vừa có người ứng tuyển vào công việc bạn đăng: <span style="font-weight: bold;">${recruitment.title}</span>. </p> <br/>
-            Hãy click vào đường dẫn để trực tiếp tới trang chi tiết công việc để xem danh sách ứng viên: <a href="${setupLink}">link truy cập</a>. 
-          </pre>
+            <p>Hãy click vào đường dẫn để trực tiếp tới trang chi tiết công việc để xem danh sách ứng viên</p>
+            <a href="${setupLink}">Link truy cập</a>
         `,
       });
     }
