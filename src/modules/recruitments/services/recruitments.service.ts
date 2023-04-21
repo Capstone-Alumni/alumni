@@ -29,6 +29,7 @@ export default class RecruimentService {
     const recruitmentOwnerAlumni = await tenantPrisma.alumni.findFirst({
       where: { id: recruitmentOwnerId },
     });
+
     const newRecruitment = await tenantPrisma.recruitment.create({
       data: {
         ...body,
