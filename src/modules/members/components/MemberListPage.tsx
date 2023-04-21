@@ -103,7 +103,7 @@ const MemberListPage = () => {
           width: '100%',
         }}
       >
-        {isGettingMember && !memberListData?.data ? <LoadingIndicator /> : null}
+        {isGettingMember ? <LoadingIndicator /> : null}
 
         {memberListData?.data ? (
           <MemberListTable

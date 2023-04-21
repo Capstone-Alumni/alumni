@@ -13,6 +13,7 @@ export default class MemberService {
       gradeClass,
       alumniId,
       facebook,
+      dateOfBirth,
       ...memberData
     }: CreateMemberServiceProps,
   ) => {
@@ -38,10 +39,69 @@ export default class MemberService {
     await tenantPrisma.information.create({
       data: {
         ...memberData,
+        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
         alumniId: member.id,
         facebookUrl: facebook,
       },
     });
+
+    return member;
+  };
+
+  static createMany = async (
+    tenantPrisma: PrismaClient,
+    data: CreateMemberServiceProps[],
+  ) => {
+    const alumniList = data.map(d => ({
+      id: d.alumniId,
+      tenantId: d.tenantId,
+    }));
+
+    const alumToClassList = data
+      .map(d =>
+        d.gradeClass.reduce((red: any[], { alumClass }) => {
+          return red.concat(
+            alumClass.map(cl => ({
+              alumClassId: cl.value,
+              alumniId: d.alumniId,
+            })),
+          );
+        }, []),
+      )
+      .flat();
+
+    const informationList = data.map(
+      ({
+        alumniId,
+        facebook,
+        email,
+        dateOfBirth,
+        gradeClass,
+        tenantId,
+        ...other
+      }) => ({
+        ...other,
+        email: email?.length ? email : null,
+        alumniId: alumniId,
+        facebookUrl: facebook,
+        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
+      }),
+    );
+
+    const [member] = await tenantPrisma.$transaction([
+      tenantPrisma.alumni.createMany({
+        data: alumniList,
+        skipDuplicates: true,
+      }),
+      tenantPrisma.alumniToClass.createMany({
+        data: alumToClassList,
+        skipDuplicates: true,
+      }),
+      tenantPrisma.information.createMany({
+        data: informationList,
+        skipDuplicates: true,
+      }),
+    ]);
 
     return member;
   };
