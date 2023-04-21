@@ -1,27 +1,31 @@
 import { Box, Button } from '@mui/material';
-import { currentTenantDataAtom } from '@share/states';
+import {
+  currentTenantDataAtom,
+  currentUserInformationDataAtom,
+} from '@share/states';
 import { parseXLSX } from '@share/utils/parseXLSX';
 import { noop } from 'lodash/fp';
-import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useRecoilValue } from 'recoil';
 import useCreateManyMember from '../hooks/useCreateManyMember';
 import useGetMemberList from '../hooks/useGetMemberList';
-import { getLowerRole } from '../utils';
+import useGetGradeList from 'src/modules/gradeAndClass/hooks/useGetGradeList';
 
 const LOADING_TOAST_ID = 'member file';
 
 const UploadMemeberFileButton = () => {
   const [uploading, setUploading] = useState(false);
-  const { data: session } = useSession();
 
   const { id: tenantId } = useRecoilValue(currentTenantDataAtom);
+  const currentUser = useRecoilValue(currentUserInformationDataAtom);
+  const classList = currentUser?.alumniToClass?.map(ref => ref.alumClass);
+  const gradeList = currentUser?.gradeMod?.map(ref => ref.grade);
+
+  const { data: gradeData } = useGetGradeList();
 
   const { createManyMember } = useCreateManyMember();
   const { reload } = useGetMemberList();
-
-  const roleList = getLowerRole(session?.user.accessLevel);
 
   const onUploadFile = async (file?: File) => {
     setUploading(true);
@@ -37,39 +41,105 @@ const UploadMemeberFileButton = () => {
     const data = Object.values(jsonData);
 
     // precheck header
-    const formattedData = data.reduce((red: any[], item: any, index) => {
-      if (index === 0) {
-        return red;
-      }
+    try {
+      const formattedData = data.reduce((red: any[], item: any, index) => {
+        if (index < 2) {
+          return red;
+        }
 
-      if (
-        item[0].length === 0 ||
-        item[1].length < 8 ||
-        !roleList.includes(item[2])
-      ) {
-        return red;
-      }
+        if (item[1].length === 0) {
+          throw new Error('invalid format');
+        }
 
-      return [
-        ...red,
-        { email: item[0], password: item[1], accessLevel: item[2] },
-      ];
-    }, []);
+        if (item[2]?.split(' ').length !== 3) {
+          throw new Error('invalid format');
+        }
 
-    if (formattedData.length === 0 && data.length > 1) {
+        const startYear = parseInt(item[2].split(' ')[0], 10);
+        const endYear = parseInt(item[2].split(' ')[2], 10);
+        const grade = gradeList?.find(
+          grade => grade.startYear === startYear && grade.endYear === endYear,
+        ); // grade mod
+        const alumClass = classList?.find(
+          alumClass =>
+            alumClass.name === item[3] &&
+            alumClass.grade?.startYear === startYear &&
+            alumClass.grade?.endYear === endYear,
+        ); // class mod
+        if (!currentUser?.isOwner && !grade && !alumClass) {
+          throw new Error('unauthorize');
+        }
+
+        let alumClassId;
+        gradeData.data.items.forEach(grade => {
+          if (grade.startYear === startYear && grade.endYear === endYear) {
+            grade.alumClasses?.forEach(alumClass => {
+              if (alumClass.name === item[3]) {
+                alumClassId = alumClass.id;
+              }
+            });
+          }
+        });
+
+        if (!alumClassId) {
+          throw new Error(
+            `Không tìm thấy lớp ${item[3]} của niên khoá ${item[2]}`,
+          );
+        }
+
+        let dateOfBirth = null;
+        if (item[6]) {
+          const parts = item[6].split('/');
+          if (parts.length !== 3) {
+            throw new Error(`Ngày sinh ${item[6]} khÔng hợp lệ`);
+          }
+          try {
+            dateOfBirth = new Date(
+              Number(parts[2]),
+              Number(parts[1]) - 1,
+              Number(parts[0]),
+            );
+          } catch (err) {
+            throw new Error(`Ngày sinh ${item[6]} khÔng hợp lệ`);
+          }
+        }
+
+        return [
+          ...red,
+          {
+            fullName: item[1],
+            gradeClass: [
+              {
+                alumClass: [
+                  {
+                    value: alumClassId,
+                  },
+                ],
+              },
+            ],
+            email: item?.[4],
+            phone: item?.[5],
+            dateOfBirth: dateOfBirth,
+            facebook: item?.[7],
+          },
+        ];
+      }, []);
+
+      await createManyMember({ data: formattedData, tenantId: tenantId });
+
       toast.dismiss(LOADING_TOAST_ID);
-      toast.warn('Sai định dạng');
+      setUploading(false);
+      reload();
+    } catch (err) {
+      toast.dismiss(LOADING_TOAST_ID);
+      if (err.message.includes('invalid format')) {
+        toast.warn('Sai định dạng');
+      } else if (err.message.includes('unauthorize')) {
+        toast.warn('Danh sách niên khoá/lớp không nằm trong quyền hạn của bạn');
+      } else {
+        toast.error(err.message);
+      }
     }
-
-    // toast.update(LOADING_TOAST_ID, {
-    //   render: `Đang xử lý (0/${formattedData.length})`,
-    // });
-
-    await createManyMember({ data: formattedData, tenantId: tenantId });
-
-    toast.dismiss(LOADING_TOAST_ID);
-    setUploading(false);
-    reload();
   };
 
   return (
@@ -79,7 +149,7 @@ const UploadMemeberFileButton = () => {
       </Button>
       <input
         type="file"
-        accept="xlsx"
+        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
         disabled={uploading}
         onChange={e => onUploadFile(e.target.files?.[0])}
         style={{

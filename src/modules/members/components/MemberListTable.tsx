@@ -99,7 +99,7 @@ const AdminMemberListTable = ({
             ))}
           </TableBody>
           <DataTablePagination
-            colSpan={5}
+            colSpan={6}
             currentPage={page}
             totalPage={Math.ceil(data.totalItems / data.itemPerPage)}
             onChangePage={onChangePage}
