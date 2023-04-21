@@ -131,7 +131,7 @@ const ProfileSidebar = () => {
       </Card>
       <Card sx={{ width: '100%', py: 2 }}>
         <StyledNav>
-          {NAV_ITEMS.map(item => {
+          {NAV_ITEMS.map((item) => {
             const isActive = item.link && currentProfileTab === item.link;
             return (
               <Link
@@ -156,22 +156,32 @@ const ProfileSidebar = () => {
           })}
           {alreadySendMessage === -1 ||
             (canSendMessage &&
-              data?.data?.information?.havePhone &&
-              userProfileId && (
-                <PingMessageModal
-                  userProfileId={userProfileId}
-                  onSendMessageSuccess={handleSendMessageSuccess}
+            data?.data?.information?.havePhone &&
+            userProfileId ? (
+              <PingMessageModal
+                userProfileId={userProfileId}
+                onSendMessageSuccess={handleSendMessageSuccess}
+              >
+                <Button
+                  sx={{ width: '100%', justifyContent: 'left' }}
+                  startIcon={<SmsIcon />}
+                  variant="contained"
+                  color="warning"
                 >
-                  <Button
-                    sx={{ width: '100%', justifyContent: 'left' }}
-                    startIcon={<SmsIcon />}
-                    variant="contained"
-                    color="warning"
-                  >
-                    Gửi tin nhắn
-                  </Button>
-                </PingMessageModal>
-              ))}
+                  Gửi tin nhắn
+                </Button>
+              </PingMessageModal>
+            ) : (
+              <Button
+                sx={{ width: '100%', justifyContent: 'left' }}
+                startIcon={<SmsIcon />}
+                variant="contained"
+                color="warning"
+                disabled={true}
+              >
+                Gửi tin nhắn
+              </Button>
+            ))}
           {canEditProfile && userProfileId && (
             <ChangePasswordModal userProfileId={userProfileId}>
               <Button

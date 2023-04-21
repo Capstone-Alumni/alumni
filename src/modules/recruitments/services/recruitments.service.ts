@@ -38,6 +38,9 @@ export default class RecruimentService {
         },
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return newRecruitment;
   };
 
@@ -51,6 +54,9 @@ export default class RecruimentService {
       where: { id: recruitmentId },
       data: body,
     });
+
+    await tenantPrisma.$disconnect();
+
     return updatedRecruitment;
   };
 
@@ -62,6 +68,9 @@ export default class RecruimentService {
         archived: true,
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return deletedRecruitment;
   };
 
@@ -70,10 +79,11 @@ export default class RecruimentService {
     params: GetListRecruitmentParams,
   ) => {
     const { page, limit } = getPageAndLimitFromParams(params);
+    const { companyName, job, position, salary, type, title } = params;
 
-    const { companyName, job, position, salary, type } = params;
     const whereFilter = {
       AND: [
+        { title: { contains: title } },
         { companyName: { contains: companyName } },
         { job: { contains: job } },
         { position: { contains: position } },
@@ -102,6 +112,9 @@ export default class RecruimentService {
         orderBy: [{ createdAt: 'desc' }],
       }),
     ]);
+
+    await tenantPrisma.$disconnect();
+
     return {
       totalItems: totalItem,
       items: recruitmentItem,
@@ -117,6 +130,9 @@ export default class RecruimentService {
     const recruitment = await tenantPrisma.recruitment.findFirst({
       where: { id: recruitmentId, isApproved: true, archived: false },
     });
+
+    await tenantPrisma.$disconnect();
+
     return recruitment;
   };
 
@@ -143,6 +159,9 @@ export default class RecruimentService {
         orderBy: [{ createdAt: 'desc' }],
       }),
     ]);
+
+    await tenantPrisma.$disconnect();
+
     return {
       totalItems: totalItem,
       items: recruitmentItem,
@@ -182,6 +201,9 @@ export default class RecruimentService {
         },
       }),
     ]);
+
+    await tenantPrisma.$disconnect();
+
     return {
       totalItems: totalItem,
       items: recruitmentItem,
@@ -196,6 +218,9 @@ export default class RecruimentService {
     const recruitment = await tenantPrisma.recruitment.findFirst({
       where: { id: recruitmentId, archived: false },
     });
+
+    await tenantPrisma.$disconnect();
+
     return recruitment;
   };
 }

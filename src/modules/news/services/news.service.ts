@@ -28,13 +28,15 @@ export default class NewsService {
           connect: { id: authorId },
         },
         tagsNews: {
-          connectOrCreate: body.tagsNews?.map(tag => ({
+          connectOrCreate: body.tagsNews?.map((tag) => ({
             where: { tagName: tag },
             create: { tagName: tag },
           })),
         },
       },
     });
+
+    await tenantPrisma.$disconnect();
 
     return newsCreated;
   };
@@ -58,14 +60,14 @@ export default class NewsService {
       news?.tagsNews?.length > body.tagsNews?.length
     ) {
       const removeTags = news.tagsNews.filter(
-        tag => !body.tagsNews?.includes(tag.tagName),
+        (tag) => !body.tagsNews?.includes(tag.tagName),
       );
 
       await tenantPrisma.news.update({
         where: { id: newsId },
         data: {
           tagsNews: {
-            disconnect: removeTags.map(tag => ({
+            disconnect: removeTags.map((tag) => ({
               id: tag.id,
             })),
           },
@@ -80,7 +82,7 @@ export default class NewsService {
       data: {
         ...body,
         tagsNews: {
-          connectOrCreate: body.tagsNews?.map(tag => ({
+          connectOrCreate: body.tagsNews?.map((tag) => ({
             where: { tagName: tag },
             create: { tagName: tag },
           })),
@@ -90,6 +92,8 @@ export default class NewsService {
         tagsNews: true,
       },
     });
+
+    await tenantPrisma.$disconnect();
 
     return newsUpdated;
   };
@@ -102,6 +106,8 @@ export default class NewsService {
         archived: true,
       },
     });
+
+    await tenantPrisma.$disconnect();
 
     return newsUpdated;
   };
@@ -128,6 +134,9 @@ export default class NewsService {
         tagsNews: true,
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return news;
   };
 
@@ -175,6 +184,9 @@ export default class NewsService {
         ],
       }),
     ]);
+
+    await tenantPrisma.$disconnect();
+
     return {
       totalItems: totalNewsItem,
       items: newsItems,
@@ -227,6 +239,9 @@ export default class NewsService {
         ],
       }),
     ]);
+
+    await tenantPrisma.$disconnect();
+
     return {
       totalItems: totalNewsItem,
       items: newsItems,
@@ -257,6 +272,9 @@ export default class NewsService {
         tagsNews: true,
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return news;
   };
 
@@ -264,6 +282,9 @@ export default class NewsService {
     const tags = await tenantPrisma.tagsNews.findMany({
       where: { archived: false },
     });
+
+    await tenantPrisma.$disconnect();
+
     return tags;
   };
 }

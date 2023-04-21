@@ -19,6 +19,9 @@ export default class NewsCommentService {
         },
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return newsCommetCreated;
   };
 
@@ -60,6 +63,9 @@ export default class NewsCommentService {
         ],
       }),
     ]);
+
+    await tenantPrisma.$disconnect();
+
     return {
       totalItems: totalNewsComments,
       items: newsComments,
@@ -89,6 +95,9 @@ export default class NewsCommentService {
         ...body,
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return newsCommetUpdated;
   };
 
@@ -115,6 +124,9 @@ export default class NewsCommentService {
         archived: true,
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return newsCommetDeleted;
   };
 }

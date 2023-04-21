@@ -56,6 +56,9 @@ export default class CareerService {
         },
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return newCareer;
   };
 
@@ -72,7 +75,7 @@ export default class CareerService {
 
     const newCareers = await tenantPrisma.career.createMany({
       data: careers
-        ? careers.map(career => ({
+        ? careers.map((career) => ({
             jobTitle: career.jobTitle,
             company: career.company,
             startDate: career.startDate,
@@ -85,6 +88,9 @@ export default class CareerService {
           }))
         : [],
     });
+
+    await tenantPrisma.$disconnect();
+
     return newCareers;
   };
 
@@ -151,6 +157,9 @@ export default class CareerService {
         },
       }),
     ]);
+
+    await tenantPrisma.$disconnect();
+
     return {
       totalItems: totalCareerItem,
       items: careerItems,
@@ -164,6 +173,9 @@ export default class CareerService {
         id: careerId,
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return career;
   };
 
@@ -178,6 +190,9 @@ export default class CareerService {
       },
       data: data,
     });
+
+    await tenantPrisma.$disconnect();
+
     return careerUpdated;
   };
 
@@ -190,6 +205,8 @@ export default class CareerService {
         archived: true,
       },
     });
+
+    await tenantPrisma.$disconnect();
 
     return career;
   };

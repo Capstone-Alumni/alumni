@@ -73,6 +73,9 @@ export default class InformationService {
       where: { alumniId: id },
       data: body,
     });
+
+    await tenantPrisma.$disconnect();
+
     return informationUpdated;
   };
 
@@ -122,6 +125,8 @@ export default class InformationService {
         },
       },
     });
+
+    await tenantPrisma.$disconnect();
 
     return filterInformation(userInformation, requester);
   };
@@ -202,6 +207,8 @@ export default class InformationService {
         }),
       ]);
 
+    await tenantPrisma.$disconnect();
+
     return {
       totalItems: totalUsersInformation,
       items: usersInformationItems,
@@ -249,6 +256,8 @@ export default class InformationService {
           },
         }),
       ]);
+
+    await tenantPrisma.$disconnect();
 
     return {
       totalItems: totalUsersInformation,

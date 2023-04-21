@@ -70,6 +70,9 @@ export default class EducationServices {
         },
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return newEducation;
   };
 
@@ -88,7 +91,7 @@ export default class EducationServices {
 
     const newEducations = await tenantPrisma.education.createMany({
       data: educations
-        ? educations.map(education => ({
+        ? educations.map((education) => ({
             degree: education.degree,
             school: education.school,
             startDate: education.startDate,
@@ -97,6 +100,9 @@ export default class EducationServices {
           }))
         : [],
     });
+
+    await tenantPrisma.$disconnect();
+
     return newEducations;
   };
 
@@ -113,6 +119,8 @@ export default class EducationServices {
       where: { id: educationId },
       data: body,
     });
+
+    await tenantPrisma.$disconnect();
 
     return educationUpdated;
   };
@@ -131,6 +139,8 @@ export default class EducationServices {
       where: whereFilter,
     });
 
+    await tenantPrisma.$disconnect();
+
     return education;
   };
 
@@ -148,6 +158,8 @@ export default class EducationServices {
         archived: true,
       },
     });
+
+    await tenantPrisma.$disconnect();
 
     return education;
   };
@@ -219,6 +231,9 @@ export default class EducationServices {
           },
         }),
       ]);
+
+    await tenantPrisma.$disconnect();
+
     return {
       totalItems: totalEducationItem,
       items: educationItems,
