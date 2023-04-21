@@ -32,7 +32,7 @@ export default class RecruimentService {
     const newRecruitment = await tenantPrisma.recruitment.create({
       data: {
         ...body,
-        isApproved: true,
+        isPublic: true,
         recruitmentOwner: {
           connect: { id: recruitmentOwnerAlumni?.id },
         },
@@ -90,7 +90,7 @@ export default class RecruimentService {
         { salary: { contains: salary } },
         { type: { contains: type } },
         { archived: false },
-        { isApproved: true },
+        { isPublic: true },
       ],
     };
 
@@ -128,7 +128,7 @@ export default class RecruimentService {
   ) => {
     await isRecruitmentExisted(tenantPrisma, recruitmentId);
     const recruitment = await tenantPrisma.recruitment.findFirst({
-      where: { id: recruitmentId, isApproved: true, archived: false },
+      where: { id: recruitmentId, isPublic: true, archived: false },
     });
 
     await tenantPrisma.$disconnect();
