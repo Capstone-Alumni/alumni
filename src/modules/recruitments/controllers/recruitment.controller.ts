@@ -78,9 +78,10 @@ export default class RecruitmentController {
   ) => {
     try {
       const prisma = await getPrismaClient(req.tenantId);
-      const { page, limit, companyName, job, salary, position, type } =
+      const { page, limit, companyName, job, salary, position, type, title } =
         req.query;
       const listRecruitment = await RecruimentService.getAprovedList(prisma, {
+        title: title ? (title as string) : '',
         companyName: companyName ? (companyName as string) : '',
         job: job ? (job as string) : '',
         salary: salary ? (salary as string) : '',

@@ -30,6 +30,9 @@ export default class ReportsService {
         ...body,
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return newReport;
   };
 
@@ -42,6 +45,9 @@ export default class ReportsService {
       where: { id: reportId },
       data: body,
     });
+
+    await tenantPrisma.$disconnect();
+
     return updatedReport;
   };
 
@@ -66,6 +72,9 @@ export default class ReportsService {
         orderBy: [{ createdAt: 'desc' }],
       }),
     ]);
+
+    await tenantPrisma.$disconnect();
+
     return {
       totalItems: totalItem,
       items: reportItem,
@@ -81,6 +90,8 @@ export default class ReportsService {
         archived: true,
       },
     });
+
+    await tenantPrisma.$disconnect();
 
     return reportUpdated;
   };

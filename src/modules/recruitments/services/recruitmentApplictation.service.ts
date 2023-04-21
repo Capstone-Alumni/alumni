@@ -73,6 +73,8 @@ export default class ApplicationService {
       });
     }
 
+    await tenantPrisma.$disconnect();
+
     return apply;
   };
 
@@ -98,6 +100,9 @@ export default class ApplicationService {
         ...body,
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return updated;
   };
 
@@ -124,6 +129,9 @@ export default class ApplicationService {
         archived: true,
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return deleted;
   };
 
@@ -160,6 +168,8 @@ export default class ApplicationService {
         },
       }),
     ]);
+
+    await tenantPrisma.$disconnect();
 
     return {
       totalItems: totalItems,
