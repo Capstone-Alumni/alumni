@@ -40,6 +40,7 @@ const PublicNewsCardItems = ({ item, sx }: { item: News; sx?: any }) => {
               wordBreak: 'break-word',
             }}
             variant={sx.typoVariant}
+            noWrap
           >
             {item.title}
           </Typography>

@@ -12,7 +12,7 @@ const ProfileInformationSection = ({
   userInformation: any;
   openEdit: null | (() => void);
 }) => {
-  const userInformation = userInformationResponse?.data?.data.information;
+  const userInformation = userInformationResponse?.data?.data?.information;
 
   return (
     <Card sx={{ width: '100%' }}>

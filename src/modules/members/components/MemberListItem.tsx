@@ -17,9 +17,10 @@ import { MemberFormValues } from './MemberForm';
 import { differenceInHours } from 'date-fns';
 import useResendInvitationMemberById from '../hooks/useResendInvitationMemberById';
 import { useRecoilValue } from 'recoil';
-import { currentTenantDataAtom } from '@share/states';
+import { Alumni, currentTenantDataAtom } from '@share/states';
 import { isEmpty } from 'lodash';
-import MemberViewBox from './MemberViewBox';
+import MemberInforDetails from './MemberInforDetails';
+import { Grade } from 'src/modules/gradeAndClass/types';
 
 export const renderStatus = (
   lastLogin: string | undefined,
@@ -71,16 +72,18 @@ const AdminMemberListItem = ({
     if (isEmpty(data.alumniToClass)) {
       return [];
     }
-    const initGradeName: string[] = [];
+    const initGradeId: string[] = [];
+    const initGrades: Grade[] = [];
     data.alumniToClass.filter(it => {
-      const code = it.alumClass.grade?.code
-        ? it.alumClass.grade?.code
-        : it.alumClass.grade?.startYear + ' - ' + it.alumClass.grade?.endYear;
-      if (!initGradeName.includes(code as string)) {
-        initGradeName.push(code as string);
+      if (
+        it.alumClass?.grade &&
+        !initGradeId.includes(it.alumClass.grade?.id as string)
+      ) {
+        initGradeId.push(it.alumClass.grade?.id as string);
+        initGrades.push(it.alumClass?.grade);
       }
     });
-    return initGradeName;
+    return initGrades;
   };
 
   return (
@@ -93,8 +96,11 @@ const AdminMemberListItem = ({
           <Typography>{data?.information?.email}</Typography>
         </TableCell>
         <TableCell align="left">
-          {getListGrades().map((code: string) => (
-            <Chip key={code || ''} label={code || ''} />
+          {getListGrades().map((grade: Grade) => (
+            <Chip
+              key={grade.id}
+              label={grade.code || `${grade.startYear}-${grade.endYear} `}
+            />
           ))}
         </TableCell>
         <TableCell align="left">
@@ -125,7 +131,7 @@ const AdminMemberListItem = ({
                       }),
                   },
               {
-                id: 'view',
+                id: 'detail',
                 text: 'Chi tiết',
                 icon: <Icon height={24} icon="uil:pen" />,
                 onClick: () => setOpenViewModal(true),
@@ -153,7 +159,10 @@ const AdminMemberListItem = ({
             minWidth: '30rem',
           }}
         >
-          <MemberViewBox data={data} onClose={() => setOpenViewModal(false)} />
+          <MemberInforDetails
+            data={data as unknown as Alumni}
+            onClose={() => setOpenViewModal(false)}
+          />
         </Box>
       </Modal>
 

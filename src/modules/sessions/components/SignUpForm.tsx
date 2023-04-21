@@ -25,6 +25,7 @@ import useSignUp from '../hooks/useSignUp';
 import TextInput from '@share/components/form/TextInput';
 import { GradeClassForm } from 'src/modules/members/components/MemberForm';
 import DateInput from '@share/components/form/DateInput';
+import ReportModal from 'src/modules/reports/components/ReportModal';
 
 const validationSchema = yup
   .object({
@@ -136,20 +137,38 @@ const SignUpForm = () => {
 
             <Divider />
 
-            <GradeClassForm multiple={false} getAll />
-
+            <GradeClassForm isSignup multiple={false} getAll />
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+              }}
+            >
+              <Typography sx={{ mr: 1 }} variant="body2">
+                Bạn gặp khó khăn?
+              </Typography>
+              <ReportModal>
+                <Typography
+                  fontWeight="bold"
+                  sx={{ mr: 1, cursor: 'pointer' }}
+                  variant="body2"
+                  color="error"
+                >
+                  Báo cáo tại đây
+                </Typography>
+              </ReportModal>
+            </Box>
             <Button
               fullWidth
               size="large"
               variant="contained"
               onClick={handleSubmit(onSubmit)}
               disabled={isLoading}
-              sx={{ mt: 2 }}
             >
               Đăng ký
             </Button>
           </Stack>
-
           <Box mt={5} sx={{ display: 'flex' }}>
             <Typography sx={{ mr: 1 }} variant="body2">
               Đã có tài khoản?

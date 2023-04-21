@@ -1,14 +1,14 @@
-import { UserInformation } from '@share/type';
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getProfileListParamsAtom } from '../states';
 import { GetProfileListParams } from '../types';
+import { Alumni } from '@share/states';
 
 export type GetProfileListData = {
   totalItems: number;
-  items: UserInformation[];
+  items: Alumni[];
   itemPerPage: number;
 };
 
