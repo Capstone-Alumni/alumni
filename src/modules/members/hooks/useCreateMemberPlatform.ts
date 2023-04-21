@@ -3,11 +3,9 @@ import useApi from 'src/modules/share/hooks/useApi';
 import { MemberFormValues } from '../components/MemberForm';
 import useCreateMemberTenant from './useCreateMemberTenant';
 import { Alumni } from '@share/states';
-import useGetMemberList from './useGetMemberList';
 
 type CreateMemberPlatformParams = MemberFormValues & {
   tenantId: string;
-  password?: string;
 };
 
 type CreateMemberPlatformResponse = {
@@ -15,15 +13,16 @@ type CreateMemberPlatformResponse = {
     newAlumni: Alumni;
     inputtedData: CreateMemberPlatformParams;
   };
+  status: boolean;
 };
 
 type CreateMemberPlatformError = unknown;
 
 const useCreateMemberPlatform = () => {
-  const { createMemberTenant } = useCreateMemberTenant();
-  const { reload } = useGetMemberList();
+  const { createMemberTenant, isLoading: isCreatingMemberTenant } =
+    useCreateMemberTenant();
 
-  const { fetchApi, isLoading } = useApi<
+  const { fetchApi, isLoading: isCreatingMemberPlatform } = useApi<
     CreateMemberPlatformParams,
     CreateMemberPlatformResponse,
     CreateMemberPlatformError
@@ -38,20 +37,24 @@ const useCreateMemberPlatform = () => {
       onError: () => {
         toast.error('Xảy ra lỗi');
       },
-      onSuccess: async ({ data }) => {
-        await createMemberTenant({
-          ...data.inputtedData,
-          tenantId: data.newAlumni.tenantId,
-          alumniId: data.newAlumni.id,
-        });
-        reload();
-      },
     },
   );
 
+  const isLoading = isCreatingMemberPlatform || isCreatingMemberTenant;
+
+  const createMemberPlatform = async (params: CreateMemberPlatformParams) => {
+    const res = await fetchApi(params);
+    if (res?.status) {
+      await createMemberTenant({
+        ...params,
+        alumniId: res.data.newAlumni.id,
+      });
+    }
+  };
+
   return {
     isLoading,
-    createMemberPlatform: fetchApi,
+    createMemberPlatform,
   };
 };
 

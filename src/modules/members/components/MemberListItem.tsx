@@ -22,6 +22,36 @@ import { isEmpty } from 'lodash';
 import MemberInforDetails from './MemberInforDetails';
 import { Grade } from 'src/modules/gradeAndClass/types';
 
+export const renderStatus = (
+  lastLogin: string | undefined,
+  createdAt: string,
+) => {
+  if (lastLogin) {
+    return (
+      <Button variant="outlined" color="success">
+        Đã đăng nhập
+      </Button>
+    );
+  }
+
+  const dateCreatedAt = new Date(createdAt);
+  const dateNow = new Date();
+
+  if (differenceInHours(dateNow, dateCreatedAt) <= 48) {
+    return (
+      <Button variant="outlined" color="warning">
+        Đã gửi lời mời
+      </Button>
+    );
+  }
+
+  return (
+    <Button variant="outlined" color="warning">
+      Không có phản hồi
+    </Button>
+  );
+};
+
 const AdminMemberListItem = ({
   data,
   onDelete,
@@ -32,38 +62,11 @@ const AdminMemberListItem = ({
   onDelete: (id: string) => void;
 }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openViewModal, setOpenViewModal] = useState(false);
   const { data: session } = useSession();
   const { resendInvitationMemberById, isLoading: sending } =
     useResendInvitationMemberById();
   const { id: tenantId } = useRecoilValue(currentTenantDataAtom);
-
-  const renderStatus = (lastLogin: string | undefined, createdAt: string) => {
-    if (lastLogin) {
-      return (
-        <Button variant="outlined" color="success">
-          Đã đăng nhập
-        </Button>
-      );
-    }
-
-    const dateCreatedAt = new Date(createdAt);
-    const dateNow = new Date();
-
-    if (differenceInHours(dateNow, dateCreatedAt) <= 48) {
-      return (
-        <Button variant="outlined" color="warning">
-          Đã gửi lời mời
-        </Button>
-      );
-    }
-
-    return (
-      <Button variant="outlined" color="warning">
-        Không có phản hồi
-      </Button>
-    );
-  };
 
   const getListGrades = () => {
     if (isEmpty(data.alumniToClass)) {
@@ -130,10 +133,10 @@ const AdminMemberListItem = ({
               {
                 id: 'detail',
                 text: 'Chi tiết',
-                icon: <Icon height={24} icon="uil:pen" />,
-                onClick: () => setOpenEditModal(true),
+                icon: <Icon height={24} icon="ic:outline-remove-red-eye" />,
+                onClick: () => setOpenViewModal(true),
               },
-              data.alumniToClass.length === 0 || session?.user.isOwner
+              session?.user.isOwner
                 ? {
                     id: 'delete',
                     text: 'Xoá',
@@ -146,7 +149,7 @@ const AdminMemberListItem = ({
         </TableCell>
       </TableRow>
 
-      <Modal open={openEditModal} onClose={() => setOpenDeleteModal(false)}>
+      <Modal open={openViewModal} onClose={() => setOpenViewModal(false)}>
         <Box
           sx={{
             position: 'absolute',
@@ -158,7 +161,7 @@ const AdminMemberListItem = ({
         >
           <MemberInforDetails
             data={data as unknown as Alumni}
-            onClose={() => setOpenEditModal(false)}
+            onClose={() => setOpenViewModal(false)}
           />
         </Box>
       </Modal>
