@@ -14,12 +14,20 @@ import SetCurrentTenant from '@share/helpers/SetCurrentTenant';
 import GetInitialUserInformation from '@share/helpers/GetInitialUserInformation';
 import { Providers } from '@redux/providers';
 
+import Router from 'next/router';
+import NProgress from 'nprogress'; //nprogress module
+import 'src/lib/nprogress/nprogress.css'; //styles of nprogress
+
 import 'quill/dist/quill.snow.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Head from 'next/head';
+
+Router.events.on('routeChangeStart', () => NProgress.start());
+Router.events.on('routeChangeComplete', () => NProgress.done());
+Router.events.on('routeChangeError', () => NProgress.done());
 
 const clientSideEmotionCache = createEmotionCache();
 
