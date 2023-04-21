@@ -1,51 +1,17 @@
-import { Box, IconButton, Stack, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Divider,
+  IconButton,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
-import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
 import { formatDate } from '@share/utils/formatDate';
-import { Chip } from '@mui/material';
 import { Member } from '../types';
 
 import { renderStatus } from './MemberListItem';
-
-const renderRequestStatus = (status: number) => {
-  if (status === 0) {
-    return (
-      <Chip
-        color="warning"
-        variant="outlined"
-        icon={<HourglassEmptyIcon color="warning" />}
-        label="Đang chờ xét duyệt"
-      />
-    );
-  }
-
-  if (status === 1) {
-    return (
-      <Chip
-        color="success"
-        variant="outlined"
-        icon={<CheckCircleOutlineIcon color="success" />}
-        label="Đã chấp nhận"
-      />
-    );
-  }
-
-  if (status === 2) {
-    return (
-      <Chip
-        color="error"
-        variant="outlined"
-        icon={<RemoveCircleOutlineIcon color="error" />}
-        label="Đã từ chối"
-      />
-    );
-  }
-
-  return null;
-};
 
 const MemberViewBox = ({
   data,
@@ -76,7 +42,7 @@ const MemberViewBox = ({
         <ClearIcon />
       </IconButton>
 
-      <Typography variant="h4" sx={{ mb: 2 }}>
+      <Typography variant="h5" sx={{ mb: 2 }}>
         Thông tin cơ bản
       </Typography>
 
@@ -109,9 +75,13 @@ const MemberViewBox = ({
         <Typography>{data.information?.facebookUrl}</Typography>
       </Box>
 
-      <Typography variant="h4" sx={{ mb: 2 }}>
+      <Divider sx={{ my: 2 }} />
+
+      <Typography variant="h5" sx={{ mb: 2 }}>
         Niên khoá và lớp
       </Typography>
+
+      <Divider sx={{ my: 2 }} />
 
       <Stack direction="column" gap={1} sx={{ mb: 1 }}>
         <Typography fontWeight={600}>Trạng thái</Typography>
