@@ -7,6 +7,7 @@ const nextConfig = {
     esmExternals: false,
     swcMinify: true,
   },
+  transpilePackages: ['@mui'],
   images: {
     domains: [
       'bka.hcmut.edu.vn',
