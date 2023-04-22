@@ -6,10 +6,10 @@ import {
   Card,
   CardContent,
   styled,
+  Tooltip,
   Typography,
   useTheme,
 } from '@mui/material';
-import Link from '@share/components/NextLinkV2';
 import { useCanEditProfile } from '../helpers/canEditProfile';
 import { useCanSendMessage } from '../helpers/canSendMessage';
 import { usePathname, useSearchParams } from 'next/navigation';
@@ -71,7 +71,11 @@ const NAV_ITEMS = [
   },
 ];
 
-const ProfileSidebar = () => {
+const ProfileSidebar = ({
+  onChangeTab,
+}: {
+  onChangeTab: (tab: string) => void;
+}) => {
   const theme = useTheme();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -134,44 +138,76 @@ const ProfileSidebar = () => {
           {NAV_ITEMS.map(item => {
             const isActive = item.link && currentProfileTab === item.link;
             return (
-              <Link
+              <StyledNavItem
+                sx={{
+                  backgroundColor: isActive
+                    ? theme.palette.primary.lighter
+                    : undefined,
+                  color: isActive ? theme.palette.primary.main : undefined,
+                  cursor: 'pointer',
+                }}
+                onClick={() => onChangeTab(item.id)}
                 key={item.id}
-                href={pathname || ''}
-                style={{ color: 'inherit', width: '100%' }}
               >
-                <StyledNavItem
-                  sx={{
-                    backgroundColor: isActive
-                      ? theme.palette.primary.lighter
-                      : undefined,
-                    color: isActive ? theme.palette.primary.main : undefined,
-                  }}
-                >
-                  <Icon height={24} icon={item.icon} />
-                  <Typography fontWeight={600}>{item.title}</Typography>
-                  <Box sx={{ flex: 1 }} />
-                </StyledNavItem>
-              </Link>
+                <Icon height={24} icon={item.icon} />
+                <Typography fontWeight={600}>{item.title}</Typography>
+                <Box sx={{ flex: 1 }} />
+              </StyledNavItem>
             );
           })}
-          {alreadySendMessage === -1 ||
-            (canSendMessage &&
-              data?.data?.information?.havePhone &&
-              userProfileId && (
-                <PingMessageModal
-                  userProfileId={userProfileId}
-                  onSendMessageSuccess={handleSendMessageSuccess}
+          {canSendMessage &&
+          data?.data?.information?.havePhone &&
+          userProfileId ? (
+            <PingMessageModal
+              userProfileId={userProfileId}
+              onSendMessageSuccess={handleSendMessageSuccess}
+            >
+              <Tooltip title="Gửi tin nhắn" sx={{ cursor: 'pointer' }}>
+                <Button
+                  sx={{ width: '100%', justifyContent: 'left' }}
+                  startIcon={<SmsIcon />}
+                  variant="contained"
+                  color="warning"
                 >
-                  <Button
-                    sx={{ width: '100%', justifyContent: 'left' }}
-                    startIcon={<SmsIcon />}
-                    variant="contained"
-                    color="warning"
-                  >
-                    Gửi tin nhắn
-                  </Button>
-                </PingMessageModal>
-              ))}
+                  Gửi tin nhắn
+                </Button>
+              </Tooltip>
+            </PingMessageModal>
+          ) : !canSendMessage &&
+            data?.data?.information?.havePhone &&
+            userProfileId ? (
+            <Tooltip
+              title="Bạn đã gửi tin nhắn cho người này"
+              sx={{ cursor: 'pointer' }}
+            >
+              <Button
+                sx={{ width: '100%', justifyContent: 'left' }}
+                startIcon={<SmsIcon />}
+                variant="contained"
+                color="warning"
+                disabled={true}
+              >
+                Gửi tin nhắn
+              </Button>
+            </Tooltip>
+          ) : (
+            alreadySendMessage === -1 && (
+              <Tooltip
+                title="Gửi tin nhắn cho mỗi nguời tối đa 1 lần"
+                sx={{ cursor: 'pointer' }}
+              >
+                <Button
+                  sx={{ width: '100%', justifyContent: 'left' }}
+                  startIcon={<SmsIcon />}
+                  variant="contained"
+                  color="warning"
+                  disabled={true}
+                >
+                  Gửi tin nhắn
+                </Button>
+              </Tooltip>
+            )
+          )}
           {canEditProfile && userProfileId && (
             <ChangePasswordModal userProfileId={userProfileId}>
               <Button

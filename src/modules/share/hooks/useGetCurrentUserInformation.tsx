@@ -1,4 +1,4 @@
-import { currentUserInformationDataAtom, UserInformation } from '@share/states';
+import { Alumni, currentUserInformationDataAtom } from '@share/states';
 import { AxiosError } from 'axios';
 import { useSetRecoilState } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
@@ -8,7 +8,7 @@ type GetGetCurrentUserInformationParams = {
 };
 
 type GetGetCurrentUserInformationResponse = {
-  data: UserInformation;
+  data: Alumni;
 };
 
 type GetGetCurrentUserInformationError = AxiosError;

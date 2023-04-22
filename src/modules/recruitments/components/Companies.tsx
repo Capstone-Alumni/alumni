@@ -1,24 +1,11 @@
 'use client';
 
 import React from 'react';
-import {
-  Button,
-  Grid,
-  Pagination,
-  styled,
-  Typography,
-  useTheme,
-} from '@mui/material';
-import { useRecoilState } from 'recoil';
-import { getAdminJobListParamsAtom } from '../states';
+import { Button, Grid, Typography, useTheme } from '@mui/material';
 
 import Link from '@share/components/NextLinkV2';
 import CompanyItem from './CompanyItem';
 import { Job } from '../types';
-
-const Spacer = styled('div')(({ theme }) => ({
-  marginTop: `${theme.spacing(6)}`,
-}));
 
 const CompaniesSlider = ({
   data,
@@ -26,8 +13,6 @@ const CompaniesSlider = ({
   data: { items: Job[]; totalItems: number; itemPerPage: number };
 }) => {
   const theme = useTheme();
-
-  const [params, setParams] = useRecoilState(getAdminJobListParamsAtom);
 
   const handleRenderCompanies = () => {
     return data.items.map((company: Job) => {
@@ -62,30 +47,9 @@ const CompaniesSlider = ({
       }}
     >
       {data && data.items.length > 0 ? (
-        <>
-          <Typography variant="h5" sx={{ margin: '0' }}>
-            Việc làm
-          </Typography>
-          <Spacer />
-          <Grid container spacing={2}>
-            {handleRenderCompanies()}
-          </Grid>
-          <Pagination
-            sx={{
-              margin: '1rem auto',
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-            color="primary"
-            count={Math.ceil(
-              (data?.totalItems || 0) / (data?.itemPerPage || 1),
-            )}
-            page={params.page}
-            onChange={(_, nextPage) => {
-              setParams(prevParams => ({ ...prevParams, page: nextPage }));
-            }}
-          />
-        </>
+        <Grid container spacing={2}>
+          {handleRenderCompanies()}
+        </Grid>
       ) : (
         <Typography variant="h5" sx={{ margin: 'auto', mt: 2 }}>
           Chưa có việc làm nào

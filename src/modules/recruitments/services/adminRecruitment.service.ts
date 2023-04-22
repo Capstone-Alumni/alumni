@@ -10,6 +10,9 @@ export default class AdminRecruitmentService {
     const recruitment = await tenantPrisma.recruitment.findFirst({
       where: { id: recruitmentId },
     });
+
+    await tenantPrisma.$disconnect();
+
     return recruitment;
   };
 
@@ -48,6 +51,9 @@ export default class AdminRecruitmentService {
         },
       }),
     ]);
+
+    await tenantPrisma.$disconnect();
+
     return {
       totalItems: totalItem,
       items: recruitmentItem,
@@ -62,9 +68,12 @@ export default class AdminRecruitmentService {
     const recruitment = await tenantPrisma.recruitment.update({
       where: { id: recruitmentId },
       data: {
-        isApproved: true,
+        isPublic: true,
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return recruitment;
   };
 
@@ -72,9 +81,12 @@ export default class AdminRecruitmentService {
     const recruitment = await tenantPrisma.recruitment.update({
       where: { id: recruitmentId },
       data: {
-        isApproved: false,
+        isPublic: false,
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return recruitment;
   };
 }

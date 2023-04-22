@@ -31,10 +31,6 @@ const FundTransactionListTab = () => {
 
   const [params, setParams] = useRecoilState(getFundTransactionListParamsAtom);
   const { data, isLoading } = useGetFundTransactionList(fundId);
-  console.log(
-    '🚀 ~ file: FundTransactionList.tsx:34 ~ FundTransactionListTab ~ data:',
-    data,
-  );
 
   if (isLoading || !data?.data) {
     return <LoadingIndicator />;

@@ -32,10 +32,6 @@ export const renderEventStatus = (status: EventStatus) => {
 };
 
 const EventDetailPagePreview = ({ data }: { data: Event }) => {
-  console.log(
-    '🚀 ~ file: EventDetailPagePreview.tsx:35 ~ EventDetailPagePreview ~ data:',
-    data,
-  );
   const [tabKey, setTabKey] = useState('description');
   const theme = useTheme();
   const pathname = usePathname();
@@ -95,10 +91,7 @@ const EventDetailPagePreview = ({ data }: { data: Event }) => {
         />
 
         <Stack direction="column">
-          <Link
-            href={`/profile/${eventData.userId}?profile_tab=information`}
-            prefetch={false}
-          >
+          <Link href={`/profile/${eventData.userId}`} prefetch={false}>
             <Typography fontWeight={600}>
               {eventData.host.information?.fullName}
             </Typography>

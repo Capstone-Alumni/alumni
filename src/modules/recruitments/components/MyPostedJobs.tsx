@@ -55,7 +55,7 @@ const HostingEventListPage = () => {
                   key={item.id}
                   companyDetails={item}
                   actions={[
-                    item.isApproved ? (
+                    item.isPublic ? (
                       <Link
                         key="edit-btn"
                         href={`/recruitments/job_details/${item.id}`}

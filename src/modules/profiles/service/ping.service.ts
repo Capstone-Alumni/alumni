@@ -36,6 +36,9 @@ export default class PingService {
 
       return newPing;
     }
+
+    await tenantPrisma.$disconnect();
+
     return null;
   };
 }

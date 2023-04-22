@@ -114,12 +114,6 @@ const JobForm = ({
       type: initialData?.type,
       salary: initialData?.salary,
       yearsOfExperience: initialData?.yearsOfExperience,
-      startAt: initialData?.startTime
-        ? new Date(initialData.startTime)
-        : new Date(),
-      expiredAt: initialData?.expiredAt
-        ? new Date(initialData.expiredAt)
-        : null,
     },
   });
 
