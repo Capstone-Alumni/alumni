@@ -84,6 +84,7 @@ export default class InformationService {
     user: User,
     alumniId: string,
   ) => {
+    console.log('information service', user, alumniId);
     const requester = await tenantPrisma.alumni.findUnique({
       where: { id: user.id },
       include: {

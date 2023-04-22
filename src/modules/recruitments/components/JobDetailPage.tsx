@@ -28,7 +28,7 @@ import usePublicGetAppliedJobListById, {
 } from '../hooks/usePublicGetAppliedJobListById';
 import Image from 'next/image';
 import LoadingIndicator from '@share/components/LoadingIndicator';
-import EditorPreview from '@share/components/editor/EditorPreview';
+import { EditorPreview } from '@share/components/editor';
 import UploadFileInput from '@share/components/form/UploadFileInput';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
 import { useForm } from 'react-hook-form';

@@ -18,8 +18,9 @@ import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from '@share/components/NextLinkV2';
 import { Box } from '@mui/material';
-import { Alumni } from '@share/states';
+import { Alumni, currentUserInformationDataAtom } from '@share/states';
 import getRoleName from '@share/utils/getRoleName';
+import { useSetRecoilState } from 'recoil';
 
 const Wrapper = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -43,6 +44,8 @@ const HeaderUserOptions = ({
 }) => {
   const theme = useTheme();
   const router = useRouter();
+
+  const setUser = useSetRecoilState(currentUserInformationDataAtom);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -107,8 +110,8 @@ const HeaderUserOptions = ({
             <MenuItem
               onClick={async () => {
                 await signOut({ redirect: false });
-                await router.replace('/');
-                router.refresh();
+                setUser(null);
+                router.push('/');
               }}
             >
               <ListItemIcon>

@@ -25,7 +25,6 @@ export type VerifyFormValues = {
 export type SignUpFormPayload = {
   username: string;
   email: string;
-  password: string;
 };
 
 // BE
