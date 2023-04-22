@@ -437,10 +437,8 @@ model Recruitment {
   description            String?
   yearsOfExperience      String?
   type                   String?
-  startAt                DateTime?                @map("start_at")
-  expiredAt              DateTime?                @map("expired_at")
   salary                 String                   @default("negotiate")
-  isApproved             Boolean                  @default(false)
+  isPublic               Boolean                  @default(false)
   recruitmentOwnerId     String                   @map("recruitment_owner_id")
   recruitmentOwner       Alumni                   @relation(fields: [recruitmentOwnerId], references: [id])
   recruitmentApplication RecruitmentApplication[]
@@ -491,6 +489,20 @@ model Ping {
   pinger       Alumni? @relation("pinger", fields: [pingerId], references: [id])
 
   @@map("pings")
+}
+
+model Reports {
+  id        String   @id @default(cuid())
+  archived  Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  fullName  String   @map("full_name")
+  email     String
+  message   String
+  response  String?
+
+  @@map("reports")
 }
 
 enum ScopePublicity {

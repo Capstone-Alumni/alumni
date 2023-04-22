@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { sendMailService } from 'src/utils/emailSmsService';
 import { UpdateApplication } from '../type';
 
 export default class ApplicationService {
@@ -7,10 +8,18 @@ export default class ApplicationService {
     recruitmentId: string,
     userId: string,
     body: { resumeUrl: string },
+    host: string | undefined,
   ) => {
     const recruitment = await tenantPrisma.recruitment.findFirst({
       where: {
-        AND: [{ id: recruitmentId }, { archived: false }, { isApproved: true }],
+        AND: [{ id: recruitmentId }, { archived: false }, { isPublic: true }],
+      },
+      include: {
+        recruitmentOwner: {
+          include: {
+            information: true,
+          },
+        },
       },
     });
     if (!recruitment) {
@@ -44,6 +53,27 @@ export default class ApplicationService {
         },
       },
     });
+    if (recruitment.recruitmentOwner.information?.email) {
+      let setupLink = '';
+      if (process.env.NODE_ENV === 'production') {
+        setupLink = `https://${host}/recruitments/job_details/${recruitment.id}`;
+      } else {
+        setupLink = `http://${host}/recruitments/job_details/${recruitment.id}`;
+      }
+      await sendMailService({
+        to: recruitment.recruitmentOwner.information.email,
+        subject: `Vị trí cho công việc ${recruitment.title} vừa có người ứng tuyển`,
+        text: `
+            <p>Xin chào ${recruitment.recruitmentOwner.information.fullName},<p>
+            <br/>
+            <p>Vừa có người ứng tuyển vào công việc bạn đăng: <span style="font-weight: bold;">${recruitment.title}</span>. </p> <br/>
+            <p>Hãy click vào đường dẫn để trực tiếp tới trang chi tiết công việc để xem danh sách ứng viên</p>
+            <a href="${setupLink}">Link truy cập</a>
+        `,
+      });
+    }
+
+    await tenantPrisma.$disconnect();
 
     return apply;
   };
@@ -70,6 +100,9 @@ export default class ApplicationService {
         ...body,
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return updated;
   };
 
@@ -96,6 +129,9 @@ export default class ApplicationService {
         archived: true,
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return deleted;
   };
 
@@ -132,6 +168,8 @@ export default class ApplicationService {
         },
       }),
     ]);
+
+    await tenantPrisma.$disconnect();
 
     return {
       totalItems: totalItems,

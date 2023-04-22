@@ -44,6 +44,48 @@ export default class MemberController {
     }
   };
 
+  static createMany = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const prisma = await getPrismaClient(req.tenantId);
+      const { data: memberListData } = req.body;
+      const newMemberList = await MemberService.createMany(
+        prisma,
+        memberListData,
+      );
+
+      return res.status(201).json({
+        status: true,
+        data: newMemberList,
+      });
+    } catch (error) {
+      if (error.message?.includes('invalid')) {
+        return res.status(400).json({
+          status: false,
+          message: 'Invalid email',
+        });
+      }
+
+      if (error.message?.includes('tenant')) {
+        return res.status(400).json({
+          status: false,
+          message: 'Tenant is not exist',
+        });
+      }
+
+      if (error.message?.includes('member already existed')) {
+        return res.status(400).json({
+          status: false,
+          message: 'Member is already existed',
+        });
+      }
+
+      throw error;
+    }
+  };
+
   static getList = async (
     req: NextApiRequestWithTenant,
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,

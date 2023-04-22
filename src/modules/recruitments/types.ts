@@ -39,9 +39,7 @@ export type Job = {
   job: string;
   website: string;
   address: string;
-  startTime?: string | Date;
-  expiredAt?: string | Date;
-  isApproved: boolean;
+  isPublic: boolean;
   recruitmentOwner?: {
     id: string;
     information: UserInformation;
@@ -162,6 +160,7 @@ export type GetListRecruitmentParams = {
   position?: string;
   type?: string;
   salary?: string;
+  title?: string;
 };
 
 export type UpdateApplication = { resumeUrl?: string };

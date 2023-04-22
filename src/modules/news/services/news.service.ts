@@ -36,6 +36,8 @@ export default class NewsService {
       },
     });
 
+    await tenantPrisma.$disconnect();
+
     return newsCreated;
   };
 
@@ -91,6 +93,8 @@ export default class NewsService {
       },
     });
 
+    await tenantPrisma.$disconnect();
+
     return newsUpdated;
   };
 
@@ -102,6 +106,8 @@ export default class NewsService {
         archived: true,
       },
     });
+
+    await tenantPrisma.$disconnect();
 
     return newsUpdated;
   };
@@ -128,6 +134,9 @@ export default class NewsService {
         tagsNews: true,
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return news;
   };
 
@@ -175,6 +184,9 @@ export default class NewsService {
         ],
       }),
     ]);
+
+    await tenantPrisma.$disconnect();
+
     return {
       totalItems: totalNewsItem,
       items: newsItems,
@@ -227,6 +239,9 @@ export default class NewsService {
         ],
       }),
     ]);
+
+    await tenantPrisma.$disconnect();
+
     return {
       totalItems: totalNewsItem,
       items: newsItems,
@@ -257,6 +272,9 @@ export default class NewsService {
         tagsNews: true,
       },
     });
+
+    await tenantPrisma.$disconnect();
+
     return news;
   };
 
@@ -264,6 +282,9 @@ export default class NewsService {
     const tags = await tenantPrisma.tagsNews.findMany({
       where: { archived: false },
     });
+
+    await tenantPrisma.$disconnect();
+
     return tags;
   };
 }
