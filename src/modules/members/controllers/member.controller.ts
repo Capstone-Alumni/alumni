@@ -116,10 +116,6 @@ export default class MemberController {
       const { id: memberId } = req.query;
       const prisma = await getPrismaClient(req.tenantId);
       const { classId } = req.body;
-      console.log(
-        '🚀 ~ file: member.controller.ts:119 ~ MemberController ~ classId:',
-        classId,
-      );
       const alumniToClass = await MemberService.addAlumniToClass(prisma, {
         classId,
         memberId: memberId as string,

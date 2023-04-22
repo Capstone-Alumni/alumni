@@ -32,10 +32,6 @@ export const renderEventStatus = (status: EventStatus) => {
 };
 
 const EventDetailPagePreview = ({ data }: { data: Event }) => {
-  console.log(
-    '🚀 ~ file: EventDetailPagePreview.tsx:35 ~ EventDetailPagePreview ~ data:',
-    data,
-  );
   const [tabKey, setTabKey] = useState('description');
   const theme = useTheme();
   const pathname = usePathname();
