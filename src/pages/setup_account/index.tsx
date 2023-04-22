@@ -1,24 +1,34 @@
-import { redirect } from 'next/navigation';
 import SetupPassword from '../../modules/sessions/components/SetupPassword';
+import { GetServerSideProps } from 'next';
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: { token: string };
-}) {
+export default function Page() {
+  return <SetupPassword />;
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   try {
-    console.log(searchParams);
-    const { token } = searchParams;
+    const { token } = query;
     const url = `${process.env.NEXT_PUBLIC_PLATFORM_HOST}/api/precheck_token?token=${token}`;
-    console.log(url);
     const res = await fetch(url).then(res => res.json());
 
     if (res?.data !== 'verified') {
-      redirect('/');
+      return {
+        redirect: {
+          destination: '/',
+          permanent: true,
+        },
+      };
     }
   } catch {
-    redirect('/');
+    return {
+      redirect: {
+        destination: '/',
+        permanent: true,
+      },
+    };
   }
 
-  return <SetupPassword />;
-}
+  return {
+    props: {},
+  };
+};
