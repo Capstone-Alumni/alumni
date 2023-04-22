@@ -78,9 +78,10 @@ const MyApp = (props: CustomAppProps) => {
         >
           <Providers>
             <CssBaseline />
-            <SetCurrentTenant tenantData={tenantData} />
+            <SetCurrentTenant tenantData={tenantData}>
+              {getLayout(<Component {...pageProps} />)}
+            </SetCurrentTenant>
             <GetInitialUserInformation />
-            {getLayout(<Component {...pageProps} />)}
           </Providers>
         </CSRProvider>
       </CacheProvider>
