@@ -107,4 +107,32 @@ export default class MemberController {
       data: ref,
     });
   };
+
+  static addAlumniToClass = async (
+    req: NextApiRequestWithTenant,
+    res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
+  ) => {
+    try {
+      const { id: memberId } = req.query;
+      const prisma = await getPrismaClient(req.tenantId);
+      const { classId } = req.body;
+      console.log(
+        '🚀 ~ file: member.controller.ts:119 ~ MemberController ~ classId:',
+        classId,
+      );
+      const alumniToClass = await MemberService.addAlumniToClass(prisma, {
+        classId,
+        memberId: memberId as string,
+      });
+      return res.status(200).json({
+        status: true,
+        data: alumniToClass,
+      });
+    } catch (error: any) {
+      return res.status(400).json({
+        status: false,
+        message: error.message,
+      });
+    }
+  };
 }

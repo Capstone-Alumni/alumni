@@ -8,6 +8,7 @@ import {
   useTheme,
 } from '@mui/material';
 import Groups2Icon from '@mui/icons-material/Groups2';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { currentUserInformationDataAtom } from '@share/states';
 import { useRecoilValue } from 'recoil';
@@ -19,9 +20,13 @@ import { ClassModBadge } from '../ClassModBadge';
 import useDeleteAlumToClassById from 'src/modules/members/hooks/useDeleteAlumniToClass';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import { useState } from 'react';
+import AddGradesAndClasses from './AddGradesAndClasses';
+import useAddAlumniToClass from 'src/modules/members/hooks/useAddAlumToClass';
+import useGetCurrentUserInformation from '@share/hooks/useGetCurrentUserInformation';
 
 const CurrentGradeClassSection = () => {
   const theme = useTheme();
+  const [openAddClassesModal, setOpenAddClassesModal] = useState(false);
 
   const [openLeaveModelId, setOpenLeaveModelId] = useState('');
   const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
@@ -33,11 +38,22 @@ const CurrentGradeClassSection = () => {
   }>(({ alumClass }) => alumClass.gradeId)(
     currentUserInformation?.alumniToClass,
   );
-
+  const { fetchApi: fetchCurrentInformation } = useGetCurrentUserInformation();
   const { deleteAlumToClassById, isLoading: deleting } =
     useDeleteAlumToClassById();
 
-  // console.log(groupedClass);
+  const { addAlumniToClass, isLoading: isAddingClass } = useAddAlumniToClass();
+
+  const handleAddClass = async (values: any) => {
+    await addAlumniToClass({
+      classId: values.gradeClass[0].alumClass.id,
+      memberId: currentUserInformation?.id || '',
+    });
+    await fetchCurrentInformation({
+      id: currentUserInformation?.id || '',
+    });
+    setOpenAddClassesModal(false);
+  };
 
   return (
     <Card sx={{ width: '100%' }}>
@@ -58,6 +74,16 @@ const CurrentGradeClassSection = () => {
             }}
           />
           <Typography variant="h5">Niên khoá và lớp</Typography>
+          {canEditProfile ? (
+            <IconButton
+              sx={{
+                marginLeft: 'auto',
+              }}
+              onClick={() => setOpenAddClassesModal(true)}
+            >
+              <AddCircleIcon />
+            </IconButton>
+          ) : null}
         </Box>
 
         <Box sx={{ ml: 5 }}>
@@ -111,10 +137,13 @@ const CurrentGradeClassSection = () => {
                         </Typography>
                       }
                       onClose={() => setOpenLeaveModelId('')}
-                      onDelete={() => {
+                      onDelete={async () => {
                         deleteAlumToClassById({
                           memberId: currentUserInformation?.id || '',
                           alumToClassId: cl.id,
+                        });
+                        await fetchCurrentInformation({
+                          id: currentUserInformation?.id || '',
                         });
                       }}
                     />
@@ -124,6 +153,12 @@ const CurrentGradeClassSection = () => {
             );
           })}
         </Box>
+        <AddGradesAndClasses
+          openAddModal={openAddClassesModal}
+          setOpenAddModal={setOpenAddClassesModal}
+          onAddClass={handleAddClass}
+          isAdding={isAddingClass}
+        />
       </CardContent>
     </Card>
   );

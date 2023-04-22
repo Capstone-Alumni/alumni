@@ -125,10 +125,7 @@ const AdminFundDetailPage = ({ fundData }: { fundData: Fund }) => {
         />
 
         <Stack direction="column">
-          <Link
-            href={`/profile/${fundData.hostId}?profile_tab=information`}
-            prefetch={false}
-          >
+          <Link href={`/profile/${fundData.hostId}`} prefetch={false}>
             <Typography fontWeight={600}>
               {fundData.host?.information?.fullName}
             </Typography>

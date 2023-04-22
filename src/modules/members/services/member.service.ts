@@ -138,4 +138,30 @@ export default class MemberService {
 
     return member;
   };
+
+  static addAlumniToClass = async (
+    tenantPrisma: PrismaClient,
+    { classId, memberId }: { classId: string; memberId: string },
+  ) => {
+    const alumniToClass = await tenantPrisma.alumniToClass.create({
+      data: {
+        alumni: {
+          connect: {
+            id: memberId,
+          },
+        },
+        alumClass: {
+          connect: {
+            id: classId,
+          },
+        },
+      },
+    });
+    await tenantPrisma.$disconnect();
+
+    if (alumniToClass) {
+      return alumniToClass;
+    }
+    throw new Error('error when add class');
+  };
 }

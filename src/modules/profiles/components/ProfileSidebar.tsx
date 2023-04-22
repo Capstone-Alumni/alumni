@@ -9,7 +9,6 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import Link from '@share/components/NextLinkV2';
 import { useCanEditProfile } from '../helpers/canEditProfile';
 import { useCanSendMessage } from '../helpers/canSendMessage';
 import { usePathname, useSearchParams } from 'next/navigation';
@@ -71,7 +70,11 @@ const NAV_ITEMS = [
   },
 ];
 
-const ProfileSidebar = () => {
+const ProfileSidebar = ({
+  onChangeTab,
+}: {
+  onChangeTab: (tab: string) => void;
+}) => {
   const theme = useTheme();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -134,24 +137,21 @@ const ProfileSidebar = () => {
           {NAV_ITEMS.map(item => {
             const isActive = item.link && currentProfileTab === item.link;
             return (
-              <Link
+              <StyledNavItem
+                sx={{
+                  backgroundColor: isActive
+                    ? theme.palette.primary.lighter
+                    : undefined,
+                  color: isActive ? theme.palette.primary.main : undefined,
+                  cursor: 'pointer',
+                }}
+                onClick={() => onChangeTab(item.id)}
                 key={item.id}
-                href={pathname || ''}
-                style={{ color: 'inherit', width: '100%' }}
               >
-                <StyledNavItem
-                  sx={{
-                    backgroundColor: isActive
-                      ? theme.palette.primary.lighter
-                      : undefined,
-                    color: isActive ? theme.palette.primary.main : undefined,
-                  }}
-                >
-                  <Icon height={24} icon={item.icon} />
-                  <Typography fontWeight={600}>{item.title}</Typography>
-                  <Box sx={{ flex: 1 }} />
-                </StyledNavItem>
-              </Link>
+                <Icon height={24} icon={item.icon} />
+                <Typography fontWeight={600}>{item.title}</Typography>
+                <Box sx={{ flex: 1 }} />
+              </StyledNavItem>
             );
           })}
           {alreadySendMessage === -1 ||
