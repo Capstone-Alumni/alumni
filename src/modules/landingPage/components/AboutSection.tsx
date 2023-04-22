@@ -3,7 +3,7 @@
 import { CardMedia } from '@mui/material';
 import { Box, Card, Container, Typography, useTheme } from '@mui/material';
 import { Tenant } from '@share/states';
-import EditorPreview from '@share/components/editor/EditorPreview';
+import { EditorPreview } from '@share/components/editor';
 
 const AboutSection = ({ tenant }: { tenant: Tenant }) => {
   const theme = useTheme();

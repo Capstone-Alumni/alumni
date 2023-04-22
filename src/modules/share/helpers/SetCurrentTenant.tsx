@@ -2,7 +2,7 @@
 
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import { currentTenantDataAtom, Tenant } from '@share/states';
-import { ReactNode, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 const SetCurrentTenant = ({
@@ -10,7 +10,7 @@ const SetCurrentTenant = ({
   children,
 }: {
   tenantData: Tenant;
-  children: ReactNode;
+  children: JSX.Element;
 }) => {
   const [currentTenant, setCurrentTenantState] = useRecoilState(
     currentTenantDataAtom,
@@ -20,13 +20,11 @@ const SetCurrentTenant = ({
     setCurrentTenantState(tenantData);
   }, []);
 
-  console.log(currentTenant);
-
-  if (!currentTenant.id && currentTenant.id !== '') {
+  if (!currentTenant) {
     return <LoadingIndicator />;
   }
 
-  return <>{children}</>;
+  return children;
 };
 
 export default SetCurrentTenant;

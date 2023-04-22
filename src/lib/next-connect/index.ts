@@ -32,14 +32,16 @@ export const extractTenantIdFromSession = async (
   next: NextHandler,
 ) => {
   const session = await getServerSession(req, res, nextAuthOptions);
-  console.log(session);
+  console.log('middleware session', session);
   const tenantId = session?.currentTenant?.tenantId;
 
-  if (!tenantId) {
+  const headerTenantId = req.headers['tenant-id'] as string;
+
+  if (!tenantId && !headerTenantId) {
     throw new Error('unauthorized');
   }
 
-  req.tenantId = tenantId;
+  req.tenantId = tenantId || headerTenantId;
 
   next();
 };

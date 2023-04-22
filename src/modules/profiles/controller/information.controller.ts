@@ -28,6 +28,7 @@ export default class InformationController {
     req: NextApiRequestWithTenant,
     res: NextApiResponse,
   ) => {
+    console.log('controller user information', req.tenantId, req.query.id);
     const { id } = req.query;
     const prisma = await getPrismaClient(req.tenantId);
 

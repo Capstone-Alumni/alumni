@@ -42,10 +42,11 @@ export default async function RootLayout({
           tenantData={data}
           currentUserData={currentUserData}
         >
-          <GetInitialUserInformation user={currentUserData} />
+          <GetInitialUserInformation />
           <Providers>
-            <Header user={currentUserData} />
-            <SetCurrentTenant tenantData={data}>{children}</SetCurrentTenant>
+            <Header />
+            <SetCurrentTenant tenantData={data} />
+            {children}
           </Providers>
         </CSRProvider>
       </body>

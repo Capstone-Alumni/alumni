@@ -9,7 +9,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import Editor from '@share/components/editor';
+import { Editor } from '@share/components/editor';
 import { CreateNewsProps, News, TagsNews, UpdateNewsProps } from '../types';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
