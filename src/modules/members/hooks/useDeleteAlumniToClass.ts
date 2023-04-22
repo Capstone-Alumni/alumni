@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import useApi from 'src/modules/share/hooks/useApi';
 
 type DeleteAlumToClassByIdDataParams = {
@@ -14,10 +15,18 @@ const useDeleteAlumToClassById = () => {
     DeleteAlumToClassByIdDataParams,
     DeleteAlumToClassByIdDataResponse,
     DeleteAlumToClassByIdDataError
-  >('deleteAlumToClassById', ({ memberId, alumToClassId }) => ({
-    method: 'DELETE',
-    url: `/api/members/${memberId}/alum_to_class/${alumToClassId}`,
-  }));
+  >(
+    'deleteAlumToClassById',
+    ({ memberId, alumToClassId }) => ({
+      method: 'DELETE',
+      url: `/api/members/${memberId}/alum_to_class/${alumToClassId}`,
+    }),
+    {
+      onError: () => {
+        toast.error('Xảy ra lỗi');
+      },
+    },
+  );
 
   return {
     isLoading,

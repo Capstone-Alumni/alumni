@@ -18,6 +18,7 @@ import { getPublicEventParticipantListParamsAtom } from '../states';
 import MyAvatar from '@share/components/MyAvatar';
 import DataTablePagination from '@share/components/DataTablePagination';
 import { formatDate } from '@share/utils/formatDate';
+import Link from '@share/components/NextLinkV2';
 
 const EventParticipantListTab = ({ eventId }: { eventId: string }) => {
   const [params, setParams] = useRecoilState(
@@ -50,19 +51,28 @@ const EventParticipantListTab = ({ eventId }: { eventId: string }) => {
             {data.data.items.map(row => (
               <TableRow key={row.id}>
                 <TableCell align="left">
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      gap: 1,
-                      alignItems: 'center',
-                    }}
+                  <Link
+                    href={`/profile/${row.participant?.information?.alumniId}`}
+                    prefetch={false}
                   >
-                    <MyAvatar />
-                    <Typography>
-                      {row.participant?.information.fullName}
-                    </Typography>
-                  </Box>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: 1,
+                        alignItems: 'center',
+                      }}
+                    >
+                      <MyAvatar
+                        size="small"
+                        displayName={row.participant?.information.fullName}
+                        photoUrl={row.participant?.information.avatarUrl}
+                      />
+                      <Typography fontWeight={600}>
+                        {row.participant?.information.fullName}
+                      </Typography>
+                    </Box>
+                  </Link>
                 </TableCell>
                 <TableCell align="right">
                   {formatDate(new Date(row.createdAt))}

@@ -1,17 +1,15 @@
 import { Stack } from '@mui/material';
 import React from 'react';
-import CurrentGradeClassSection from './CurrentGradeClassSection';
 import { useCanEditProfile } from '../../helpers/canEditProfile';
-import RequestJoinClassSection from './RequestJoinClassSection';
 
 const ProfileGradeClassTab = () => {
   const { canEditProfile } = useCanEditProfile();
 
   return (
     <Stack direction="column" gap={4}>
-      <CurrentGradeClassSection />
+      {/* <CurrentGradeClassSection /> */}
 
-      {canEditProfile ? <RequestJoinClassSection /> : null}
+      {/* {canEditProfile ? <AddGradesAndClasses /> : null} */}
     </Stack>
   );
 };
