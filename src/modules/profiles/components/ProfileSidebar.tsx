@@ -135,7 +135,7 @@ const ProfileSidebar = ({
       </Card>
       <Card sx={{ width: '100%', py: 2 }}>
         <StyledNav>
-          {NAV_ITEMS.map(item => {
+          {NAV_ITEMS.map((item) => {
             const isActive = item.link && currentProfileTab === item.link;
             return (
               <StyledNavItem
@@ -155,9 +155,27 @@ const ProfileSidebar = ({
               </StyledNavItem>
             );
           })}
-          {canSendMessage &&
-          data?.data?.information?.havePhone &&
-          userProfileId ? (
+          {canSendMessage && !Boolean(data?.data?.information?.havePhone) ? (
+            <Tooltip
+              title="Người này chưa cập nhật thông tin liên lạc"
+              sx={{ cursor: 'pointer' }}
+            >
+              <span style={{ width: '100%' }}>
+                <Button
+                  sx={{ width: '100%', justifyContent: 'left' }}
+                  startIcon={<SmsIcon />}
+                  variant="contained"
+                  color="warning"
+                  disabled={true}
+                >
+                  Gửi tin nhắn
+                </Button>
+              </span>
+            </Tooltip>
+          ) : canSendMessage &&
+            data?.data?.information?.havePhone &&
+            userProfileId &&
+            alreadySendMessage === 0 ? (
             <PingMessageModal
               userProfileId={userProfileId}
               onSendMessageSuccess={handleSendMessageSuccess}
@@ -175,27 +193,13 @@ const ProfileSidebar = ({
             </PingMessageModal>
           ) : !canSendMessage &&
             data?.data?.information?.havePhone &&
-            userProfileId ? (
+            userProfileId &&
+            alreadySendMessage === 0 ? (
             <Tooltip
               title="Bạn đã gửi tin nhắn cho người này"
               sx={{ cursor: 'pointer' }}
             >
-              <Button
-                sx={{ width: '100%', justifyContent: 'left' }}
-                startIcon={<SmsIcon />}
-                variant="contained"
-                color="warning"
-                disabled={true}
-              >
-                Gửi tin nhắn
-              </Button>
-            </Tooltip>
-          ) : (
-            alreadySendMessage === -1 && (
-              <Tooltip
-                title="Gửi tin nhắn cho mỗi nguời tối đa 1 lần"
-                sx={{ cursor: 'pointer' }}
-              >
+              <span style={{ width: '100%' }}>
                 <Button
                   sx={{ width: '100%', justifyContent: 'left' }}
                   startIcon={<SmsIcon />}
@@ -205,6 +209,25 @@ const ProfileSidebar = ({
                 >
                   Gửi tin nhắn
                 </Button>
+              </span>
+            </Tooltip>
+          ) : (
+            alreadySendMessage === -1 && (
+              <Tooltip
+                title="Gửi tin nhắn cho mỗi nguời tối đa 1 lần"
+                sx={{ cursor: 'pointer' }}
+              >
+                <span style={{ width: '100%' }}>
+                  <Button
+                    sx={{ width: '100%', justifyContent: 'left' }}
+                    startIcon={<SmsIcon />}
+                    variant="contained"
+                    color="warning"
+                    disabled={true}
+                  >
+                    Gửi tin nhắn
+                  </Button>
+                </span>
               </Tooltip>
             )
           )}

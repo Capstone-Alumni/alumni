@@ -48,7 +48,7 @@ const HostingEventListPage = () => {
               mb: 2,
             }}
           >
-            {data?.data.items.map(item => (
+            {data?.data.items.map((item) => (
               <>
                 <CompanyItem
                   isPostedJobs
@@ -117,7 +117,7 @@ const HostingEventListPage = () => {
             count={Math.ceil(data?.data.totalItems / data?.data.itemPerPage)}
             page={params.page}
             onChange={(_, nextPage) => {
-              setParams(prevParams => ({ ...prevParams, page: nextPage }));
+              setParams((prevParams) => ({ ...prevParams, page: nextPage }));
             }}
           />
         </>
@@ -130,7 +130,7 @@ const HostingEventListPage = () => {
           }}
         >
           <Typography variant="h5" sx={{ margin: 'auto', mt: 2 }}>
-            Chưa có việc làm nào
+            Bạn chưa đăng bài tuyển dụng nào!
           </Typography>
         </Grid>
       )}
