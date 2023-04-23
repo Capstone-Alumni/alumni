@@ -23,13 +23,13 @@ export const useCanSendMessage = () => {
   let canSendMessage = false;
 
   if (currentUserInformation?.id) {
-    canSendMessage = currentUserInformation?.id !== userProfileId;
     if (currentUserInformation?.pingSent) {
       const array = currentUserInformation?.pingSent.filter(pingSent => {
         return pingSent.pingAlumniId === userProfileId;
       });
       canSendMessage = array.length === 0 && true;
     }
+    canSendMessage = currentUserInformation?.id !== userProfileId;
   }
 
   return {
