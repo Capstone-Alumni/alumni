@@ -174,6 +174,7 @@ const ProfileSidebar = ({
                 </span>
               </Tooltip>
             ) : canSendMessage &&
+              canEditProfile &&
               data?.data?.information?.havePhone &&
               userProfileId &&
               alreadySendMessage === 0 ? (
