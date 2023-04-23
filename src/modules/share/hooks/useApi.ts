@@ -118,7 +118,7 @@ const useApi = <Params, Data, Err>(
   // cache
   useEffect(
     () => () => {
-      if (retainOnUnmount) {
+      if (!retainOnUnmount) {
         reset();
       }
     },

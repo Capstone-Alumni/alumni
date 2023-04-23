@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getProfileListParamsAtom } from '../states';
 import { GetProfileListParams } from '../types';
@@ -21,6 +21,7 @@ type GetProfileListError = AxiosError;
 
 const useGetProfileList = () => {
   const params = useRecoilValue(getProfileListParamsAtom);
+  const resetParams = useResetRecoilState(getProfileListParamsAtom);
 
   const { fetchApi, data, isLoading } = useApi<
     GetProfileListParams,
@@ -31,6 +32,8 @@ const useGetProfileList = () => {
     url: '/api/users',
     params,
   }));
+
+  useEffect(() => resetParams, []);
 
   useEffect(() => {
     fetchApi(params);

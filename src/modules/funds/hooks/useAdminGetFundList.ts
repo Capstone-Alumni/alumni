@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getAdminFundListParamsAtom } from '../states';
 import { Fund, GetAdminFundListParams } from '../types';
@@ -22,6 +22,7 @@ type AdminGetFundListError = AxiosError;
 
 const useAdminGetFundList = () => {
   const params = useRecoilValue(getAdminFundListParamsAtom);
+  const resetParams = useResetRecoilState(getAdminFundListParamsAtom);
 
   const { fetchApi, data, isLoading } = useApi<
     AdminGetFundListParams,
@@ -32,6 +33,8 @@ const useAdminGetFundList = () => {
     url: '/api/funds/admin',
     params,
   }));
+
+  useEffect(() => resetParams, []);
 
   useEffect(() => {
     fetchApi(params);

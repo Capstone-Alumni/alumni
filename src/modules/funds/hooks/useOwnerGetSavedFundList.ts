@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getOwnerSavedFundListParamsAtom } from '../states';
 import { Fund, GetOwnerSavedFundListParams } from '../types';
@@ -20,6 +20,7 @@ type OwnerGetSavedFundListError = AxiosError;
 
 const useOwnerGetSavedFundList = () => {
   const params = useRecoilValue(getOwnerSavedFundListParamsAtom);
+  const resetParams = useResetRecoilState(getOwnerSavedFundListParamsAtom);
 
   const { fetchApi, data, isLoading } = useApi<
     OwnerGetSavedFundListParams,
@@ -30,6 +31,8 @@ const useOwnerGetSavedFundList = () => {
     url: '/api/funds/owner/saved',
     params,
   }));
+
+  useEffect(() => resetParams, []);
 
   useEffect(() => {
     fetchApi(params);

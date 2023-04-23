@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getUserGetAppliedJobListParamsAtom } from '../states';
 import { GetUserAppliedJobListParams, JobApplierInfo } from '../types';
@@ -20,6 +20,7 @@ type UserGetAppliedJobListError = AxiosError;
 
 const useUserGetAppliedJobList = () => {
   const params = useRecoilValue(getUserGetAppliedJobListParamsAtom);
+  const resetParams = useResetRecoilState(getUserGetAppliedJobListParamsAtom);
 
   const { fetchApi, data, isLoading } = useApi<
     UserGetAppliedJobListParams,
@@ -30,6 +31,8 @@ const useUserGetAppliedJobList = () => {
     url: '/api/recruitments/user',
     params,
   }));
+
+  useEffect(() => resetParams, []);
 
   useEffect(() => {
     fetchApi(params);

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getMemberListParamsAtom } from '../state';
 import { GetMemberListData, GetMemberListParams } from '../types';
@@ -15,6 +15,7 @@ type GetMemberListDataError = unknown;
 
 const useGetMemberList = () => {
   const params = useRecoilValue(getMemberListParamsAtom);
+  const resetParams = useResetRecoilState(getMemberListParamsAtom);
 
   const { fetchApi, data, isLoading } = useApi<
     GetMemberListDataParams,
@@ -35,6 +36,8 @@ const useGetMemberList = () => {
       revalidate: false,
     },
   );
+
+  useEffect(() => resetParams, []);
 
   useEffect(() => {
     fetchApi(params);

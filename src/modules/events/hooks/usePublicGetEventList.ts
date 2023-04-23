@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getPublicEventListParamsAtom } from '../states';
 import { Event, GetPublicEventListParams } from '../types';
@@ -20,6 +20,7 @@ type PublicGetEventListError = AxiosError;
 
 const usePublicGetEventList = () => {
   const params = useRecoilValue(getPublicEventListParamsAtom);
+  const resetParams = useResetRecoilState(getPublicEventListParamsAtom);
 
   const { fetchApi, data, isLoading } = useApi<
     PublicGetEventListParams,
@@ -30,6 +31,8 @@ const usePublicGetEventList = () => {
     url: '/api/events/public',
     params,
   }));
+
+  useEffect(() => resetParams, []);
 
   useEffect(() => {
     fetchApi(params);

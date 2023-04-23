@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getOwnerJobListParamsAtom } from '../states';
 import { GetOwnerJobListParams, Job } from '../types';
@@ -20,6 +20,7 @@ type OwnerGetJobListError = AxiosError;
 
 const useOwnerGetJobList = () => {
   const params = useRecoilValue(getOwnerJobListParamsAtom);
+  const resetParams = useResetRecoilState(getOwnerJobListParamsAtom);
 
   const { fetchApi, data, isLoading } = useApi<
     OwnerGetJobListParams,
@@ -30,6 +31,8 @@ const useOwnerGetJobList = () => {
     url: '/api/recruitments/owner',
     params,
   }));
+
+  useEffect(() => resetParams, []);
 
   useEffect(() => {
     fetchApi(params);

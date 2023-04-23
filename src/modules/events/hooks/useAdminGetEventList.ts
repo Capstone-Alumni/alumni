@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getAdminEventListParamsAtom } from '../states';
 import { Event, GetAdminEventListParams } from '../types';
@@ -22,6 +22,7 @@ type AdminGetEventListError = AxiosError;
 
 const useAdminGetEventList = () => {
   const params = useRecoilValue(getAdminEventListParamsAtom);
+  const resetParams = useResetRecoilState(getAdminEventListParamsAtom);
 
   const { fetchApi, data, isLoading } = useApi<
     AdminGetEventListParams,
@@ -32,6 +33,10 @@ const useAdminGetEventList = () => {
     url: '/api/events/admin',
     params,
   }));
+
+  useEffect(() => {
+    return resetParams;
+  });
 
   useEffect(() => {
     fetchApi(params);

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getClassListParamsAtom } from '../state';
 import { GetClassListData, GetClassListParams } from '../types';
@@ -15,6 +15,7 @@ type GetClassListDataError = unknown;
 
 const useGetClassList = (gradeId: string) => {
   const params = useRecoilValue(getClassListParamsAtom);
+  const resetParams = useResetRecoilState(getClassListParamsAtom);
 
   const { fetchApi, data, isLoading } = useApi<
     GetClassListDataParams,
@@ -36,6 +37,8 @@ const useGetClassList = (gradeId: string) => {
       revalidate: false,
     },
   );
+
+  useEffect(() => resetParams, []);
 
   useEffect(() => {
     fetchApi(params);

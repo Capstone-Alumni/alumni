@@ -2,7 +2,7 @@ import { getAccessRequestListParamsAtom } from '../states';
 import { useEffect } from 'react';
 import useApi from 'src/modules/share/hooks/useApi';
 import { AccessRequest, GetAccessRequestListParams } from '../types';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 
 type GetAccessRequestListResponse = {
   data: {
@@ -16,6 +16,7 @@ type GetAccessRequestListError = unknown;
 
 const useGetAccessRequestList = () => {
   const params = useRecoilValue(getAccessRequestListParamsAtom);
+  const resetParams = useResetRecoilState(getAccessRequestListParamsAtom);
 
   const { fetchApi, data, isLoading } = useApi<
     GetAccessRequestListParams,
@@ -30,6 +31,8 @@ const useGetAccessRequestList = () => {
       alumniId,
     },
   }));
+
+  useEffect(() => resetParams, []);
 
   useEffect(() => {
     fetchApi(params);

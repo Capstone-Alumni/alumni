@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getPublicFundListParamsAtom } from '../states';
 import { Fund, GetPublicFundListParams } from '../types';
@@ -20,6 +20,7 @@ type PublicGetFundListError = AxiosError;
 
 const usePublicGetFundList = () => {
   const params = useRecoilValue(getPublicFundListParamsAtom);
+  const resetParams = useResetRecoilState(getPublicFundListParamsAtom);
 
   const { fetchApi, data, isLoading } = useApi<
     PublicGetFundListParams,
@@ -30,6 +31,8 @@ const usePublicGetFundList = () => {
     url: '/api/funds/public',
     params,
   }));
+
+  useEffect(() => resetParams, []);
 
   useEffect(() => {
     fetchApi(params);

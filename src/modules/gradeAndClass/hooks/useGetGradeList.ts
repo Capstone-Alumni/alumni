@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import useEffectV2 from '@share/hooks/useEffectV2';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { getGradeListParamsAtom } from '../state';
 import { GetGradeListData, GetGradeListParams } from '../types';
@@ -16,6 +16,7 @@ type GetGradeListDataError = unknown;
 
 const useGetGradeList = () => {
   const params = useRecoilValue(getGradeListParamsAtom);
+  const resetParams = useResetRecoilState(getGradeListParamsAtom);
 
   const { fetchApi, data, isLoading } = useApi<
     GetGradeListDataParams,
@@ -32,6 +33,8 @@ const useGetGradeList = () => {
       alumniId,
     },
   }));
+
+  useEffect(() => resetParams, []);
 
   useEffect(() => {
     if (!data) {
