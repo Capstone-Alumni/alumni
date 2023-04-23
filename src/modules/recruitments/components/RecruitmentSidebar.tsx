@@ -97,8 +97,18 @@ const RecruitmentSidebar = () => {
           );
         })}
         {pathname !== '/recruitments/create' && (
-          <Link href="/recruitments/create" style={{ width: '100%' }}>
-            <Button variant="contained" fullWidth startIcon={<AddIcon />}>
+          <Link
+            href="/recruitments/create"
+            style={{ width: '100%' }}
+            passHref
+            legacyBehavior
+          >
+            <Button
+              variant="contained"
+              fullWidth
+              role="href"
+              startIcon={<AddIcon />}
+            >
               tạo công việc
             </Button>
           </Link>

@@ -13,8 +13,12 @@ const firebaseConfig = {
   measurementId: 'G-B29N66D9QM',
 };
 
-// init firebase
-firebase.initializeApp(firebaseConfig);
+try {
+  // init firebase
+  firebase.initializeApp(firebaseConfig);
+} catch (err) {
+  console.log(err);
+}
 
 // init services
 const projectFirestore = firebase.firestore();
