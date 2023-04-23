@@ -155,7 +155,7 @@ const ProfileSidebar = ({
               </StyledNavItem>
             );
           })}
-          {data?.data?.information ? (
+          {!canEditProfile && data?.data?.information ? (
             canSendMessage && !data?.data?.information?.havePhone ? (
               <Tooltip
                 title="Người này chưa cập nhật thông tin liên lạc"
