@@ -129,7 +129,7 @@ const HostingEventListPage = () => {
           }}
         >
           <Typography variant="h5" sx={{ margin: 'auto', mt: 2 }}>
-            Chưa có việc làm nào
+            Bạn chưa đăng bài tuyển dụng nào!
           </Typography>
         </Grid>
       )}

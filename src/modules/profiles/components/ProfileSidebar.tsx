@@ -155,59 +155,84 @@ const ProfileSidebar = ({
               </StyledNavItem>
             );
           })}
-          {canSendMessage &&
-          data?.data?.information?.havePhone &&
-          userProfileId ? (
-            <PingMessageModal
-              userProfileId={userProfileId}
-              onSendMessageSuccess={handleSendMessageSuccess}
-            >
-              <Tooltip title="Gửi tin nhắn" sx={{ cursor: 'pointer' }}>
-                <Button
-                  sx={{ width: '100%', justifyContent: 'left' }}
-                  startIcon={<SmsIcon />}
-                  variant="contained"
-                  color="warning"
-                >
-                  Gửi tin nhắn
-                </Button>
-              </Tooltip>
-            </PingMessageModal>
-          ) : !canSendMessage &&
-            data?.data?.information?.havePhone &&
-            userProfileId ? (
-            <Tooltip
-              title="Bạn đã gửi tin nhắn cho người này"
-              sx={{ cursor: 'pointer' }}
-            >
-              <Button
-                sx={{ width: '100%', justifyContent: 'left' }}
-                startIcon={<SmsIcon />}
-                variant="contained"
-                color="warning"
-                disabled={true}
-              >
-                Gửi tin nhắn
-              </Button>
-            </Tooltip>
-          ) : (
-            alreadySendMessage === -1 && (
+          {!canEditProfile && data?.data?.information ? (
+            canSendMessage && !data?.data?.information?.havePhone ? (
               <Tooltip
-                title="Gửi tin nhắn cho mỗi nguời tối đa 1 lần"
+                title="Người này chưa cập nhật thông tin liên lạc"
                 sx={{ cursor: 'pointer' }}
               >
-                <Button
-                  sx={{ width: '100%', justifyContent: 'left' }}
-                  startIcon={<SmsIcon />}
-                  variant="contained"
-                  color="warning"
-                  disabled={true}
-                >
-                  Gửi tin nhắn
-                </Button>
+                <span style={{ width: '100%' }}>
+                  <Button
+                    sx={{ width: '100%', justifyContent: 'left' }}
+                    startIcon={<SmsIcon />}
+                    variant="contained"
+                    color="warning"
+                    disabled={true}
+                  >
+                    Gửi tin nhắn
+                  </Button>
+                </span>
               </Tooltip>
+            ) : canSendMessage &&
+              data?.data?.information?.havePhone &&
+              userProfileId &&
+              alreadySendMessage === 0 ? (
+              <PingMessageModal
+                userProfileId={userProfileId}
+                onSendMessageSuccess={handleSendMessageSuccess}
+              >
+                <Tooltip title="Gửi tin nhắn" sx={{ cursor: 'pointer' }}>
+                  <Button
+                    sx={{ width: '100%', justifyContent: 'left' }}
+                    startIcon={<SmsIcon />}
+                    variant="contained"
+                    color="warning"
+                  >
+                    Gửi tin nhắn
+                  </Button>
+                </Tooltip>
+              </PingMessageModal>
+            ) : !canSendMessage &&
+              data?.data?.information?.havePhone &&
+              userProfileId &&
+              alreadySendMessage === 0 ? (
+              <Tooltip
+                title="Bạn đã gửi tin nhắn cho người này"
+                sx={{ cursor: 'pointer' }}
+              >
+                <span style={{ width: '100%' }}>
+                  <Button
+                    sx={{ width: '100%', justifyContent: 'left' }}
+                    startIcon={<SmsIcon />}
+                    variant="contained"
+                    color="warning"
+                    disabled={true}
+                  >
+                    Gửi tin nhắn
+                  </Button>
+                </span>
+              </Tooltip>
+            ) : (
+              alreadySendMessage === -1 && (
+                <Tooltip
+                  title="Gửi tin nhắn cho mỗi nguời tối đa 1 lần"
+                  sx={{ cursor: 'pointer' }}
+                >
+                  <span style={{ width: '100%' }}>
+                    <Button
+                      sx={{ width: '100%', justifyContent: 'left' }}
+                      startIcon={<SmsIcon />}
+                      variant="contained"
+                      color="warning"
+                      disabled={true}
+                    >
+                      Gửi tin nhắn
+                    </Button>
+                  </span>
+                </Tooltip>
+              )
             )
-          )}
+          ) : null}
           {canEditProfile && userProfileId && (
             <ChangePasswordModal userProfileId={userProfileId}>
               <Button

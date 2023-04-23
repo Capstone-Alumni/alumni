@@ -89,7 +89,7 @@ const AppliedJobListPage = () => {
           }}
         >
           <Typography variant="h5" sx={{ margin: 'auto', mt: 2 }}>
-            Chưa có việc làm nào
+            Bạn chưa ứng tuyển công việc nào!
           </Typography>
         </Grid>
       )}
