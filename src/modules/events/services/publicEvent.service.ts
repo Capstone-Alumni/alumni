@@ -22,18 +22,20 @@ export const buildEventWhereFilter = async (
     throw new Error('user not exist');
   }
 
-  const whereFilter: Prisma.EventWhereInput = {
-    OR: [
-      {
-        isPublicSchool: true,
-      },
-      {
-        gradeId: {
-          in: alumni.alumniToClass.map(cl => cl.alumClass.gradeId),
-        },
-      },
-    ],
-  };
+  const whereFilter: Prisma.EventWhereInput = alumni.isOwner
+    ? { archived: false }
+    : {
+        OR: [
+          {
+            isPublicSchool: true,
+          },
+          {
+            gradeId: {
+              in: alumni.alumniToClass.map(cl => cl.alumClass.gradeId),
+            },
+          },
+        ],
+      };
 
   return whereFilter;
 };

@@ -5,7 +5,7 @@ import { Icon } from '@iconify/react';
 import { Box, styled, Typography, useTheme } from '@mui/material';
 import Link from '@share/components/NextLinkV2';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import MyAvatar from '../MyAvatar';
 import { AdminSubNav, StyledNav, StyledNavItem } from './AdminSubNav';
 import { useRecoilValue } from 'recoil';
@@ -192,9 +192,21 @@ const AdminNav = () => {
   const [sectionSelected, setSectionSelected] = useState(defaultSection);
 
   const currentUser = useRecoilValue(currentUserInformationDataAtom);
+  const role = useMemo(() => {
+    if (currentUser?.isOwner) {
+      return 'SCHOOL_ADMIN';
+    }
+    if (currentUser?.gradeMod?.length) {
+      return 'GRADE_MOD';
+    }
+    if (currentUser?.alumniToClass?.find(al => al.isClassMod)) {
+      return 'CLASS_MOD';
+    }
+    return 'ALUMNI';
+  }, [currentUser]);
 
-  const schoolItems = generateSchoolNavItems('SCHOOL_ADMIN'); // fix
-  const navItems = generateNavItems('SCHOOL_ADMIN'); // fix
+  const schoolItems = generateSchoolNavItems(role); // fix
+  const navItems = generateNavItems(role); // fix
 
   if (!user) {
     return null;
