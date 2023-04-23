@@ -32,8 +32,8 @@ import useGetGradeList from 'src/modules/gradeAndClass/hooks/useGetGradeList';
 import { useSetRecoilState } from 'recoil';
 import { getGradeListParamsAtom } from 'src/modules/gradeAndClass/state';
 import { Icon } from '@iconify/react';
-import useGetClassListV2 from 'src/modules/gradeAndClass/hooks/useGetClassListV2';
 import { useSession } from 'next-auth/react';
+import { Class } from 'src/modules/gradeAndClass/types';
 
 export type MemberFormValues = {
   fullName: string;
@@ -181,7 +181,7 @@ const MemberForm = ({
           }}
         />
 
-        <GradeClassForm />
+        <GradeClassForm multiple={false} />
 
         <Box
           sx={{
@@ -227,13 +227,10 @@ export const GradeClassForm = ({
 
   const { data: session } = useSession();
 
-  const {
-    data: classList,
-    getClassList,
-    isLoading: isLoadingClasses,
-  } = useGetClassListV2();
   const { data: gradeList, isLoading: isLoadingGrade } = useGetGradeList();
   const setParams = useSetRecoilState(getGradeListParamsAtom);
+
+  const [classList, setClassList] = useState<Class[]>([]);
 
   useEffect(() => {
     setParams(() => {
@@ -303,7 +300,10 @@ export const GradeClassForm = ({
               isLoadingOptions={isLoadingGrade}
               valueChangeCallback={(grade: any) => {
                 console.log(grade);
-                getClassList({ gradeId: grade?.id, name: '' });
+                setClassList(
+                  gradeList.data.items.find(g => g.id === grade?.value)
+                    ?.alumClasses || [],
+                );
                 setValue(`gradeClass[${index}].alumClass`, []);
               }}
             />
@@ -321,10 +321,9 @@ export const GradeClassForm = ({
                   width: '100%',
                 },
               }}
-              isLoadingOptions={isLoadingClasses}
               options={
                 classList
-                  ? classList?.data.items.map(cl => ({
+                  ? classList?.map(cl => ({
                       id: cl.id,
                       label: cl.name,
                       value: cl.id,

@@ -1,4 +1,5 @@
 import {
+  CreateManyMemberServiceProps,
   CreateMemberServiceProps,
   GetMemberListServiceProps,
   UpdateMemberInfoByIdServiceProps,
@@ -17,9 +18,7 @@ export default class MemberService {
       ...memberData
     }: CreateMemberServiceProps,
   ) => {
-    const flattenClass = gradeClass.reduce((red: any[], { alumClass }) => {
-      return red.concat(alumClass.map(cl => cl.value));
-    }, []);
+    const alumClassId = gradeClass?.[0].alumClass?.id;
 
     if (!memberData.fullName || gradeClass?.length === 0) {
       throw new Error('invalid data');
@@ -33,7 +32,7 @@ export default class MemberService {
     });
 
     await tenantPrisma.alumniToClass.createMany({
-      data: flattenClass.map(c => ({ alumClassId: c, alumniId: member.id })),
+      data: [{ alumClassId: alumClassId, alumniId: member.id }],
     });
 
     await tenantPrisma.information.create({
@@ -50,7 +49,7 @@ export default class MemberService {
 
   static createMany = async (
     tenantPrisma: PrismaClient,
-    data: CreateMemberServiceProps[],
+    data: CreateManyMemberServiceProps,
   ) => {
     const alumniList = data.map(d => ({
       id: d.alumniId,
@@ -115,6 +114,7 @@ export default class MemberService {
     const whereFilter: Prisma.AlumniWhereInput = {
       information: {
         OR: [
+          { email: { contains: name } },
           { fullName: { contains: name } },
           { OR: [{ email: null }, { email: { contains: name } }] },
         ],

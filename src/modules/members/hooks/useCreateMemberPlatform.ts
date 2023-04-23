@@ -16,7 +16,7 @@ type CreateMemberPlatformResponse = {
   status: boolean;
 };
 
-type CreateMemberPlatformError = unknown;
+type CreateMemberPlatformError = any;
 
 const useCreateMemberPlatform = () => {
   const { createMemberTenant, isLoading: isCreatingMemberTenant } =
@@ -34,8 +34,12 @@ const useCreateMemberPlatform = () => {
       data,
     }),
     {
-      onError: () => {
-        toast.error('Xảy ra lỗi');
+      onError: ({ response }) => {
+        if (response?.data?.message?.includes('existed')) {
+          toast.error('Thành viên đã tồn tại');
+        } else {
+          toast.error('Xảy ra lỗi');
+        }
       },
     },
   );

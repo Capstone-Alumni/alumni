@@ -159,13 +159,41 @@ export default class GradeService {
       whereFilter.OR = [{ code: { contains: code } }, { archived: false }];
     }
 
+    const alumClassesWhereInclude: Prisma.AlumClassWhereInput = {
+      archived: false,
+    };
+
     if (alumniId) {
       const alumni = await tenantPrisma.alumni.findUnique({
         where: { id: alumniId },
-        include: { gradeMod: true },
+        include: {
+          gradeMod: true,
+          alumniToClass: {
+            where: { isClassMod: true },
+            include: { alumClass: true },
+          },
+        },
       });
       if (alumni && !alumni.isOwner) {
-        whereFilter.id = { in: alumni.gradeMod.map(({ gradeId }) => gradeId) };
+        whereFilter.id = {
+          in: alumni.gradeMod
+            .map(({ gradeId }) => gradeId)
+            .concat(
+              alumni.alumniToClass.map(alToCl => alToCl.alumClass.gradeId),
+            ),
+        };
+        alumClassesWhereInclude.OR = [
+          {
+            gradeId: {
+              in: alumni.gradeMod.map(({ gradeId }) => gradeId),
+            },
+          },
+          {
+            id: {
+              in: alumni.alumniToClass.map(alToCl => alToCl.alumClassId),
+            },
+          },
+        ];
       }
     }
 
@@ -181,16 +209,12 @@ export default class GradeService {
           _count: {
             select: {
               alumClasses: {
-                where: {
-                  archived: false,
-                },
+                where: alumClassesWhereInclude,
               },
             },
           },
           alumClasses: {
-            where: {
-              archived: false,
-            },
+            where: alumClassesWhereInclude,
           },
           gradeMod: {
             include: {

@@ -52,8 +52,8 @@ export type GetMemberListServiceProps = GetMemberListServiceParams;
 export type CreateMemberServiceProps = {
   fullName: string;
   gradeClass: Array<{
-    grade: Array<{ id: string; value: string; label: string }>;
-    alumClass: Array<{ id: string; value: string; label: string }>;
+    grade: { id: string; value: string; label: string };
+    alumClass: { id: string; value: string; label: string };
   }>;
   email?: string;
   phone?: string;
@@ -62,6 +62,19 @@ export type CreateMemberServiceProps = {
   tenantId: string;
   alumniId: string;
 };
+
+export type CreateManyMemberServiceProps = {
+  fullName: string;
+  gradeClass: Array<{
+    alumClass: Array<{ id: string; value: string; label: string }>;
+  }>;
+  email?: string;
+  phone?: string;
+  dateOfBirth?: Date;
+  facebook?: string;
+  tenantId: string;
+  alumniId: string;
+}[];
 
 export type UpdateMemberInfoByIdServiceProps = {
   password?: string;
