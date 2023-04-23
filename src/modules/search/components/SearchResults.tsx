@@ -70,7 +70,6 @@ const SeachPage = () => {
                 <Card sx={{ margin: '1rem 0' }} key={user.id}>
                   <LinkWrapper
                     href={user?.information?.email ? `/profile/${user.id}` : {}}
-                    prefetch={false}
                     passHref
                     style={{
                       color: 'inherit',

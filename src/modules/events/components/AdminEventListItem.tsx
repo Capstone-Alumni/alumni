@@ -123,7 +123,7 @@ const AdminEventListItem = ({
           <StyledBoxFlex>
             <Tooltip title="Chỉnh sửa sự kiện">
               <StyledIconWrapperMainShadow>
-                <Link prefetch={false} href={`/admin/action/event/${data.id}`}>
+                <Link href={`/admin/action/event/${data.id}`}>
                   <Box
                     display="flex"
                     alignItems="center"

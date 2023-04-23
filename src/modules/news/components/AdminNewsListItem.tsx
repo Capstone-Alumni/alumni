@@ -98,7 +98,7 @@ const AdminNewsListItem = ({
           <StyledBoxFlex>
             <Tooltip title="Chỉnh sửa tin">
               <StyledIconWrapperMainShadow>
-                <Link prefetch={false} href={`/admin/action/news/${data.id}`}>
+                <Link href={`/admin/action/news/${data.id}`}>
                   <Box
                     display="flex"
                     alignItems="center"

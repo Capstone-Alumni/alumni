@@ -79,7 +79,6 @@ const HostingEventListPage = () => {
                     <Link
                       key="edit-btn"
                       href={`/recruitments/posted_jobs/${item.id}`}
-                      prefetch={false}
                     >
                       <IconButton color="primary">
                         <EditIcon />

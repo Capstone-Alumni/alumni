@@ -144,7 +144,7 @@ const EventDetailPage = () => {
         />
 
         <Stack direction="column">
-          <Link href={`/profile/${eventData.host?.id}`} prefetch={false}>
+          <Link href={`/profile/${eventData.host?.id}`}>
             <Typography fontWeight={600}>
               {eventData.host?.information?.fullName}
             </Typography>

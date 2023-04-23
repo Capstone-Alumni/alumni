@@ -56,7 +56,6 @@ const FundCardItem = ({
               textDecoration: 'none',
               color: 'inherit',
             }}
-            prefetch={false}
           >
             <Typography noWrap variant="h6" sx={{ mb: 1 }}>
               {data.title}

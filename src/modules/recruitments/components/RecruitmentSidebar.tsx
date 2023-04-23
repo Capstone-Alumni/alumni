@@ -81,7 +81,6 @@ const RecruitmentSidebar = () => {
               key={item.id}
               href={item.link}
               style={{ color: 'inherit', width: '100%' }}
-              prefetch={false}
             >
               <StyledNavItem
                 sx={{

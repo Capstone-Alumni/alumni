@@ -68,7 +68,7 @@ const AdminNewsListPage = () => {
         }}
       >
         <Typography variant="h3">Danh sách tin tức</Typography>
-        <Link href="/admin/action/news/form" prefetch={false}>
+        <Link href="/admin/action/news/form">
           <Button role="href" variant="contained" startIcon={<AddIcon />}>
             Thêm tin
           </Button>

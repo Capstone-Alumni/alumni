@@ -53,10 +53,6 @@ const EventDetailPagePreview = ({ data }: { data: Event }) => {
       return 'running';
     }
 
-    if (!eventData.endTime && !eventData.isEnded) {
-      return 'running';
-    }
-
     return 'ended';
   }, [data]);
 
@@ -86,17 +82,17 @@ const EventDetailPagePreview = ({ data }: { data: Event }) => {
 
       <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 2 }}>
         <MyAvatar
-          displayName={eventData.host.information?.fullName}
-          photoUrl={eventData.host.information?.avatarUrl}
+          displayName={eventData?.host?.information?.fullName}
+          photoUrl={eventData?.host?.information?.avatarUrl}
         />
 
         <Stack direction="column">
-          <Link href={`/profile/${eventData.userId}`} prefetch={false}>
+          <Link href={`/profile/${eventData.userId}`}>
             <Typography fontWeight={600}>
-              {eventData.host.information?.fullName}
+              {eventData?.host?.information?.fullName}
             </Typography>
           </Link>
-          <Typography>{eventData.host.information?.email}</Typography>
+          <Typography>{eventData?.host?.information?.email}</Typography>
         </Stack>
       </Stack>
 

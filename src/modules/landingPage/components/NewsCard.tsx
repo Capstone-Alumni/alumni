@@ -38,7 +38,7 @@ const NewsCard = ({
         },
       }}
     >
-      <Link prefetch={false} href={`/news/${item.id}`}>
+      <Link href={`/news/${item.id}`}>
         <CardMedia
           title={item.title}
           component="div"

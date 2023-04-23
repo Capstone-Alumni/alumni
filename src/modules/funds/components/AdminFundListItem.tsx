@@ -111,7 +111,7 @@ const AdminFundListItem = ({
           <StyledBoxFlex>
             <Tooltip title="Chỉnh sửa quỹ">
               <StyledIconWrapperMainShadow>
-                <Link prefetch={false} href={`/admin/action/funds/${data.id}`}>
+                <Link href={`/admin/action/funds/${data.id}`}>
                   <Box
                     display="flex"
                     alignItems="center"

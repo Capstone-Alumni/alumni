@@ -79,7 +79,6 @@ const FundTransactionListTab = () => {
                   ) : (
                     <Link
                       href={`/profile/${row.alumni?.id}`}
-                      prefetch={false}
                       style={{ color: 'inherit' }}
                     >
                       <Box

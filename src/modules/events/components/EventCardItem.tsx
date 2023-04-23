@@ -83,7 +83,6 @@ const EventCardItem = ({
         <Link
           href={`/events/${data.id}`}
           style={{ textDecoration: 'none', color: 'inherit' }}
-          prefetch={false}
         >
           <CardMedia
             title="news image"

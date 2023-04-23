@@ -114,7 +114,6 @@ const Company = ({
           <Link
             href={`/recruitments/job_details/${companyDetails.id}`}
             style={{ textDecoration: 'none', color: 'inherit' }}
-            prefetch={false}
           >
             <CardMedia
               title="news image"

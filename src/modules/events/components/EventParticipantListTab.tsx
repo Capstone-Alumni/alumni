@@ -53,7 +53,6 @@ const EventParticipantListTab = ({ eventId }: { eventId: string }) => {
                 <TableCell align="left">
                   <Link
                     href={`/profile/${row.participant?.information?.alumniId}`}
-                    prefetch={false}
                   >
                     <Box
                       sx={{

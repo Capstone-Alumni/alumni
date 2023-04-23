@@ -103,7 +103,6 @@ const NewsSection = () => {
             <Link
               href="/news"
               style={{ textDecoration: 'none', textUnderlineOffset: 0 }}
-              prefetch={false}
             >
               <Button
                 variant="contained"
