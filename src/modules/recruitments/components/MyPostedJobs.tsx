@@ -48,7 +48,7 @@ const HostingEventListPage = () => {
               mb: 2,
             }}
           >
-            {data?.data.items.map((item) => (
+            {data?.data.items.map(item => (
               <>
                 <CompanyItem
                   isPostedJobs
@@ -117,7 +117,7 @@ const HostingEventListPage = () => {
             count={Math.ceil(data?.data.totalItems / data?.data.itemPerPage)}
             page={params.page}
             onChange={(_, nextPage) => {
-              setParams((prevParams) => ({ ...prevParams, page: nextPage }));
+              setParams(prevParams => ({ ...prevParams, page: nextPage }));
             }}
           />
         </>

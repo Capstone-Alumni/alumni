@@ -135,7 +135,7 @@ const ProfileSidebar = ({
       </Card>
       <Card sx={{ width: '100%', py: 2 }}>
         <StyledNav>
-          {NAV_ITEMS.map((item) => {
+          {NAV_ITEMS.map(item => {
             const isActive = item.link && currentProfileTab === item.link;
             return (
               <StyledNavItem
@@ -155,7 +155,7 @@ const ProfileSidebar = ({
               </StyledNavItem>
             );
           })}
-          {canSendMessage && !Boolean(data?.data?.information?.havePhone) ? (
+          {canSendMessage && !data?.data?.information?.havePhone ? (
             <Tooltip
               title="Người này chưa cập nhật thông tin liên lạc"
               sx={{ cursor: 'pointer' }}
