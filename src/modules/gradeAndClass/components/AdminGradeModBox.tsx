@@ -27,9 +27,11 @@ import LoadingIndicator from '@share/components/LoadingIndicator';
 const AdminGradeModBox = ({
   gradeId,
   onClose,
+  editable,
 }: {
   gradeId: string;
   onClose?: () => void;
+  editable?: boolean;
 }) => {
   const [removeId, setRemoveId] = useState('');
 
@@ -102,34 +104,36 @@ const AdminGradeModBox = ({
         </Typography>
       ) : null}
 
-      <Stack direction="row" gap={1} sx={{ mb: 2 }}>
-        <AutocompleteInput
-          control={control}
-          name="alumni"
-          textProps={{
-            label: 'Cựu học sinh',
-            size: 'small',
-          }}
-          inputProps={{
-            sx: {
-              width: '100%',
-            },
-          }}
-          options={options}
-          getOptions={name => {
-            getMemberListForRole({ name: name, excludeGradeId: gradeId });
-          }}
-          isLoadingOptions={isLoading}
-        />
+      {editable ? (
+        <Stack direction="row" gap={1} sx={{ mb: 2 }}>
+          <AutocompleteInput
+            control={control}
+            name="alumni"
+            textProps={{
+              label: 'Cựu học sinh',
+              size: 'small',
+            }}
+            inputProps={{
+              sx: {
+                width: '100%',
+              },
+            }}
+            options={options}
+            getOptions={name => {
+              getMemberListForRole({ name: name, excludeGradeId: gradeId });
+            }}
+            isLoadingOptions={isLoading}
+          />
 
-        <Button
-          disabled={adding}
-          variant="contained"
-          onClick={handleSubmit(onAddGradeMod)}
-        >
-          Thêm
-        </Button>
-      </Stack>
+          <Button
+            disabled={adding}
+            variant="contained"
+            onClick={handleSubmit(onAddGradeMod)}
+          >
+            Thêm
+          </Button>
+        </Stack>
+      ) : null}
 
       {getting || !gradeData?.data ? (
         <LoadingIndicator />
@@ -140,7 +144,7 @@ const AdminGradeModBox = ({
               <TableRow>
                 <TableCell align="left">Họ tên</TableCell>
                 <TableCell align="left">Email</TableCell>
-                <TableCell align="center">Xoá</TableCell>
+                {editable ? <TableCell align="center">Xoá</TableCell> : null}
               </TableRow>
             </TableHead>
 
@@ -149,14 +153,16 @@ const AdminGradeModBox = ({
                 <TableRow key={item.id}>
                   <TableCell>{item.alumni.information.fullName}</TableCell>
                   <TableCell>{item.alumni.information?.email}</TableCell>
-                  <TableCell align="center">
-                    <IconButton
-                      disabled={removeId === item.alumni.id}
-                      onClick={() => onDeleteGradeMod(item.alumni.id)}
-                    >
-                      <DeleteIcon color="error" />
-                    </IconButton>
-                  </TableCell>
+                  {editable ? (
+                    <TableCell align="center">
+                      <IconButton
+                        disabled={removeId === item.alumni.id}
+                        onClick={() => onDeleteGradeMod(item.alumni.id)}
+                      >
+                        <DeleteIcon color="error" />
+                      </IconButton>
+                    </TableCell>
+                  ) : null}
                 </TableRow>
               ))}
             </TableBody>

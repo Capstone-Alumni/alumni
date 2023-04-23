@@ -3,25 +3,25 @@
 import { Box, Button, Typography, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import AdminGradeListTable from './AdminGradeListTable';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import GradeForm from './GradeForm';
 
 import useCreateGrade, { CreateGradeParams } from '../hooks/useCreateGrade';
-import useGetGradeList from '../hooks/useGetGradeList';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import useDeleteGradeById from '../hooks/useDeleteGradeById';
 import useUpdateGradeById from '../hooks/useUpdateGradeById';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { getGradeListParamsAtom } from '../state';
 import AdminClassListPanel from './AdminClassListPanel';
-import { useSession } from 'next-auth/react';
+import useGetAdminGradeList from '../hooks/useGetAdminGradeList';
+import { currentUserInformationDataAtom } from '@share/states';
 
 const AdminGradeListPage = () => {
   const theme = useTheme();
   const [openForm, setOpenForm] = useState(false);
 
-  const { data: session } = useSession();
   const [params, setParams] = useRecoilState(getGradeListParamsAtom);
+  const currentUser = useRecoilValue(currentUserInformationDataAtom);
 
   const { createGrade } = useCreateGrade();
   const { deleteGradeById } = useDeleteGradeById();
@@ -30,7 +30,7 @@ const AdminGradeListPage = () => {
     reload,
     data: gradeListData,
     isLoading: isGettingGrade,
-  } = useGetGradeList();
+  } = useGetAdminGradeList(currentUser?.id || '');
 
   const onAddGrade = async (values: CreateGradeParams) => {
     await createGrade(values);
@@ -49,10 +49,6 @@ const AdminGradeListPage = () => {
     await updateGradeById({ gradeId, code, startYear, endYear });
     reload();
   };
-
-  useEffect(() => {
-    setParams(prev => ({ ...prev, alumniId: session?.user?.id }));
-  }, [session?.user]);
 
   return (
     <Box

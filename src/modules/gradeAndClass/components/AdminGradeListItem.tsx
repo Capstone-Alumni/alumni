@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import { formatDate } from '@share/utils/formatDate';
 import Link from '@share/components/NextLinkV2';
@@ -21,6 +22,8 @@ import { CreateGradeParams } from '../hooks/useCreateGrade';
 import useCloneGrade from '../hooks/useCloneGrade';
 import useGetGradeList from '../hooks/useGetGradeList';
 import AdminGradeModBox from './AdminGradeModBox';
+import { useRecoilValue } from 'recoil';
+import { currentUserInformationDataAtom } from '@share/states';
 
 const AdminGradeListItem = ({
   data,
@@ -36,6 +39,7 @@ const AdminGradeListItem = ({
   const [openRoleModal, setOpenRoleModal] = useState(false);
   const { reload } = useGetGradeList();
   const { cloneGrade } = useCloneGrade();
+  const currentUser = useRecoilValue(currentUserInformationDataAtom);
 
   const cloneHandler = async (id: string) => {
     await cloneGrade({ gradeId: id });
@@ -70,25 +74,37 @@ const AdminGradeListItem = ({
             </Link>
           </IconButton>
         </TableCell>
-        <TableCell align="center">
-          {data.gradeMod.length ? (
+        {currentUser?.isOwner ? (
+          <TableCell align="center">
+            {data.gradeMod.length ? (
+              <Button
+                variant="outlined"
+                startIcon={<EditIcon />}
+                onClick={() => setOpenRoleModal(true)}
+              >
+                Sửa
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={() => setOpenRoleModal(true)}
+              >
+                Thêm
+              </Button>
+            )}
+          </TableCell>
+        ) : (
+          <TableCell align="center">
             <Button
               variant="outlined"
-              startIcon={<EditIcon />}
+              startIcon={<RemoveRedEyeIcon />}
               onClick={() => setOpenRoleModal(true)}
             >
-              Sửa
+              Xem
             </Button>
-          ) : (
-            <Button
-              variant="contained"
-              startIcon={<AddIcon />}
-              onClick={() => setOpenRoleModal(true)}
-            >
-              Thêm
-            </Button>
-          )}
-        </TableCell>
+          </TableCell>
+        )}
         <TableCell align="center" sx={{ maxWidth: '3rem' }}>
           <ActionButton
             actions={[
@@ -140,6 +156,7 @@ const AdminGradeListItem = ({
           }}
         >
           <AdminGradeModBox
+            editable={currentUser?.isOwner}
             gradeId={data.id}
             onClose={() => {
               setOpenRoleModal(false);

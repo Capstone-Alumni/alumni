@@ -87,7 +87,7 @@ const AdminClassListTable = ({
           </TableBody>
 
           <DataTablePagination
-            colSpan={4}
+            colSpan={5}
             currentPage={page}
             totalPage={Math.ceil(data.totalItems / data.itemPerPage)}
             onChangePage={onChangePage}

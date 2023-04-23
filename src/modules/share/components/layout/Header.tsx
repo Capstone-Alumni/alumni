@@ -70,6 +70,19 @@ const Header = () => {
     [pathname],
   );
 
+  const defaultAdminDashboard = useMemo(() => {
+    if (user?.isOwner) {
+      return '/admin/config/school';
+    }
+    if (user?.gradeMod?.length) {
+      return '/admin/config/grade';
+    }
+    if (user?.alumniToClass?.find(al => al.isClassMod)) {
+      return '/admin/config/members';
+    }
+    return null;
+  }, [user]);
+
   return hidden ? null : (
     <Box sx={{ flexGrow: 1 }}>
       <ElevationScroll
@@ -123,9 +136,9 @@ const Header = () => {
 
             <Box sx={{ flex: 1 }} />
 
-            {user && (user.isOwner || user?.gradeMod?.length) ? (
+            {user && defaultAdminDashboard ? (
               <Link
-                href="/admin/config/access_request"
+                href={defaultAdminDashboard}
                 style={{ color: 'inherit', marginRight: theme.spacing(2) }}
               >
                 <Button

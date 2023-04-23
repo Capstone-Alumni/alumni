@@ -54,6 +54,13 @@ export type GetGradeListParams = {
   isAdminMode?: boolean;
 };
 
+export type GetAdminGradeListParams = {
+  page?: number;
+  limit?: number;
+  code?: string;
+  name?: string;
+};
+
 export type GetClassListData = {
   items: Class[];
   totalItems: number;
