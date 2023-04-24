@@ -207,29 +207,31 @@ const Company = ({
               </BoxLayerCardMedia>
             </CardMedia>
             <StyledCardContent>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                sx={{ mb: 0.5 }}
-              >
-                <Typography variant="body2" color="#919eab">
-                  {companyDetails?.createdAt &&
-                    formatDistanceToNow(new Date(companyDetails.createdAt))}
-                </Typography>
-                <Stack direction="row" alignItems="center" gap="0.25rem">
-                  <FiberManualRecordIcon
-                    fontSize="small"
-                    color={companyDetails.isPublic ? 'success' : 'error'}
-                  />
-                  <Typography
-                    variant="body2"
-                    color={companyDetails.isPublic ? '#919eab' : 'error'}
-                  >
-                    {companyDetails.isPublic ? 'ĐÃ ĐĂNG' : 'ADMIN ĐÃ TẮT'}
+              {isPostedJobs && (
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  sx={{ mb: 0.5 }}
+                >
+                  <Typography variant="body2" color="#919eab">
+                    {companyDetails?.createdAt &&
+                      formatDistanceToNow(new Date(companyDetails.createdAt))}
                   </Typography>
+                  <Stack direction="row" alignItems="center" gap="0.25rem">
+                    <FiberManualRecordIcon
+                      fontSize="small"
+                      color={companyDetails.isPublic ? 'success' : 'error'}
+                    />
+                    <Typography
+                      variant="body2"
+                      color={companyDetails.isPublic ? '#919eab' : 'error'}
+                    >
+                      {companyDetails.isPublic ? 'ĐÃ ĐĂNG' : 'ADMIN ĐÃ TẮT'}
+                    </Typography>
+                  </Stack>
                 </Stack>
-              </Stack>
+              )}
               <StyledDiv>
                 <StyledTypography variant="h6">
                   {companyDetails.title}
