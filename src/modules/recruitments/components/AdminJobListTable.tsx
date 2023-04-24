@@ -40,7 +40,7 @@ const AdminEventListTable = ({
           </TableHead>
           <TableBody>
             {data.items.map(
-              (row) =>
+              row =>
                 !row.archived && (
                   <AdminEventListItem
                     key={row.id}
