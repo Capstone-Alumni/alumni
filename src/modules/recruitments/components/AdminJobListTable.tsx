@@ -22,7 +22,6 @@ const AdminEventListTable = ({
   page: number;
   onChangePage: (nextPage: number) => void;
 }) => {
-  console.log(data);
   return (
     <>
       <TableContainer component={Paper}>
@@ -41,7 +40,7 @@ const AdminEventListTable = ({
           </TableHead>
           <TableBody>
             {data.items.map(
-              row =>
+              (row) =>
                 !row.archived && (
                   <AdminEventListItem
                     key={row.id}

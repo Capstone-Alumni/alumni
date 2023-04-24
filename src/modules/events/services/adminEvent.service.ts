@@ -48,7 +48,7 @@ export const buildEventWhereFilter = async (
       },
       {
         gradeId: {
-          in: alumni.gradeMod.map(gr => gr.gradeId),
+          in: alumni.gradeMod.map((gr) => gr.gradeId),
         },
       },
     ],
@@ -102,6 +102,7 @@ export default class AdminEventService {
             },
           },
           grade: true,
+          eventParticipants: true,
         },
       }),
     ]);
