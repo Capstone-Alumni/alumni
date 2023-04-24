@@ -18,12 +18,12 @@ export default class GradeService {
         },
       },
       create: {
-        code: code,
+        code: code?.length ? code : undefined,
         startYear: parseInt(startYear, 10),
         endYear: parseInt(endYear, 10),
       },
       update: {
-        code: code,
+        code: code?.length ? code : undefined,
         archived: false,
       },
     });

@@ -50,6 +50,8 @@ const AdminGradeListPage = () => {
     reload();
   };
 
+  console.log(gradeListData?.data);
+
   return (
     <Box
       sx={{
@@ -92,7 +94,7 @@ const AdminGradeListPage = () => {
           width: '100%',
         }}
       >
-        {isGettingGrade && !gradeListData?.data ? <LoadingIndicator /> : null}
+        {isGettingGrade ? <LoadingIndicator /> : null}
 
         {gradeListData?.data ? (
           <AdminGradeListTable

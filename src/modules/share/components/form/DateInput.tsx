@@ -22,9 +22,9 @@ const DateInput = ({
       name={name}
       render={({ field }) => (
         <DatePicker
+          inputFormat="dd/MM/yyyy"
           {...field}
           {...inputProps}
-          inputFormat="dd/MM/yyyy"
           renderInput={params => (
             <TextField
               {...params}
