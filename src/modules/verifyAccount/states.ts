@@ -16,6 +16,6 @@ export const getAccessRequestListParamsAtom = atom<GetAccessRequestListParams>({
   key: 'getAccessRequestParams',
   default: {
     page: 1,
-    limit: 99,
+    limit: 20,
   },
 });
