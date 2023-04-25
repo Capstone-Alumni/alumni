@@ -193,7 +193,16 @@ export default class InformationService {
           take: limit,
           where: whereFilter,
           include: {
-            information: true,
+            information: {
+              select: {
+                alumniId: true,
+                fullName: true,
+                bio: true,
+                email: true,
+                id: true,
+                avatarUrl: true,
+              },
+            },
             alumniToClass: {
               include: {
                 alumClass: {
