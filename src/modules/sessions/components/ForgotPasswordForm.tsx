@@ -4,30 +4,31 @@ import { Controller, useForm } from 'react-hook-form';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import Link from '@share/components/NextLinkV2';
 
-import useSignIn from '../hooks/useSignIn';
+import useForgotPassword from '../hooks/useForgotPassword';
 import { useState } from 'react';
+import { currentTenantDataAtom } from '@share/states';
+import { useRecoilValue } from 'recoil';
 
-export type SignInFormValues = {
+export type ForgotPasswordFormValues = {
   email: string;
-  password: string;
 };
 
-const SignInForm = () => {
-  const { signIn } = useSignIn();
-  const [signing, setSigning] = useState(false);
+const ForgotPasswordForm = () => {
+  const { id: tenantId } = useRecoilValue(currentTenantDataAtom);
+
+  const { forgotPassword } = useForgotPassword();
+  const [submit, setSubmit] = useState(false);
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
       email: '',
-      password: '',
-      remember: false,
     },
   });
 
-  const onSubmit = async (values: SignInFormValues) => {
-    setSigning(true);
-    await signIn('credentials', values);
-    setSigning(false);
+  const onSubmit = async (values: ForgotPasswordFormValues) => {
+    setSubmit(true);
+    await forgotPassword({ ...values, tenantId });
+    setSubmit(false);
   };
 
   return (
@@ -42,34 +43,26 @@ const SignInForm = () => {
       >
         <Box
           sx={{
-            margin: '2rem 10vw',
+            padding: '2rem 10vw',
+            width: '100%',
           }}
         >
           <Typography mb={2} variant="h4">
-            Đăng nhập
+            Quên mật khẩu
           </Typography>
 
           <Controller
             control={control}
             name="email"
             render={({ field }) => (
-              <TextField fullWidth label="Email" {...field} sx={{ mb: 3 }} />
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="password"
-            render={({ field }) => (
               <TextField
                 fullWidth
-                type="password"
-                label="Mật khẩu"
+                sx={{ width: '100%' }}
+                label="Vui lòng nhập địa chỉ email"
                 {...field}
               />
             )}
           />
-
           <Box
             sx={{
               display: 'flex',
@@ -78,22 +71,12 @@ const SignInForm = () => {
               my: 1,
             }}
           >
-            {/* <Controller
-              control={control}
-              name="remember"
-              render={({ field }) => (
-                <FormControlLabel
-                  control={<Checkbox {...field} />}
-                  label="Ghi nhớ tài khoản"
-                />
-              )}
-            /> */}
             <Box mt={2} sx={{ display: 'flex' }}>
               <Typography sx={{ mr: 1 }} variant="body2">
-                Quên mật khẩu?
+                Có tài khoản?
               </Typography>
-              <Link href="/forgot_password">
-                <Typography variant="subtitle2">Ấn vào đây</Typography>
+              <Link href="/sign_in">
+                <Typography variant="subtitle2">Đăng nhập tại đây</Typography>
               </Link>
             </Box>
           </Box>
@@ -102,10 +85,10 @@ const SignInForm = () => {
             fullWidth
             size="large"
             variant="contained"
-            disabled={signing}
+            disabled={submit}
             onClick={handleSubmit(onSubmit)}
           >
-            Đăng nhập
+            Xác nhận
           </Button>
         </Box>
       </Box>
@@ -113,4 +96,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default ForgotPasswordForm;

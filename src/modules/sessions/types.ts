@@ -27,6 +27,10 @@ export type SignUpFormPayload = {
   email: string;
 };
 
+export type ForgotPasswordFormPayload = {
+  email: string;
+};
+
 // BE
 export type SignUpRequestBody = SignUpFormValues;
 

@@ -3,12 +3,12 @@
 import * as yup from 'yup';
 
 import { Controller, FormProvider, useForm } from 'react-hook-form';
+import Link from '@share/components/NextLinkV2';
 
 import {
   Box,
   Button,
   Divider,
-  Link,
   Stack,
   TextField,
   Typography,
@@ -173,8 +173,8 @@ const SignUpForm = () => {
             <Typography sx={{ mr: 1 }} variant="body2">
               Đã có tài khoản?
             </Typography>
-            <Link variant="subtitle2" href="/sign_in">
-              Đăng nhập tại đây
+            <Link href="/sign_in">
+              <Typography variant="subtitle2">Đăng nhập tại đây</Typography>
             </Link>
           </Box>
         </Box>
