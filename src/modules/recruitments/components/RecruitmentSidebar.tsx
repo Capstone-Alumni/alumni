@@ -55,7 +55,7 @@ const EVENT_NAV_ITEMS = [
   },
   {
     id: 'hosting',
-    title: 'Công ty đã nộp',
+    title: 'Công việc đã nộp',
     icon: 'material-symbols:person-pin',
     link: '/recruitments/applied',
   },
@@ -74,7 +74,7 @@ const RecruitmentSidebar = () => {
   return (
     <StyledNavWrapper>
       <StyledNav>
-        {EVENT_NAV_ITEMS.map(item => {
+        {EVENT_NAV_ITEMS.map((item) => {
           const isActive = item.link && pathname?.startsWith(item.link);
           return (
             <Link

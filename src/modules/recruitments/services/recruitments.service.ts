@@ -78,6 +78,7 @@ export default class RecruimentService {
   static getAprovedList = async (
     tenantPrisma: PrismaClient,
     params: GetListRecruitmentParams,
+    userId: string,
   ) => {
     const { page, limit } = getPageAndLimitFromParams(params);
     const { companyName, job, position, salary, type, title } = params;
@@ -97,12 +98,26 @@ export default class RecruimentService {
 
     const [totalItem, recruitmentItem] = await tenantPrisma.$transaction([
       tenantPrisma.recruitment.count({
-        where: whereFilter,
+        where: {
+          ...whereFilter,
+          recruitmentApplication: {
+            none: {
+              applicationOwnerId: userId,
+            },
+          },
+        },
       }),
       tenantPrisma.recruitment.findMany({
         skip: (page - 1) * limit,
         take: limit,
-        where: whereFilter,
+        where: {
+          ...whereFilter,
+          recruitmentApplication: {
+            none: {
+              applicationOwnerId: userId,
+            },
+          },
+        },
         include: {
           recruitmentOwner: {
             include: {
@@ -130,6 +145,13 @@ export default class RecruimentService {
     await isRecruitmentExisted(tenantPrisma, recruitmentId);
     const recruitment = await tenantPrisma.recruitment.findFirst({
       where: { id: recruitmentId, isPublic: true, archived: false },
+      include: {
+        recruitmentOwner: {
+          include: {
+            information: true,
+          },
+        },
+      },
     });
 
     await tenantPrisma.$disconnect();
