@@ -22,12 +22,14 @@ const AdminGradeListTable = ({
   data,
   onEdit,
   onDelete,
+  reload,
   page,
   onChangePage,
 }: {
   data: GetGradeListData;
   onEdit: (id: string, data: CreateGradeParams) => void;
   onDelete: (id: string) => void;
+  reload: () => void;
   page: number;
   onChangePage: (nextPage: number) => void;
 }) => {
@@ -88,6 +90,7 @@ const AdminGradeListTable = ({
                 data={row}
                 onDelete={onDelete}
                 onEdit={onEdit}
+                reload={reload}
               />
             ))}
           </TableBody>

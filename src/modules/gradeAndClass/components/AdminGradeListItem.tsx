@@ -20,7 +20,6 @@ import GradeForm from './GradeForm';
 import ActionButton from '@share/components/ActionButton';
 import { CreateGradeParams } from '../hooks/useCreateGrade';
 import useCloneGrade from '../hooks/useCloneGrade';
-import useGetGradeList from '../hooks/useGetGradeList';
 import AdminGradeModBox from './AdminGradeModBox';
 import { useRecoilValue } from 'recoil';
 import { currentUserInformationDataAtom } from '@share/states';
@@ -29,15 +28,16 @@ const AdminGradeListItem = ({
   data,
   onDelete,
   onEdit,
+  reload,
 }: {
   data: Grade;
   onEdit: (id: string, data: CreateGradeParams) => void;
   onDelete: (id: string) => void;
+  reload: () => void;
 }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openRoleModal, setOpenRoleModal] = useState(false);
-  const { reload } = useGetGradeList();
   const { cloneGrade } = useCloneGrade();
   const currentUser = useRecoilValue(currentUserInformationDataAtom);
 

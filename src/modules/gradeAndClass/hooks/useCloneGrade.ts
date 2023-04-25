@@ -24,6 +24,9 @@ const useCloneGrade = () => {
       onError: () => {
         toast.error('Xảy ra lỗi, vui lòng thử lại');
       },
+      onSuccess: () => {
+        toast.success('Sao chép thành công');
+      },
     },
   );
 

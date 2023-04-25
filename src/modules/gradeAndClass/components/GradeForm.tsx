@@ -125,6 +125,7 @@ const GradeForm = ({
           inputProps={{
             label: 'Năm bắt đầu',
             views: ['year'],
+            inputFormat: 'yyyy',
           }}
           textProps={{
             sx: {
@@ -140,6 +141,7 @@ const GradeForm = ({
             label: 'Năm kết thúc',
             views: ['year'],
             fullWidth: true,
+            inputFormat: 'yyyy',
           }}
           textProps={{
             sx: {

@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { CacheProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
@@ -8,10 +10,8 @@ import CSRProvider from '@share/helpers/CSRProvider';
 import Header from '@share/components/layout/Header';
 import Footer from '@share/components/layout/Footer';
 import Body from '@share/components/layout/Body';
-import { Tenant } from '@share/states';
+import { currentTenantDataAtom, Tenant } from '@share/states';
 import { getTenantDataFromReq } from '@share/helpers/getTenantDataFromReq';
-import SetCurrentTenant from '@share/helpers/SetCurrentTenant';
-import GetInitialUserInformation from '@share/helpers/GetInitialUserInformation';
 import { Providers } from '@redux/providers';
 
 import Router from 'next/router';
@@ -23,7 +23,9 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a lo
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Head from 'next/head';
+import { RecoilRoot } from 'recoil';
+import GetInitialUserInformation from '@share/helpers/GetInitialUserInformation';
+import DynamicHead from '@share/components/layout/DynamicHead';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
@@ -47,12 +49,6 @@ const MyApp = (props: CustomAppProps) => {
     tenantData,
   } = props;
 
-  const currentUserData = {
-    id: '12e32',
-    tenantId: '32344',
-    isOwner: true,
-  };
-
   const getLayout =
     Component.getLayout ||
     (page => (
@@ -65,24 +61,22 @@ const MyApp = (props: CustomAppProps) => {
 
   return (
     <>
-      <Head>
-        <title>{tenantData.name}</title>
-        <meta content="initial-scale=1, width=device-width" name="viewport" />
-        <link rel="shortcut icon" href={tenantData?.logo ?? '/logo.png'} />
-      </Head>
       <CacheProvider value={emotionCache}>
-        <CSRProvider
-          theme={tenantData?.theme}
-          tenantData={tenantData}
-          currentUserData={currentUserData}
-        >
-          <Providers>
-            <CssBaseline />
-            <SetCurrentTenant tenantData={tenantData}>
-              {getLayout(<Component {...pageProps} />)}
-            </SetCurrentTenant>
-            <GetInitialUserInformation />
-          </Providers>
+        <CSRProvider theme={tenantData?.theme}>
+          <RecoilRoot
+            initializeState={({ set }) => {
+              set(currentTenantDataAtom, tenantData);
+              // set(currentUserInformationDataAtom, userData);
+            }}
+          >
+            <Providers>
+              <DynamicHead />
+              <CssBaseline />
+              <GetInitialUserInformation>
+                {getLayout(<Component {...pageProps} />)}
+              </GetInitialUserInformation>
+            </Providers>
+          </RecoilRoot>
         </CSRProvider>
       </CacheProvider>
     </>

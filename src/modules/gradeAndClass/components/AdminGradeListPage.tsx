@@ -50,6 +50,8 @@ const AdminGradeListPage = () => {
     reload();
   };
 
+  console.log(gradeListData?.data);
+
   return (
     <Box
       sx={{
@@ -92,13 +94,14 @@ const AdminGradeListPage = () => {
           width: '100%',
         }}
       >
-        {isGettingGrade && !gradeListData?.data ? <LoadingIndicator /> : null}
+        {isGettingGrade ? <LoadingIndicator /> : null}
 
         {gradeListData?.data ? (
           <AdminGradeListTable
             data={gradeListData?.data}
             onDelete={onDelete}
             onEdit={onUpdate}
+            reload={reload}
             page={params.page || 1}
             onChangePage={nextPage => {
               setParams(prevParams => ({ ...prevParams, page: nextPage }));
