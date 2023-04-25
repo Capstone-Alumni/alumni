@@ -101,6 +101,7 @@ const AdminGradeListPage = () => {
             data={gradeListData?.data}
             onDelete={onDelete}
             onEdit={onUpdate}
+            reload={reload}
             page={params.page || 1}
             onChangePage={nextPage => {
               setParams(prevParams => ({ ...prevParams, page: nextPage }));

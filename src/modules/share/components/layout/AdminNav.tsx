@@ -18,7 +18,7 @@ import { useSession } from 'next-auth/react';
 
 const ACCESS_NAV_ITEM = {
   id: 'request_access',
-  title: 'Đơn xin tham gia',
+  title: 'Yêu cầu tham gia',
   icon: 'grommet-icons:validate',
   link: '/admin/config/access_request',
 };
