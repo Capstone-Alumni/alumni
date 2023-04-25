@@ -8,7 +8,13 @@ import Button from '@mui/material/Button';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import Link from '@share/components/NextLinkV2';
 import Logo from '../Logo';
-import { Divider, useScrollTrigger, useTheme } from '@mui/material';
+import {
+  Badge,
+  Divider,
+  Tooltip,
+  useScrollTrigger,
+  useTheme,
+} from '@mui/material';
 import { NavItem } from './NavItem';
 import HeaderUserOptions from './HeaderUserOption';
 import React, { useMemo } from 'react';
@@ -18,6 +24,8 @@ import {
 } from '@share/states';
 import { usePathname } from 'next/navigation';
 import { useRecoilValue } from 'recoil';
+import { Icon } from '@iconify/react';
+import useGetPendingAccessRequestList from 'src/modules/verifyAccount/hooks/useGetPendingAccessRequestList';
 
 interface Props {
   /**
@@ -56,6 +64,8 @@ const Header = () => {
 
   const tenant = useRecoilValue(currentTenantDataAtom);
   const user = useRecoilValue(currentUserInformationDataAtom);
+
+  const { data } = useGetPendingAccessRequestList();
 
   const pathname = usePathname();
 
@@ -135,6 +145,19 @@ const Header = () => {
             </Box>
 
             <Box sx={{ flex: 1 }} />
+
+            {user && defaultAdminDashboard && data?.data?.totalItems ? (
+              <Link
+                href="/admin/config/access_request"
+                style={{ color: 'inherit', marginRight: theme.spacing(2) }}
+              >
+                <Tooltip title={`Có ${data.data.totalItems} yêu cầu tham gia`}>
+                  <Badge badgeContent={data.data.totalItems} color="secondary">
+                    <Icon icon="grommet-icons:validate" />
+                  </Badge>
+                </Tooltip>
+              </Link>
+            ) : null}
 
             {user && defaultAdminDashboard ? (
               <Link

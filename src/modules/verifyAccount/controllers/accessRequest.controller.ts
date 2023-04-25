@@ -36,7 +36,7 @@ export default class AccessRequestController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id } = req.user;
-    const { page, limit } = req.query;
+    const { page, limit, status } = req.query;
     const prisma = await getPrismaClient(req.tenantId);
 
     const accessRequestList = await AccessRequestService.getAccessRequestList(
@@ -45,6 +45,7 @@ export default class AccessRequestController {
         alumniId: id as string,
         page: page ? parseInt(page as string, 10) : 1,
         limit: limit ? parseInt(limit as string, 10) : 99,
+        status: status ? parseInt(limit as string, 10) : undefined,
       },
     );
     return res.status(200).json({

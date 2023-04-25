@@ -12,11 +12,15 @@ import {
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import useGetAccessRequestList from '../hooks/useGetAccessRequestList';
 import AdminAccessRequestListItem from './AdminAccessRequestListItem';
+import DataTablePagination from '@share/components/DataTablePagination';
+import { useRecoilState } from 'recoil';
+import { getAccessRequestListParamsAtom } from '../states';
 
 const AdminAccessRequestTable = () => {
   const { data, isLoading } = useGetAccessRequestList();
+  const [params, setParams] = useRecoilState(getAccessRequestListParamsAtom);
 
-  if (isLoading && !data?.data) {
+  if (isLoading) {
     return <LoadingIndicator />;
   }
 
@@ -57,6 +61,18 @@ const AdminAccessRequestTable = () => {
               <AdminAccessRequestListItem key={row.id} data={row} />
             ))}
           </TableBody>
+
+          <DataTablePagination
+            colSpan={7}
+            currentPage={params.page}
+            totalPage={Math.ceil(
+              accessRequestListData.totalItems /
+                accessRequestListData.itemPerPage,
+            )}
+            onChangePage={(nextPage: number) => {
+              setParams(prevParams => ({ ...prevParams, page: nextPage }));
+            }}
+          />
         </Table>
       </TableContainer>
     </>

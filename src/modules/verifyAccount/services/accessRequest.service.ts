@@ -1,5 +1,5 @@
 import { VerifyAccountInfoServiceProps } from '../types';
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { User } from 'next-auth';
 
 export default class AccessRequestService {
@@ -19,7 +19,8 @@ export default class AccessRequestService {
       page,
       limit,
       alumniId,
-    }: { page: number; limit: number; alumniId: string },
+      status,
+    }: { page: number; limit: number; alumniId: string; status?: number },
   ) => {
     const alumni = await tenantPrisma.alumni.findUnique({
       where: {
@@ -51,7 +52,7 @@ export default class AccessRequestService {
     );
     const gradeIdList = alumni.gradeMod.map(({ gradeId }) => gradeId);
 
-    let whereFilter = {};
+    let whereFilter: Prisma.AccessRequestWhereInput = {};
     if (!alumni.isOwner) {
       whereFilter = {
         OR: [
@@ -59,6 +60,9 @@ export default class AccessRequestService {
           { alumClass: { gradeId: { in: gradeIdList } } },
         ],
       };
+    }
+    if (status) {
+      whereFilter.requestStatus = status;
     }
 
     const [totalAccessRequestList, accessRequestList] =

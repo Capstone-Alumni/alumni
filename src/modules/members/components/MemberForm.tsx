@@ -38,8 +38,8 @@ import { Class } from 'src/modules/gradeAndClass/types';
 export type MemberFormValues = {
   fullName: string;
   gradeClass: Array<{
-    grade: Array<{ id: string; value: string; label: string }>;
-    alumClass: Array<{ id: string; value: string; label: string }>;
+    grade: { id: string; value: string; label: string };
+    alumClass: { id: string; value: string; label: string };
   }>;
   email?: string;
   phone?: string;
