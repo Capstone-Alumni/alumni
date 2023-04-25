@@ -53,7 +53,7 @@ export default function EditVisibilityForm({
       return { label: 'Lớp', publicity: ScopePublicity.CLASS };
     }
     if (visibility === ScopePublicity.GRADE) {
-      return { label: 'Khối', publicity: ScopePublicity.GRADE };
+      return { label: 'Khoá', publicity: ScopePublicity.GRADE };
     }
     if (visibility === ScopePublicity.SCHOOL) {
       return { label: 'Trường', publicity: ScopePublicity.SCHOOL };
@@ -68,14 +68,10 @@ export default function EditVisibilityForm({
   };
 
   const onSubmitForm = async () => {
-    const inforUpdatePayload = {
-      email: userInformation.email,
-      ...visibility,
-    };
     try {
       await updateUserInformation({
-        userId: userInformation.userId,
-        ...inforUpdatePayload,
+        userId: userInformation.alumniId,
+        ...visibility,
       });
       onClose();
       toast.success('Cập nhật thành công');
@@ -145,6 +141,6 @@ export default function EditVisibilityForm({
 const visibilityPublicity = [
   { label: 'Chỉ mình tôi', publicity: ScopePublicity.PRIVATE },
   { label: 'Lớp', publicity: ScopePublicity.CLASS },
-  { label: 'Khối', publicity: ScopePublicity.GRADE },
+  { label: 'Khoá', publicity: ScopePublicity.GRADE },
   { label: 'Trường', publicity: ScopePublicity.SCHOOL },
 ];

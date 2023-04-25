@@ -4,9 +4,9 @@ import { canViewInformationDetail } from '../helpers/canViewInformationDetail';
 import {
   CreateCareerServiceProps,
   GetCareerListServiceParams,
-  InformationIncludeClass,
   UpdateCareerInfoByIdServiceProps,
 } from '../types';
+import { Member } from 'src/modules/members/types';
 
 // const isUserExisted = async (id: string) => {
 //   const user = await prisma.user.findFirst({
@@ -19,17 +19,23 @@ import {
 // };
 
 const canViewCareers = (
-  information: InformationIncludeClass | null,
-  requesterInformation: InformationIncludeClass | null,
+  alumniInformation: Member | null,
+  requesterInformation: Member | null,
 ) => {
-  if (information?.userId === requesterInformation?.userId) {
+  const { information: userInformation } = alumniInformation || {};
+  if (!userInformation || !alumniInformation) {
+    return false;
+  }
+
+  if (alumniInformation.id === requesterInformation?.id) {
     return true;
   }
+
   if (
     !canViewInformationDetail(
-      information?.careerPublicity || 'PRIVATE',
-      information?.alumClass || null,
-      requesterInformation?.alumClass || null,
+      userInformation.careerPublicity,
+      alumniInformation,
+      requesterInformation,
     )
   ) {
     return false;
@@ -101,13 +107,23 @@ export default class CareerService {
     params: GetCareerListServiceParams,
   ) => {
     const requesterInformation = await tenantPrisma.alumni.findUnique({
-      where: { id: userId },
+      where: { id: requestUser.id },
       include: {
         information: true,
+        pingReceived: true,
+        pingSent: true,
         alumniToClass: {
-          select: {
-            isClassMod: true,
-            alumClassId: true,
+          include: {
+            alumClass: {
+              include: {
+                grade: true,
+              },
+            },
+          },
+        },
+        gradeMod: {
+          include: {
+            grade: true,
           },
         },
       },
@@ -117,22 +133,32 @@ export default class CareerService {
       where: { id: userId },
       include: {
         information: true,
+        pingReceived: true,
+        pingSent: true,
         alumniToClass: {
-          select: {
-            isClassMod: true,
-            alumClassId: true,
+          include: {
+            alumClass: {
+              include: {
+                grade: true,
+              },
+            },
+          },
+        },
+        gradeMod: {
+          include: {
+            grade: true,
           },
         },
       },
     });
 
-    // if (!canViewCareers(userInformation, requesterInformation)) {
-    //   return {
-    //     totalItems: 0,
-    //     items: {},
-    //     itemPerPage: 0,
-    //   };
-    // }
+    if (!canViewCareers(userInformation, requesterInformation)) {
+      return {
+        totalItems: 0,
+        items: {},
+        itemPerPage: 0,
+      };
+    }
 
     const { jobTitle, company, page, limit } = params;
 

@@ -145,7 +145,7 @@ const ProfileAbout = ({ userInformation }: ProfileAboutProps) => {
                       />
                     )}
                   {/* <ProfileInfoRow
-                    title="Khối"
+                    title="Khoá"
                     content={
                       userInformation?.gradeName
                         ? userInformation.gradeName

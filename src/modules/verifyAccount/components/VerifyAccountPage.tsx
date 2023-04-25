@@ -43,7 +43,7 @@ export const steps = [
     component: <VerifyForm />,
   },
   {
-    label: 'Chọn khối',
+    label: 'Chọn khoá',
     optional: false,
     component: <GradeStep />,
   },

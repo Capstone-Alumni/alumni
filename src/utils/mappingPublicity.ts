@@ -3,7 +3,7 @@ import { UserInformation } from '@share/states';
 
 export const mappingScopPublicity = {
   SCHOOL: 'Trường',
-  GRADE: 'Khối',
+  GRADE: 'Khoá',
   CLASS: 'Lớp',
   PRIVATE: 'Chỉ mình tôi',
 };
