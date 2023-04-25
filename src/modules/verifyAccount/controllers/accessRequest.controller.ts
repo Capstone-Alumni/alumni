@@ -45,7 +45,7 @@ export default class AccessRequestController {
         alumniId: id as string,
         page: page ? parseInt(page as string, 10) : 1,
         limit: limit ? parseInt(limit as string, 10) : 99,
-        status: status ? parseInt(limit as string, 10) : undefined,
+        status: status ? parseInt(status as string, 10) : undefined,
       },
     );
     return res.status(200).json({

@@ -61,7 +61,7 @@ export default class AccessRequestService {
         ],
       };
     }
-    if (status) {
+    if (status !== undefined) {
       whereFilter.requestStatus = status;
     }
 
