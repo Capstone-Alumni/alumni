@@ -78,18 +78,23 @@ export default class RecruitmentController {
   ) => {
     try {
       const prisma = await getPrismaClient(req.tenantId);
+      const userId = req.user.id;
       const { page, limit, companyName, job, salary, position, type, title } =
         req.query;
-      const listRecruitment = await RecruimentService.getAprovedList(prisma, {
-        title: title ? (title as string) : '',
-        companyName: companyName ? (companyName as string) : '',
-        job: job ? (job as string) : '',
-        salary: salary ? (salary as string) : '',
-        position: position ? (position as string) : '',
-        type: type ? (type as string) : '',
-        page: page ? parseInt(page as string, 10) : 1,
-        limit: limit ? parseInt(limit as string, 10) : 20,
-      });
+      const listRecruitment = await RecruimentService.getAprovedList(
+        prisma,
+        {
+          title: title ? (title as string) : '',
+          companyName: companyName ? (companyName as string) : '',
+          job: job ? (job as string) : '',
+          salary: salary ? (salary as string) : '',
+          position: position ? (position as string) : '',
+          type: type ? (type as string) : '',
+          page: page ? parseInt(page as string, 10) : 1,
+          limit: limit ? parseInt(limit as string, 10) : 20,
+        },
+        userId,
+      );
       return res.status(200).json({
         status: true,
         data: listRecruitment,

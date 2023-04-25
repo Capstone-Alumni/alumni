@@ -39,7 +39,7 @@ export default class ApplicationController {
     res: NextApiResponse<ApiErrorResponse | ApiSuccessResponse>,
   ) => {
     try {
-      prisma = await getPrismaClient(req.tenantId);
+      const prisma = await getPrismaClient(req.tenantId);
       const { applicationId } = req.query;
       const { id: userId } = req.user;
       const updated = await ApplicationService.update(
