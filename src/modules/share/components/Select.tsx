@@ -44,7 +44,7 @@ export default function BasicSelect({ name, value, userId }: BasicSelectProps) {
           onChange={handleChange}
         >
           <MenuItem value={ScopePublicity.SCHOOL}>Toàn trường</MenuItem>
-          <MenuItem value={ScopePublicity.GRADE}>Khối</MenuItem>
+          <MenuItem value={ScopePublicity.GRADE}>Khoá</MenuItem>
           <MenuItem value={ScopePublicity.CLASS}>Lớp</MenuItem>
           <MenuItem value={ScopePublicity.PRIVATE}>Chỉ mình tôi</MenuItem>
         </Select>

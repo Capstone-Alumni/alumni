@@ -7,7 +7,7 @@ const getRoleName = (currentUserInformation: Alumni) => {
   }
 
   if (!isEmpty(currentUserInformation.gradeMod)) {
-    return 'Đại diện khối';
+    return 'Đại diện khoá';
   }
 
   // const isClassMod = currentUserInformation.alumniToClass?.some((class) => class.isClassMod)

@@ -278,7 +278,7 @@ const UserInfo = ({ userInformation, userProfileId }: UserInfoProps) => {
                             renderInput={(params: any) => (
                               <TextField
                                 {...params}
-                                label="Khối"
+                                label="Khoá"
                                 name="gradeName"
                               />
                             )}
