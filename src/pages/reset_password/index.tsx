@@ -27,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     const { token } = query;
 
     const url = `${process.env.NEXT_PUBLIC_PLATFORM_HOST}/api/precheck_token_fp?token=${token}`;
-    const res = await fetch(url).then((res) => res.json());
+    const res = await fetch(url).then(res => res.json());
 
     if (res?.data !== 'verified') {
       return {
