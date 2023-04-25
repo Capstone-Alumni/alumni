@@ -5,6 +5,8 @@ import {
   alpha,
   Button,
   Grid,
+  Link,
+  Stack,
   styled,
   Tab,
   Tabs,
@@ -34,6 +36,7 @@ import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationR
 import { useForm } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
 import UsersAppliedJobPreview from './UsersAppliedJobPreview';
+import MyAvatar from '@share/components/MyAvatar';
 
 const StyledGeneralInfomation = styled(Box)(({ theme }) => ({
   flex: 1,
@@ -146,6 +149,26 @@ const JobDetailPage = () => {
           style={{ objectFit: 'cover' }}
         />
       </Box>
+
+      <Typography variant="h3" sx={{ mb: 1 }}>
+        {jobData.title}
+      </Typography>
+
+      <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 2 }}>
+        <MyAvatar
+          displayName={jobData.recruitmentOwner?.information?.fullName}
+          photoUrl={jobData.recruitmentOwner?.information?.avatarUrl}
+        />
+
+        <Stack direction="column">
+          <Link href={`/profile/${jobData.recruitmentOwner?.id}`}>
+            <Typography fontWeight={600}>
+              {jobData.recruitmentOwner?.information?.fullName}
+            </Typography>
+          </Link>
+          <Typography>{jobData.recruitmentOwner?.information?.email}</Typography>
+        </Stack>
+      </Stack>
 
       <Box
         sx={{
@@ -346,17 +369,7 @@ const JobDetailPage = () => {
           )
         )}
       </Box>
-
-      <Box
-        sx={{
-          width: '100%',
-        }}
-      >
-        <Typography variant="h4" sx={{ mb: 1 }}>
-          {jobData.title}
-        </Typography>
-      </Box>
-
+      
       <Tabs
         value={tabKey}
         onChange={(_, key) => setTabKey(key)}
