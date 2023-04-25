@@ -43,7 +43,9 @@ export default function VisibilityFormDialogs({
           <Tooltip
             title={
               name && userInformation
-                ? mappingScopPublicity[userInformation[name] as ScopePublicity]
+                ? mappingScopPublicity[
+                    userInformation.information[name] as ScopePublicity
+                  ]
                 : 'Tuỷ chỉnh quyền riêng tư'
             }
           >
@@ -62,7 +64,7 @@ export default function VisibilityFormDialogs({
         {editType === 'visibility' && (
           <EditVisibilityForm
             onClose={handleClose}
-            userInformation={userInformation}
+            userInformation={userInformation.information}
             name={name}
           />
         )}

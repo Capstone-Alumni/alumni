@@ -19,6 +19,7 @@ export default class GradeController {
         data: newGrade,
       });
     } catch (error) {
+      console.log(error);
       if (
         error.message?.includes('existed') ||
         error.message?.includes('Unique constraint')

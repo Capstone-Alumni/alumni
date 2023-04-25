@@ -20,6 +20,8 @@ export type Information = {
   facebookPublicity: ScopePublicity;
   dateOfBirth?: string | Date | null;
   dateOfBirthPublicity: ScopePublicity;
+  educationPublicity: ScopePublicity;
+  careerPublicity: ScopePublicity;
 };
 
 export type GetInformationParams = {

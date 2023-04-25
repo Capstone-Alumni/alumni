@@ -92,12 +92,12 @@ const AdminFundListItem = ({
         </TableCell>
         <TableCell align="left">
           <Typography>
-            {formatDate(new Date(data.startTime), 'dd/MM/yyyy')}
+            {formatDate(new Date(data.startTime), 'dd/MM/yyyy hh:mm')}
           </Typography>
         </TableCell>
         <TableCell align="left">
           <Typography>
-            {formatDate(new Date(data.endTime), 'dd/MM/yyyy')}
+            {formatDate(new Date(data.endTime), 'dd/MM/yyyy hh:mm')}
           </Typography>
         </TableCell>
         <TableCell align="center">

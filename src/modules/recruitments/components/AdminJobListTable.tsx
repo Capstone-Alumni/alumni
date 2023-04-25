@@ -22,7 +22,6 @@ const AdminEventListTable = ({
   page: number;
   onChangePage: (nextPage: number) => void;
 }) => {
-  console.log(data);
   return (
     <>
       <TableContainer component={Paper}>

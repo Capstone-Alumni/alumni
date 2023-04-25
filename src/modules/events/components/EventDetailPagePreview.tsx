@@ -187,9 +187,7 @@ const EventDetailPagePreview = ({ data }: { data: Event }) => {
         aria-label="wrapped tabs"
       >
         <Tab value="description" label="Mô tả" />
-        {eventData?.publicParticipant ? (
-          <Tab value="participant" label="Người tham dự" />
-        ) : null}
+        <Tab value="participant" label="Người tham dự" />
       </Tabs>
 
       {tabKey === 'description' ? (

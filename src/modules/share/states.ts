@@ -1,5 +1,6 @@
 import { atom, atomFamily, RecoilState, selector } from 'recoil';
 import { Class, Grade } from '../gradeAndClass/types';
+import { ScopePublicity } from '@prisma/client';
 
 export type Plan = {
   id: string;
@@ -38,8 +39,14 @@ export type UserInformation = {
   fullName: string;
   avatarUrl?: string;
   dateOfBirth?: Date;
+  facebookUrl?: string;
   phone?: string;
   ping: any[];
+  dateOfBirthPublicity: ScopePublicity;
+  educationPublicity: ScopePublicity;
+  facebookPublicity: ScopePublicity;
+  phonePublicity: ScopePublicity;
+  careerPublicity: ScopePublicity;
 };
 
 export type Alumni = {

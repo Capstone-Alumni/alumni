@@ -1,5 +1,6 @@
 'use client';
 
+import LoadingIndicator from '@share/components/LoadingIndicator';
 import {
   currentTenantDataAtom,
   currentUserInformationDataAtom,
@@ -9,7 +10,7 @@ import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-const GetInitialUserInformation = () => {
+const GetInitialUserInformation = ({ children }: { children: JSX.Element }) => {
   const { data: session } = useSession();
   const currentTenant = useRecoilValue(currentTenantDataAtom);
 
@@ -32,7 +33,11 @@ const GetInitialUserInformation = () => {
     }
   }, [session]);
 
-  return null;
+  if (session?.user && !currentUserInformation) {
+    return <LoadingIndicator />;
+  }
+
+  return children;
 };
 
 export default GetInitialUserInformation;

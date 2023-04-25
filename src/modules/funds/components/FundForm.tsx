@@ -1,4 +1,3 @@
-import { AccessLevel } from '@prisma/client';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationResolver';
@@ -28,7 +27,6 @@ export type FundFormValues = {
   startTime?: Date;
   endTime: Date;
   targetBalance: number;
-  publicity: AccessLevel;
 };
 
 const validationSchema = yup.object({

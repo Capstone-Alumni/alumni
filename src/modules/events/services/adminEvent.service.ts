@@ -102,6 +102,7 @@ export default class AdminEventService {
             },
           },
           grade: true,
+          eventParticipants: true,
         },
       }),
     ]);
