@@ -137,7 +137,7 @@ const Header = () => {
               {user ? (
                 <>
                   <NavItem label="Sự kiện" href="/events/discover" />
-                  <NavItem label="Tuyển dụng" href="/recruitments/discover" />
+                  <NavItem label="Việc làm" href="/recruitments/discover" />
                   <NavItem label="Gây quỹ" href="/funds/going" />
                   <NavItem label="Bạn bè" href="/social" />
                 </>
