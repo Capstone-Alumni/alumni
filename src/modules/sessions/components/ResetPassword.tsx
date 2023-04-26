@@ -3,6 +3,8 @@
 import * as yup from 'yup';
 
 import { Controller, FormProvider, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 
@@ -15,7 +17,6 @@ import useYupValidateionResolver from 'src/modules/share/utils/useYupValidationR
 import Body from '@share/components/layout/Body';
 import { useSearchParams } from 'next/navigation';
 import useResetPassword from '../hooks/useResetPassword';
-import useSignIn from 'src/modules/sessions/hooks/useSignIn';
 
 const validationSchema = yup
   .object({
@@ -28,8 +29,8 @@ const ResetPassword = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
   const email = searchParams.get('email');
+  const router = useRouter();
 
-  const { signIn } = useSignIn();
   const { resetPassword, isLoading } = useResetPassword();
 
   const resolver = useYupValidateionResolver(validationSchema);
@@ -55,10 +56,8 @@ const ResetPassword = () => {
       token: token,
     });
     if (res?.data?.email) {
-      signIn('credentials', {
-        email: res?.data?.email,
-        password: values.password,
-      });
+      toast.success('Đổi mật khẩu thành công');
+      router.replace('/sign_in');
     }
   };
 

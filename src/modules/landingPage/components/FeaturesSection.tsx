@@ -33,7 +33,7 @@ const FeaturesSection = () => {
         <SectionTemplate
           headerContent={
             <Typography color="primary" variant="h3">
-              Chuyên mục nổi bật
+              Các mục nổi bật
             </Typography>
           }
           switchSvg
@@ -73,7 +73,7 @@ const FeaturesSection = () => {
                   width={200}
                   height={200}
                 />
-                <Typography variant="h4">Tuyển dụng</Typography>
+                <Typography variant="h4">Chia sẻ việc làm</Typography>
               </StyledBox>
             </Link>
             <Link
@@ -82,7 +82,7 @@ const FeaturesSection = () => {
             >
               <StyledBox>
                 <Image src="/post.svg" alt="post" width={200} height={200} />
-                <Typography variant="h4">Bài đăng</Typography>
+                <Typography variant="h4">Mạng xã hội</Typography>
               </StyledBox>
             </Link>
           </Stack>
