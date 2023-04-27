@@ -215,9 +215,6 @@ const FundDetailPage = () => {
                   FundStatus === 'running' &&
                   fundData.currentBalance < fundData.targetBalance * 100
                 }
-                reminingAmount={
-                  fundData.targetBalance - fundData.currentBalance / 100
-                }
                 maxDonate={
                   fundData.targetBalance * 100 - fundData.currentBalance < 0
                     ? 0
