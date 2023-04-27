@@ -218,7 +218,10 @@ const FundDetailPage = () => {
                 maxDonate={
                   fundData.targetBalance * 100 - fundData.currentBalance < 0
                     ? 0
-                    : fundData.targetBalance * 100 - fundData.currentBalance
+                    : Math.min(
+                        fundData.targetBalance * 100 - fundData.currentBalance,
+                        10000000000,
+                      )
                 }
               />
             ) : null}

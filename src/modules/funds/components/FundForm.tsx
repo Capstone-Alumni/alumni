@@ -19,6 +19,7 @@ import UploadBackgroundInput from '@share/components/form/UploadBackgroundInput'
 import CurrencyInput from '@share/components/CurrencyInput';
 import { useRouter } from 'next/navigation';
 import DateTimeInput from '@share/components/form/DateTimeInput';
+import { formatAmountMoney } from '../utils';
 
 export type FundFormValues = {
   title: string;
@@ -43,7 +44,11 @@ const validationSchema = yup.object({
         return startTime && value && value > startTime;
       },
     ),
-  targetBalance: yup.number().required('Bắt buộc'),
+  targetBalance: yup
+    .number()
+    .typeError('Bắt buộc')
+    .max(10000000000, `Số tiền tối đa là ${formatAmountMoney(1000000000000)}`)
+    .required('Bắt buộc'),
 });
 
 const FundForm = ({
@@ -61,6 +66,7 @@ const FundForm = ({
   const resolver = useYupValidateionResolver(validationSchema);
 
   const { control, handleSubmit } = useForm({
+    mode: 'onChange',
     resolver,
     defaultValues: {
       title: initialData?.title ?? '',
