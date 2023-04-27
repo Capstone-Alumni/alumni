@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import useApi from 'src/modules/share/hooks/useApi';
 
 type RemoveGradeModParams = {
@@ -14,13 +15,24 @@ const useRemoveGradeMod = () => {
     RemoveGradeModParams,
     RemoveGradeModResponse,
     RemoveGradeModError
-  >('RemoveClassMod', ({ gradeId, alumniId }) => ({
-    method: 'DELETE',
-    url: `/api/grades/${gradeId}/grade_mod`,
-    params: {
-      alumniId,
+  >(
+    'RemoveClassMod',
+    ({ gradeId, alumniId }) => ({
+      method: 'DELETE',
+      url: `/api/grades/${gradeId}/grade_mod`,
+      params: {
+        alumniId,
+      },
+    }),
+    {
+      onError: () => {
+        toast.error('Xoá đại diện niên khoá thất bại');
+      },
+      onSuccess: () => {
+        toast.success('Xoá đại diện niên khoá thành công');
+      },
     },
-  }));
+  );
 
   return {
     isLoading,

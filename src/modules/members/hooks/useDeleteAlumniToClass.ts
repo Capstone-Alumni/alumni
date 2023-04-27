@@ -25,6 +25,9 @@ const useDeleteAlumToClassById = () => {
       onError: () => {
         toast.error('Xảy ra lỗi');
       },
+      onSuccess: () => {
+        toast.success('Xoá lớp thành công');
+      },
     },
   );
 

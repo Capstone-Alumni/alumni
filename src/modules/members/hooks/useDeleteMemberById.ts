@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import useApi from 'src/modules/share/hooks/useApi';
 
 type DeleteMemberByIdDataParams = {
@@ -13,10 +14,21 @@ const useDeleteMemberById = () => {
     DeleteMemberByIdDataParams,
     DeleteMemberByIdDataResponse,
     DeleteMemberByIdDataError
-  >('deleteMemberById', ({ memberId }) => ({
-    method: 'DELETE',
-    url: `/platformHost/api/members/${memberId}`,
-  }));
+  >(
+    'deleteMemberById',
+    ({ memberId }) => ({
+      method: 'DELETE',
+      url: `/platformHost/api/members/${memberId}`,
+    }),
+    {
+      onError: () => {
+        toast.error('Xoá thành viên thất bại');
+      },
+      onSuccess: () => {
+        toast.success('Xoá thành viên thành công');
+      },
+    },
+  );
 
   return {
     isLoading,

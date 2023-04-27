@@ -1,5 +1,6 @@
 import useApi from 'src/modules/share/hooks/useApi';
 import { MemberFormValues } from '../components/MemberForm';
+import { toast } from 'react-toastify';
 
 type UpdateMemberByIdDataParams = {
   memberId: string;
@@ -14,11 +15,22 @@ const useUpdateMemberById = () => {
     UpdateMemberByIdDataParams,
     UpdateMemberByIdDataResponse,
     UpdateMemberByIdDataError
-  >('updateMemberById', ({ memberId, ...data }) => ({
-    method: 'PUT',
-    url: `/platformHost/api/members/${memberId}`,
-    data: data,
-  }));
+  >(
+    'updateMemberById',
+    ({ memberId, ...data }) => ({
+      method: 'PUT',
+      url: `/platformHost/api/members/${memberId}`,
+      data: data,
+    }),
+    {
+      onError: () => {
+        toast.error('Cập nhập thông tin thất bại');
+      },
+      onSuccess: () => {
+        toast.success('Cập nhập thông tin thành công');
+      },
+    },
+  );
 
   return {
     isLoading,

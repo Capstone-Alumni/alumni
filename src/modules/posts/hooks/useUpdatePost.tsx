@@ -35,6 +35,7 @@ const useUpdatePost = () => {
         toast.error('Cập nhập bài đăng thất bại');
       },
       onSuccess: ({ data }) => {
+        toast.success('Cập nhập bài đăng thành công');
         setNewPost(data);
       },
     },

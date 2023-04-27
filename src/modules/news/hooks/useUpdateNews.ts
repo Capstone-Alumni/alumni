@@ -48,6 +48,9 @@ const useUpdateNews = () => {
       },
     }),
     {
+      onError: () => {
+        toast.error('Cập nhập thất bại');
+      },
       onSuccess: () => {
         toast.success('Cập nhật thành công');
         window.location.reload();

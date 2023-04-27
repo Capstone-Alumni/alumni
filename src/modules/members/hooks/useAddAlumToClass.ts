@@ -34,6 +34,9 @@ const useAddAlumniToClass = () => {
           toast.error('Xảy ra lỗi');
         }
       },
+      onSuccess: () => {
+        toast.success('Thêm lớp thành công');
+      },
     },
   );
 

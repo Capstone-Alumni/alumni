@@ -23,10 +23,10 @@ const usePublicUninterestEventById = () => {
     }),
     {
       onError: () => {
-        toast.error('Huỷ lưu sự kiện thất bại');
+        toast.error('Bỏ lưu sự kiện thất bại');
       },
       onSuccess: () => {
-        toast.success('Huỷ lưu sự kiện thành công');
+        toast.success('Bỏ lưu sự kiện thành công');
       },
     },
   );

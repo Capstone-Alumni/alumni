@@ -34,7 +34,7 @@ const validationSchema = yup
     grade: requiredGradeNClassValidator,
     class: requiredGradeNClassValidator,
   })
-  .required();
+  .required('Bắt buộc');
 
 export const steps = [
   {

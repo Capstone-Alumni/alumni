@@ -17,7 +17,7 @@ export type PostFormValues = {
 };
 
 const validationSchema = yup.object({
-  content: yup.string().required(),
+  content: yup.string().required('Chưa nhập nội dung'),
 });
 
 const PostForm = ({

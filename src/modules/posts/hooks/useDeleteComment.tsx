@@ -4,6 +4,7 @@ import { useRecoilState } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { postCommentListDataAtomFamily } from '../state';
 import { PostComment } from '../type';
+import { toast } from 'react-toastify';
 
 type DeleteCommentParams = never;
 
@@ -31,7 +32,11 @@ const useDeleteComment = (postId: string, commentId: string) => {
       url: `/api/posts/${postId}/comments/${commentId}`,
     }),
     {
+      onError: () => {
+        toast.error('Xoá bình luận thất bại');
+      },
       onSuccess: ({ data }) => {
+        toast.success('Xoá bình luận thành công');
         setNewDelete(data);
       },
     },

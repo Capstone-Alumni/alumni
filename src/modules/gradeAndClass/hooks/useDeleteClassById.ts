@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import useApi from 'src/modules/share/hooks/useApi';
 
 type DeleteClassByIdDataParams = {
@@ -13,10 +14,21 @@ const useDeleteClassById = () => {
     DeleteClassByIdDataParams,
     DeleteClassByIdDataResponse,
     DeleteClassByIdDataError
-  >('deleteClassById', ({ classId }) => ({
-    method: 'DELETE',
-    url: `/api/classes/${classId}`,
-  }));
+  >(
+    'deleteClassById',
+    ({ classId }) => ({
+      method: 'DELETE',
+      url: `/api/classes/${classId}`,
+    }),
+    {
+      onError: () => {
+        toast.error('Xoá lớp thất bại');
+      },
+      onSuccess: () => {
+        toast.success('Xoá lớp thành công');
+      },
+    },
+  );
 
   return {
     isLoading,

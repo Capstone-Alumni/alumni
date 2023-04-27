@@ -22,7 +22,7 @@ const validationSchema = yup
     password: requiredPasswordValidator,
     confirmPassword: requiredConfirmPasswordValidator,
   })
-  .required();
+  .required('Bắt buộc');
 
 const SetupPassword = () => {
   const searchParams = useSearchParams();

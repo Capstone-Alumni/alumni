@@ -22,6 +22,9 @@ const useResetPassword = () => {
       onError: (err: AxiosError) => {
         toast.error('Xảy ra lỗi, vui lòng thử lại sau ít phút');
       },
+      onSuccess: () => {
+        toast.success('Gửi yêu cầu thành công');
+      },
     },
   );
 
