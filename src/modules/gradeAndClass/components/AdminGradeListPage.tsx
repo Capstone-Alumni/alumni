@@ -11,7 +11,7 @@ import LoadingIndicator from '@share/components/LoadingIndicator';
 import useDeleteGradeById from '../hooks/useDeleteGradeById';
 import useUpdateGradeById from '../hooks/useUpdateGradeById';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { getGradeListParamsAtom } from '../state';
+import { getAdminGradeListParamsAtom } from '../state';
 import AdminClassListPanel from './AdminClassListPanel';
 import useGetAdminGradeList from '../hooks/useGetAdminGradeList';
 import { currentUserInformationDataAtom } from '@share/states';
@@ -20,7 +20,7 @@ const AdminGradeListPage = () => {
   const theme = useTheme();
   const [openForm, setOpenForm] = useState(false);
 
-  const [params, setParams] = useRecoilState(getGradeListParamsAtom);
+  const [params, setParams] = useRecoilState(getAdminGradeListParamsAtom);
   const currentUser = useRecoilValue(currentUserInformationDataAtom);
 
   const { createGrade } = useCreateGrade();

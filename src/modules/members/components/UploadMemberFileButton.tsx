@@ -6,15 +6,16 @@ import {
 import { parseXLSX } from '@share/utils/parseXLSX';
 import * as XLSX from 'xlsx';
 import { noop } from 'lodash/fp';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import useCreateManyMember from '../hooks/useCreateManyMember';
 import useGetMemberList from '../hooks/useGetMemberList';
 import useGetGradeList from 'src/modules/gradeAndClass/hooks/useGetGradeList';
 import Link from '@share/components/NextLinkV2';
 import { TEMPLATE_FILE } from '../constants';
 import { useTheme } from '@mui/material';
+import { getGradeListParamsAtom } from 'src/modules/gradeAndClass/state';
 
 const LOADING_TOAST_ID = 'member file';
 
@@ -23,12 +24,17 @@ const UploadMemeberFileButton = () => {
   const [uploading, setUploading] = useState(false);
   const [importResult, setImportResult] = useState<any>();
 
+  const setParams = useSetRecoilState(getGradeListParamsAtom);
   const { id: tenantId } = useRecoilValue(currentTenantDataAtom);
   const currentUser = useRecoilValue(currentUserInformationDataAtom);
   const classList = currentUser?.alumniToClass?.map(ref => ref.alumClass);
   const gradeList = currentUser?.gradeMod?.map(ref => ref.grade);
 
   const { data: gradeData } = useGetGradeList();
+
+  useEffect(() => {
+    setParams(prev => ({ ...prev, limit: 99 }));
+  }, []);
 
   const { createManyMember } = useCreateManyMember();
   const { reload } = useGetMemberList();
@@ -204,6 +210,9 @@ const UploadMemeberFileButton = () => {
           accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
           disabled={uploading}
           onChange={e => onUploadFile(e.target.files?.[0])}
+          onClick={(e: any) => {
+            e.target.value = null;
+          }}
           style={{
             width: '100px',
             height: '30px',
