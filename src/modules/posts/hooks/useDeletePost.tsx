@@ -4,6 +4,7 @@ import { useRecoilState } from 'recoil';
 import useApi from 'src/modules/share/hooks/useApi';
 import { postListAtom } from '../state';
 import { Post } from '../type';
+import { toast } from 'react-toastify';
 
 type DeletePostParams = never;
 
@@ -28,7 +29,11 @@ const useDeletePost = (postId: string) => {
       url: `/api/posts/${postId}`,
     }),
     {
+      onError: () => {
+        toast.error('Xoá bài đăng thất bại');
+      },
       onSuccess: ({ data }) => {
+        toast.success('Xoá bài đăng thành công');
         setNewDelete(data);
       },
     },

@@ -23,6 +23,9 @@ const useResendInvitationMemberById = () => {
       data: data,
     }),
     {
+      onError: () => {
+        toast.error('Xảy ra lỗi');
+      },
       onSuccess: () => {
         toast.success('Đã gửi lời mới');
       },

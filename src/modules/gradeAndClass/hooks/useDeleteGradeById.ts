@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import useApi from 'src/modules/share/hooks/useApi';
 
 type DeleteGradeByIdDataParams = {
@@ -13,10 +14,21 @@ const useDeleteGradeById = () => {
     DeleteGradeByIdDataParams,
     DeleteGradeByIdDataResponse,
     DeleteGradeByIdDataError
-  >('deleteGradeById', ({ gradeId }) => ({
-    method: 'DELETE',
-    url: `/api/grades/${gradeId}`,
-  }));
+  >(
+    'deleteGradeById',
+    ({ gradeId }) => ({
+      method: 'DELETE',
+      url: `/api/grades/${gradeId}`,
+    }),
+    {
+      onError: () => {
+        toast.error('Xoá niên khoá thất bại');
+      },
+      onSuccess: () => {
+        toast.success('Xoá niên khoá thành công');
+      },
+    },
+  );
 
   return {
     isLoading,

@@ -30,6 +30,9 @@ const useCreateManyGrade = () => {
       onError: () => {
         toast.error('Xảy ra lỗi');
       },
+      onSuccess: () => {
+        toast.success('Thêm niên khoá thành công');
+      },
     },
   );
 

@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import useApi from 'src/modules/share/hooks/useApi';
 
 type UpdateGradeByIdDataParams = {
@@ -16,15 +17,26 @@ const useUpdateGradeById = () => {
     UpdateGradeByIdDataParams,
     UpdateGradeByIdDataResponse,
     UpdateGradeByIdDataError
-  >('updateGradeById', ({ gradeId, code, startYear, endYear }) => ({
-    method: 'PUT',
-    url: `/api/grades/${gradeId}`,
-    data: {
-      code,
-      startYear,
-      endYear,
+  >(
+    'updateGradeById',
+    ({ gradeId, code, startYear, endYear }) => ({
+      method: 'PUT',
+      url: `/api/grades/${gradeId}`,
+      data: {
+        code,
+        startYear,
+        endYear,
+      },
+    }),
+    {
+      onError: () => {
+        toast.error('Cập nhập thông tin niên khoá thất bại');
+      },
+      onSuccess: () => {
+        toast.success('Cập nhập thông tin niên khoá thành công');
+      },
     },
-  }));
+  );
 
   return {
     isLoading,
