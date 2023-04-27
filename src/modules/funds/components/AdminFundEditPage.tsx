@@ -9,12 +9,17 @@ import useAdminGetFundById from '../hooks/useAdminGetFundById';
 import useOwnerUpdateFundById from '../hooks/useOwnerUpdateFundById';
 import AdminFundReportTab from './AdminFundReportTab';
 import FundForm, { FundFormValues } from './FundForm';
+import FundTransactionListTab from './FundTransactionList';
+import { currentTenantDataAtom } from '@share/states';
+import { useRecoilValue } from 'recoil';
 
 const AdminFundEditPage = () => {
   const [tabKey, setTabKey] = useState('info');
 
   const router = useRouter();
   const pathname = usePathname();
+
+  const tenantData = useRecoilValue(currentTenantDataAtom);
 
   const fundId = pathname?.split('/')[4] || '';
 
@@ -55,6 +60,9 @@ const AdminFundEditPage = () => {
       >
         <Tab value="info" label="Thông tin cơ bản" />
         <Tab value="report" label="Cập nhập hoạt động" />
+        {tenantData?.vnp_tmnCode ? (
+          <Tab value="transaction" label="Danh sách ủng hộ" />
+        ) : null}
       </Tabs>
 
       {tabKey === 'info' ? (
@@ -62,6 +70,12 @@ const AdminFundEditPage = () => {
       ) : null}
 
       {tabKey === 'report' ? <AdminFundReportTab /> : null}
+
+      {tabKey === 'transaction' ? (
+        <Box sx={{ my: 2 }}>
+          <FundTransactionListTab isAdmin />
+        </Box>
+      ) : null}
     </Box>
   );
 };
