@@ -25,9 +25,10 @@ import Link from '@share/components/NextLinkV2';
 import { formatDate } from '@share/utils/formatDate';
 import { formatAmountMoney } from '../utils';
 
-const FundTransactionListTab = () => {
+const FundTransactionListTab = ({ isAdmin }: { isAdmin?: boolean }) => {
   const pathname = usePathname();
-  const fundId = pathname?.split('/')[2] || '';
+  const fundId =
+    (isAdmin ? pathname?.split('/')[4] : pathname?.split('/')[2]) || '';
 
   const [params, setParams] = useRecoilState(getFundTransactionListParamsAtom);
   const { data, isLoading } = useGetFundTransactionList(fundId);
@@ -44,7 +45,7 @@ const FundTransactionListTab = () => {
       }}
     >
       <Typography sx={{ mb: 1 }}>
-        Số lượt ủng hộ: <strong>{data?.data.totalItems}</strong>
+        Số lượt ủng hộ: <strong>{data?.data.totalItems || 0}</strong>
       </Typography>
 
       <TableContainer component={Paper}>
@@ -57,10 +58,10 @@ const FundTransactionListTab = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.data.items.map(row => (
+            {data?.data?.items?.map(row => (
               <TableRow key={row.id}>
                 <TableCell align="left">
-                  {row.incognito ? (
+                  {row.incognito && !isAdmin ? (
                     <Box
                       sx={{
                         display: 'flex',
@@ -122,7 +123,7 @@ const FundTransactionListTab = () => {
             colSpan={6}
             currentPage={params.page}
             totalPage={Math.ceil(
-              data?.data.totalItems / data?.data.itemPerPage,
+              (data?.data.totalItems || 1) / (data?.data.itemPerPage || 1),
             )}
             onChangePage={nextPage => {
               setParams(prevParams => ({ ...prevParams, page: nextPage }));
