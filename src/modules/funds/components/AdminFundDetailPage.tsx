@@ -236,7 +236,7 @@ const AdminFundDetailPage = ({ fundData }: { fundData: Fund }) => {
 
         {tabKey === 'transaction' ? (
           <Box sx={{ my: 2 }}>
-            <FundTransactionListTab />
+            <FundTransactionListTab isAdmin />
           </Box>
         ) : null}
       </Box>
