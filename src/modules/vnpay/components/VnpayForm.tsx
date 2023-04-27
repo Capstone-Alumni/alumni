@@ -14,8 +14,8 @@ export type VnpayFormValues = {
 };
 
 const validationSchema = yup.object({
-  tmnCode: yup.string().required(),
-  hashSecret: yup.string().required(),
+  tmnCode: yup.string().required('Bắt buộc'),
+  hashSecret: yup.string().required('Bắt buộc'),
 });
 
 const VnpayForm = ({

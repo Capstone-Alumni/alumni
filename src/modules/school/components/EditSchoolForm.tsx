@@ -45,9 +45,9 @@ export type EditSChoolFormValues = {
 const MAINAPP_DOMAIN = '.vercel.app';
 
 const validationSchema = yup.object({
-  subdomain: yup.string().required(),
+  subdomain: yup.string().required('Bắt buộc'),
   logo: yup.string(),
-  name: yup.string().required(),
+  name: yup.string().required('Bắt buộc'),
   theme: yup.string(),
   description: yup.string(),
   background1: yup.string(),

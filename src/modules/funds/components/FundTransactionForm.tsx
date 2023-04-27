@@ -25,7 +25,7 @@ const FundTransactionForm = ({
       .number()
       .max(maxDonate, `Số tiền tối đa là ${maxDonate}`)
       .required('Bắt buộc nhập'),
-    incognito: yup.boolean().required(),
+    incognito: yup.boolean().required('Bắt buộc'),
   });
 
   const resolver = useYupValidateionResolver(validationSchema);
