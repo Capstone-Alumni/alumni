@@ -1,4 +1,3 @@
-import { AccessLevel } from '@prisma/client';
 import { PrismaClient } from '@prisma/client';
 
 export default class OwnerFundService {
@@ -102,7 +101,6 @@ export default class OwnerFundService {
       startTime: Date;
       endTime?: Date;
       targetBalance: number;
-      publicity?: AccessLevel;
       backgroundImage?: string;
     },
   ) => {

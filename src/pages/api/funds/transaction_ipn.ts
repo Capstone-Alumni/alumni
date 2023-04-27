@@ -78,7 +78,7 @@ handler.get(async function (req, res) {
             // Ở đây cập nhật trạng thái giao dịch thanh toán thành công vào CSDL của bạn
             const newCurrentBalance =
               transaction.fund.currentBalance +
-              parseInt(vnp_Params.vnp_Amount as string, 10);
+              BigInt(vnp_Params.vnp_Amount as string);
             await prisma.fundTransaction.update({
               where: {
                 vnp_TxnRef: orderId,
