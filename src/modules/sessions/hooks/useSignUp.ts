@@ -33,10 +33,10 @@ const useSignUp = () => {
         }
       },
       onSuccess: () => {
-        toast.success(
-          'Đăng ký thành công. Vui lòng chờ ban quản lý xét duyệt thông tin của bạn',
-        );
-        router.push('/');
+        router.push('/register_success');
+        // toast.success(
+        //   'Đăng ký thành công. Vui lòng chờ ban quản lý xét duyệt thông tin của bạn',
+        // );
       },
     },
   );
