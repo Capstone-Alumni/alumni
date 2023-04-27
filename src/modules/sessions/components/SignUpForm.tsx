@@ -34,7 +34,7 @@ const validationSchema = yup
     gradeClass: yup.array(),
     phone: yup.string(),
   })
-  .required();
+  .required('Bắt buộc');
 
 const SignUpForm = () => {
   const { signUp, isLoading } = useSignUp();

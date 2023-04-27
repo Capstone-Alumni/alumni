@@ -68,18 +68,13 @@ const UploadGradeFileButton = () => {
     if (formattedData.length < data.length - 2) {
       toast.dismiss(LOADING_TOAST_ID);
       toast.warn('Sai định dạng');
+    } else {
+      await createManyGrade({ data: formattedData });
+      reload();
+
+      toast.dismiss(LOADING_TOAST_ID);
     }
-
-    toast.update(LOADING_TOAST_ID, {
-      render: `Đang xử lý (0/${formattedData.length})`,
-    });
-
-    await createManyGrade({ data: formattedData });
-
-    toast.dismiss(LOADING_TOAST_ID);
     setUploading(false);
-
-    reload();
   };
 
   return (
@@ -92,6 +87,9 @@ const UploadGradeFileButton = () => {
         accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
         disabled={uploading}
         onChange={e => onUploadFile(e.target.files?.[0])}
+        onClick={(e: any) => {
+          e.target.value = null;
+        }}
         style={{
           width: '100px',
           height: '30px',

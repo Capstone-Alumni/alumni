@@ -5,6 +5,7 @@ import useApi from 'src/modules/share/hooks/useApi';
 import { PostCommentFormValues } from '../components/PostCommentForm';
 import { postCommentListDataAtomFamily } from '../state';
 import { PostComment } from '../type';
+import { toast } from 'react-toastify';
 
 type UpdateCommentParams = PostCommentFormValues & {
   commentId: string;
@@ -35,7 +36,11 @@ const useUpdateComment = (postId: string) => {
       data: data,
     }),
     {
+      onError: () => {
+        toast.error('Cập nhập bình luận thất bại');
+      },
       onSuccess: ({ data }) => {
+        toast.success('Cập nhập bình luận thành công');
         setNewUpdate(data);
       },
     },

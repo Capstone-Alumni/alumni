@@ -50,7 +50,7 @@ const StyledGridInfo = styled(Grid)(({ theme }) => ({
 }));
 
 const validationSchema = yup.object({
-  resumeUrl: yup.string().required(),
+  resumeUrl: yup.string().required('Bắt buộc'),
 });
 
 const JobDetailPage = () => {

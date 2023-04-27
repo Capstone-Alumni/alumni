@@ -13,7 +13,7 @@ import { CreateOrUpdateNewComment } from '../types';
 import { useSession } from 'next-auth/react';
 
 const validationNewsComment = yup.object({
-  commentContent: yup.string().required(),
+  commentContent: yup.string().required('Chưa nhập nội dung'),
 });
 
 const NewsCommentInput = ({

@@ -19,6 +19,9 @@ const useCreateGrade = () => {
       onError: () => {
         toast.error('Niên khoá bị trùng lặp cả năm bắt đầu và năm kết thúc');
       },
+      onSuccess: () => {
+        toast.success('Thêm niên khoá thành công');
+      },
     },
   );
 

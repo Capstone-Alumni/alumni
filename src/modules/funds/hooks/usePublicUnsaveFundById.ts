@@ -23,10 +23,10 @@ const usePublicUnsaveFundById = () => {
     }),
     {
       onError: () => {
-        toast.error('Huỷ lưu quỹ thất bại');
+        toast.error('Bỏ lưu quỹ thất bại');
       },
       onSuccess: () => {
-        toast.success('Huỷ lưu quỹ thành công');
+        toast.success('Bỏ lưu quỹ thành công');
       },
     },
   );

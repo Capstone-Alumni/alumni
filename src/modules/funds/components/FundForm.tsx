@@ -30,7 +30,7 @@ export type FundFormValues = {
 };
 
 const validationSchema = yup.object({
-  title: yup.string().required(),
+  title: yup.string().required('Bắt buộc'),
   startTime: yup.date(),
   endTime: yup
     .date()
@@ -43,7 +43,7 @@ const validationSchema = yup.object({
         return startTime && value && value > startTime;
       },
     ),
-  targetBalance: yup.number().required(),
+  targetBalance: yup.number().required('Bắt buộc'),
 });
 
 const FundForm = ({

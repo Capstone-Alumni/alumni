@@ -25,7 +25,12 @@ const useWithdrawRequestJoinClass = () => {
       onError: ({ response }) => {
         if (response?.data?.message?.includes('non exist')) {
           toast.error('Yêu cầu không tồn tại');
+        } else {
+          toast.error('Xảy ra lỗi');
         }
+      },
+      onSuccess: () => {
+        toast.success('Rút lại yêu cầu thành công');
       },
     },
   );

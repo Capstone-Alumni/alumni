@@ -39,7 +39,7 @@ export type InternalFormValues = Omit<EventFormValues, 'isOffline'> & {
 
 const validationSchema = yup.object({
   title: yup.string().required('Bắt buộc'),
-  startTime: yup.date().required(),
+  startTime: yup.date().required('Bắt buộc'),
   endTime: yup
     .date()
     .required('End time is required')
