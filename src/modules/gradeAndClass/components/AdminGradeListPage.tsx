@@ -50,8 +50,6 @@ const AdminGradeListPage = () => {
     reload();
   };
 
-  console.log(gradeListData?.data);
-
   return (
     <Box
       sx={{
