@@ -64,7 +64,7 @@ export default function VisibilityFormDialogs({
         {editType === 'visibility' && (
           <EditVisibilityForm
             onClose={handleClose}
-            userInformation={userInformation.information}
+            userInformation={userInformation?.information}
             name={name}
           />
         )}
