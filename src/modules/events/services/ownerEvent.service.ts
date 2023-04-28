@@ -122,18 +122,30 @@ export default class OwnerEventService {
 
   static updateById = async (
     tenantPrisma: PrismaClient,
-    userId: string,
     eventId: string,
-    data: {
+    {
+      title,
+      backgroundImage,
+      description,
+      isOffline,
+      location,
+      startTime,
+      endTime,
+      isEnded,
+      gradeId,
+      publicity,
+      publicParticipant,
+    }: {
       title: string;
-      backgroundImage?: string;
       description?: string;
+      backgroundImage?: string;
       isOffline?: boolean;
       location?: string;
       startTime: Date;
+      isEnded: boolean;
       endTime?: Date;
-      isEnded?: boolean;
-      publicity?: AccessLevel;
+      gradeId?: string;
+      publicity: AccessLevel;
       publicParticipant?: boolean;
     },
   ) => {
@@ -147,12 +159,31 @@ export default class OwnerEventService {
       throw new Error('403 denied');
     }
 
+    const payload: Prisma.EventUpdateInput = {
+      title,
+      backgroundImage,
+      description,
+      isOffline,
+      location,
+      startTime,
+      endTime,
+      publicParticipant,
+    };
+
+    if (gradeId === 'all') {
+      payload.isPublicSchool = true;
+    } else {
+      payload.grade = {
+        connect: { id: gradeId },
+      };
+    }
+
     const newEvent = await tenantPrisma.event.update({
       where: {
         id: eventId,
       },
       data: {
-        ...data,
+        ...payload,
       },
     });
 

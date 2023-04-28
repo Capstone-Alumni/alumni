@@ -64,12 +64,10 @@ export default class OwnerEventController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const prisma = await getPrismaClient(req.tenantId);
-    const { id: userId } = req.user;
     const { id } = req.query;
 
     const data = await OwnerEventService.updateById(
       prisma,
-      userId,
       id as string,
       req.body,
     );
