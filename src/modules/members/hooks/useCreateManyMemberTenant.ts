@@ -34,9 +34,9 @@ const useCreateManyMemberTenant = () => {
       onError: () => {
         toast.error('Xảy ra lỗi');
       },
-      onSuccess: () => {
-        toast.success('Thêm thành viên thành công');
-      },
+      // onSuccess: () => {
+      //   toast.success('Thêm thành viên thành công');
+      // },
     },
   );
 

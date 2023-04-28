@@ -4,15 +4,13 @@ import { noop } from 'lodash/fp';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import useCreateManyGrade from '../hooks/useCreateManyGrade';
-import useGetGradeList from '../hooks/useGetGradeList';
 
 const LOADING_TOAST_ID = 'grade file';
 
-const UploadGradeFileButton = () => {
+const UploadGradeFileButton = ({ reload }: { reload: () => void }) => {
   const [uploading, setUploading] = useState(false);
 
   const { createManyGrade } = useCreateManyGrade();
-  const { reload } = useGetGradeList();
 
   const onUploadFile = async (file?: File) => {
     if (!file) {

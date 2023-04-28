@@ -49,7 +49,7 @@ const AdminGradeListTable = ({
           mb: 2,
         }}
       >
-        <UploadGradeFileButton />
+        <UploadGradeFileButton reload={reload} />
 
         <Link href={TEMPLATE_FILE} target="_blank">
           File mẫu
