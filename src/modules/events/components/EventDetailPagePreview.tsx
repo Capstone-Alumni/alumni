@@ -36,8 +36,6 @@ const EventDetailPagePreview = ({ data }: { data: Event }) => {
   const theme = useTheme();
   const pathname = usePathname();
 
-  const eventId = pathname?.split('/')[2] || '';
-
   const eventStatus = useMemo(() => {
     if (!data) {
       return 'not-open';
@@ -197,7 +195,7 @@ const EventDetailPagePreview = ({ data }: { data: Event }) => {
       ) : null}
 
       {tabKey === 'participant' ? (
-        <EventParticipantListTab eventId={eventId} />
+        <EventParticipantListTab eventId={eventData.id} />
       ) : null}
     </Box>
   );
