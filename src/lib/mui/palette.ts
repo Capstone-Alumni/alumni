@@ -1,6 +1,9 @@
 import { alpha, Palette } from '@mui/material';
 import GREEN_PALETTE from './paletteList/green';
 import PURPLE_PALETTE from './paletteList/purple';
+import BLUE_PALETTE from './paletteList/blue';
+import YELLOW_PALETTE from './paletteList/yellow';
+import RED_PALETTE from './paletteList/red';
 
 // ----------------------------------------------------------------------
 
@@ -49,6 +52,9 @@ declare module '@mui/material' {
 const PALETTE_LIST: { [key: string]: any } = {
   green: GREEN_PALETTE,
   purple: PURPLE_PALETTE,
+  blue: BLUE_PALETTE,
+  yellow: YELLOW_PALETTE,
+  red: RED_PALETTE,
 };
 
 export const getPalette = (paletteName: string) => {

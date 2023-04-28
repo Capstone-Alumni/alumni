@@ -11,7 +11,9 @@ import {
   InputAdornment,
   MenuItem,
   Paper,
+  Stack,
   TextField,
+  Typography,
   useTheme,
 } from '@mui/material';
 
@@ -189,11 +191,40 @@ const EditSChoolForm = ({
             {...field}
           >
             {[
-              { id: 'purple', value: 'purple', label: 'Tím' },
-              { id: 'green', value: 'green', label: 'Xanh lá' },
+              { id: 'red', value: 'red', label: 'Đỏ', color: '#FF3030' },
+              { id: 'purple', value: 'purple', label: 'Tím', color: '#7635dc' },
+              {
+                id: 'blue',
+                value: 'blue',
+                label: 'Xanh dương',
+                color: '#078DEE',
+              },
+              {
+                id: 'green',
+                value: 'green',
+                label: 'Xanh lá',
+                color: '#00AB55',
+              },
+              {
+                id: 'yellow',
+                value: 'yellow',
+                label: 'Vàng',
+                color: '#FDA92D',
+              },
             ]?.map(option => (
               <MenuItem key={option.id} value={option.value}>
-                {option.label}
+                <Stack direction="row" alignItems="center">
+                  <Box
+                    sx={{
+                      width: theme.spacing(2),
+                      height: theme.spacing(2),
+                      backgroundColor: option.color,
+                      borderRadius: '50%',
+                      mr: theme.spacing(1),
+                    }}
+                  />
+                  <Typography>{option.label}</Typography>
+                </Stack>
               </MenuItem>
             ))}
           </TextField>
