@@ -122,6 +122,7 @@ const ProfileInformationSection = ({
               isPrivacy
               userInformationData={userInformation}
               name="dateOfBirthPublicity"
+              isAllowToView={openEdit}
             />
           )}
         </Box>

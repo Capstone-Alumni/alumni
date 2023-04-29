@@ -92,6 +92,10 @@ const ProfileCareerTab = () => {
     }
   };
 
+  if (careerListData && careerListData.length === 0 && !canEditProfile) {
+    return;
+  }
+
   return (
     <>
       <Card sx={{ width: '100%' }}>

@@ -25,7 +25,7 @@ const useRejcetAccessRequest = () => {
         toast.error('Xảy ra lỗi');
       },
       onSuccess: () => {
-        toast.info('Yêu cầu đã bị từ chối');
+        toast.info('Đã từ chối yêu cầu gia nhập');
       },
     },
   );

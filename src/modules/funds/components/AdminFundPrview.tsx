@@ -38,7 +38,6 @@ export default function AdminFundPreview({
               width: '100%',
               padding: '2rem',
               maxWidth: '80vw',
-              height: '100vh',
             },
           },
         }}
