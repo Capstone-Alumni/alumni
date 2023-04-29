@@ -22,13 +22,14 @@ const useGetAccessRequestList = () => {
     GetAccessRequestListParams,
     GetAccessRequestListResponse,
     GetAccessRequestListError
-  >('getAccessRequestList', ({ page, limit, alumniId }) => ({
+  >('getAccessRequestList', ({ page, limit, alumniId, name }) => ({
     method: 'GET',
     url: '/api/access_requests',
     params: {
       page,
       limit,
       alumniId,
+      name,
     },
   }));
 

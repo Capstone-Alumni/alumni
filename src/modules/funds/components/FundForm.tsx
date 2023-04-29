@@ -105,6 +105,12 @@ const FundForm = ({
         borderRadius: `${theme.shape.borderRadius}px`,
       }}
     >
+      <UploadBackgroundInput
+        control={control}
+        name="backgroundImage"
+        inputProps={{ label: 'Hình ảnh đại diện bài gây quỹ' }}
+        containerSx={{ width: '100%' }}
+      />
       <TextInput
         control={control}
         name="title"
@@ -118,12 +124,6 @@ const FundForm = ({
           placeholder: 'Số tiền mục tiêu',
           label: 'Số tiền mục tiêu',
         }}
-      />
-      <UploadBackgroundInput
-        control={control}
-        name="backgroundImage"
-        inputProps={{ label: 'Hình ảnh đại diện bài gây quỹ' }}
-        containerSx={{ width: '100%' }}
       />
 
       <RichTextInput

@@ -36,7 +36,7 @@ export default class AccessRequestController {
     res: NextApiResponse<ApiSuccessResponse | ApiErrorResponse>,
   ) => {
     const { id } = req.user;
-    const { page, limit, status } = req.query;
+    const { page, limit, status, name } = req.query;
     const prisma = await getPrismaClient(req.tenantId);
 
     const accessRequestList = await AccessRequestService.getAccessRequestList(
@@ -46,6 +46,7 @@ export default class AccessRequestController {
         page: page ? parseInt(page as string, 10) : 1,
         limit: limit ? parseInt(limit as string, 10) : 99,
         status: status ? parseInt(status as string, 10) : undefined,
+        name: (name as string) || '',
       },
     );
     return res.status(200).json({
@@ -150,7 +151,9 @@ export default class AccessRequestController {
       to: accessRequest.email,
       subject: 'Từ chối yêu cầu gia nhập',
       text: `
-Yêu cầu tham gia cộng đồng cựu học sinh của bạn đã bị từ chối.
+      Gửi ${accessRequest.fullName}
+
+Yêu cầu tham gia nền tảng kết nối cựu học sinh của bạn đã bị từ chối vì lý do người kiểm duyệt nhận thấy có sự sai xót thông tin trong yêu cầu gia nhập của bạn.
 
       `,
     });

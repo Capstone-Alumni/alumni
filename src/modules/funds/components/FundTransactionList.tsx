@@ -25,10 +25,18 @@ import Link from '@share/components/NextLinkV2';
 import { formatDate } from '@share/utils/formatDate';
 import { formatAmountMoney } from '../utils';
 
-const FundTransactionListTab = ({ isAdmin }: { isAdmin?: boolean }) => {
+const FundTransactionListTab = ({
+  isAdmin,
+  fundIdProps,
+}: {
+  isAdmin?: boolean;
+  fundIdProps?: string;
+}) => {
   const pathname = usePathname();
   const fundId =
-    (isAdmin ? pathname?.split('/')[4] : pathname?.split('/')[2]) || '';
+    fundIdProps ||
+    (isAdmin ? pathname?.split('/')[4] : pathname?.split('/')[2]) ||
+    '';
 
   const [params, setParams] = useRecoilState(getFundTransactionListParamsAtom);
   const { data, isLoading } = useGetFundTransactionList(fundId);

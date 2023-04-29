@@ -12,13 +12,13 @@ import ActionButton from '@share/components/ActionButton';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
-import { Member } from '../types';
+import { AlumniToClass, Member } from '../types';
 import { MemberFormValues } from './MemberForm';
 import { differenceInHours } from 'date-fns';
 import useResendInvitationMemberById from '../hooks/useResendInvitationMemberById';
 import { useRecoilValue } from 'recoil';
 import { Alumni, currentTenantDataAtom } from '@share/states';
-import { isEmpty } from 'lodash';
+import { isEmpty, sortBy } from 'lodash';
 import MemberInforDetails from './MemberInforDetails';
 import { Grade } from 'src/modules/gradeAndClass/types';
 
@@ -52,6 +52,11 @@ export const renderStatus = (
   );
 };
 
+export const getClassesSorted = (alumniToClasses: AlumniToClass[]) => {
+  const classesSorted = sortBy(alumniToClasses, ['alumClass.name']);
+  return classesSorted;
+};
+
 const AdminMemberListItem = ({
   data,
   onDelete,
@@ -83,7 +88,7 @@ const AdminMemberListItem = ({
         initGrades.push(it.alumClass?.grade);
       }
     });
-    return initGrades;
+    return sortBy(initGrades, ['code']);
   };
 
   return (
@@ -104,7 +109,7 @@ const AdminMemberListItem = ({
           ))}
         </TableCell>
         <TableCell align="left">
-          {data?.alumniToClass?.map(({ alumClass }) => (
+          {getClassesSorted(data?.alumniToClass).map(({ alumClass }) => (
             <Chip
               key={alumClass.id}
               label={alumClass.name}

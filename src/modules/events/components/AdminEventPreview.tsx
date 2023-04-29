@@ -36,8 +36,7 @@ export default function AdminEventPreview({
             '& .MuiPaper-root': {
               width: '100%',
               padding: '2rem',
-              maxWidth: '90vw',
-              height: '100vh',
+              maxWidth: '80vw',
             },
           },
         }}

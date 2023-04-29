@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Box,
   Divider,
@@ -31,6 +33,7 @@ import { formatAmountMoney } from '../utils';
 import Image from 'next/image';
 import MyAvatar from '@share/components/MyAvatar';
 import Link from '@share/components/NextLinkV2';
+import FundTransactionListTab from './FundTransactionList';
 
 const AdminFundDetailPage = ({ fundData }: { fundData: Fund }) => {
   const [tabKey, setTabKey] = useState('description');
@@ -218,6 +221,7 @@ const AdminFundDetailPage = ({ fundData }: { fundData: Fund }) => {
         >
           <Tab value="description" label="Mô tả" />
           <Tab value="report" label="Hoạt động" />
+          <Tab value="transaction" label="Danh sách ủng hộ" />
         </Tabs>
 
         {tabKey === 'description' ? (
@@ -228,6 +232,12 @@ const AdminFundDetailPage = ({ fundData }: { fundData: Fund }) => {
 
         {tabKey === 'report' ? (
           <Box sx={{ my: 2 }}>{renderFundReport()}</Box>
+        ) : null}
+
+        {tabKey === 'transaction' ? (
+          <Box sx={{ my: 2 }}>
+            <FundTransactionListTab isAdmin fundIdProps={fundData.id} />
+          </Box>
         ) : null}
       </Box>
     </Box>

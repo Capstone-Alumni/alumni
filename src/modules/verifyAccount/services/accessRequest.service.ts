@@ -20,7 +20,14 @@ export default class AccessRequestService {
       limit,
       alumniId,
       status,
-    }: { page: number; limit: number; alumniId: string; status?: number },
+      name,
+    }: {
+      page: number;
+      limit: number;
+      alumniId: string;
+      status?: number;
+      name?: string;
+    },
   ) => {
     const alumni = await tenantPrisma.alumni.findUnique({
       where: {
@@ -52,7 +59,16 @@ export default class AccessRequestService {
     );
     const gradeIdList = alumni.gradeMod.map(({ gradeId }) => gradeId);
 
-    let whereFilter: Prisma.AccessRequestWhereInput = {};
+    let whereFilter: Prisma.AccessRequestWhereInput = {
+      OR: [
+        {
+          fullName: { contains: name, mode: 'insensitive' },
+        },
+        {
+          email: { contains: name, mode: 'insensitive' },
+        },
+      ],
+    };
     if (!alumni.isOwner) {
       whereFilter = {
         OR: [
