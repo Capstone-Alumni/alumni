@@ -3,7 +3,7 @@
 import { Box, Button, Typography, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import AdminGradeListTable from './AdminGradeListTable';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import GradeForm from './GradeForm';
 
 import useCreateGrade, { CreateGradeParams } from '../hooks/useCreateGrade';
@@ -49,6 +49,10 @@ const AdminGradeListPage = () => {
     await updateGradeById({ gradeId, code, startYear, endYear });
     reload();
   };
+
+  useEffect(() => {
+    reload();
+  }, []);
 
   return (
     <Box
