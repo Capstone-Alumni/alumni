@@ -35,7 +35,7 @@ export default function AdminJobPreview({
             '& .MuiPaper-root': {
               width: '100%',
               padding: '1rem',
-              maxWidth: '90vw',
+              maxWidth: '80vw',
               height: '100vh',
             },
           },

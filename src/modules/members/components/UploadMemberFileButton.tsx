@@ -22,7 +22,9 @@ const LOADING_TOAST_ID = 'member file';
 const UploadMemeberFileButton = () => {
   const theme = useTheme();
   const [uploading, setUploading] = useState(false);
-  const [importResult, setImportResult] = useState<any>();
+  const [dupResult, setDupResult] = useState<any>();
+  const [successResult, setSuccessResult] = useState<any>();
+  const [result, setResult] = useState<any>();
 
   const setParams = useSetRecoilState(getGradeListParamsAtom);
   const { id: tenantId } = useRecoilValue(currentTenantDataAtom);
@@ -40,12 +42,16 @@ const UploadMemeberFileButton = () => {
   const { reload } = useGetMemberList();
 
   const onUploadFile = async (file?: File) => {
-    setUploading(true);
-    toast.loading('Đang xử lý', { toastId: LOADING_TOAST_ID });
-
     if (!file) {
       return;
     }
+
+    setDupResult(0);
+    setSuccessResult(0);
+    setResult(undefined);
+
+    setUploading(true);
+    toast.loading('Đang xử lý', { toastId: LOADING_TOAST_ID });
 
     const jsonData = await parseXLSX(file);
 
@@ -156,16 +162,28 @@ const UploadMemeberFileButton = () => {
         tenantId: tenantId,
       });
 
-      if (existingAlumni.length > 0) {
-        const existingData = data.splice(0, 2);
-        existingAlumni.forEach((al: any, index) => {
-          const excelData = data.find((d: any) => d?.[4] === al.email);
-          existingData.push(excelData);
-        });
-        setImportResult(existingData);
+      setDupResult(existingAlumni.length);
+
+      setSuccessResult(data.length - 2 - existingAlumni.length);
+
+      const resultForDownload: any[] = data.splice(0, 2);
+      if (resultForDownload[1]?.length < 9) {
+        resultForDownload[1].push('Kết quả');
       } else {
-        setImportResult(formattedData.length);
+        resultForDownload[1][8] = 'Kết quả';
       }
+      data.forEach((item: any) => {
+        const newItem = [...item];
+        const existed = existingAlumni.find(al => al.email === item?.[4]);
+        const msg = existed ? 'Không được gửi lời mời' : 'Đã gửi lời mời';
+        if (newItem.length < 9) {
+          newItem.push(msg);
+        } else {
+          newItem[8] = msg;
+        }
+        resultForDownload.push(newItem);
+      });
+      setResult(resultForDownload);
 
       toast.dismiss(LOADING_TOAST_ID);
       setUploading(false);
@@ -182,61 +200,82 @@ const UploadMemeberFileButton = () => {
     }
   };
 
-  const downloadResult = () => {
+  const downloadResult = (data: any) => {
     const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.aoa_to_sheet(importResult);
+    const worksheet = XLSX.utils.aoa_to_sheet(data);
     workbook.SheetNames.push('Sheet 1');
     workbook.Sheets['Sheet 1'] = worksheet;
     XLSX.writeFile(workbook, 'existed.xlsx');
   };
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        gap: theme.spacing(2),
-        alignItems: 'center',
-        mb: 2,
-      }}
-    >
-      <Box sx={{ position: 'relative' }}>
-        <Button variant="outlined" onClick={noop} disabled={uploading}>
-          Tải file lên
-        </Button>
-        <input
-          type="file"
-          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-          disabled={uploading}
-          onChange={e => onUploadFile(e.target.files?.[0])}
-          onClick={(e: any) => {
-            e.target.value = null;
-          }}
-          style={{
-            width: '100px',
-            height: '30px',
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            opacity: 0,
-          }}
-        />
+    <>
+      {' '}
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          gap: theme.spacing(2),
+          alignItems: 'center',
+          mb: 2,
+        }}
+      >
+        <Box sx={{ position: 'relative' }}>
+          <Button variant="outlined" onClick={noop} disabled={uploading}>
+            Tải file lên
+          </Button>
+          <input
+            type="file"
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+            disabled={uploading}
+            onChange={e => onUploadFile(e.target.files?.[0])}
+            onClick={(e: any) => {
+              e.target.value = null;
+            }}
+            style={{
+              width: '100px',
+              height: '30px',
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              opacity: 0,
+            }}
+          />
+        </Box>
+
+        <Link href={TEMPLATE_FILE} target="_blank">
+          File mẫu
+        </Link>
       </Box>
-
-      <Link href={TEMPLATE_FILE} target="_blank">
-        File mẫu
-      </Link>
-
-      {importResult && importResult.length > 2 ? (
-        <Button onClick={downloadResult} color="warning">
-          Có {importResult.length - 2} email đã tồn tại
-        </Button>
+      {result ? (
+        <Box
+          sx={{
+            backgroundColor: theme.palette.background.neutral,
+            borderRadius: theme.shape.borderRadiusSm + 'px',
+            borderWidth: '2px',
+            borderStyle: 'solid',
+            borderColor: theme.palette.divider,
+            mb: 2,
+            p: 2,
+          }}
+        >
+          <Typography color="success">
+            Có {successResult} thành viên đã được gửi lời mời
+          </Typography>
+          <Typography color="error">
+            Có {dupResult} thành viên không được gửi lời mời vì email đã tồn tại
+          </Typography>
+          <Button
+            variant="outlined"
+            onClick={() => downloadResult(result)}
+            sx={{ mt: 1 }}
+          >
+            Tải kết quả xuống
+          </Button>
+        </Box>
       ) : null}
-      {importResult && typeof importResult === 'number' ? (
-        <Typography>Đã tải lên thành công {importResult} thành viên</Typography>
-      ) : null}
-    </Box>
+    </>
   );
 };
 

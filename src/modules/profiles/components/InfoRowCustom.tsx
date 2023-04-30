@@ -1,4 +1,4 @@
-import { Box, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Grid, IconButton, Typography, useTheme } from '@mui/material';
 import FormDialogs from '@share/components/material-ui/dialog/FormDialogs';
 import React from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -34,14 +34,17 @@ const ProfileInfoRow = ({
           }}
         >
           <Typography sx={{ whiteSpace: 'initial', wordWrap: 'break-word' }}>
-            {content ? content : 'Chưa cập nhập'}
+            {content ? content : 'Chưa cập nhật'}
           </Typography>
         </Box>
+
+        <Box sx={{ flex: 1 }} />
+
+        <Box sx={{ flex: 1 }} />
         {isPrivacy && isAllowToView && (
           <Box
             sx={{
-              width: '150px',
-              marginRight: '1rem',
+              marginRight: 1,
               alignItems: 'center',
               display: 'flex',
             }}
@@ -51,14 +54,9 @@ const ProfileInfoRow = ({
               userInformation={userInformationData}
               editType="visibility"
             >
-              <Box
-                sx={{
-                  height: '24px',
-                  cursor: 'pointer',
-                }}
-              >
+              <IconButton>
                 <VisibilityIcon />
-              </Box>
+              </IconButton>
             </FormDialogs>
           </Box>
         )}

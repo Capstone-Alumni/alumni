@@ -231,7 +231,7 @@ const EventDetailPage = () => {
                       new Date(eventData.endTime),
                       'dd/MM/yyyy - HH:ss',
                     )
-                  : 'Chưa cập nhập'}
+                  : 'Chưa cập nhật'}
               </Typography>
             </Stack>
           </Stack>

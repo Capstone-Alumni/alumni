@@ -194,7 +194,7 @@ const UserCareers = ({
                                 ? `${new Date(item.endDate).toLocaleDateString(
                                     'en-GB',
                                   )}`
-                                : null
+                                : 'Đang công tác/làm việc'
                             }
                           />
                         </Box>

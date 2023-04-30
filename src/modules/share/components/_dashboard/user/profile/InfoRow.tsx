@@ -10,7 +10,7 @@ const ProfileInfoRow = ({ title, content }: any) => {
         <Typography style={{ fontWeight: 'bold' }}>{title}</Typography>
       </Grid>
       <Grid item xs={8} style={{ textAlign: 'left' }}>
-        <Typography>{content ? content : 'Chưa cập nhập'}</Typography>
+        <Typography>{content ? content : 'Chưa cập nhật'}</Typography>
       </Grid>
     </Grid>
   );

@@ -1,11 +1,12 @@
 'use client';
 
-import { Box, Chip, Link, Typography } from '@mui/material';
+import { Box, Chip, Typography } from '@mui/material';
 import { formatDate } from '@share/utils/formatDate';
 import { getImageOfNews } from '@share/utils/getFirstImageOfNews';
 import React from 'react';
 import { News, TagsNews } from '../types';
 import PublicNewsCardItemImage from './PublicNewsCardItemImage';
+import Link from '@share/components/NextLinkV2';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 const PublicNewsCardItems = ({ item, sx }: { item: News; sx?: any }) => {
   const srcImg = item.newsImageUrl
@@ -23,11 +24,9 @@ const PublicNewsCardItems = ({ item, sx }: { item: News; sx?: any }) => {
       }}
     >
       <Link
-        sx={{
+        style={{
           color: 'inherit',
-          '&:focus, &:hover, &:visited, &:link, &:active': {
-            textDecoration: 'none',
-          },
+          textDecoration: 'none',
         }}
         href={`/news/${item.id}`}
       >

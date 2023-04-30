@@ -29,9 +29,7 @@ const ViewReportListItem = ({
     <>
       <TableRow sx={{ fontSize: '14px', verticalAlign: 'baseline' }}>
         <TableCell align="left" sx={{ cursor: 'pointer', maxWidth: '6rem' }}>
-          <Tooltip title="Xem tóm tắt công việc">
-            <Typography fontSize="inherit">{data.fullName}</Typography>
-          </Tooltip>
+          <Typography fontSize="inherit">{data.fullName}</Typography>
         </TableCell>
         <TableCell align="left" sx={{ maxWidth: '9rem' }}>
           <Typography fontSize="inherit">{data.email}</Typography>

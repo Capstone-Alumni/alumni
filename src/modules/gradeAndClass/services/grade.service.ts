@@ -47,19 +47,23 @@ export default class GradeService {
       throw new Error('not exist');
     }
 
-    const newGrade = await tenantPrisma.grade.upsert({
+    const checkNewGrade = await tenantPrisma.grade.findUnique({
       where: {
         startYear_endYear: {
           startYear: grade?.startYear + 1,
           endYear: grade?.endYear + 1,
         },
       },
-      create: {
+    });
+
+    if (checkNewGrade) {
+      throw new Error('existed');
+    }
+
+    const newGrade = await tenantPrisma.grade.create({
+      data: {
         startYear: grade?.startYear + 1,
         endYear: grade?.endYear + 1,
-      },
-      update: {
-        archived: false,
       },
     });
 

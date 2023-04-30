@@ -13,6 +13,7 @@ export type GetAccessRequestListParams = {
   page?: number;
   limit?: number;
   alumniId?: string;
+  name?: string;
 };
 
 export type AccessRequest = {

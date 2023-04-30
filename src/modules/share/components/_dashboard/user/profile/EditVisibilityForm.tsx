@@ -90,7 +90,7 @@ export default function EditVisibilityForm({
             được ẩn/hiện phù hợp với mong muốn của bạn.
           </DialogContentText>
         </Stack>
-        <Box>
+        <Box sx={{ minHeight: '6.5rem' }}>
           <Stack sx={{ py: '0.25rem' }}>
             <Box
               sx={{
