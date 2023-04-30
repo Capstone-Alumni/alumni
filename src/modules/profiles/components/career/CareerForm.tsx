@@ -15,9 +15,7 @@ import DateInput from '@share/components/form/DateInput';
 
 const CareerForm = ({ defaultValues, onSave, onClose }: any) => {
   const theme = useTheme();
-  const [isWorking, setIsWorking] = useState<boolean>(
-    !Boolean(defaultValues?.endDate),
-  );
+  const [isWorking, setIsWorking] = useState<boolean>(!defaultValues?.endDate);
   const {
     formState: { isSubmitting },
     handleSubmit,

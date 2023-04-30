@@ -44,11 +44,11 @@ const ProfileCareerTab = () => {
 
   const onAddWork = async (values: any, isWorking: boolean) => {
     try {
-      if (!isWorking && !Boolean(values.endDate)) {
+      if (!isWorking && !values.endDate) {
         toast.error('Vui lòng nhập ngày kết thúc');
         return;
       }
-      if (!Boolean(values.startDate)) {
+      if (!values.startDate) {
         toast.error('Vui lòng nhập ngày bắt đầu');
         return;
       }
@@ -77,11 +77,11 @@ const ProfileCareerTab = () => {
   };
 
   const onUpdateWork = async (values: any, isWorking: boolean) => {
-    if (!isWorking && !Boolean(values.endDate)) {
+    if (!isWorking && !values.endDate) {
       toast.error('Vui lòng nhập ngày kết thúc');
       return;
     }
-    if (!Boolean(values.startDate)) {
+    if (!values.startDate) {
       toast.error('Vui lòng nhập ngày bắt đầu');
       return;
     }
