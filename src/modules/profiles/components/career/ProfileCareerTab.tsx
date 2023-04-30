@@ -42,11 +42,19 @@ const ProfileCareerTab = () => {
 
   const careerListData = userCareersResponse?.data?.data?.items;
 
-  const onAddWork = async (values: any) => {
+  const onAddWork = async (values: any, isWorking: boolean) => {
     try {
+      if (!isWorking && !values.endDate) {
+        toast.error('Vui lòng nhập ngày kết thúc');
+        return;
+      }
+      if (!values.startDate) {
+        toast.error('Vui lòng nhập ngày bắt đầu');
+        return;
+      }
       if (
         values.endDate &&
-        new Date(values.endDate) < new Date(values.startDate)
+        new Date(values.endDate) <= new Date(values.startDate)
       ) {
         toast.error('Ngày kết thúc phải lớn hơn ngày bắt đầu');
         return;
@@ -68,10 +76,18 @@ const ProfileCareerTab = () => {
     }
   };
 
-  const onUpdateWork = async (id: any, values: any) => {
+  const onUpdateWork = async (values: any, isWorking: boolean) => {
+    if (!isWorking && !values.endDate) {
+      toast.error('Vui lòng nhập ngày kết thúc');
+      return;
+    }
+    if (!values.startDate) {
+      toast.error('Vui lòng nhập ngày bắt đầu');
+      return;
+    }
     if (
       values.endDate &&
-      new Date(values.endDate) < new Date(values.startDate)
+      new Date(values.endDate) <= new Date(values.startDate)
     ) {
       toast.error('Ngày kết thúc phải lớn hơn ngày bắt đầu');
       return;
@@ -138,7 +154,9 @@ const ProfileCareerTab = () => {
 
           {openAddForm ? (
             <CareerForm
-              onSave={(values: any) => onAddWork(values)}
+              onSave={(values: any, isWorking: boolean) =>
+                onAddWork(values, isWorking)
+              }
               onClose={() => setOpenAddForm(false)}
             />
           ) : null}
@@ -150,7 +168,9 @@ const ProfileCareerTab = () => {
                   {selectedEditId === item.id ? (
                     <CareerForm
                       defaultValues={item}
-                      onSave={(values: any) => onUpdateWork(item.id, values)}
+                      onSave={(values: any, isWorking: boolean) =>
+                        onUpdateWork(values, isWorking)
+                      }
                       onClose={() => setSelectedEditId(null)}
                     />
                   ) : (
@@ -184,7 +204,7 @@ const ProfileCareerTab = () => {
                               ? `${new Date(item.endDate).toLocaleDateString(
                                   'en-GB',
                                 )}`
-                              : null
+                              : 'Đang công tác/làm việc'
                           }
                         />
                       </Box>
