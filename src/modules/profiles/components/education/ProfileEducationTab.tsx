@@ -48,7 +48,8 @@ const ProfileEducationTab = () => {
       }
       if (
         values.endDate &&
-        new Date(values.endDate) <= new Date(values.startDate)
+        new Date(values.endDate).setHours(0, 0, 0, 0) <=
+          new Date(values.startDate).setHours(0, 0, 0, 0)
       ) {
         toast.error('Ngày kết thúc phải lớn hơn ngày bắt đầu');
         return;
@@ -80,7 +81,8 @@ const ProfileEducationTab = () => {
       }
       if (
         values.endDate &&
-        new Date(values.endDate) <= new Date(values.startDate)
+        new Date(values.endDate).setHours(0, 0, 0, 0) <=
+          new Date(values.startDate).setHours(0, 0, 0, 0)
       ) {
         toast.error('Ngày kết thúc phải lớn hơn ngày bắt đầu');
         return;
