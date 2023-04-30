@@ -143,7 +143,7 @@ const JobDetailPage = () => {
         }}
       >
         <Image
-          src={jobData.companyImageUrl}
+          src={jobData?.companyImageUrl || '/side_background.png'}
           alt="Job-image"
           fill
           style={{ objectFit: 'cover' }}

@@ -15,6 +15,8 @@ const EducationForm = ({ defaultValues, onSave, onClose }: any) => {
   } = useForm({
     defaultValues: {
       ...defaultValues,
+      startDate: defaultValues?.startDate || new Date(),
+      endDate: defaultValues?.endDate || new Date(),
     },
   });
 
@@ -71,7 +73,7 @@ const EducationForm = ({ defaultValues, onSave, onClose }: any) => {
           label: 'Thời gian kết thúc',
           name: 'endDate',
           type: 'date',
-          require: false,
+          require: true,
         },
       ].map((item: any) => {
         switch (item.type) {

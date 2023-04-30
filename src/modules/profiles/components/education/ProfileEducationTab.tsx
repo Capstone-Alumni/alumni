@@ -42,9 +42,13 @@ const ProfileEducationTab = () => {
 
   const onAddEducation = async (values: any) => {
     try {
+      if (!Boolean(values.startDate) || !Boolean(values.endDate)) {
+        toast.error('Vui lòng nhập đầy đủ ngày bắt đầu và ngày kết thúc');
+        return;
+      }
       if (
         values.endDate &&
-        new Date(values.endDate) < new Date(values.startDate)
+        new Date(values.endDate) <= new Date(values.startDate)
       ) {
         toast.error('Ngày kết thúc phải lớn hơn ngày bắt đầu');
         return;
@@ -70,9 +74,13 @@ const ProfileEducationTab = () => {
 
   const onUpdateEducation = async (id: any, values: any) => {
     try {
+      if (!Boolean(values.startDate) || !Boolean(values.endDate)) {
+        toast.error('Vui lòng nhập đầy đủ ngày bắt đầu và ngày kết thúc');
+        return;
+      }
       if (
         values.endDate &&
-        new Date(values.endDate) < new Date(values.startDate)
+        new Date(values.endDate) <= new Date(values.startDate)
       ) {
         toast.error('Ngày kết thúc phải lớn hơn ngày bắt đầu');
         return;

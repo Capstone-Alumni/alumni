@@ -54,7 +54,7 @@ const UserCareers = ({
   const onDeleteWork = async (id: string) => {
     const currentData = [...workData];
 
-    const deleteIndex = currentData.findIndex(item => item.id === id);
+    const deleteIndex = currentData.findIndex((item) => item.id === id);
     currentData.splice(deleteIndex, 1);
 
     try {
@@ -68,7 +68,7 @@ const UserCareers = ({
   const onUpdateWork = async (id: any, values: any) => {
     const currentData = [...workData];
 
-    const updateIndex = currentData.findIndex(item => item.id === id);
+    const updateIndex = currentData.findIndex((item) => item.id === id);
 
     currentData[updateIndex] = values;
 
@@ -194,7 +194,7 @@ const UserCareers = ({
                                 ? `${new Date(item.endDate).toLocaleDateString(
                                     'en-GB',
                                   )}`
-                                : null
+                                : 'Đang công tác/làm việc'
                             }
                           />
                         </Box>

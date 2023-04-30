@@ -172,7 +172,7 @@ const EventDetailPagePreview = ({ data }: { data: Event }) => {
                       new Date(eventData.endTime),
                       'dd/MM/yyyy - HH:ss',
                     )
-                  : 'Chưa cập nhập'}
+                  : 'Chưa cập nhật'}
               </Typography>
             </Stack>
           </Stack>
