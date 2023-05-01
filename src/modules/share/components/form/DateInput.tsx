@@ -20,7 +20,7 @@ const DateInput = ({
     <Controller
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState: { error } }) => (
         <DatePicker
           inputFormat="dd/MM/yyyy"
           {...field}
@@ -31,6 +31,8 @@ const DateInput = ({
               type="date"
               {...textProps}
               fullWidth={inputProps?.fullWidth || false}
+              error={!!error}
+              helperText={error?.message}
             />
           )}
         />
