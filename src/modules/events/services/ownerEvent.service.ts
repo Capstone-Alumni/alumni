@@ -175,7 +175,6 @@ export default class OwnerEventService {
       payload.grade = {
         connect: { id: gradeId },
       };
-      payload.isPublicSchool = false;
     }
 
     const newEvent = await tenantPrisma.event.update({
