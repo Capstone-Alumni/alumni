@@ -151,11 +151,12 @@ export default class AccessRequestController {
       to: accessRequest.email,
       subject: 'Từ chối yêu cầu gia nhập',
       text: `
-      Kính gửi ${accessRequest.fullName}
+<pre>
+Kính gửi ${accessRequest.fullName}
 
 Yêu cầu tham gia cộng đồng cựu học sinh của bạn đã bị từ chối vì lý do:
 ${req.body?.message || 'Thông tin chưa chính xác'}
-
+</pre>
       `,
     });
 
