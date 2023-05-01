@@ -2,7 +2,9 @@ import {
   Box,
   Button,
   IconButton,
+  Modal,
   Stack,
+  TextField,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -17,6 +19,7 @@ import useGetAccessRequestList from '../hooks/useGetAccessRequestList';
 import useRejcetAccessRequest from '../hooks/useRejectAccessRequest';
 import { formatDate } from '@share/utils/formatDate';
 import { Chip } from '@mui/material';
+import { useState } from 'react';
 
 const renderRequestStatus = (status: number) => {
   if (status === 0) {
@@ -64,6 +67,11 @@ const AdminAccessRequestDetailBox = ({
 }) => {
   const theme = useTheme();
 
+  const [openRejectModal, setOpenRejectModal] = useState(false);
+  const [rejectMsg, setRejectMsg] = useState<string>(
+    'Thông tin chưa chính xác',
+  );
+
   const { reload } = useGetAccessRequestList();
   const { reject, isLoading: rejecting } = useRejcetAccessRequest();
   const { approve, isLoading: approving } = useApproveAccessRequest();
@@ -75,7 +83,7 @@ const AdminAccessRequestDetailBox = ({
   };
 
   const onReject = async () => {
-    await reject({ id: data.id });
+    await reject({ id: data.id, message: rejectMsg });
     reload();
     onClose?.();
   };
@@ -150,7 +158,7 @@ const AdminAccessRequestDetailBox = ({
         <Button
           variant="contained"
           color="error"
-          onClick={onReject}
+          onClick={() => setOpenRejectModal(true)}
           disabled={data.requestStatus !== 0 || rejecting || approving}
         >
           Từ chối
@@ -163,6 +171,47 @@ const AdminAccessRequestDetailBox = ({
         >
           Chấp nhận
         </Button>
+
+        <Modal open={openRejectModal} onClose={() => setOpenRejectModal(false)}>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: 400,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              gap: theme.spacing(2),
+              padding: theme.spacing(2),
+              border: 1,
+              borderColor: theme.palette.divider,
+              borderRadius: `${theme.shape.borderRadius}px`,
+              backgroundColor: theme.palette.background.neutral,
+            }}
+          >
+            <Box sx={{ width: '100%' }}>
+              <Typography variant="h6">Lý do từ chối</Typography>
+            </Box>
+
+            <TextField
+              value={rejectMsg}
+              onChange={e => setRejectMsg(e.target.value)}
+              multiline
+              sx={{ width: '100%' }}
+            />
+
+            <Button
+              variant="contained"
+              color="error"
+              disabled={!rejectMsg || rejecting}
+              onClick={onReject}
+            >
+              Từ chối
+            </Button>
+          </Box>
+        </Modal>
       </Stack>
     </Box>
   );

@@ -151,9 +151,10 @@ export default class AccessRequestController {
       to: accessRequest.email,
       subject: 'Từ chối yêu cầu gia nhập',
       text: `
-      Gửi ${accessRequest.fullName}
+      Kính gửi ${accessRequest.fullName}
 
-Yêu cầu tham gia nền tảng kết nối cựu học sinh của bạn đã bị từ chối vì lý do người kiểm duyệt nhận thấy có sự sai xót thông tin trong yêu cầu gia nhập của bạn.
+Yêu cầu tham gia cộng đồng cựu học sinh của bạn đã bị từ chối vì lý do:
+${req.body?.message || 'Thông tin chưa chính xác'}
 
       `,
     });

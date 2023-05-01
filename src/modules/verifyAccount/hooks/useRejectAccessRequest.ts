@@ -3,6 +3,7 @@ import useApi from 'src/modules/share/hooks/useApi';
 
 type RejcetAccessRequestParams = {
   id: string;
+  message: string;
 };
 
 type RejcetAccessRequestResponse = unknown;
@@ -16,9 +17,12 @@ const useRejcetAccessRequest = () => {
     RejcetAccessRequestError
   >(
     'rejcetAccessRequest',
-    ({ id }) => ({
+    ({ id, message }) => ({
       method: 'PUT',
       url: `/api/access_requests/${id}/reject`,
+      data: {
+        message,
+      },
     }),
     {
       onError: () => {
