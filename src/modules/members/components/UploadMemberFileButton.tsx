@@ -157,24 +157,29 @@ const UploadMemeberFileButton = () => {
         ];
       }, []);
 
-      const existingAlumni = await createManyMember({
-        data: formattedData,
-        tenantId: tenantId,
-      });
-
-      setDupResult(existingAlumni.length);
-
-      setSuccessResult(data.length - 2 - existingAlumni.length);
-
       const resultForDownload: any[] = data.splice(0, 2);
       if (resultForDownload[1]?.length < 9) {
         resultForDownload[1].push('Kết quả');
       } else {
         resultForDownload[1][8] = 'Kết quả';
       }
+
+      const existingAlumni = await createManyMember({
+        data: formattedData,
+        tenantId: tenantId,
+      });
+      const noEmailAlumni = data.reduce(
+        (count: number, item: any) => (!item?.[4] ? count + 1 : count),
+        0,
+      );
+      setDupResult(existingAlumni.length + noEmailAlumni);
+
+      setSuccessResult(data.length - existingAlumni.length - noEmailAlumni);
+
       data.forEach((item: any) => {
         const newItem = [...item];
-        const existed = existingAlumni.find(al => al.email === item?.[4]);
+        const existed =
+          existingAlumni.find(al => al.email === item?.[4]) || !item?.[4];
         const msg = existed ? 'Không được gửi lời mời' : 'Đã gửi lời mời';
         if (newItem.length < 9) {
           newItem.push(msg);
@@ -205,7 +210,7 @@ const UploadMemeberFileButton = () => {
     const worksheet = XLSX.utils.aoa_to_sheet(data);
     workbook.SheetNames.push('Sheet 1');
     workbook.Sheets['Sheet 1'] = worksheet;
-    XLSX.writeFile(workbook, 'existed.xlsx');
+    XLSX.writeFile(workbook, 'member_result.xlsx');
   };
 
   return (
@@ -264,7 +269,8 @@ const UploadMemeberFileButton = () => {
             Có {successResult} thành viên đã được gửi lời mời
           </Typography>
           <Typography color="error">
-            Có {dupResult} thành viên không được gửi lời mời vì email đã tồn tại
+            Có {dupResult} thành viên không được gửi lời mời vì email đã tồn
+            tại, hoặc không có email
           </Typography>
           <Button
             variant="outlined"

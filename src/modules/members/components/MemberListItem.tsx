@@ -23,6 +23,7 @@ import MemberInforDetails from './MemberInforDetails';
 import { Grade } from 'src/modules/gradeAndClass/types';
 
 export const renderStatus = (
+  hasEmail: boolean,
   lastLogin: string | undefined,
   createdAt: string,
 ) => {
@@ -30,6 +31,14 @@ export const renderStatus = (
     return (
       <Button variant="outlined" color="success">
         Đã đăng nhập
+      </Button>
+    );
+  }
+
+  if (!hasEmail) {
+    return (
+      <Button variant="outlined" color="info">
+        Không gửi được lời mời
       </Button>
     );
   }
@@ -118,7 +127,11 @@ const AdminMemberListItem = ({
           ))}
         </TableCell>
         <TableCell align="left">
-          {renderStatus(data.lastLogin, data.createdAt)}
+          {renderStatus(
+            !!data?.information?.email,
+            data.lastLogin,
+            data.createdAt,
+          )}
         </TableCell>
         <TableCell align="center">
           <ActionButton

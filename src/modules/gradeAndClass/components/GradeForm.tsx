@@ -25,8 +25,8 @@ export type GradeFormValues = {
 
 const validationSchema = yup.object({
   code: yup.string(),
-  startYear: yup.date().required('Bắt buộc'),
-  endYear: yup.date().required('Bắt buộc'),
+  startYear: yup.date().typeError('Bắt buộc').required('Bắt buộc'),
+  endYear: yup.date().typeError('Bắt buộc').required('Bắt buộc'),
 });
 
 const GradeForm = ({
@@ -44,16 +44,17 @@ const GradeForm = ({
   const resolver = useYupValidateionResolver(validationSchema);
 
   const getStartYear = (date: Date) => {
-    const startDate = new Date(date).setFullYear(date.getFullYear() - 3);
+    const startDate = new Date(date).setFullYear(date?.getFullYear() - 3);
     return new Date(startDate);
   };
 
   const getEndYear = (date: Date) => {
-    const endDate = new Date(date).setFullYear(date.getFullYear() + 3);
+    const endDate = new Date(date).setFullYear(date?.getFullYear() + 3);
     return new Date(endDate);
   };
 
-  const { control, handleSubmit, watch, setValue } = useForm({
+  const { control, handleSubmit, watch, setValue, clearErrors } = useForm({
+    mode: 'all',
     defaultValues: {
       code: initialData?.code ?? '',
       startYear: initialData?.startYear
@@ -70,6 +71,7 @@ const GradeForm = ({
 
   useEffect(() => {
     const date = getEndYear(startYearWatcher);
+    clearErrors('endYear');
     setValue('endYear', date);
   }, [startYearWatcher]);
 

@@ -34,6 +34,7 @@ import { getGradeListParamsAtom } from 'src/modules/gradeAndClass/state';
 import { Icon } from '@iconify/react';
 import { useSession } from 'next-auth/react';
 import { Class } from 'src/modules/gradeAndClass/types';
+import { toast } from 'react-toastify';
 
 export type MemberFormValues = {
   fullName: string;
@@ -91,9 +92,13 @@ const MemberForm = ({
 
   const onSubmitHandler = async (values: MemberFormValues) => {
     setSubmitting(true);
-    await onSubmit(values);
+    if (!values.gradeClass[0].alumClass.id) {
+      toast.error('Chưa chọn niên khoá, lớp');
+    } else {
+      await onSubmit(values);
+      onClose?.();
+    }
     setSubmitting(false);
-    onClose?.();
   };
 
   return (

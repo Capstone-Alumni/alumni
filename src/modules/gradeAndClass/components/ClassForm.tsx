@@ -14,7 +14,7 @@ export type ClassFormValues = {
 };
 
 const validationSchema = yup.object({
-  name: yup.string(),
+  name: yup.string().required('Bắt buộc'),
   // description: yup.string(),
 });
 
@@ -71,8 +71,14 @@ const ClassForm = ({
       <Controller
         control={control}
         name="name"
-        render={({ field }) => (
-          <TextField fullWidth label="Tên lớp" {...field} />
+        render={({ field, fieldState: { error } }) => (
+          <TextField
+            fullWidth
+            label="Tên lớp"
+            {...field}
+            error={!!error}
+            helperText={error?.message}
+          />
         )}
       />
 

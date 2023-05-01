@@ -128,7 +128,11 @@ const ProfileInformationEditSection = ({
           <TextInput
             control={control}
             name="email"
-            inputProps={{ label: 'Địa chỉ Email', fullWidth: true }}
+            inputProps={{
+              label: 'Địa chỉ Email',
+              fullWidth: true,
+              disabled: true,
+            }}
           />
         </Stack>
 

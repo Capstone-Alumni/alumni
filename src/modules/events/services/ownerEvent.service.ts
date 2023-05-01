@@ -1,4 +1,4 @@
-import { AccessLevel, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { PrismaClient } from '@prisma/client';
 
 export default class OwnerEventService {
@@ -109,6 +109,7 @@ export default class OwnerEventService {
       payload.grade = {
         connect: { id: gradeId },
       };
+      payload.isPublicSchool = false;
     }
 
     const data = await tenantPrisma.event.create({
@@ -131,9 +132,7 @@ export default class OwnerEventService {
       location,
       startTime,
       endTime,
-      isEnded,
       gradeId,
-      publicity,
       publicParticipant,
     }: {
       title: string;
@@ -145,7 +144,6 @@ export default class OwnerEventService {
       isEnded: boolean;
       endTime?: Date;
       gradeId?: string;
-      publicity: AccessLevel;
       publicParticipant?: boolean;
     },
   ) => {

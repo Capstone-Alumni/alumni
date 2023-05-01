@@ -23,7 +23,7 @@ const useSetPassword = () => {
         toast.error('Xảy ra lỗi, vui lòng thử lại sau ít phút');
       },
       onSuccess: () => {
-        toast.success('Đặt lại mật khẩu thành công');
+        toast.success('Thiết lập mật khẩu thành công');
       },
     },
   );
