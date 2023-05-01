@@ -15,6 +15,7 @@ export default class MemberService {
       alumniId,
       facebook,
       dateOfBirth,
+      email,
       ...memberData
     }: CreateMemberServiceProps,
   ) => {
@@ -38,6 +39,7 @@ export default class MemberService {
     await tenantPrisma.information.create({
       data: {
         ...memberData,
+        email: email && email.length ? email : null,
         dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
         alumniId: member.id,
         facebookUrl: facebook,
