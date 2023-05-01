@@ -1,13 +1,21 @@
-import { Box, Button, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import deepPurple from '@mui/material/colors/deepPurple';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import TextInput from '@share/components/form/TextInput';
 import DateInput from '@share/components/form/DateInput';
 
 const CareerForm = ({ defaultValues, onSave, onClose }: any) => {
   const theme = useTheme();
+  const [isWorking, setIsWorking] = useState<boolean>(!defaultValues?.endDate);
   const {
     formState: { isSubmitting },
     handleSubmit,
@@ -15,11 +23,23 @@ const CareerForm = ({ defaultValues, onSave, onClose }: any) => {
   } = useForm({
     defaultValues: {
       ...defaultValues,
+      startDate: defaultValues?.startDate || new Date(),
+      endDate: defaultValues?.endDate || new Date(),
     },
   });
 
   const onSubmit = async (values: any) => {
-    await onSave(values);
+    if (isWorking) {
+      await onSave(
+        {
+          ...values,
+          endDate: null,
+        },
+        isWorking,
+      );
+    } else {
+      await onSave(values, isWorking);
+    }
   };
 
   return (
@@ -70,6 +90,12 @@ const CareerForm = ({ defaultValues, onSave, onClose }: any) => {
           type: 'date',
           require: false,
         },
+        {
+          label: 'Đang công tác/làm việc',
+          name: 'isWorking',
+          type: 'checkbox',
+          require: false,
+        },
       ].map((item: any) => {
         switch (item.type) {
           case 'text':
@@ -93,6 +119,7 @@ const CareerForm = ({ defaultValues, onSave, onClose }: any) => {
                 inputProps={{
                   label: item.label,
                   required: item.require,
+                  disabled: item.name === 'endDate' ? isWorking : false,
                 }}
                 textProps={{
                   sx: {
@@ -101,6 +128,20 @@ const CareerForm = ({ defaultValues, onSave, onClose }: any) => {
                 }}
                 key={item.id}
               />
+            );
+          case 'checkbox':
+            return (
+              <Box sx={{ width: '100%' }}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={isWorking}
+                      onChange={() => setIsWorking(!isWorking)}
+                    />
+                  }
+                  label={item.label}
+                />
+              </Box>
             );
           default:
             return null;

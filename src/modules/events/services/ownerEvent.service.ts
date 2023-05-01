@@ -171,6 +171,7 @@ export default class OwnerEventService {
     if (gradeId === 'all') {
       payload.isPublicSchool = true;
     } else {
+      payload.isPublicSchool = false;
       payload.grade = {
         connect: { id: gradeId },
       };

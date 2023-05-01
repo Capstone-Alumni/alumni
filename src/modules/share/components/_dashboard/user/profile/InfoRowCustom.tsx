@@ -34,7 +34,7 @@ const ProfileInfoRow = ({
           }}
         >
           <Typography sx={{ whiteSpace: 'initial', wordWrap: 'break-word' }}>
-            {content ? content : 'Chưa cập nhập'}
+            {content ? content : 'Chưa cập nhật'}
           </Typography>
         </Box>
         {isPrivacy && isAllowToView && (
