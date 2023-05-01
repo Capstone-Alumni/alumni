@@ -2,10 +2,15 @@ import { useState } from 'react';
 // material
 import { Button, Dialog, Box } from '@mui/material';
 import EditVisibilityForm from '@share/components/_dashboard/user/profile/EditVisibilityForm';
-import { Information, ScopePublicity } from '@prisma/client';
+import { ScopePublicity } from '@prisma/client';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import { mappingScopPublicity } from 'src/utils/mappingPublicity';
+import GroupIcon from '@mui/icons-material/Group';
+import GroupsIcon from '@mui/icons-material/Groups';
+import PublicIcon from '@mui/icons-material/Public';
+import LockIcon from '@mui/icons-material/Lock';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 // ----------------------------------------------------------------------
 interface FormDialogsProps {
@@ -33,6 +38,21 @@ export default function FormDialogs({
     setOpen(false);
   };
 
+  const handleRenderIcon = (scope: string) => {
+    switch (scope) {
+      case 'Chỉ mình tôi':
+        return <LockIcon />;
+      case 'Lớp':
+        return <GroupIcon />;
+      case 'Khoá':
+        return <GroupsIcon />;
+      case 'Trường':
+        return <PublicIcon />;
+      default:
+        return <VisibilityIcon />;
+    }
+  };
+
   return (
     <div>
       {children ? (
@@ -45,7 +65,9 @@ export default function FormDialogs({
             }
           >
             <IconButton sx={{ height: '24px', width: '24px' }}>
-              {children}
+              {handleRenderIcon(
+                mappingScopPublicity[userInformation[name] as ScopePublicity],
+              )}
             </IconButton>
           </Tooltip>
         </Box>

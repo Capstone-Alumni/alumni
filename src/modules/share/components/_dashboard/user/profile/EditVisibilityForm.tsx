@@ -90,7 +90,7 @@ export default function EditVisibilityForm({
             được ẩn/hiện phù hợp với mong muốn của bạn.
           </DialogContentText>
         </Stack>
-        <Box sx={{ minHeight: '6.5rem' }}>
+        <Box sx={{ minHeight: '2.5rem' }}>
           <Stack sx={{ py: '0.25rem' }}>
             <Box
               sx={{
@@ -114,7 +114,7 @@ export default function EditVisibilityForm({
                   handleOnChange(value, name);
                 }}
                 sx={{ width: 300 }}
-                renderInput={params => (
+                renderInput={(params) => (
                   <TextField {...params} label="Ai có thể xem" size="small" />
                 )}
               />

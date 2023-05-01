@@ -112,14 +112,30 @@ const CareerForm = ({ defaultValues, onSave, onClose }: any) => {
               />
             );
           case 'date':
-            return (
+            return item.name === 'endDate' ? (
+              !isWorking && (
+                <DateInput
+                  control={control}
+                  name={item.name}
+                  inputProps={{
+                    label: item.label,
+                    required: item.require,
+                  }}
+                  textProps={{
+                    sx: {
+                      width: '100%',
+                    },
+                  }}
+                  key={item.id}
+                />
+              )
+            ) : (
               <DateInput
                 control={control}
                 name={item.name}
                 inputProps={{
                   label: item.label,
                   required: item.require,
-                  disabled: item.name === 'endDate' ? isWorking : false,
                 }}
                 textProps={{
                   sx: {
