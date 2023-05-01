@@ -25,6 +25,7 @@ import { useEffect, useState } from 'react';
 import usePublicGetJobById from '../hooks/usePublicGetJobById';
 import usePublicApplyJobById from '../hooks/usePublicApplyJobById';
 import usePublicUpdateResumeById from '../hooks/usePublicUpdateResumeById';
+import usePublicDeleteResumeById from '../hooks/usePublicDeleteResumeById';
 import usePublicGetAppliedJobListById, {
   GetAppliedJobListByIdResponse,
 } from '../hooks/usePublicGetAppliedJobListById';
@@ -37,6 +38,7 @@ import { useForm } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
 import UsersAppliedJobPreview from './UsersAppliedJobPreview';
 import MyAvatar from '@share/components/MyAvatar';
+import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 
 const StyledGeneralInfomation = styled(Box)(({ theme }) => ({
   flex: 1,
@@ -74,6 +76,7 @@ const JobDetailPage = () => {
   const { data, fetchApi, isLoading } = usePublicGetJobById();
   const { fetchApi: postApplyJobApi } = usePublicApplyJobById();
   const { fetchApi: putUpdateResumeByIdApi } = usePublicUpdateResumeById();
+  const { fetchApi: deleteResumeByIdApi } = usePublicDeleteResumeById();
   const {
     data: dataGetAppliedJobListById,
     fetchApi: getAppliedJobListByIdApi,
@@ -92,6 +95,12 @@ const JobDetailPage = () => {
 
   const handlePutResume = async (value: string, applicationId: string) => {
     await putUpdateResumeByIdApi({ jobId, applicationId, resumeUrl: value });
+    await getAppliedJobListByIdApi({ jobId });
+  };
+
+  const handleDeleteResume = async (applicationId: string) => {
+    await deleteResumeByIdApi({ jobId, applicationId });
+    await getAppliedJobListByIdApi({ jobId });
   };
 
   const handleCheckUserAppliedJob = (
@@ -282,7 +291,7 @@ const JobDetailPage = () => {
               startIcon={<AppRegistrationIcon />}
               sx={{ mb: 1 }}
             >
-              Tải lên CV
+              Tải lên hồ sơ
               <UploadFileInput
                 fileType={{ 'application/pdf': ['.pdf'] }}
                 control={control}
@@ -320,52 +329,69 @@ const JobDetailPage = () => {
               currentUserInformation.id,
               dataGetAppliedJobListById,
             ) && (
-            <Box>
-              <Button
-                fullWidth
-                variant="contained"
-                startIcon={<AppRegistrationIcon />}
-                sx={{ mb: 1 }}
-              >
-                Chỉnh sửa CV
-                <UploadFileInput
-                  maxSize={5000000}
-                  control={control}
-                  fileType={{ 'application/pdf': ['.pdf'] }}
-                  onSuccess={(value) =>
-                    handlePutResume(
-                      value,
-                      getApplicationId(
-                        currentUserInformation.id,
-                        dataGetAppliedJobListById,
-                      ),
-                    )
-                  }
-                  name="resumeUrl"
-                  containerSx={{
-                    opacity: '0',
-                    position: 'absolute',
-                    top: '0',
-                    left: '0',
-                    width: '100%',
-                    height: '100%',
-                    '& label': {
-                      display: 'none',
-                    },
-                    '& .MuiBox-root': {
-                      height: '2.25rem',
-                      '& div': {
-                        height: '2.25rem',
-                        padding: 0,
-                      },
-                    },
-                  }}
-                />
-              </Button>
-                <Typography variant="body2" color="#919eab" textAlign="center">
-                  Định dạng .pdf tối đa 5MB
-                </Typography>
-            </Box>
+              <Box>
+                <Box>
+                  <Button
+                    fullWidth
+                    color="error"
+                    variant="outlined"
+                    startIcon={<PlaylistRemoveIcon />}
+                    sx={{ mb: 1 }}
+                    onClick={() => handleDeleteResume(getApplicationId(
+                      currentUserInformation.id,
+                      dataGetAppliedJobListById,
+                    ))}
+                  >
+                    Huỷ hồ sơ
+                  </Button>
+                </Box>
+                <Box>     
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    startIcon={<AppRegistrationIcon />}
+                    sx={{ mb: 1 }}
+                  >
+                    Đổi hồ sơ
+                    <UploadFileInput
+                      maxSize={5000000}
+                      control={control}
+                      fileType={{ 'application/pdf': ['.pdf'] }}
+                      onSuccess={(value) =>
+                        handlePutResume(
+                          value,
+                          getApplicationId(
+                            currentUserInformation.id,
+                            dataGetAppliedJobListById,
+                          ),
+                        )
+                      }
+                      name="resumeUrl"
+                      containerSx={{
+                        opacity: '0',
+                        position: 'absolute',
+                        top: '0',
+                        left: '0',
+                        width: '100%',
+                        height: '100%',
+                        '& label': {
+                          display: 'none',
+                        },
+                        '& .MuiBox-root': {
+                          height: '2.25rem',
+                          '& div': {
+                            height: '2.25rem',
+                            padding: 0,
+                          },
+                        },
+                      }}
+                    />
+                  </Button>
+                  <Typography variant="body2" color="#919eab" textAlign="center">
+                    Định dạng .pdf tối đa 5MB
+                  </Typography>
+                </Box>
+              </Box>
           )
         )}
       </Box>

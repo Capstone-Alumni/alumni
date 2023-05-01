@@ -123,11 +123,8 @@ export default class ApplicationService {
         throw new Error('You are not allowed to delete this application');
       }
     }
-    const deleted = await tenantPrisma.recruitmentApplication.update({
+    const deleted = await tenantPrisma.recruitmentApplication.delete({
       where: { id: applicationId },
-      data: {
-        archived: true,
-      },
     });
 
     await tenantPrisma.$disconnect();
