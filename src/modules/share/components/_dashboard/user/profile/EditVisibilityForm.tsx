@@ -114,7 +114,7 @@ export default function EditVisibilityForm({
                   handleOnChange(value, name);
                 }}
                 sx={{ width: 300 }}
-                renderInput={(params) => (
+                renderInput={params => (
                   <TextField {...params} label="Ai có thể xem" size="small" />
                 )}
               />
