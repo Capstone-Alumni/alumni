@@ -210,7 +210,7 @@ const UploadMemeberFileButton = () => {
     const worksheet = XLSX.utils.aoa_to_sheet(data);
     workbook.SheetNames.push('Sheet 1');
     workbook.Sheets['Sheet 1'] = worksheet;
-    XLSX.writeFile(workbook, 'existed.xlsx');
+    XLSX.writeFile(workbook, 'member_result.xlsx');
   };
 
   return (
