@@ -179,7 +179,7 @@ export default function UploadAvatar({
               />
               {!hideShowGuideText ? (
                 <Typography variant="caption">
-                  {file ? 'Cập nhập' : 'Tải ảnh lên'}
+                  {file ? 'Cập nhật' : 'Tải ảnh lên'}
                 </Typography>
               ) : null}
             </PlaceholderStyle>

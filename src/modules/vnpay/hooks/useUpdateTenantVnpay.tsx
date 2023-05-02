@@ -28,10 +28,10 @@ const useUpdateTenantVnpay = () => {
     }),
     {
       onError: () => {
-        toast.error('Cập nhập thất bại');
+        toast.error('Cập nhật thất bại');
       },
       onSuccess: () => {
-        toast.success('Cập nhập thành công');
+        toast.success('Cập nhật thành công');
       },
     },
   );

@@ -157,7 +157,7 @@ export default function UploadBackground({
               sx={{ width: 24, height: 24, mb: 1 }}
             />
             <Typography variant="caption">
-              {file ? 'Cập nhập' : 'Tải ảnh lên'}
+              {file ? 'Cập nhật' : 'Tải ảnh lên'}
             </Typography>
           </PlaceholderStyle>
         </DropZoneStyle>

@@ -26,10 +26,10 @@ const useUpdateFundReport = () => {
     }),
     {
       onError: () => {
-        toast.error('Cập nhập báo cáo thất bại');
+        toast.error('Cập nhật báo cáo thất bại');
       },
       onSuccess: () => {
-        toast.success('Cập nhập báo cáo thành công');
+        toast.success('Cập nhật báo cáo thành công');
       },
     },
   );

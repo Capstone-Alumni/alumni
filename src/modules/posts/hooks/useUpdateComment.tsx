@@ -37,10 +37,10 @@ const useUpdateComment = (postId: string) => {
     }),
     {
       onError: () => {
-        toast.error('Cập nhập bình luận thất bại');
+        toast.error('Cập nhật bình luận thất bại');
       },
       onSuccess: ({ data }) => {
-        toast.success('Cập nhập bình luận thành công');
+        toast.success('Cập nhật bình luận thành công');
         setNewUpdate(data);
       },
     },
