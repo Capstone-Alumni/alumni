@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Divider, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { Box, styled, useTheme } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import { useSearchParams } from 'next/navigation';
@@ -100,10 +100,6 @@ const SocialSidebar = () => {
             <Box sx={{ flex: 1 }} />
           </StyledNavItem>
         ))}
-        <Divider sx={{ width: '100%', my: 2 }} />
-        <Button variant="contained" fullWidth>
-          Thêm lớp
-        </Button>
       </StyledNav>
     </StyledNavWrapper>
   );
