@@ -59,7 +59,7 @@ const AdminFundEditPage = () => {
         aria-label="wrapped tabs"
       >
         <Tab value="info" label="Thông tin cơ bản" />
-        <Tab value="report" label="Cập nhập hoạt động" />
+        <Tab value="report" label="Cập nhật hoạt động" />
         {tenantData?.vnp_tmnCode ? (
           <Tab value="transaction" label="Danh sách ủng hộ" />
         ) : null}

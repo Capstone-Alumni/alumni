@@ -34,13 +34,13 @@ const useUpdateTenantById = () => {
         if (response?.status === 400) {
           toast.error('Subdomain đã tồn tại');
         } else if (response?.status === 403) {
-          toast.error('Không được cập nhập subdomain');
+          toast.error('Không được cập nhật subdomain');
         } else {
-          toast.error('Cập nhập thất bại');
+          toast.error('Cập nhật thất bại');
         }
       },
       onSuccess: ({ data }) => {
-        toast.success('Cập nhập thành công');
+        toast.success('Cập nhật thành công');
         // router.push('/dashboard/tenants');
         window.open(getTenantHost(data.subdomain), '_self');
       },

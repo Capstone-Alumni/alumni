@@ -102,7 +102,7 @@ const SeachPage = () => {
                                 size="small"
                                 color="warning"
                               >
-                                Chưa gia nhập
+                                Chưa gia nhật
                               </Button>
                             )}
                           </Stack>

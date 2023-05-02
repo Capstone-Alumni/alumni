@@ -30,7 +30,7 @@ export const renderStatus = (
   if (lastLogin) {
     return (
       <Button variant="outlined" color="success">
-        Đã đăng nhập
+        Đã đăng nhật
       </Button>
     );
   }

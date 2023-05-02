@@ -46,7 +46,7 @@ const SignInForm = () => {
           }}
         >
           <Typography mb={2} variant="h4">
-            Đăng nhập
+            Đăng nhật
           </Typography>
 
           <Controller
@@ -105,7 +105,7 @@ const SignInForm = () => {
             disabled={signing}
             onClick={handleSubmit(onSubmit)}
           >
-            Đăng nhập
+            Đăng nhật
           </Button>
         </Box>
       </Box>

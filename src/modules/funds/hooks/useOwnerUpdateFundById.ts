@@ -28,10 +28,10 @@ const useOwnerUpdateFundById = () => {
     }),
     {
       onError: () => {
-        toast.error('Cập nhập quỹ thất bại');
+        toast.error('Cập nhật quỹ thất bại');
       },
       onSuccess: () => {
-        toast.success('Cập nhập quỹ thành công');
+        toast.success('Cập nhật quỹ thành công');
         router.push('/admin/action/funds');
       },
     },

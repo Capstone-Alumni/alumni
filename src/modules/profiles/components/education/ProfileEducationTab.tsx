@@ -43,7 +43,7 @@ const ProfileEducationTab = () => {
   const onAddEducation = async (values: any) => {
     try {
       if (!values.startDate || !values.endDate) {
-        toast.error('Vui lòng nhập đầy đủ ngày bắt đầu và ngày kết thúc');
+        toast.error('Vui lòng nhật đầy đủ ngày bắt đầu và ngày kết thúc');
         return;
       }
       if (
@@ -76,7 +76,7 @@ const ProfileEducationTab = () => {
   const onUpdateEducation = async (id: any, values: any) => {
     try {
       if (!values.startDate || !values.endDate) {
-        toast.error('Vui lòng nhập đầy đủ ngày bắt đầu và ngày kết thúc');
+        toast.error('Vui lòng nhật đầy đủ ngày bắt đầu và ngày kết thúc');
         return;
       }
       if (

@@ -172,7 +172,7 @@ export default function ChangePasswordModal({
                             }
                           />
                           <TextField
-                            label="Nhập lại mật khẩu mới"
+                            label="nhật lại mật khẩu mới"
                             type="password"
                             fullWidth
                             {...getFieldProps('newPasswordConfirmation')}

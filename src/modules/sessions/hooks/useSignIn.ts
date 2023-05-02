@@ -23,7 +23,7 @@ export default function useSignIn() {
             // TODO: handle error
             toast.error('Mật khẩu hoặc email không chính xác');
           } else {
-            toast.success('Đăng nhập thành công');
+            toast.success('Đăng nhật thành công');
             router.push('/');
           }
         });

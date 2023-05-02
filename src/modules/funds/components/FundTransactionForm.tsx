@@ -23,9 +23,9 @@ const FundTransactionForm = ({
     amount: yup
       .number()
       .typeError('Bắt buộc')
-      .min(10000, 'Số tiền tối đa là 10,000đ')
+      .min(10000, 'Số tiền tối thiểu là 10,000đ')
       .max(maxDonate / 100, `Số tiền tối đa là ${formatAmountMoney(maxDonate)}`)
-      .required('Bắt buộc nhập'),
+      .required('Bắt buộc nhật'),
     incognito: yup.boolean().required('Bắt buộc'),
   });
 
