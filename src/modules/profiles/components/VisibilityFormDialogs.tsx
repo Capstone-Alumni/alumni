@@ -72,7 +72,7 @@ export default function VisibilityFormDialogs({
             <IconButton sx={{ height: '24px', width: '24px' }}>
               {handleRenderIcon(
                 mappingScopPublicity[
-                  userInformation.information[name] as ScopePublicity
+                  userInformation?.information[name] as ScopePublicity
                 ],
               )}
             </IconButton>
