@@ -28,10 +28,10 @@ const useOwnerUpdateJobById = () => {
     }),
     {
       onError: () => {
-        toast.error('Cập nhật công việc thất bại');
+        toast.error('Cập nhập công việc thất bại');
       },
       onSuccess: () => {
-        toast.success('Cập nhật công việc thành công');
+        toast.success('Cập nhập công việc thành công');
         router.push('/recruitments/posted_jobs');
       },
     },

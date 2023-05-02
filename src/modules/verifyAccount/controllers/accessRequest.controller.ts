@@ -149,7 +149,7 @@ export default class AccessRequestController {
 
     await sendMailService({
       to: accessRequest.email,
-      subject: 'Từ chối yêu cầu gia nhật',
+      subject: 'Từ chối yêu cầu gia nhập',
       text: `
 <pre>
 Kính gửi ${accessRequest.fullName}

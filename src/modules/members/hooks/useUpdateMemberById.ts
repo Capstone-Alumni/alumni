@@ -24,10 +24,10 @@ const useUpdateMemberById = () => {
     }),
     {
       onError: () => {
-        toast.error('Cập nhật thông tin thất bại');
+        toast.error('Cập nhập thông tin thất bại');
       },
       onSuccess: () => {
-        toast.success('Cập nhật thông tin thành công');
+        toast.success('Cập nhập thông tin thành công');
       },
     },
   );

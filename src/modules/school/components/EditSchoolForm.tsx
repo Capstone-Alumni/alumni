@@ -172,7 +172,7 @@ const EditSChoolForm = ({
           control={control}
           name="background3"
           inputProps={{
-            label: 'Hình nền đăng nhật/đăng ký',
+            label: 'Hình nền đăng nhập/đăng ký',
             sx: { margin: 0 },
           }}
         />

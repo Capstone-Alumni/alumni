@@ -42,7 +42,7 @@ const ConfirmUpdateModal = ({
 
           <Typography>
             Sau khi thực hiện thao tác này, chúng tôi sẽ dẫn bạn tới trang web
-            mới của mình, bạn có thể phải đăng nhật lại. Bạn có chắc chắn muốn
+            mới của mình, bạn có thể phải đăng nhập lại. Bạn có chắc chắn muốn
             thực hiện thao tác?
           </Typography>
         </Box>

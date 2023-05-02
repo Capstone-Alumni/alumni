@@ -29,10 +29,10 @@ const usePublicUpdateResumeById = () => {
     }),
     {
       onError: () => {
-        toast.error('Cập nhật CV thất bại');
+        toast.error('Cập nhập CV thất bại');
       },
       onSuccess: () => {
-        toast.success('Cập nhật CV thành công');
+        toast.success('Cập nhập CV thành công');
         router.push('/recruitments/applied');
       },
     },

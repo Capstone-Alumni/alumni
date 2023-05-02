@@ -30,10 +30,10 @@ const useUpdateGradeById = () => {
     }),
     {
       onError: () => {
-        toast.error('Cập nhật thông tin niên khoá thất bại');
+        toast.error('Cập nhập thông tin niên khoá thất bại');
       },
       onSuccess: () => {
-        toast.success('Cập nhật thông tin niên khoá thành công');
+        toast.success('Cập nhập thông tin niên khoá thành công');
       },
     },
   );

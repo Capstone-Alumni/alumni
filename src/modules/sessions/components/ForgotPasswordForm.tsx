@@ -58,7 +58,7 @@ const ForgotPasswordForm = () => {
               <TextField
                 fullWidth
                 sx={{ width: '100%' }}
-                label="Vui lòng nhật địa chỉ email"
+                label="Vui lòng nhập địa chỉ email"
                 {...field}
               />
             )}
@@ -76,7 +76,7 @@ const ForgotPasswordForm = () => {
                 Có tài khoản?
               </Typography>
               <Link href="/sign_in">
-                <Typography variant="subtitle2">Đăng nhật tại đây</Typography>
+                <Typography variant="subtitle2">Đăng nhập tại đây</Typography>
               </Link>
             </Box>
           </Box>

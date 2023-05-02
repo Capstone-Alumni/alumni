@@ -94,7 +94,7 @@ const FeaturesSection = () => {
               'Và nhiều tính năng hơn nữa'
             ) : (
               <>
-                Hãy <Link href="/sign_in">đăng nhật</Link> để sử dụng nhiều tín
+                Hãy <Link href="/sign_in">đăng nhập</Link> để sử dụng nhiều tín
                 năng hơn
               </>
             )}

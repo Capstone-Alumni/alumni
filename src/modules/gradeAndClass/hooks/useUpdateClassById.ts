@@ -27,10 +27,10 @@ const useUpdateClassById = () => {
     }),
     {
       onError: () => {
-        toast.error('Cập nhật thông tin lớp thất bại');
+        toast.error('Cập nhập thông tin lớp thất bại');
       },
       onSuccess: () => {
-        toast.success('Cập nhật thông tin lớp thành công');
+        toast.success('Cập nhập thông tin lớp thành công');
       },
     },
   );

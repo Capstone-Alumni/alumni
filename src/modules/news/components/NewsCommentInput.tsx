@@ -13,7 +13,7 @@ import { CreateOrUpdateNewComment } from '../types';
 import { useSession } from 'next-auth/react';
 
 const validationNewsComment = yup.object({
-  commentContent: yup.string().required('Chưa nhật nội dung'),
+  commentContent: yup.string().required('Chưa nhập nội dung'),
 });
 
 const NewsCommentInput = ({
@@ -101,7 +101,7 @@ const NewsCommentInput = ({
               rows={4}
               fullWidth
               disabled={!user || !isVerified}
-              label={user ? 'Bình luận' : 'Đăng nhật để bình luận'}
+              label={user ? 'Bình luận' : 'Đăng nhập để bình luận'}
               {...field}
             />
           );

@@ -49,7 +49,7 @@ const useUpdateNews = () => {
     }),
     {
       onError: () => {
-        toast.error('Cập nhật thất bại');
+        toast.error('Cập nhập thất bại');
       },
       onSuccess: () => {
         toast.success('Cập nhật thành công');

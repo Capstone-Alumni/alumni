@@ -174,7 +174,7 @@ const SignUpForm = () => {
               Đã có tài khoản?
             </Typography>
             <Link href="/sign_in">
-              <Typography variant="subtitle2">Đăng nhật tại đây</Typography>
+              <Typography variant="subtitle2">Đăng nhập tại đây</Typography>
             </Link>
           </Box>
         </Box>

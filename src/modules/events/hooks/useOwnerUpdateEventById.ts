@@ -28,10 +28,10 @@ const useOwnerUpdateEventById = () => {
     }),
     {
       onError: () => {
-        toast.error('Cập nhật sự kiện thất bại');
+        toast.error('Cập nhập sự kiện thất bại');
       },
       onSuccess: () => {
-        toast.success('Cập nhật sự kiện thành công');
+        toast.success('Cập nhập sự kiện thành công');
         router.push('/admin/action/event');
       },
     },

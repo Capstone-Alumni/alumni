@@ -32,10 +32,10 @@ const useUpdatePost = () => {
     }),
     {
       onError: () => {
-        toast.error('Cập nhật bài đăng thất bại');
+        toast.error('Cập nhập bài đăng thất bại');
       },
       onSuccess: ({ data }) => {
-        toast.success('Cập nhật bài đăng thành công');
+        toast.success('Cập nhập bài đăng thành công');
         setNewPost(data);
       },
     },
