@@ -8,6 +8,11 @@ import IconButton from '@mui/material/IconButton';
 import { mappingScopPublicity } from 'src/utils/mappingPublicity';
 import { useCanEditProfile } from '../helpers/canEditProfile';
 import { useGetUserInformationQuery } from '@redux/slices/userProfileSlice';
+import GroupIcon from '@mui/icons-material/Group';
+import GroupsIcon from '@mui/icons-material/Groups';
+import PublicIcon from '@mui/icons-material/Public';
+import LockIcon from '@mui/icons-material/Lock';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 // ----------------------------------------------------------------------
 interface FormDialogsProps {
@@ -36,6 +41,21 @@ export default function VisibilityFormDialogs({
     setOpen(false);
   };
 
+  const handleRenderIcon = (scope: string) => {
+    switch (scope) {
+      case 'Chỉ mình tôi':
+        return <LockIcon />;
+      case 'Lớp':
+        return <GroupIcon />;
+      case 'Khoá':
+        return <GroupsIcon />;
+      case 'Trường':
+        return <PublicIcon />;
+      default:
+        return <VisibilityIcon />;
+    }
+  };
+
   return (
     <div>
       {children ? (
@@ -50,7 +70,11 @@ export default function VisibilityFormDialogs({
             }
           >
             <IconButton sx={{ height: '24px', width: '24px' }}>
-              {children}
+              {handleRenderIcon(
+                mappingScopPublicity[
+                  userInformation.information[name] as ScopePublicity
+                ],
+              )}
             </IconButton>
           </Tooltip>
         </Box>
