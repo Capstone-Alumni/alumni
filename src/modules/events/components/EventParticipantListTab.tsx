@@ -90,7 +90,7 @@ const EventParticipantListTab = ({ eventId }: { eventId: string }) => {
             colSpan={2}
             currentPage={params.page}
             totalPage={Math.ceil(
-              data?.data.totalItems / data?.data.itemPerPage,
+              (data?.data.totalItems || 1) / (data?.data.itemPerPage || 1),
             )}
             onChangePage={nextPage => {
               setParams(prevParams => ({ ...prevParams, page: nextPage }));

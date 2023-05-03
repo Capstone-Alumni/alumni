@@ -47,7 +47,7 @@ const AdminEventListTable = ({
               colSpan={6}
               currentPage={page}
               totalPage={Math.ceil(
-                data.data.totalItems / data.data.itemPerPage,
+                (data.data.totalItems || 1) / (data.data.itemPerPage || 1),
               )}
               onChangePage={onChangePage}
             />

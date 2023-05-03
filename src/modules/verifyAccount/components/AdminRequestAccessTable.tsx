@@ -88,8 +88,8 @@ const AdminAccessRequestTable = () => {
             colSpan={7}
             currentPage={params.page}
             totalPage={Math.ceil(
-              accessRequestListData.totalItems /
-                accessRequestListData.itemPerPage,
+              (accessRequestListData.totalItems || 1) /
+                (accessRequestListData.itemPerPage || 1),
             )}
             onChangePage={(nextPage: number) => {
               setParams(prevParams => ({ ...prevParams, page: nextPage }));

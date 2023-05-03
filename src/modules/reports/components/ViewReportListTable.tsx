@@ -65,7 +65,9 @@ const ViewReportListTable = ({
           <DataTablePagination
             colSpan={6}
             currentPage={page}
-            totalPage={Math.ceil(data.totalItems / data.itemPerPage)}
+            totalPage={Math.ceil(
+              (data.totalItems || 1) / (data.itemPerPage || 1),
+            )}
             onChangePage={onChangePage}
           />
         </Table>
