@@ -56,7 +56,9 @@ const UploadMemeberFileButton = () => {
     const jsonData = await parseXLSX(file);
 
     // format data
-    const data = Object.values(jsonData);
+    const data = Object.values(jsonData).filter((item: any) =>
+      item.find((it: any) => !!it),
+    );
 
     // precheck header
     try {
@@ -194,6 +196,7 @@ const UploadMemeberFileButton = () => {
       setUploading(false);
       reload();
     } catch (err) {
+      setUploading(false);
       toast.dismiss(LOADING_TOAST_ID);
       if (err.message.includes('invalid format')) {
         toast.warn('Sai định dạng');
