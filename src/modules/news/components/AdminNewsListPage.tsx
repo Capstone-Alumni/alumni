@@ -74,18 +74,23 @@ const AdminNewsListPage = () => {
           </Button>
         </Link>
       </Box>
+      <Box
+        sx={{
+          width: '100%',
+        }}
+      >
+        {isLoading && !newsListData ? <LoadingIndicator /> : null}
 
-      {isLoading && !newsListData ? <LoadingIndicator /> : null}
-
-      {newsListData && (
-        <AdminNewsListTable
-          data={newsListData.data}
-          page={params.page}
-          onChangePage={handleChange}
-          onPublic={handlePublicNews}
-          onDelete={handleDeleteNews}
-        />
-      )}
+        {newsListData && (
+          <AdminNewsListTable
+            data={newsListData.data}
+            page={params.page}
+            onChangePage={handleChange}
+            onPublic={handlePublicNews}
+            onDelete={handleDeleteNews}
+          />
+        )}
+      </Box>
     </Box>
   );
 };

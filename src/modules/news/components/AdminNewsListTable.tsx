@@ -6,8 +6,11 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  useTheme,
 } from '@mui/material';
 import DataTablePagination from '@share/components/DataTablePagination';
+import SearchInput from '@share/components/SearchInput';
+import { useState } from 'react';
 import { GetNewsListData } from '../types';
 import AdminNewsListItem from './AdminNewsListItem';
 
@@ -24,8 +27,23 @@ const AdminNewsListTable = ({
   onDelete: (id: string) => void;
   onChangePage: (nextPage: number) => void;
 }) => {
+  const theme = useTheme();
+  const [search, setSearch] = useState('');
+
   return (
     <>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
+        style={{ marginBottom: theme.spacing(2) }}
+      >
+        <SearchInput
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <button type="submit" style={{ display: 'none' }}></button>
+      </form>
       <TableContainer component={Paper}>
         <Table aria-label="event table">
           <TableHead>
@@ -43,7 +61,7 @@ const AdminNewsListTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.items.map(row => (
+            {data.items.map((row) => (
               <AdminNewsListItem
                 key={row.id}
                 data={row}

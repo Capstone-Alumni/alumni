@@ -8,6 +8,11 @@ import Paper from '@mui/material/Paper';
 import DataTablePagination from '@share/components/DataTablePagination';
 import { AdminGetJobListData } from '../hooks/useAdminGetJobList';
 import AdminEventListItem from './AdminJobListItem';
+import SearchInput from '@share/components/SearchInput';
+import { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { getAdminJobListParamsAtom } from 'src/modules/recruitments/states';
+import { useTheme } from '@mui/material';
 
 const AdminEventListTable = ({
   data,
@@ -22,8 +27,25 @@ const AdminEventListTable = ({
   page: number;
   onChangePage: (nextPage: number) => void;
 }) => {
+  const theme = useTheme();
+  const [search, setSearch] = useState('');
+  const setParams = useSetRecoilState(getAdminJobListParamsAtom);
+
   return (
     <>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          setParams((prevParams) => ({ ...prevParams, title: search }));
+        }}
+        style={{ marginBottom: theme.spacing(2) }}
+      >
+        <SearchInput
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <button type="submit" style={{ display: 'none' }}></button>
+      </form>
       <TableContainer component={Paper}>
         <Table aria-label="event table">
           <TableHead>
@@ -40,7 +62,7 @@ const AdminEventListTable = ({
           </TableHead>
           <TableBody>
             {data.items.map(
-              row =>
+              (row) =>
                 !row.archived && (
                   <AdminEventListItem
                     key={row.id}
