@@ -69,9 +69,14 @@ export default class PublicEventService {
         skip: (page - 1) * limit,
         take: limit,
         where: whereFilter,
-        orderBy: {
-          startTime: 'desc',
-        },
+        orderBy: [
+          {
+            endTime: 'desc',
+          },
+          {
+            startTime: 'asc',
+          },
+        ],
         include: {
           eventParticipants: {
             where: {
