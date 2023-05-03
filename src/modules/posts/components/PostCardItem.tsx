@@ -25,22 +25,7 @@ import useDeletePost from '../hooks/useDeletePost';
 import { EditorPreview } from '@share/components/editor';
 import MyAvatar from '@share/components/MyAvatar';
 import { formatDate } from '@share/utils/formatDate';
-
-// interface ExpandMoreProps {
-//   expand: boolean;
-// }
-
-// const ExpandMore = styled((props: ExpandMoreProps) => {
-//   const { expand } = props;
-//   console.log(expand);
-//   return <ExpandMoreIcon />;
-// })(({ theme, expand }) => ({
-//   transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-//   marginLeft: 'auto',
-//   transition: theme.transitions.create('transform', {
-//     duration: theme.transitions.duration.shortest,
-//   }),
-// }));
+import Link from '@share/components/NextLinkV2';
 
 const PostCardItem = ({
   data,
@@ -63,7 +48,7 @@ const PostCardItem = ({
   };
 
   const isLiked = React.useMemo(() => {
-    return data.postLikes.find(like => like.authorId === session?.user.id);
+    return data.postLikes.find((like) => like.authorId === session?.user.id);
   }, [data.postLikes]);
 
   const toggleLike = React.useCallback(() => {
@@ -78,10 +63,12 @@ const PostCardItem = ({
     <Card sx={{ width: '100%' }}>
       <CardHeader
         avatar={
-          <MyAvatar
-            displayName={data.author?.information?.fullName}
-            photoUrl={data.author?.information?.avatarUrl}
-          />
+          <Link href={`/profile/${data.author?.id}`}>
+            <MyAvatar
+              displayName={data.author?.information?.fullName}
+              photoUrl={data.author?.information?.avatarUrl}
+            />
+          </Link>
         }
         action={
           data.authorId === session?.user.id || session?.user.isOwner ? (
