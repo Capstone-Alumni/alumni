@@ -26,7 +26,7 @@ export default function MyAvatar({
       case 'small':
         return 32;
       case 'medium':
-        return 40;
+        return 48;
       case 'large':
         return 56;
       default:

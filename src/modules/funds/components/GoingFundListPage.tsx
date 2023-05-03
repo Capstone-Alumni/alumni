@@ -65,6 +65,7 @@ const GogingFundListPage = () => {
           >
             {data?.data.items.map(item => {
               const isSaved = item.fundSaved.length > 0;
+              const balancePercent = item.currentBalance / item.targetBalance;
 
               return (
                 <FundCardItem
@@ -77,7 +78,7 @@ const GogingFundListPage = () => {
                       style={{ width: '100%', marginRight: theme.spacing(1) }}
                     >
                       <Button fullWidth variant="outlined">
-                        Ủng hộ
+                        {balancePercent === 100 ? 'Xem thông tin' : 'Ủng hộ'}
                       </Button>
                     </Link>,
                     isSaved ? (

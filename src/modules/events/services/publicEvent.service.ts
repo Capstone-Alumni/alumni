@@ -58,6 +58,7 @@ export default class PublicEventService {
       archived: false,
       title: {
         contains: title,
+        mode: 'insensitive',
       },
     };
 

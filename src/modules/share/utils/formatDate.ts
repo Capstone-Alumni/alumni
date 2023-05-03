@@ -7,7 +7,7 @@ export const formatDate = (date: Date, formatTime = 'dd MMMM, yyyy') => {
   });
 };
 
-export const formatDateEvent = (date: Date, formatTime = 'EEEE, dd MMMM') => {
+export const formatDateEvent = (date: Date, formatTime = 'dd MMMM') => {
   return format(date, formatTime, {
     locale: vi,
   });

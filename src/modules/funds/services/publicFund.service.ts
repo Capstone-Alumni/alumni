@@ -22,6 +22,7 @@ export default class PublicFundService {
       archived: false,
       title: {
         contains: title,
+        mode: 'insensitive',
       },
       startTime: {
         lt: new Date(),
