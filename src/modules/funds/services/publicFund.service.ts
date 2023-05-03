@@ -223,7 +223,7 @@ export default class PublicFundService {
 
     return {
       totalItems: totalItems,
-      items: items.map((item) => ({
+      items: items.map(item => ({
         ...item,
         alumni: item.incognito && user.id !== fund.hostId ? null : item.alumni,
       })),
