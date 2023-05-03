@@ -48,7 +48,7 @@ const PostCardItem = ({
   };
 
   const isLiked = React.useMemo(() => {
-    return data.postLikes.find((like) => like.authorId === session?.user.id);
+    return data.postLikes.find(like => like.authorId === session?.user.id);
   }, [data.postLikes]);
 
   const toggleLike = React.useCallback(() => {
