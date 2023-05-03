@@ -34,16 +34,13 @@ const AdminFundListTable = ({
   return (
     <>
       <form
-        onSubmit={(e) => {
+        onSubmit={e => {
           e.preventDefault();
-          setParams((prevParams) => ({ ...prevParams, title: search }));
+          setParams(prevParams => ({ ...prevParams, title: search }));
         }}
         style={{ marginBottom: theme.spacing(2) }}
       >
-        <SearchInput
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <SearchInput value={search} onChange={e => setSearch(e.target.value)} />
         <button type="submit" style={{ display: 'none' }}></button>
       </form>
 
@@ -62,7 +59,7 @@ const AdminFundListTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.items.map((row) => (
+            {data.items.map(row => (
               <AdminFundListItem
                 key={row.id}
                 data={row}
