@@ -82,7 +82,7 @@ const FeaturesSection = () => {
             >
               <StyledBox>
                 <Image src="/post.svg" alt="post" width={200} height={200} />
-                <Typography variant="h4">Mạng xã hội</Typography>
+                <Typography variant="h4">Tìm kiếm bạn bè</Typography>
               </StyledBox>
             </Link>
           </Stack>
@@ -124,7 +124,7 @@ const FeaturesSection = () => {
             </StyledBox>
             <StyledBox>
               <Image src="/post.svg" alt="post" width={200} height={200} />
-              <Typography variant="h4">Bảng tin</Typography>
+              <Typography variant="h4">Tìm kiếm bạn bè</Typography>
             </StyledBox>
           </Stack>
         </SectionTemplate>

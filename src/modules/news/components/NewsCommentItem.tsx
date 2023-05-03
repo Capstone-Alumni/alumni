@@ -11,6 +11,7 @@ import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import { useDeleteNewsCommentMutation } from '@redux/slices/newsCommentSlice';
 import NewsCommentInput from './NewsCommentInput';
 import { NewsComment } from '../types';
+import MyAvatar from '@share/components/MyAvatar';
 
 const NewsCommentItem = ({
   item,
@@ -82,11 +83,20 @@ const NewsCommentItem = ({
           display: 'flex',
         }}
       >
-        <Avatar
-          alt={item.commenter ? item.commenter.information.fullName : ''}
-          src={item.commenter ? item.commenter.information.avatarUrl : ''}
-          sx={{ width: 48, height: 48 }}
-        />
+        {item.commenter && item.commenter.information.avatarUrl ? (
+          <Avatar
+            alt={item.commenter ? item.commenter.information.fullName : ''}
+            src={item.commenter ? item.commenter.information.avatarUrl : ''}
+            sx={{ width: 48, height: 48 }}
+          />
+        ) : (
+          <MyAvatar
+            displayName={
+              item.commenter ? item.commenter.information.fullName : ''
+            }
+            size="medium"
+          />
+        )}
         <Box
           sx={{
             overflow: 'hidden',

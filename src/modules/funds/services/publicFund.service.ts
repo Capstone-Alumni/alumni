@@ -22,6 +22,7 @@ export default class PublicFundService {
       archived: false,
       title: {
         contains: title,
+        mode: 'insensitive',
       },
       startTime: {
         lt: new Date(),
@@ -222,7 +223,7 @@ export default class PublicFundService {
 
     return {
       totalItems: totalItems,
-      items: items.map(item => ({
+      items: items.map((item) => ({
         ...item,
         alumni: item.incognito && user.id !== fund.hostId ? null : item.alumni,
       })),

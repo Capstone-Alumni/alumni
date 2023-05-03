@@ -36,19 +36,22 @@ const GogingFundListPage = () => {
   };
 
   useEffect(() => {
-    setParams(prev => ({ ...prev, status: 'going' }));
+    setParams((prev) => ({ ...prev, status: 'going' }));
   }, []);
 
   return (
     <>
       <form
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
-          setParams(prevParams => ({ ...prevParams, title: search }));
+          setParams((prevParams) => ({ ...prevParams, title: search }));
         }}
         style={{ marginBottom: theme.spacing(2) }}
       >
-        <SearchInput value={search} onChange={e => setSearch(e.target.value)} />
+        <SearchInput
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <button type="submit" style={{ display: 'none' }}></button>
       </form>
 
@@ -63,8 +66,9 @@ const GogingFundListPage = () => {
               mb: 2,
             }}
           >
-            {data?.data.items.map(item => {
+            {data?.data.items.map((item) => {
               const isSaved = item.fundSaved.length > 0;
+              const balancePercent = item.currentBalance / item.targetBalance;
 
               return (
                 <FundCardItem
@@ -77,7 +81,7 @@ const GogingFundListPage = () => {
                       style={{ width: '100%', marginRight: theme.spacing(1) }}
                     >
                       <Button fullWidth variant="outlined">
-                        Ủng hộ
+                        {balancePercent === 100 ? 'Xem thông tin' : 'Ủng hộ'}
                       </Button>
                     </Link>,
                     isSaved ? (
@@ -115,7 +119,7 @@ const GogingFundListPage = () => {
             )}
             page={params.page}
             onChange={(_, nextPage) => {
-              setParams(prevParams => ({ ...prevParams, page: nextPage }));
+              setParams((prevParams) => ({ ...prevParams, page: nextPage }));
             }}
           />
         </>

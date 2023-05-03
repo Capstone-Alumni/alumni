@@ -31,7 +31,7 @@ export const buildEventWhereFilter = async (
           },
           {
             gradeId: {
-              in: alumni.alumniToClass.map(cl => cl.alumClass.gradeId),
+              in: alumni.alumniToClass.map((cl) => cl.alumClass.gradeId),
             },
           },
         ],
@@ -58,6 +58,7 @@ export default class PublicEventService {
       archived: false,
       title: {
         contains: title,
+        mode: 'insensitive',
       },
     };
 

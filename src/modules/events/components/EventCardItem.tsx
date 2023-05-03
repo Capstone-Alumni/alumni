@@ -132,10 +132,17 @@ const EventCardItem = ({
           >
             <Stack direction="row" alignItems="center">
               <Typography
-                variant="body2"
+                fontWeight="bold"
+                variant="caption"
                 color={isEnded ? '#919eab' : 'primary'}
               >
-                {formatDateEvent(new Date(data.startTime))}
+                {!isEnded
+                  ? `NGÀY BẮT ĐẦU: ${formatDateEvent(
+                      new Date(data.startTime),
+                    ).toUpperCase()}`
+                  : `NGÀY KẾT THÚC: ${formatDateEvent(
+                      new Date(data.endTime),
+                    ).toUpperCase()}`}
               </Typography>
               <Box sx={{ flex: 1 }} />
               {actions}
