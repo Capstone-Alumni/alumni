@@ -1,7 +1,7 @@
 'use client';
 
 import { IconButton, Menu, MenuItem, Typography } from '@mui/material';
-import { Link } from '@mui/material';
+import Link from '@share/components/NextLinkV2';
 import { Avatar, Box } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -109,13 +109,7 @@ const NewsCommentItem = ({
               display: 'flex',
             }}
           >
-            <Link
-              underline="none"
-              href={`/profile/${
-                item.commenter ? item.commenter.information.id : ''
-              }`}
-              color="inherit"
-            >
+            <Link href={`/profile/${item.commenterId}`}>
               <Typography
                 sx={{
                   marginLeft: 2,
