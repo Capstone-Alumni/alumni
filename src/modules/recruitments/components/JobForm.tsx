@@ -133,6 +133,37 @@ const JobForm = ({
         borderRadius: `${theme.shape.borderRadius}px`,
       }}
     >
+      {isPreview ? (
+        <Box sx={{ width: '100%' }}>
+          <Typography
+            variant="caption"
+            sx={{ marginLeft: '16px', color: '#919EAB' }}
+          >
+            Hình công ty
+          </Typography>
+          <Box
+            sx={{
+              width: '100%',
+              border: '1px solid rgba(145, 158, 171, 0.24)',
+              borderRadius: '8px',
+              padding: '16px',
+            }}
+          >
+            <img
+              src={getValues('companyImageUrl')}
+              height="auto"
+              style={{ objectFit: 'contain', width: 'auto' }}
+            />{' '}
+          </Box>
+        </Box>
+      ) : (
+        <UploadBackgroundInput
+          control={control}
+          name="companyImageUrl"
+          inputProps={{ label: 'Hình ảnh tuyển dụng' }}
+          containerSx={{ width: '100%' }}
+        />
+      )}
       <TextInput
         control={control}
         name="title"
@@ -160,7 +191,7 @@ const JobForm = ({
             label: 'Yêu cầu kinh nghiệm',
             disabled: isPreview,
           }}
-          options={YEARS_OF_EXPERIENCE_LIST.map(yoe => ({
+          options={YEARS_OF_EXPERIENCE_LIST.map((yoe) => ({
             name: yoe,
             value: yoe,
           }))}
@@ -201,7 +232,7 @@ const JobForm = ({
             label: 'Ngành nghề cần tuyển',
             disabled: isPreview,
           }}
-          options={JOB_LIST.map(job => ({
+          options={JOB_LIST.map((job) => ({
             name: job,
             value: job,
           }))}
@@ -216,7 +247,7 @@ const JobForm = ({
             label: 'Loại hình làm việc',
             disabled: isPreview,
           }}
-          options={JOB_TYPES.map(type => ({
+          options={JOB_TYPES.map((type) => ({
             name: type,
             value: type,
           }))}
@@ -256,37 +287,6 @@ const JobForm = ({
         name="address"
         inputProps={{ label: 'Địa chỉ', fullWidth: true, disabled: isPreview }}
       />
-      {isPreview ? (
-        <Box sx={{ width: '100%' }}>
-          <Typography
-            variant="caption"
-            sx={{ marginLeft: '16px', color: '#919EAB' }}
-          >
-            Hình công ty
-          </Typography>
-          <Box
-            sx={{
-              width: '100%',
-              border: '1px solid rgba(145, 158, 171, 0.24)',
-              borderRadius: '8px',
-              padding: '16px',
-            }}
-          >
-            <img
-              src={getValues('companyImageUrl')}
-              height="auto"
-              style={{ objectFit: 'contain', width: 'auto' }}
-            />{' '}
-          </Box>
-        </Box>
-      ) : (
-        <UploadBackgroundInput
-          control={control}
-          name="companyImageUrl"
-          inputProps={{ label: 'Hình ảnh tuyển dụng' }}
-          containerSx={{ width: '100%' }}
-        />
-      )}
       {!isPreview && (
         <>
           {/* <Box sx={{ width: '100%' }}>
