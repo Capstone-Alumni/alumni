@@ -10,10 +10,13 @@ const getRoleName = (currentUserInformation: Alumni) => {
     return 'Đại diện khoá';
   }
 
-  // const isClassMod = currentUserInformation.alumniToClass?.some((class) => class.isClassMod)
-  // if (isClassMod) {
-  //   return 'Đại diện lớp';
-  // }
+  const isClassMod = currentUserInformation.alumniToClass?.some(
+    cl => cl?.isClassMod,
+  );
+  if (isClassMod) {
+    return 'Đại diện lớp';
+  }
+
   return 'Cựu học sinh';
   // switch (role) {
   //   case 'SCHOOL_ADMIN':
