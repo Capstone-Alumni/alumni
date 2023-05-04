@@ -229,7 +229,7 @@ const JobForm = ({
           name="job"
           inputProps={{
             fullWidth: true,
-            label: 'Ngành nghề cần tuyển',
+            label: 'Nhóm ngành cần tuyển',
             disabled: isPreview,
           }}
           options={JOB_LIST.map(job => ({
