@@ -21,6 +21,9 @@ import { getProfileListParamsAtom } from '../states';
 import { Class } from 'src/modules/gradeAndClass/types';
 import { groupBy } from 'lodash/fp';
 import { Button } from '@mui/material';
+import useDeleteMemberById from 'src/modules/members/hooks/useDeleteMemberById';
+import { useState } from 'react';
+import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 // ----------------------------------------------------------------------
 
 const Wrapper = styled('div')(({ theme }) => ({
@@ -44,11 +47,16 @@ const getClassDisplay = (alumClass: Class) => {
 
 const SeachPage = () => {
   const theme = useTheme();
+
+  const [openDeleteModalId, setOpenDeleteModalId] = useState('');
+
   const [params, setParams] = useRecoilState(getProfileListParamsAtom);
   const { page } = params;
 
   const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
-  const { data: profileListData, isLoading } = useGetProfileList();
+  const { data: profileListData, isLoading, reload } = useGetProfileList();
+
+  const { deleteMemberById } = useDeleteMemberById();
 
   const handleRenderUsersProfile = () => {
     if (!isLoading && profileListData?.data && currentUserInformation) {
@@ -116,7 +124,15 @@ const SeachPage = () => {
 
                             {!user?.information?.email &&
                             hasRemovalPermission ? (
-                              <Button variant="outlined" color="error">
+                              <Button
+                                variant="outlined"
+                                color="error"
+                                onClick={e => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  setOpenDeleteModalId(user.id);
+                                }}
+                              >
                                 Xoá thành viên
                               </Button>
                             ) : null}
@@ -162,6 +178,17 @@ const SeachPage = () => {
                       </Box>
                     </Wrapper>
                   </Link>
+
+                  <ConfirmDeleteModal
+                    open={openDeleteModalId === user.id}
+                    title="Bạn muốn xoá thành viên này?"
+                    onClose={() => setOpenDeleteModalId('')}
+                    onDelete={async () => {
+                      await deleteMemberById({ memberId: user.id });
+                      setOpenDeleteModalId('');
+                      reload();
+                    }}
+                  />
                 </Card>
               );
             })}
