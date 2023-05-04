@@ -73,6 +73,7 @@ const AdminEventListPage = () => {
             onChangePage={nextPage => {
               setParams(prevParams => ({ ...prevParams, page: nextPage }));
             }}
+            onReload={reload}
           />
         ) : null}
       </Box>

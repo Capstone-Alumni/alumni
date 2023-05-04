@@ -36,7 +36,7 @@ const useAdminGetEventList = () => {
 
   useEffect(() => {
     return resetParams;
-  });
+  }, []);
 
   useEffect(() => {
     fetchApi(params);

@@ -12,7 +12,6 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Event } from '../types';
 import { formatDate } from '@share/utils/formatDate';
 import { useMemo, useState } from 'react';
-import useAdminGetEventList from '../hooks/useAdminGetEventList';
 import useOwnerDeleteEventById from '../hooks/useOwnerDeleteEventById';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import {
@@ -26,19 +25,20 @@ import { getGradeLongName } from '@share/utils/getGradeName';
 
 const AdminEventListItem = ({
   data,
+  onReload,
 }: {
   data: Event;
   onApprove: (id: string) => void;
   onReject: (id: string) => void;
+  onReload: () => void;
 }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const { reload } = useAdminGetEventList();
   const { fetchApi: deleteEvent } = useOwnerDeleteEventById();
 
   const onDeleteEvent = async (id: string) => {
     await deleteEvent({ eventId: id });
-    reload();
+    onReload();
   };
 
   const eventStatus = useMemo(() => {

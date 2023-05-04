@@ -22,12 +22,14 @@ const AdminEventListTable = ({
   onReject,
   page,
   onChangePage,
+  onReload,
 }: {
   data: AdminGetEventListData;
   onApprove: (id: string) => void;
   onReject: (id: string) => void;
   page: number;
   onChangePage: (nextPage: number) => void;
+  onReload: () => void;
 }) => {
   const theme = useTheme();
   const [search, setSearch] = useState('');
@@ -65,6 +67,7 @@ const AdminEventListTable = ({
                 data={row}
                 onApprove={onApprove}
                 onReject={onReject}
+                onReload={onReload}
               />
             ))}
           </TableBody>
