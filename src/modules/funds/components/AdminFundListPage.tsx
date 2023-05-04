@@ -69,6 +69,7 @@ const AdminFundListPage = () => {
             page={params.page || 1}
             onApprove={onApproveFund}
             onReject={onRejectFund}
+            onReload={reload}
             onChangePage={nextPage => {
               setParams(prevParams => ({ ...prevParams, page: nextPage }));
             }}

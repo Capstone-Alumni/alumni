@@ -18,12 +18,14 @@ const AdminFundListTable = ({
   data,
   onApprove,
   onReject,
+  onReload,
   page,
   onChangePage,
 }: {
   data: AdminGetFundListData;
   onApprove: (id: string) => void;
   onReject: (id: string) => void;
+  onReload: () => void;
   page: number;
   onChangePage: (nextPage: number) => void;
 }) => {
@@ -65,6 +67,7 @@ const AdminFundListTable = ({
                 data={row}
                 onApprove={onApprove}
                 onReject={onReject}
+                onReload={onReload}
               />
             ))}
           </TableBody>

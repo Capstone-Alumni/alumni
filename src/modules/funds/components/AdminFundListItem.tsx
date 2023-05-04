@@ -14,7 +14,6 @@ import { Fund } from '../types';
 import { useState } from 'react';
 import ConfirmDeleteModal from '@share/components/ConfirmDeleteModal';
 import useOwnerDeleteFundById from '../hooks/useOwnerDeleteFundById';
-import useAdminGetFundList from '../hooks/useAdminGetFundList';
 import { formatDate } from '@share/utils/formatDate';
 import { formatAmountMoney } from '../utils';
 import { getShortTitle } from '@share/utils/getShortTitle';
@@ -30,19 +29,20 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 const AdminFundListItem = ({
   data,
+  onReload,
 }: {
   data: Fund;
   onApprove: (id: string) => void;
   onReject: (id: string) => void;
+  onReload: () => void;
 }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const { reload } = useAdminGetFundList();
   const { fetchApi: deleteFund } = useOwnerDeleteFundById();
 
   const onDeleteFund = async (id: string) => {
     await deleteFund({ fundId: id });
-    reload();
+    onReload();
   };
 
   const getFundStatus = () => {

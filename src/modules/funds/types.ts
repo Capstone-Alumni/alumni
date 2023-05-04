@@ -52,6 +52,7 @@ export type FundReport = {
 export type GetAdminFundListParams = {
   page: number;
   limit: number;
+  title?: string;
   approved: number | undefined;
 };
 
