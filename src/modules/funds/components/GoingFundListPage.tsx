@@ -47,7 +47,7 @@ const GogingFundListPage = () => {
   }, []);
 
   return (
-    <Box sx={{ width: 'calc(100% - 13rem)' }}>
+    <Box>
       <form
         onSubmit={e => {
           e.preventDefault();

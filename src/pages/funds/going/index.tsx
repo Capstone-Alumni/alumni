@@ -17,7 +17,7 @@ Page.getLayout = (page: JSX.Element) => (
     <Body>
       <div style={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>
         <FundSidebar />
-        <div style={{ flex: 1 }}>{page}</div>
+        <div style={{ width: 'calc(100% - 17rem)' }}>{page}</div>
       </div>
     </Body>
     <Footer />
