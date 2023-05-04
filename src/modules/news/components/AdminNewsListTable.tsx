@@ -20,12 +20,14 @@ const AdminNewsListTable = ({
   onPublic,
   onDelete,
   onChangePage,
+  setTitleParams,
 }: {
   data: GetNewsListData;
   page: number;
   onPublic: (id: string, isPublic: boolean) => void;
   onDelete: (id: string) => void;
   onChangePage: (nextPage: number) => void;
+  setTitleParams: (title: string) => void;
 }) => {
   const theme = useTheme();
   const [search, setSearch] = useState('');
@@ -35,6 +37,7 @@ const AdminNewsListTable = ({
       <form
         onSubmit={e => {
           e.preventDefault();
+          setTitleParams(search);
         }}
         style={{ marginBottom: theme.spacing(2) }}
       >

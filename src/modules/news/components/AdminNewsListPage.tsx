@@ -48,6 +48,13 @@ const AdminNewsListPage = () => {
     params,
   });
 
+  const setTitleParams = (title: string) => {
+    setParams({
+      ...params,
+      title: title,
+    });
+  };
+
   return (
     <Box
       sx={{
@@ -88,6 +95,7 @@ const AdminNewsListPage = () => {
             onChangePage={handleChange}
             onPublic={handlePublicNews}
             onDelete={handleDeleteNews}
+            setTitleParams={setTitleParams}
           />
         )}
       </Box>
