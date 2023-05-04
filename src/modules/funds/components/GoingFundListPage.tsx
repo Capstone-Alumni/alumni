@@ -2,7 +2,14 @@
 
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import { Button, Grid, IconButton, Pagination, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  Pagination,
+  useTheme,
+} from '@mui/material';
 import LoadingIndicator from '@share/components/LoadingIndicator';
 import Link from '@share/components/NextLinkV2';
 import { useRecoilState } from 'recoil';
@@ -40,7 +47,7 @@ const GogingFundListPage = () => {
   }, []);
 
   return (
-    <>
+    <Box sx={{ width: 'calc(100% - 13rem)' }}>
       <form
         onSubmit={e => {
           e.preventDefault();
@@ -121,7 +128,7 @@ const GogingFundListPage = () => {
           />
         </>
       )}
-    </>
+    </Box>
   );
 };
 

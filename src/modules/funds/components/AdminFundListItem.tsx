@@ -69,39 +69,46 @@ const AdminFundListItem = ({
 
   return (
     <>
-      <TableRow>
+      <TableRow sx={{ fontSize: '14px' }}>
         <TableCell align="left">
           <AdminFundPreview data={data}>
             <Typography
               sx={{
                 cursor: 'pointer',
               }}
+              fontSize={'inherit'}
             >
               {getShortTitle(data.title)}
             </Typography>
           </AdminFundPreview>
         </TableCell>
         <TableCell align="left">
-          <Typography>{data.host?.information?.fullName}</Typography>
+          <Typography fontSize={'inherit'}>
+            {data.host?.information?.fullName}
+          </Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>{formatAmountMoney(data.targetBalance * 100)}</Typography>
+          <Typography fontSize={'inherit'}>
+            {formatAmountMoney(data.targetBalance * 100)}
+          </Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>{formatAmountMoney(data.currentBalance)}</Typography>
+          <Typography fontSize={'inherit'}>
+            {formatAmountMoney(data.currentBalance)}
+          </Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>
+          <Typography fontSize={'inherit'}>
             {formatDate(new Date(data.startTime), 'dd/MM/yyyy hh:mm')}
           </Typography>
         </TableCell>
         <TableCell align="left">
-          <Typography>
+          <Typography fontSize={'inherit'}>
             {formatDate(new Date(data.endTime), 'dd/MM/yyyy hh:mm')}
           </Typography>
         </TableCell>
         <TableCell align="center">
-          <Typography>
+          <Typography fontSize={'inherit'}>
             <Button color={getFundStatusColor()} variant="outlined">
               {getFundStatus()}
             </Button>
