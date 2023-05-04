@@ -62,20 +62,25 @@ const SeachPage = () => {
                 alumClass: Class;
               }>(({ alumClass }) => alumClass.gradeId)(user?.alumniToClass);
 
-              console.log(groupedClass);
-
-              const LinkWrapper = user?.information?.email ? Link : Box;
+              const hasRemovalPermission =
+                currentUserInformation?.isOwner ||
+                currentUserInformation?.gradeMod?.find(
+                  gr =>
+                    gr.gradeId === user?.alumniToClass?.[0].alumClass.gradeId,
+                ) ||
+                currentUserInformation?.alumniToClass?.find(
+                  al =>
+                    al.isClassMod &&
+                    al.alumClassId === user?.alumniToClass?.[0].alumClassId,
+                );
 
               return (
                 <Card sx={{ margin: '1rem 0' }} key={user.id}>
-                  <LinkWrapper
-                    href={user?.information?.email ? `/profile/${user.id}` : {}}
+                  <Link
+                    href={`/profile/${user.id}`}
                     passHref
                     style={{
                       color: 'inherit',
-                      backgroundColor: user?.information?.email
-                        ? ''
-                        : theme.palette.background.neutral,
                     }}
                   >
                     <Wrapper>
@@ -92,19 +97,29 @@ const SeachPage = () => {
                             width: '100%',
                           }}
                         >
-                          <Stack direction="row" justifyContent="space-between">
+                          <Stack direction="row" gap={2}>
                             <Typography fontWeight={600} sx={{ mb: 1 }}>
                               {user?.information?.fullName}
                             </Typography>
+
+                            <Box sx={{ flex: 1 }} />
+
                             {user?.information?.email ? null : (
                               <Button
                                 variant="outlined"
                                 size="small"
                                 color="warning"
                               >
-                                Chưa gia nhập
+                                Không có tài khoản
                               </Button>
                             )}
+
+                            {!user?.information?.email &&
+                            hasRemovalPermission ? (
+                              <Button variant="outlined" color="error">
+                                Xoá thành viên
+                              </Button>
+                            ) : null}
                           </Stack>
 
                           <Box
@@ -143,26 +158,10 @@ const SeachPage = () => {
                               );
                             })}
                           </Box>
-                          {/* <AvatarGroup total={user?.alumniToClass?.length}>
-                            {user?.alumniToClass?.[0]?.alumClass ? (
-                              <Chip
-                                label={getGradeClassDisplay(
-                                  user.alumniToClass[0].alumClass,
-                                )}
-                              />
-                            ) : null}
-                            {user?.alumniToClass?.[1]?.alumClass ? (
-                              <Chip
-                                label={getClassDisplay(
-                                  user.alumniToClass[1].alumClass,
-                                )}
-                              />
-                            ) : null}
-                          </AvatarGroup> */}
                         </Box>
                       </Box>
                     </Wrapper>
-                  </LinkWrapper>
+                  </Link>
                 </Card>
               );
             })}

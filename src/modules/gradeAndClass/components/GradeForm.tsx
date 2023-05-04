@@ -67,13 +67,13 @@ const GradeForm = ({
     resolver,
   });
 
-  const startYearWatcher = watch('startYear');
+  const endYearWatcher = watch('endYear');
 
   useEffect(() => {
-    const date = getEndYear(startYearWatcher);
-    clearErrors('endYear');
-    setValue('endYear', date);
-  }, [startYearWatcher]);
+    const date = getStartYear(endYearWatcher);
+    clearErrors('startYear');
+    setValue('startYear', date);
+  }, [endYearWatcher]);
 
   const onSubmitHandler = async (values: GradeFormValues) => {
     setSubmitting(true);
@@ -125,6 +125,7 @@ const GradeForm = ({
           control={control}
           name="startYear"
           inputProps={{
+            disabled: true,
             label: 'Năm bắt đầu',
             views: ['year'],
             inputFormat: 'yyyy',
