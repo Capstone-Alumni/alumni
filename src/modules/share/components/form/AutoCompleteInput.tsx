@@ -38,7 +38,7 @@ const AutocompleteInput = ({
 }: AutocompleteInputProps) => {
   const [search, setSearch] = useState('');
 
-  const [searchDebounce] = useDebounce(search, 2000);
+  const [searchDebounce] = useDebounce(search, 1000);
 
   useEffect(() => {
     getOptions?.(searchDebounce);
