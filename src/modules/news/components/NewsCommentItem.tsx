@@ -1,7 +1,6 @@
 'use client';
 
 import { IconButton, Menu, MenuItem, Typography } from '@mui/material';
-import Link from '@share/components/NextLinkV2';
 import { Avatar, Box } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -109,17 +108,15 @@ const NewsCommentItem = ({
               display: 'flex',
             }}
           >
-            <Link href={`/profile/${item.commenterId}`}>
-              <Typography
-                sx={{
-                  marginLeft: 2,
-                  cursor: 'pointer',
-                }}
-                variant="subtitle1"
-              >
-                {item.commenter ? item.commenter.information.fullName : ''}
-              </Typography>
-            </Link>
+            <Typography
+              sx={{
+                marginLeft: 2,
+                cursor: 'pointer',
+              }}
+              variant="subtitle1"
+            >
+              {item.commenter ? item.commenter.information.fullName : ''}
+            </Typography>
             {(user && user.id === item.commenterId) || user?.isOwner ? (
               <>
                 <IconButton
