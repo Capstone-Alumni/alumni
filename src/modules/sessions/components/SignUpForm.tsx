@@ -103,7 +103,7 @@ const SignUpForm = () => {
               render={({ field, fieldState: { error } }) => (
                 <TextField
                   fullWidth
-                  label="Email *"
+                  label="Email"
                   {...field}
                   error={Boolean(error?.message)}
                   helperText={error?.message}
