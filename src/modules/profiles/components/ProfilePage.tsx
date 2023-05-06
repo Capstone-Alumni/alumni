@@ -8,12 +8,17 @@ import ProfileEducationTab from './education/ProfileEducationTab';
 import ProfileGradeClassTab from './gradeClass/ProfileGradeClassTab';
 import { useState } from 'react';
 import CurrentGradeClassSection from './gradeClass/CurrentGradeClassSection';
+import { useCanEditProfile } from '../helpers/canEditProfile';
+import { useGetUserInformationQuery } from '@redux/slices/userProfileSlice';
 
 const UserProfile = () => {
   const [currentTab, setCurrentTab] = useState('information');
   const handleChangeTab = (tab: string) => {
     setCurrentTab(tab);
   };
+  const { userProfileId } = useCanEditProfile();
+  const userInformationResponse = useGetUserInformationQuery(userProfileId);
+
   return (
     <div style={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>
       <ProfileSidebar onChangeTab={handleChangeTab} />
@@ -23,7 +28,9 @@ const UserProfile = () => {
           {currentTab === 'information' ? (
             <>
               <ProfileInformationTab />
-              <CurrentGradeClassSection />
+              <CurrentGradeClassSection
+                userInformation={userInformationResponse?.data?.data}
+              />
               <ProfileCareerTab />
               <ProfileEducationTab />
             </>

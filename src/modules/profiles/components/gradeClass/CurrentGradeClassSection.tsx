@@ -10,8 +10,8 @@ import {
 import Groups2Icon from '@mui/icons-material/Groups2';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { currentUserInformationDataAtom } from '@share/states';
-import { useRecoilValue } from 'recoil';
+// import { currentUserInformationDataAtom } from '@share/states';
+// import { useRecoilValue } from 'recoil';
 import { useCanEditProfile } from '../../helpers/canEditProfile';
 import { groupBy } from 'lodash/fp';
 import { Class } from 'src/modules/gradeAndClass/types';
@@ -24,20 +24,23 @@ import AddGradesAndClasses from './AddGradesAndClasses';
 import useAddAlumniToClass from 'src/modules/members/hooks/useAddAlumToClass';
 import useGetCurrentUserInformation from '@share/hooks/useGetCurrentUserInformation';
 
-const CurrentGradeClassSection = () => {
+const CurrentGradeClassSection = ({
+  userInformation,
+}: {
+  userInformation: any;
+}) => {
   const theme = useTheme();
   const [openAddClassesModal, setOpenAddClassesModal] = useState(false);
 
   const [openLeaveModelId, setOpenLeaveModelId] = useState('');
-  const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
+  // const currentUserInformation = useRecoilValue(currentUserInformationDataAtom);
   const { canEditProfile, userProfileId } = useCanEditProfile();
+  // const userInformationResponse = useGetUserInformationQuery(userProfileId);
   const groupedClass = groupBy<{
     id: string;
     isClassMod: boolean;
     alumClass: Class;
-  }>(({ alumClass }) => alumClass.gradeId)(
-    currentUserInformation?.alumniToClass,
-  );
+  }>(({ alumClass }) => alumClass?.gradeId)(userInformation?.alumniToClass);
   const { fetchApi: fetchCurrentInformation } = useGetCurrentUserInformation();
   const { deleteAlumToClassById, isLoading: deleting } =
     useDeleteAlumToClassById();
@@ -47,10 +50,10 @@ const CurrentGradeClassSection = () => {
   const handleAddClass = async (values: any) => {
     await addAlumniToClass({
       classId: values.gradeClass[0].alumClass.id,
-      memberId: currentUserInformation?.id || '',
+      memberId: userInformation?.id || '',
     });
     await fetchCurrentInformation({
-      id: currentUserInformation?.id || '',
+      id: userInformation?.id || '',
     });
     setOpenAddClassesModal(false);
   };
@@ -139,11 +142,11 @@ const CurrentGradeClassSection = () => {
                       onClose={() => setOpenLeaveModelId('')}
                       onDelete={async () => {
                         deleteAlumToClassById({
-                          memberId: currentUserInformation?.id || '',
+                          memberId: userInformation?.id || '',
                           alumToClassId: cl.id,
                         });
                         await fetchCurrentInformation({
-                          id: currentUserInformation?.id || '',
+                          id: userInformation?.id || '',
                         });
                       }}
                     />

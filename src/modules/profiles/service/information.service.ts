@@ -115,7 +115,11 @@ export default class InformationService {
         pingSent: true,
         alumniToClass: {
           include: {
-            alumClass: true,
+            alumClass: {
+              include: {
+                grade: true,
+              },
+            },
           },
         },
         gradeMod: {
