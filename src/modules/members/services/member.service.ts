@@ -118,7 +118,7 @@ export default class MemberService {
         OR: [
           { email: { contains: name } },
           { fullName: { contains: name } },
-          { OR: [{ email: null }, { email: { contains: name } }] },
+          // { OR: [{ email: null }, { email: { contains: name } }] },
         ],
       },
       archived: false,
